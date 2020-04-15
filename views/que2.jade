@@ -1,0 +1,564 @@
+doctype html
+html
+  head
+    title Post-study Questionnaire
+    script(type = "text/javascript", src = "../jquery/dist/jquery.min.js", charset = 'utf-8')
+    style(type='text/css').
+      html,body {padding:0;margin:0;}
+      .wrap, select, .normal-input {
+      font:1rem Arial, san-serif;
+      }
+      h1.likert-header {
+      text-align: center;
+      margin:20px 0 0;
+      }
+      form {
+      width: 70%;
+      margin-left: 15%;
+      }
+      form .normal-input{
+      margin-left: 8%;
+      }
+      form .statement {
+      display:block;
+      font-size: 1.5rem;
+      font-weight: bold;
+      padding: 30px 0 0 4.25%;
+      margin-bottom:10px;
+      }
+      form .likert {
+      list-style:none;
+      width:100%;
+      left:10%;
+      margin:0;
+      padding:50px 0 50px;
+      display:block;
+      border-bottom:1px solid #efefef;
+      }
+      form .likert:last-of-type {border-bottom:0;}
+      form .likert:before {
+      content: '';
+      position:relative;
+      top:30px;
+      display:block;
+      background-color:#efefef;
+      height:4px;
+      width:95%;
+      }
+      form .likert li {
+      display:inline-block;
+      width:13%;
+      text-align:center;
+      vertical-align: top;
+      }
+      form .likert li input[type=radio] {
+      display:block;
+      position:relative;
+      top:0;
+      left:50%;
+      margin-left:-6px;
+      }
+      form .likert li label {width:100%;}
+      form .buttons {
+      margin:100px 30px;
+      padding:0 4.25%;
+      text-align:center;
+      }
+      form .buttons button {
+      padding: 5px 10px;
+      background-color: #67ab49;
+      border: 0;
+      border-radius: 3px;
+      font-size: 2rem;
+      margin-left: 30px;
+      }
+      form .buttons .clear {background-color: #e9e9e9;}
+      form .buttons .submit {background-color: #67ab49;}
+      form .buttons .clear:hover {background-color: #ccc;}
+      form .buttons .submit:hover {background-color: #14892c;}
+      textarea{
+      margin-left: 2%;
+      font-size: 1.5rem;
+      }
+      input{
+      zoom:3;
+      }
+  body
+    .wrap
+      h1.likert-header This is a post-study survey
+      form(action='')
+        label.statement 1. The songs recommended to me matched my interests.
+        ul#post-1.likert
+          li
+            input(type='radio', value='1', name='group1')
+            label Strongly disagree
+          li
+            input(type='radio', value='2', name='group1')
+            label Disgree
+          li
+            input(type='radio', value='3', name='group1')
+            label Somewhat disagree
+          li
+            input(type='radio', value='4', name='group1')
+            label Neutral
+          li
+            input(type='radio', value='5', name='group1')
+            label Somewhat agree
+          li
+            input(type='radio', value='6', name='group1')
+            label Agree
+          li
+            input(type='radio', value='7', name='group1')
+            label Strongly agree
+        label.statement 2. The songs recommended to me are novel.
+        ul#post-2.likert
+          li
+            input(type='radio', value='1', name='group2')
+            label Strongly disagree
+          li
+            input(type='radio', value='2', name='group2')
+            label Disgree
+          li
+            input(type='radio', value='3', name='group2')
+            label Somewhat disagree
+          li
+            input(type='radio', value='4', name='group2')
+            label Neutral
+          li
+            input(type='radio', value='5', name='group2')
+            label Somewhat agree
+          li
+            input(type='radio', value='6', name='group2')
+            label Agree
+          li
+            input(type='radio', value='7', name='group2')
+            label Strongly agree
+        label.statement 3. The music chatbot helped me discover new songs.
+        ul#post-3.likert
+          li
+            input(type='radio', value='1', name='group3')
+            label Strongly disagree
+          li
+            input(type='radio', value='2', name='group3')
+            label Disgree
+          li
+            input(type='radio', value='3', name='group3')
+            label Somewhat disagree
+          li
+            input(type='radio', value='4', name='group3')
+            label Neutral
+          li
+            input(type='radio', value='5', name='group3')
+            label Somewhat agree
+          li
+            input(type='radio', value='6', name='group3')
+            label Agree
+          li
+            input(type='radio', value='7', name='group3')
+            label Strongly agree
+        label.statement 4. The songs recommended to me are diverse.
+        ul#post-4.likert
+          li
+            input(type='radio', value='1', name='group4')
+            label Strongly disagree
+          li
+            input(type='radio', value='2', name='group4')
+            label Disgree
+          li
+            input(type='radio', value='3', name='group4')
+            label Somewhat disagree
+          li
+            input(type='radio', value='4', name='group4')
+            label Neutral
+          li
+            input(type='radio', value='5', name='group4')
+            label Somewhat agree
+          li
+            input(type='radio', value='6', name='group4')
+            label Agree
+          li
+            input(type='radio', value='7', name='group4')
+            label Strongly agree
+        label.statement
+          | 5. I found it easy to inform the music chatbot if I dislike/like the recommended song.
+        ul#post-5.likert
+          li
+            input(type='radio', value='1', name='group5')
+            label Strongly disagree
+          li
+            input(type='radio', value='2', name='group5')
+            label Disgree
+          li
+            input(type='radio', value='3', name='group5')
+            label Somewhat disagree
+          li
+            input(type='radio', value='4', name='group5')
+            label Neutral
+          li
+            input(type='radio', value='5', name='group5')
+            label Somewhat agree
+          li
+            input(type='radio', value='6', name='group5')
+            label Agree
+          li
+            input(type='radio', value='7', name='group5')
+            label Strongly agree
+        label.statement 6. I found the music chatbot easy to understand in this conversation.
+        ul#post-6.likert
+          li
+            input(type='radio', value='1', name='group6')
+            label Strongly disagree
+          li
+            input(type='radio', value='2', name='group6')
+            label Disgree
+          li
+            input(type='radio', value='3', name='group6')
+            label Somewhat disagree
+          li
+            input(type='radio', value='4', name='group6')
+            label Neutral
+          li
+            input(type='radio', value='5', name='group6')
+            label Somewhat agree
+          li
+            input(type='radio', value='6', name='group6')
+            label Agree
+          li
+            input(type='radio', value='7', name='group6')
+            label Strongly agree
+        label.statement
+          | 7. In this conversation, I knew what I could say or do at each point of the dialog.
+        ul#post-7.likert
+          li
+            input(type='radio', value='1', name='group7')
+            label Strongly disagree
+          li
+            input(type='radio', value='2', name='group7')
+            label Disgree
+          li
+            input(type='radio', value='3', name='group7')
+            label Somewhat disagree
+          li
+            input(type='radio', value='4', name='group7')
+            label Neutral
+          li
+            input(type='radio', value='5', name='group7')
+            label Somewhat agree
+          li
+            input(type='radio', value='6', name='group7')
+            label Agree
+          li
+            input(type='radio', value='7', name='group7')
+            label Strongly agree
+        label.statement 8. The music chatbot worked the way I expected it to in this conversation.
+        ul#post-8.likert
+          li
+            input(type='radio', value='1', name='group8')
+            label Strongly disagree
+          li
+            input(type='radio', value='2', name='group8')
+            label Disgree
+          li
+            input(type='radio', value='3', name='group8')
+            label Somewhat disagree
+          li
+            input(type='radio', value='4', name='group8')
+            label Neutral
+          li
+            input(type='radio', value='5', name='group8')
+            label Somewhat agree
+          li
+            input(type='radio', value='6', name='group8')
+            label Agree
+          li
+            input(type='radio', value='7', name='group8')
+            label Strongly agree
+        label.statement 9. I easily found the songs I was looking for.
+        ul#post-9.likert
+          li
+            input(type='radio', value='1', name='group9')
+            label Strongly disagree
+          li
+            input(type='radio', value='2', name='group9')
+            label Disgree
+          li
+            input(type='radio', value='3', name='group9')
+            label Somewhat disagree
+          li
+            input(type='radio', value='4', name='group9')
+            label Neutral
+          li
+            input(type='radio', value='5', name='group9')
+            label Somewhat agree
+          li
+            input(type='radio', value='6', name='group9')
+            label Agree
+          li
+            input(type='radio', value='7', name='group9')
+            label Strongly agree
+        label.statement 10. Looking for a song using this interface required too much effort.
+        ul#post-10.likert
+          li
+            input(type='radio', value='1', name='group10')
+            label Strongly disagree
+          li
+            input(type='radio', value='2', name='group10')
+            label Disgree
+          li
+            input(type='radio', value='3', name='group10')
+            label Somewhat disagree
+          li
+            input(type='radio', value='4', name='group10')
+            label Neutral
+          li
+            input(type='radio', value='5', name='group10')
+            label Somewhat agree
+          li
+            input(type='radio', value='6', name='group10')
+            label Agree
+          li
+            input(type='radio', value='7', name='group10')
+            label Strongly agree
+        label.statement 11. I understood why the songs were recommended to me.
+        ul#post-11.likert
+          li
+            input(type='radio', value='1', name='group11')
+            label Strongly disagree
+          li
+            input(type='radio', value='2', name='group11')
+            label Disgree
+          li
+            input(type='radio', value='3', name='group11')
+            label Somewhat disagree
+          li
+            input(type='radio', value='4', name='group11')
+            label Neutral
+          li
+            input(type='radio', value='5', name='group11')
+            label Somewhat agree
+          li
+            input(type='radio', value='6', name='group11')
+            label Agree
+          li
+            input(type='radio', value='7', name='group11')
+            label Strongly agree
+        label.statement 12. Which of the following item is not fruit?
+        ul#post-12.likert
+          li
+            input(type='radio', value='1', name='group12')
+            label Apple
+          li
+            input(type='radio', value='2', name='group12')
+            label Pear
+          li
+            input(type='radio', value='3', name='group12')
+            label Mango
+          li
+            input(type='radio', value='4', name='group12')
+            label Orange
+          li
+            input(type='radio', value='5', name='group12')
+            label Banana
+          li
+            input(type='radio', value='6', name='group12')
+            label Milk
+          li
+            input(type='radio', value='7', name='group12')
+            label Strawberry
+        label.statement 13. The music chatbot gave me good suggestions.
+        ul#post-13.likert
+          li
+            input(type='radio', value='1', name='group13')
+            label Strongly disagree
+          li
+            input(type='radio', value='2', name='group13')
+            label Disgree
+          li
+            input(type='radio', value='3', name='group13')
+            label Somewhat disagree
+          li
+            input(type='radio', value='4', name='group13')
+            label Neutral
+          li
+            input(type='radio', value='5', name='group13')
+            label Somewhat agree
+          li
+            input(type='radio', value='6', name='group13')
+            label Agree
+          li
+            input(type='radio', value='7', name='group13')
+            label Strongly agree
+        label.statement 14. This music chatbot can be trusted.
+        ul#post-14.likert
+          li
+            input(type='radio', value='1', name='group14')
+            label Strongly disagree
+          li
+            input(type='radio', value='2', name='group14')
+            label Disgree
+          li
+            input(type='radio', value='3', name='group14')
+            label Somewhat disagree
+          li
+            input(type='radio', value='4', name='group14')
+            label Neutral
+          li
+            input(type='radio', value='5', name='group14')
+            label Somewhat agree
+          li
+            input(type='radio', value='6', name='group14')
+            label Agree
+          li
+            input(type='radio', value='7', name='group14')
+            label Strongly agree
+        label.statement 15. I will use this music chatbot again.
+        ul#post-15.likert
+          li
+            input(type='radio', value='1', name='group15')
+            label Strongly disagree
+          li
+            input(type='radio', value='2', name='group15')
+            label Disgree
+          li
+            input(type='radio', value='3', name='group15')
+            label Somewhat disagree
+          li
+            input(type='radio', value='4', name='group15')
+            label Neutral
+          li
+            input(type='radio', value='5', name='group15')
+            label Somewhat agree
+          li
+            input(type='radio', value='6', name='group15')
+            label Agree
+          li
+            input(type='radio', value='7', name='group15')
+            label Strongly agree
+        label.statement 16. Overall, I am satisfied with the chatbot.
+        ul#post-16.likert
+          li
+            input(type='radio', value='1', name='group16')
+            label Strongly disagree
+          li
+            input(type='radio', value='2', name='group16')
+            label Disgree
+          li
+            input(type='radio', value='3', name='group16')
+            label Somewhat disagree
+          li
+            input(type='radio', value='4', name='group16')
+            label Neutral
+          li
+            input(type='radio', value='5', name='group16')
+            label Somewhat agree
+          li
+            input(type='radio', value='6', name='group16')
+            label Agree
+          li
+            input(type='radio', value='7', name='group16')
+            label Strongly agree
+        label.statement 17. I feel in control of modifying my taste using the chatbot.
+        ul#post-17.likert
+          li
+            input(type='radio', value='1', name='group17')
+            label Strongly disagree
+          li
+            input(type='radio', value='2', name='group17')
+            label Disgree
+          li
+            input(type='radio', value='3', name='group17')
+            label Somewhat disagree
+          li
+            input(type='radio', value='4', name='group17')
+            label Neutral
+          li
+            input(type='radio', value='5', name='group17')
+            label Somewhat agree
+          li
+            input(type='radio', value='6', name='group17')
+            label Agree
+          li
+            input(type='radio', value='7', name='group17')
+            label Strongly agree
+        label.statement 18. I am confident I will like the songs recommended to me.
+        ul#post-18.likert
+          li
+            input(type='radio', value='1', name='group18')
+            label Strongly disagree
+          li
+            input(type='radio', value='2', name='group18')
+            label Disgree
+          li
+            input(type='radio', value='3', name='group18')
+            label Somewhat disagree
+          li
+            input(type='radio', value='4', name='group18')
+            label Neutral
+          li
+            input(type='radio', value='5', name='group18')
+            label Somewhat agree
+          li
+            input(type='radio', value='6', name='group18')
+            label Agree
+          li
+            input(type='radio', value='7', name='group18')
+            label Strongly agree
+        label.statement 19. I like to give feedback on the music I am listening.
+        ul#post-19.likert
+          li
+            input(type='radio', value='1', name='group19')
+            label Strongly disagree
+          li
+            input(type='radio', value='2', name='group19')
+            label Disgree
+          li
+            input(type='radio', value='3', name='group19')
+            label Somewhat disagree
+          li
+            input(type='radio', value='4', name='group19')
+            label Neutral
+          li
+            input(type='radio', value='5', name='group19')
+            label Somewhat agree
+          li
+            input(type='radio', value='6', name='group19')
+            label Agree
+          li
+            input(type='radio', value='7', name='group19')
+            label Strongly agree
+        label.statement 20. Any other comments to this music chatbot.
+        textarea#post-20(rows='5', cols='80')
+        .buttons
+          button.clear Clear
+          button.submit Submit
+    script(type='text/javascript').
+      var formList = [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null]
+      $("input").click(function(){
+      var statement = parseInt($(this).parent().parent().attr("id").replace(/[^0-9]/ig,""))
+      var option = parseInt($(this).attr("value"))
+      formList[statement-1]=option
+      console.log(formList)
+      })
+      $(".clear").click(function(event){
+      $("input").checked=false;
+      $("#post-20").empty()
+      formList = [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null]
+      })
+      $(".submit").click(function(event){
+      event.preventDefault()
+      var uncheckedList = []
+      $(".statement").css("background-color","white")
+      for(var index in formList){
+      if(formList[index]==null){
+      uncheckedList.push(index)
+      console.log($(".statement:eq("+index+")"))
+      $(".statement:eq("+index+")").css("background-color","yellow")
+      }
+      }
+      console.log(uncheckedList)
+      if(uncheckedList.length>0){
+      alert("Please finished the missing statement(s) marked in yellow.")
+      }else{
+      window.location.href="/success"
+      }
+      })

@@ -1,0 +1,787 @@
+doctype html
+html(dir='ltr', lang='us')
+  head
+    meta(http-equiv='Content-Type', content='text/html; charset=UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no')
+    meta(property='og:image', content='http://www.psytoolkit.org/psytoolkit_fb.png')
+    meta(property='og:url', content='http://www.psytoolkit.org/index.html')
+    meta(property='og:title', content='PsyToolkit')
+    meta(property='og:description', content='PsyToolkit: Run psychological studies online.')
+    title
+    link(rel='stylesheet', media='screen and (min-width: 100px) and (max-width: 500px)', href='css/survey_fancy1_n.css')
+    link(rel='stylesheet', media='screen and (min-width: 501px)', href='css/survey_fancy1.css')
+    script.
+      var codechanged=true; window.addEventListener('beforeunload', function (e) {
+      if (codechanged==true){
+      var confirmationMessage = 'You did submit your answers! If you leave, your answer will be lost and you will not get back to previous question. Do you still want to leave this page?';
+      (e || window.event).returnValue = confirmationMessage; // Gecko and Trident
+      return confirmationMessage;}else{return} // Gecko and WebKit
+      });
+  body(onload='whenloaded()', data-gr-c-s-loaded='true')
+    .header Ten Item Personality Inventory
+    form(name='mainform', autocomplete='off', method='post', onsubmit='codechanged=false;tmps=document.mainform;tmps.height.value=screen.height;tmps.width.value=screen.width;tmps.datetime.value=new Date().toUTCString();tmps.rt.value=new Date().getTime() - ScreenStartTime;tmps.datafile.value=outputdata;')
+      input(type='hidden', name='height', value='0')
+      input(type='hidden', name='width', value='0')
+      input(type='hidden', name='hh', value='0')
+      input(type='hidden', name='hw', value='0')
+      input(type='hidden', name='datetime', value='0')
+      input(type='hidden', name='rt', value='0')
+      input(type='hidden', name='s', value='7rOq6')
+      input(type='hidden', name='submitted', value='1')
+      input(type='hidden', name='uuid', value='812f06f5-bdf0-4bdd-8081-ca92f72505c6')
+      input(type='hidden', name='datafile', value='')
+      .main
+        input(type='hidden', name='questiontype', value='scale')
+        input(type='hidden', name='questionlabel', value='tipi')
+        |  Now you see a number of statements about how you see yourself. For each statement, you need to select one of seven statements. Select the option that fits best.
+        b I see myself as ...
+        br
+        br
+        script.
+          var checkscalequestions=[10];function checkscale(i){checkscalequestions[i]=1;var tmp; var tmpsum=0;for(tmp=0;tmp<10;tmp++){tmpsum=tmpsum+checkscalequestions[tmp];};if(tmpsum==10)document.getElementById('continuebutton').disabled=false;}
+        table(border='1')
+          colgroup
+            col(style='width:20%')
+            col(style='width:11%')
+            col(style='width:11%')
+            col(style='width:11%')
+            col(style='width:11%')
+            col(style='width:11%')
+            col(style='width:11%')
+            col(style='width:11%')
+          tbody
+            tr
+              th Item
+              th Disagree strongly
+              th Disagree moderately
+              th Disagree a little
+              th Neither agree nor disagree
+              th Agree a little
+              th Agree moderately
+              th Agree strongly
+            tr
+              td Extroverted, enthusiastic
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID0_1(type='radio', name='a0', value='1', onclick='checkscale(0)')
+                      label(for='ID0_1')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Disagree strongly
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID0_2(type='radio', name='a0', value='2', onclick='checkscale(0)')
+                      label(for='ID0_2')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Disagree moderately
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID0_3(type='radio', name='a0', value='3', onclick='checkscale(0)')
+                      label(for='ID0_3')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Disagree a little
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID0_4(type='radio', name='a0', value='4', onclick='checkscale(0)')
+                      label(for='ID0_4')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Neither agree nor disagree
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID0_5(type='radio', name='a0', value='5', onclick='checkscale(0)')
+                      label(for='ID0_5')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Agree a little
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID0_6(type='radio', name='a0', value='6', onclick='checkscale(0)')
+                      label(for='ID0_6')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Agree moderately
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID0_7(type='radio', name='a0', value='7', onclick='checkscale(0)')
+                      label(for='ID0_7')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Agree strongly
+            tr
+              td Critical, quarrelsome
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID1_1(type='radio', name='a1', value='1', onclick='checkscale(1)')
+                      label(for='ID1_1')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Disagree strongly
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID1_2(type='radio', name='a1', value='2', onclick='checkscale(1)')
+                      label(for='ID1_2')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Disagree moderately
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID1_3(type='radio', name='a1', value='3', onclick='checkscale(1)')
+                      label(for='ID1_3')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Disagree a little
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID1_4(type='radio', name='a1', value='4', onclick='checkscale(1)')
+                      label(for='ID1_4')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Neither agree nor disagree
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID1_5(type='radio', name='a1', value='5', onclick='checkscale(1)')
+                      label(for='ID1_5')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Agree a little
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID1_6(type='radio', name='a1', value='6', onclick='checkscale(1)')
+                      label(for='ID1_6')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Agree moderately
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID1_7(type='radio', name='a1', value='7', onclick='checkscale(1)')
+                      label(for='ID1_7')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Agree strongly
+            tr
+              td Dependable, self-disciplined
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID2_1(type='radio', name='a2', value='1', onclick='checkscale(2)')
+                      label(for='ID2_1')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Disagree strongly
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID2_2(type='radio', name='a2', value='2', onclick='checkscale(2)')
+                      label(for='ID2_2')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Disagree moderately
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID2_3(type='radio', name='a2', value='3', onclick='checkscale(2)')
+                      label(for='ID2_3')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Disagree a little
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID2_4(type='radio', name='a2', value='4', onclick='checkscale(2)')
+                      label(for='ID2_4')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Neither agree nor disagree
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID2_5(type='radio', name='a2', value='5', onclick='checkscale(2)')
+                      label(for='ID2_5')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Agree a little
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID2_6(type='radio', name='a2', value='6', onclick='checkscale(2)')
+                      label(for='ID2_6')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Agree moderately
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID2_7(type='radio', name='a2', value='7', onclick='checkscale(2)')
+                      label(for='ID2_7')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Agree strongly
+            tr
+              td Anxious, easily upset
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID3_1(type='radio', name='a3', value='1', onclick='checkscale(3)')
+                      label(for='ID3_1')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Disagree strongly
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID3_2(type='radio', name='a3', value='2', onclick='checkscale(3)')
+                      label(for='ID3_2')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Disagree moderately
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID3_3(type='radio', name='a3', value='3', onclick='checkscale(3)')
+                      label(for='ID3_3')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Disagree a little
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID3_4(type='radio', name='a3', value='4', onclick='checkscale(3)')
+                      label(for='ID3_4')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Neither agree nor disagree
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID3_5(type='radio', name='a3', value='5', onclick='checkscale(3)')
+                      label(for='ID3_5')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Agree a little
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID3_6(type='radio', name='a3', value='6', onclick='checkscale(3)')
+                      label(for='ID3_6')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Agree moderately
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID3_7(type='radio', name='a3', value='7', onclick='checkscale(3)')
+                      label(for='ID3_7')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Agree strongly
+            tr
+              td Open to new experiences, complex
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID4_1(type='radio', name='a4', value='1', onclick='checkscale(4)')
+                      label(for='ID4_1')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Disagree strongly
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID4_2(type='radio', name='a4', value='2', onclick='checkscale(4)')
+                      label(for='ID4_2')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Disagree moderately
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID4_3(type='radio', name='a4', value='3', onclick='checkscale(4)')
+                      label(for='ID4_3')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Disagree a little
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID4_4(type='radio', name='a4', value='4', onclick='checkscale(4)')
+                      label(for='ID4_4')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Neither agree nor disagree
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID4_5(type='radio', name='a4', value='5', onclick='checkscale(4)')
+                      label(for='ID4_5')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Agree a little
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID4_6(type='radio', name='a4', value='6', onclick='checkscale(4)')
+                      label(for='ID4_6')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Agree moderately
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID4_7(type='radio', name='a4', value='7', onclick='checkscale(4)')
+                      label(for='ID4_7')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Agree strongly
+            tr
+              td Reserved, quiet
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID5_1(type='radio', name='a5', value='1', onclick='checkscale(5)')
+                      label(for='ID5_1')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Disagree strongly
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID5_2(type='radio', name='a5', value='2', onclick='checkscale(5)')
+                      label(for='ID5_2')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Disagree moderately
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID5_3(type='radio', name='a5', value='3', onclick='checkscale(5)')
+                      label(for='ID5_3')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Disagree a little
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID5_4(type='radio', name='a5', value='4', onclick='checkscale(5)')
+                      label(for='ID5_4')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Neither agree nor disagree
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID5_5(type='radio', name='a5', value='5', onclick='checkscale(5)')
+                      label(for='ID5_5')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Agree a little
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID5_6(type='radio', name='a5', value='6', onclick='checkscale(5)')
+                      label(for='ID5_6')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Agree moderately
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID5_7(type='radio', name='a5', value='7', onclick='checkscale(5)')
+                      label(for='ID5_7')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Agree strongly
+            tr
+              td Sympathetic, warm
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID6_1(type='radio', name='a6', value='1', onclick='checkscale(6)')
+                      label(for='ID6_1')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Disagree strongly
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID6_2(type='radio', name='a6', value='2', onclick='checkscale(6)')
+                      label(for='ID6_2')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Disagree moderately
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID6_3(type='radio', name='a6', value='3', onclick='checkscale(6)')
+                      label(for='ID6_3')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Disagree a little
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID6_4(type='radio', name='a6', value='4', onclick='checkscale(6)')
+                      label(for='ID6_4')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Neither agree nor disagree
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID6_5(type='radio', name='a6', value='5', onclick='checkscale(6)')
+                      label(for='ID6_5')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Agree a little
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID6_6(type='radio', name='a6', value='6', onclick='checkscale(6)')
+                      label(for='ID6_6')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Agree moderately
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID6_7(type='radio', name='a6', value='7', onclick='checkscale(6)')
+                      label(for='ID6_7')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Agree strongly
+            tr
+              td Disorganized, careless
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID7_1(type='radio', name='a7', value='1', onclick='checkscale(7)')
+                      label(for='ID7_1')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Disagree strongly
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID7_2(type='radio', name='a7', value='2', onclick='checkscale(7)')
+                      label(for='ID7_2')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Disagree moderately
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID7_3(type='radio', name='a7', value='3', onclick='checkscale(7)')
+                      label(for='ID7_3')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Disagree a little
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID7_4(type='radio', name='a7', value='4', onclick='checkscale(7)')
+                      label(for='ID7_4')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Neither agree nor disagree
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID7_5(type='radio', name='a7', value='5', onclick='checkscale(7)')
+                      label(for='ID7_5')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Agree a little
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID7_6(type='radio', name='a7', value='6', onclick='checkscale(7)')
+                      label(for='ID7_6')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Agree moderately
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID7_7(type='radio', name='a7', value='7', onclick='checkscale(7)')
+                      label(for='ID7_7')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Agree strongly
+            tr
+              td Calm, emotionally stable
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID8_1(type='radio', name='a8', value='1', onclick='checkscale(8)')
+                      label(for='ID8_1')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Disagree strongly
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID8_2(type='radio', name='a8', value='2', onclick='checkscale(8)')
+                      label(for='ID8_2')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Disagree moderately
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID8_3(type='radio', name='a8', value='3', onclick='checkscale(8)')
+                      label(for='ID8_3')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Disagree a little
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID8_4(type='radio', name='a8', value='4', onclick='checkscale(8)')
+                      label(for='ID8_4')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Neither agree nor disagree
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID8_5(type='radio', name='a8', value='5', onclick='checkscale(8)')
+                      label(for='ID8_5')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Agree a little
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID8_6(type='radio', name='a8', value='6', onclick='checkscale(8)')
+                      label(for='ID8_6')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Agree moderately
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID8_7(type='radio', name='a8', value='7', onclick='checkscale(8)')
+                      label(for='ID8_7')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Agree strongly
+            tr
+              td Conventional, uncreative
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID9_1(type='radio', name='a9', value='1', onclick='checkscale(9)')
+                      label(for='ID9_1')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Disagree strongly
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID9_2(type='radio', name='a9', value='2', onclick='checkscale(9)')
+                      label(for='ID9_2')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Disagree moderately
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID9_3(type='radio', name='a9', value='3', onclick='checkscale(9)')
+                      label(for='ID9_3')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Disagree a little
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID9_4(type='radio', name='a9', value='4', onclick='checkscale(9)')
+                      label(for='ID9_4')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Neither agree nor disagree
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID9_5(type='radio', name='a9', value='5', onclick='checkscale(9)')
+                      label(for='ID9_5')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Agree a little
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID9_6(type='radio', name='a9', value='6', onclick='checkscale(9)')
+                      label(for='ID9_6')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Agree moderately
+              td
+                center
+                  span.ttwrapper
+                    .tt
+                      input#ID9_7(type='radio', name='a9', value='7', onclick='checkscale(9)')
+                      label(for='ID9_7')
+                        span.tttxt
+                      span.tttxt
+                        img.tttxt(src='img/t.gif')
+                        | Agree strongly
+        br
+      .main
+        script.
+          var ScreenStartTime=0;function whenloaded(){ScreenStartTime=new Date().getTime();}
+        input#continuebutton.mybutton(type='submit', value='Click this button to continue', disabled='')
+        br

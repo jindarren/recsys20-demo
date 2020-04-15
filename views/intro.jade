@@ -1,0 +1,215 @@
+doctype html
+html
+  head
+    title Study Introduction
+    meta(http-equiv='Content-Type', content='text/html; charset=utf-8')
+    style.
+      body{
+        padding: 20px;
+      }
+
+      .btn-primary{
+        margin-left:10px;
+        margin-right:10px;
+      }
+
+      p{
+        text-align:left;
+      }
+
+      .features{
+        width:90%;
+        margin-bottom:20px;
+      }
+
+      .container-fluid{
+        display:none;
+      }
+
+      .card{
+        margin:20px;
+      }
+  body
+    #part1.container
+      h4(style="text-align:center") 音乐推荐机器人用户实验
+      p 尊敬的参与者，
+      p 非常感谢您参与此次用户实验！本实验旨在研究用户在寻找合适歌曲的过程如何与音乐推荐机器人进行交互。为感谢您的支持，我们设置了抽奖活动：成功完成此项实验的参与者将有机会获得价值100元人民币的奖品（30%）。获奖者可能就是你！
+
+      h5 实验任务：
+      p 请想象自己处于两个不同的任务场景中，使用音乐推荐机器人找到最满足您的偏好且适合当前任务场景的5首歌曲，同时对喜欢的歌曲进行评分。其中两个场景刚开始推荐的歌曲可能不符合您的需求，需要您通过与系统的交互找到适合的歌曲。本实验中使用的所有音乐信息均来自Spotify。
+
+      h5 实验时长：
+      p 30-40分钟（请确保在1小时内完成实验，不要有较长的中断）
+
+      h5 语言：
+      p 英语 （问卷的主观问题可以使用中文回答）
+
+      h5 任务步骤：
+      p 第1步：通过选择1到3个您喜欢的歌曲，歌手，音乐风格，并选择您对五个音乐特征的偏好（将给出高中低三个区间）来建立您的音乐档案。
+      p 第2步：填写您的个​​人背景信息;
+      p 第3步：熟悉音乐推荐机器人。
+        b 此阶段您可以尝试两种对音乐推荐反馈的方式：
+        ul
+          li  尝试使用 
+            b 文字输入/语音输入 
+            img(src="/img/voice.png")
+            |  告诉音乐推荐机器人您希望找到怎样的音乐 （可参考系统右侧提供的示例）。
+          li 尝试使用
+            b "let bot suggest" 
+            img(src="/img/system-crit.png")
+            |  按钮获取音乐推荐聊天机器人给您提供的音乐调整建议，帮助您找到适合的推荐音乐。 
+      p 第4步：想象您处于第一个任务场景，您需要找到5首在当前场景中最喜欢的歌曲并对所选歌曲进行评分。完成后将填写关于第一个系统的问卷。
+      p 第5步：使用不同的系统设置重复第四步;
+      p 第6步：对两个使用过的系统设置发表您的意见。
+
+    
+      h5 视频介绍:
+      p 请在完成任务之前观看此视频教程。
+      video(src='/img/tutorial.mp4', controls='controls' width="800" height="450" )
+
+
+      h5 温馨提示:
+      ul 
+        li 
+          b 请在你的电脑上使用Chrome浏览器访问该网页（版本> 33.0），同时将您的浏览器语言设置为英语。在页面chrome://settings/languages 中添加英语语言（复制此链接并在新选项卡中打开页面）大陆用户需要翻墙使用。
+        li 与音乐推荐聊天机器人交互时可以按“Enter”发送文字。 
+        li 建议您在使用语音输入或者机器人讲话的时候手动暂停播放歌曲。
+        li 将问卷上方显示的黄色文字复制到问卷的第1个答案。
+        li 
+          p(style="color:red") 每次填写问卷请先提交问卷，再点击右上关闭图标，系统将自动进行下一环节。
+        
+
+      p 本次实验所有数据都将保密且仅用于我们的研究分析。
+      p 非常感谢您的宝贵时间！
+
+      hr
+      .row.justify-content-center
+        button#next1.btn.btn-primary Start study
+
+
+    #part2.container-fluid
+      .container
+        h5(style="text-align:center") Specify your liked songs (at least 1 and at most 3)
+        .input-group
+          input#track-form.form-control(type='text', placeholder="Please type your liked song's name", aria-label="track-name", aria-describedby='search-track')
+          .input-group-append
+            button#search-track.btn.btn-outline-primary(type='button') Search
+        .candidate-tracks
+        .selected-tracks.row
+      hr
+      .row.justify-content-center
+        button#next2-back.btn.btn-primary Back
+        button#next2.btn.btn-primary Next
+            
+    #part3.container-fluid   
+      .container
+          h5(style="text-align:center") Specify your liked artists (at least 1 and at most 3)
+          .input-group
+            input#artist-form.form-control(type='text', placeholder="Please type your liked artist's name", aria-label="artist-name", aria-describedby='search-artist')
+            .input-group-append
+              button#search-artist.btn.btn-outline-primary(type='button') Search
+          .candidate-artists
+          .selected-artists.row
+      hr
+      .row.justify-content-center
+        button#next3-back.btn.btn-primary Back
+        button#next3.btn.btn-primary Next     
+
+    #part4.container-fluid
+      .row.justify-content-around
+        .genre
+          h5(style="text-align:center") Select your liked genres (at least 1 and at most 3)
+          .row.justify-content-around
+            .col-md-6.push-col-md-3.genres
+      hr
+      .row.justify-content-center
+        button#next4-back.btn.btn-primary Back
+        button#next4.btn.btn-primary Next
+
+    #part5.container-fluid
+      .row.justify-content-around
+        .genre
+          h5(style="text-align:center") Indicate your music preference by audio features
+          .row.justify-content-around
+            .col-md-10.push-col-md-1
+              p 
+                b Danceability: 
+                | It describes how suitable a track is for dancing based on a combination of musical elements including tempo, rhythm stability, beat strength, and overall regularity.
+              #danceability.row.justify-content-around.features
+                span.form-check.form-check-inline
+                  input#inlineRadio1.form-check-input.feature-selection(type='radio', name='danceOption', value='low')
+                  label.form-check-label(for='inlineRadio1') Low
+                span.form-check.form-check-inline
+                  input#inlineRadio2.form-check-input.feature-selection(type='radio', name='danceOption', value='medium')
+                  label.form-check-label(for='inlineRadio2') Medium
+                span.form-check.form-check-inline
+                  input#inlineRadio3.form-check-input.feature-selection(type='radio', name='danceOption', value='high')
+                  label.form-check-label(for='inlineRadio3') High
+              .row.justify-content-center.danceability-example.example
+              p 
+                b Speechiness: 
+                | It detects the presence of spoken words in a track.
+              #speechiness.row.justify-content-around.features
+                span.form-check.form-check-inline
+                  input#inlineRadio4.form-check-input.feature-selection(type='radio', name='speechOption', value='low')
+                  label.form-check-label(for='inlineRadio4') Low
+                span.form-check.form-check-inline
+                  input#inlineRadio5.form-check-input.feature-selection(type='radio', name='speechOption', value='medium')
+                  label.form-check-label(for='inlineRadio5') Medium
+                span.form-check.form-check-inline
+                  input#inlineRadio6.form-check-input.feature-selection(type='radio', name='speechOption', value='high')
+                  label.form-check-label(for='inlineRadio6') High
+              .row.justify-content-center.speechiness-example.example
+              p 
+                b Energy: 
+                | It represents a perceptual measure of intensity and activity. Typically, energetic tracks feel fast, loud, and noisy. For example, death metal has high energy, while a Bach prelude scores low on the scale.
+              #energy.row.justify-content-around.features
+                span.form-check.form-check-inline
+                  input#inlineRadio7.form-check-input.feature-selection(type='radio', name='energyOption', value='low')
+                  label.form-check-label(for='inlineRadio7') Low
+                span.form-check.form-check-inline
+                  input#inlineRadio8.form-check-input.feature-selection(type='radio', name='energyOption', value='medium')
+                  label.form-check-label(for='inlineRadio8') Medium
+                span.form-check.form-check-inline
+                  input#inlineRadio9.form-check-input.feature-selection(type='radio', name='energyOption', value='high')
+                  label.form-check-label(for='inlineRadio9') High
+              .row.justify-content-center.energy-example.example
+              p 
+                b Valence: 
+                | It describes the musical positiveness conveyed by a track. Tracks with high valence sound more positive (e.g. happy, cheerful, euphoric), while tracks with low valence sound more negative (e.g. sad, depressed, angry).
+              #valence.row.justify-content-around.features
+                span.form-check.form-check-inline
+                  input#inlineRadio10.form-check-input.feature-selection(type='radio', name='valenceOption', value='low')
+                  label.form-check-label(for='inlineRadio10') Low
+                span.form-check.form-check-inline
+                  input#inlineRadio11.form-check-input.feature-selection(type='radio', name='valenceOption', value='medium')
+                  label.form-check-label(for='inlineRadio11') Medium
+                span.form-check.form-check-inline
+                  input#inlineRadio12.form-check-input.feature-selection(type='radio', name='valenceOption', value='high')
+                  label.form-check-label(for='inlineRadio12') High
+              .row.justify-content-center.valence-example.example
+              p 
+                b Tempo: 
+                | It is the speed or pace of a given piece and derives directly from the average beat duration.  
+              #tempo.row.justify-content-around.features
+                span.form-check.form-check-inline
+                  input#inlineRadio13.form-check-input.feature-selection(type='radio', name='tempoOption', value='low')
+                  label.form-check-label(for='inlineRadio1') Low
+                span.form-check.form-check-inline
+                  input#inlineRadio14.form-check-input.feature-selection(type='radio', name='tempoOption', value='medium')
+                  label.form-check-label(for='inlineRadio2') Medium
+                span.form-check.form-check-inline
+                  input#inlineRadio15.form-check-input.feature-selection(type='radio', name='tempoOption', value='high')
+                  label.form-check-label(for='inlineRadio3') High
+              .row.justify-content-center.tempo-example.example 
+      hr
+      .row.justify-content-center
+        a.btn.btn-primary(href="./preference-3") Back
+        button#next5.btn.btn-primary(type='button') Submit
+    link(href='../bootstrap/dist/css/bootstrap.min.css', rel='stylesheet')
+    link(href='../jquery-ui/themes/base/jquery-ui.min.css', rel='stylesheet')
+    script(src = "../jquery/dist/jquery.min.js", charset = 'utf-8')
+    script(type = "text/javascript", src = "../jquery.cookie/jquery.cookie.js", charset = 'utf-8')
+    script(src = "js/popper.min.js", charset = 'utf-8')
+    script(src = "../bootstrap/dist/js/bootstrap.min.js")
+    script(src = "js/preference.js")

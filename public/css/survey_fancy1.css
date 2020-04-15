@@ -1,0 +1,262 @@
+body {
+    top:0;
+    margin-top: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+    border:0px;
+    padding:0px;
+    height:100%;
+    max-height:100%;
+    font-family:arial, verdana, sans-serif;
+    font-size: 1em;
+    background:#999;
+}
+
+h1 {
+    border:0;
+    border-width: 0px;
+    padding:5px;
+    background: #3333FF;
+    color: white;
+    font-size:150%;
+}
+
+h2 {
+    display: box;
+    padding: 5px;
+    background: #7777FF;
+    color: white;
+    font-size:150%;
+}
+
+.box {
+    margin-left: 200px;
+    margin-right: 0px;
+    top: 0px;
+    margin-top: 0px;
+    border: 0px;
+    padding: 20px;
+    height: 100%;
+    max-height: 100%;
+    background: #fff;
+}
+
+.header {
+    color: white;
+    background-color: #333;
+    font-size: 200%;
+    padding: 3px 19px;
+    text-align: left;
+}
+
+.examplebox {padding: 5px;
+	     border: solid;
+	     background: #FFFFFF;
+	     border-color: #FF0000;
+	     border-width: thin;}
+
+.yellowbox {padding: 5px;
+	    border: solid;
+	    background: #FFFF00;
+	    border-color: #FF0000;
+	    border-width: 2px;}
+
+.container {margin-top: 15px;
+	    margin-left: 15px;
+	    float: left;
+	   }
+
+.canvasboxstyle:-moz-full-screen{display:flex;align-items:center;justify-content:center;}
+
+.menu {width: 12em;
+       margin-bottom: 1em;
+       padding: 1em 1.5em;
+       font-size: 70%;
+       background-color: #FFBB66;
+       border: 1px solid #330000;
+       white-space: normal;
+}
+
+.main {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1em;
+    padding: 1em 1.5em;
+    max-width: 900px;
+    border:1px solid #330000;
+    color: black;
+    background-color: #FFF;
+}
+
+table{ border-collapse: collapse }
+
+th { background-color: #555; color: white; }
+
+th,td{ padding: 5px; }
+
+td{ background-color: white }
+
+table tr:hover td{background: #f2f2f2}
+
+/* ----------------------------------------------------------- */
+/* radio button based on https://codepen.io/manabox/pen/raQmpL */
+
+[type="radio"]:checked,
+[type="radio"]:not(:checked) {
+    position: absolute;
+    left: -9999px;
+}
+
+[type="radio"]:checked + label,
+[type="radio"]:not(:checked) + label
+		  {
+		      vertical-align: top;
+		      position: relative;
+		      padding-left: 28px;
+		      cursor: pointer;
+		      line-height: 20px;
+		      display: inline-block;
+		      color: black;
+		  }
+
+[type="radio"]:checked + label:before,
+[type="radio"]:not(:checked) + label:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 18px;
+    height: 18px;
+    border: 1px solid blue;
+    border-radius: 100%;
+    background: #fff;
+}
+
+[type="radio"]:checked + label:after,
+[type="radio"]:not(:checked) + label:after {
+    content: '';
+    width:12px;
+    height: 12px;
+    background: blue;
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    border-radius: 100%;
+    -webkit-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+}
+
+[type="radio"]:not(:checked) + label:after {
+    opacity: 0;
+    -webkit-transform: scale(0);
+    transform: scale(0);
+}
+
+[type="radio"]:checked + label:after {
+    opacity: 1;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+}
+
+/* -- checkbox ------------------------------------------- */
+/* checkbox based on https://codepen.io/manabox/pen/RNqVLy */
+
+[type="checkbox"]:checked,
+[type="checkbox"]:not(:checked) {
+    position: absolute;
+    left: -9999px;
+}
+[type="checkbox"]:checked + label,
+[type="checkbox"]:not(:checked) + label
+{
+    position: relative;
+    padding-left: 28px;
+    cursor: pointer;
+    line-height: 20px;
+    display: inline-block;
+    color: black;
+}
+[type="checkbox"]:checked + label:before,
+[type="checkbox"]:not(:checked) + label:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 18px;
+    height: 18px;
+    border: 1px solid blue;
+    background: #fff;
+}
+[type="checkbox"]:checked + label:after,
+[type="checkbox"]:not(:checked) + label:after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: blue;
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    -webkit-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+}
+[type="checkbox"]:not(:checked) + label:after {
+    opacity: 0;
+    -webkit-transform: scale(0);
+    transform: scale(0);
+}
+[type="checkbox"]:checked + label:after {
+    opacity: 1;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+}
+
+/* -- button ----------------------------- */
+
+.mybutton {
+    background-color: white;
+    color: blue ;
+    padding: 5px;
+    font-size: 120%;
+    border: 5px solid blue;
+    cursor: pointer;
+    border-radius: 15px;
+}
+
+.mybutton:disabled,
+.mybutton[disabled]{
+    background-color: white;
+    color: grey ;
+    padding: 5px;
+    font-size: 120%;
+    border: 5px solid grey;
+    cursor: pointer;
+    border-radius: 15px;
+}
+
+/* -- scale question tooltip ------------------------ */
+
+span.ttwrapper{
+    position:relative;
+    display:inline-block;
+    /*Hack for old IEs*/
+    *position:static;
+    *display:inline;
+}
+
+.tt {outline:none; }
+.tt strong {line-height:30px;}
+.tt:hover {text-decoration:none;} 
+.tt span {
+    z-index: 10;
+    display: none;
+    padding: 14px 20px;
+    margin-top: -20px;
+    margin-left: 65px;
+    line-height: 16px;
+    border-radius: 4px;
+    box-shadow: 5px 5px 8px #CCC;
+}
+
+.tt:hover span{display:inline; position:absolute; color:#111; border:1px solid #DCA; background:#fffAF0;}
+.tttxt {z-index:20;position:absolute;top:11px;border:0;left:-12px;}

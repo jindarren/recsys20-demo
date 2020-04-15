@@ -1,0 +1,733 @@
+doctype html
+html
+  head
+    title Questionnaire
+    script(type = "text/javascript", src = "../jquery/dist/jquery.min.js", charset = 'utf-8')
+    style(type='text/css').
+      html,body {padding:0;margin:0;}
+      .wrap, select, .normal-input {
+      font:1rem Arial, san-serif;
+      }
+      h1.likert-header {
+      text-align: center;
+      margin:20px 0 0;
+      }
+      form {
+      width: 70%;
+      margin-left: 15%;
+      }
+      form .normal-input{
+      margin-left: 8%;
+      }
+      form .statement {
+      display:block;
+      font-size: 1.5rem;
+      font-weight: bold;
+      padding: 30px 0 0 4.25%;
+      margin-bottom:10px;
+      }
+      form .likert {
+      list-style:none;
+      width:100%;
+      left:10%;
+      margin:0;
+      padding:50px 0 50px;
+      display:block;
+      border-bottom:1px solid #efefef;
+      }
+      form .likert:last-of-type {border-bottom:0;}
+      form .likert:before {
+      content: '';
+      position:relative;
+      top:30px;
+      display:block;
+      background-color:#efefef;
+      height:4px;
+      width:95%;
+      }
+      form .likert li {
+      display:inline-block;
+      width:13%;
+      text-align:center;
+      vertical-align: top;
+      }
+      form .likert li input[type=radio] {
+      display:block;
+      position:relative;
+      top:0;
+      left:50%;
+      margin-left:-6px;
+      }
+      form .likert li label {width:100%;}
+      form .buttons {
+      margin:100px 30px;
+      padding:0 4.25%;
+      text-align:center;
+      }
+      form .buttons button {
+      padding: 5px 10px;
+      background-color: #67ab49;
+      border: 0;
+      border-radius: 3px;
+      font-size: 2rem;
+      margin-left: 30px;
+      }
+      form .buttons .clear {background-color: #e9e9e9;}
+      form .buttons .submit {background-color: #67ab49;}
+      form .buttons .clear:hover {background-color: #ccc;}
+      form .buttons .submit:hover {background-color: #14892c;}
+      textarea{
+      margin-left: 2%;
+      font-size: 1.5rem;
+      }
+      li > input{
+      zoom:3;
+      }
+  body
+    .wrap
+      h1.likert-header This is a pre-study survey
+      form(action='')
+        // Age
+        label.statement Age:
+        select#age.normal-input
+          option(value='')
+          option(value='12-18') 12-18
+          option(value='19-25') 19-25
+          option(value='26-30') 26-30
+          option(value='31-35') 31-35
+          option(value='36-40') 36-40
+          option(value='41-50') 41-50
+          option(value='51-60') 51-60
+          option(value='60') >60
+        // Gender
+        label.statement Gender:
+        select#gender.normal-input
+          option(value='')
+          option(value='male') Male
+          option(value='female') Female
+          option(value='other') Other
+        // Nationality
+        label.statement Nationality:
+        input#nationality.normal-input(type='text', name='nationality')
+        label.statement 1. I often use chatbot (such as Siri, Cortana) on my personal devices.
+        ul#post-1.likert
+          li
+            input(type='radio', value='1', name='group1')
+            label Strongly disagree
+          li
+            input(type='radio', value='2', name='group1')
+            label Disgree
+          li
+            input(type='radio', value='3', name='group1')
+            label Somewhat disagree
+          li
+            input(type='radio', value='4', name='group1')
+            label Neutral
+          li
+            input(type='radio', value='5', name='group1')
+            label Somewhat agree
+          li
+            input(type='radio', value='6', name='group1')
+            label Agree
+          li
+            input(type='radio', value='7', name='group1')
+            label Strongly agree
+        label.statement 2. I am confident when it comes to try new technology.
+        ul#post-2.likert
+          li
+            input(type='radio', value='1', name='group2')
+            label Strongly disagree
+          li
+            input(type='radio', value='2', name='group2')
+            label Disgree
+          li
+            input(type='radio', value='3', name='group2')
+            label Somewhat disagree
+          li
+            input(type='radio', value='4', name='group2')
+            label Neutral
+          li
+            input(type='radio', value='5', name='group2')
+            label Somewhat agree
+          li
+            input(type='radio', value='6', name='group2')
+            label Agree
+          li
+            input(type='radio', value='7', name='group2')
+            label Strongly agree
+        label.statement 3. I spend a lot of my free time doing music-related activities.
+        ul#post-3.likert
+          li
+            input(type='radio', value='1', name='group3')
+            label Strongly disagree
+          li
+            input(type='radio', value='2', name='group3')
+            label Disgree
+          li
+            input(type='radio', value='3', name='group3')
+            label Somewhat disagree
+          li
+            input(type='radio', value='4', name='group3')
+            label Neutral
+          li
+            input(type='radio', value='5', name='group3')
+            label Somewhat agree
+          li
+            input(type='radio', value='6', name='group3')
+            label Agree
+          li
+            input(type='radio', value='7', name='group3')
+            label Strongly agree
+        label.statement 4. I enjoy writing about music, for example on blogs and forums.
+        ul#post-4.likert
+          li
+            input(type='radio', value='1', name='group4')
+            label Strongly disagree
+          li
+            input(type='radio', value='2', name='group4')
+            label Disgree
+          li
+            input(type='radio', value='3', name='group4')
+            label Somewhat disagree
+          li
+            input(type='radio', value='4', name='group4')
+            label Neutral
+          li
+            input(type='radio', value='5', name='group4')
+            label Somewhat agree
+          li
+            input(type='radio', value='6', name='group4')
+            label Agree
+          li
+            input(type='radio', value='7', name='group4')
+            label Strongly agree
+        label.statement
+          | 5. I'm intrigued by musical styles I'm not familiar with and want to find out more.
+        ul#post-5.likert
+          li
+            input(type='radio', value='1', name='group5')
+            label Strongly disagree
+          li
+            input(type='radio', value='2', name='group5')
+            label Disgree
+          li
+            input(type='radio', value='3', name='group5')
+            label Somewhat disagree
+          li
+            input(type='radio', value='4', name='group5')
+            label Neutral
+          li
+            input(type='radio', value='5', name='group5')
+            label Somewhat agree
+          li
+            input(type='radio', value='6', name='group5')
+            label Agree
+          li
+            input(type='radio', value='7', name='group5')
+            label Strongly agree
+        label.statement 6. I often read or search the internet for things related to music.
+        ul#post-6.likert
+          li
+            input(type='radio', value='1', name='group6')
+            label Strongly disagree
+          li
+            input(type='radio', value='2', name='group6')
+            label Disgree
+          li
+            input(type='radio', value='3', name='group6')
+            label Somewhat disagree
+          li
+            input(type='radio', value='4', name='group6')
+            label Neutral
+          li
+            input(type='radio', value='5', name='group6')
+            label Somewhat agree
+          li
+            input(type='radio', value='6', name='group6')
+            label Agree
+          li
+            input(type='radio', value='7', name='group6')
+            label Strongly agree
+        label.statement 7. I don't spend much of my disposable income on music.
+        ul#post-7.likert
+          li
+            input(type='radio', value='1', name='group7')
+            label Strongly disagree
+          li
+            input(type='radio', value='2', name='group7')
+            label Disgree
+          li
+            input(type='radio', value='3', name='group7')
+            label Somewhat disagree
+          li
+            input(type='radio', value='4', name='group7')
+            label Neutral
+          li
+            input(type='radio', value='5', name='group7')
+            label Somewhat agree
+          li
+            input(type='radio', value='6', name='group7')
+            label Agree
+          li
+            input(type='radio', value='7', name='group7')
+            label Strongly agree
+        label.statement 8. Music is kind of an addiction for me - I couldn't live without it.
+        ul#post-8.likert
+          li
+            input(type='radio', value='1', name='group8')
+            label Strongly disagree
+          li
+            input(type='radio', value='2', name='group8')
+            label Disgree
+          li
+            input(type='radio', value='3', name='group8')
+            label Somewhat disagree
+          li
+            input(type='radio', value='4', name='group8')
+            label Neutral
+          li
+            input(type='radio', value='5', name='group8')
+            label Somewhat agree
+          li
+            input(type='radio', value='6', name='group8')
+            label Agree
+          li
+            input(type='radio', value='7', name='group8')
+            label Strongly agree
+        label.statement
+          | 9. I keep track of new of music that I come across (e.g. new artists or recordings).
+        ul#post-9.likert
+          li
+            input(type='radio', value='1', name='group9')
+            label Strongly disagree
+          li
+            input(type='radio', value='2', name='group9')
+            label Disgree
+          li
+            input(type='radio', value='3', name='group9')
+            label Somewhat disagree
+          li
+            input(type='radio', value='4', name='group9')
+            label Neutral
+          li
+            input(type='radio', value='5', name='group9')
+            label Somewhat agree
+          li
+            input(type='radio', value='6', name='group9')
+            label Agree
+          li
+            input(type='radio', value='7', name='group9')
+            label Strongly agree
+        label.statement
+          | 10. I have attended (__) live music events as an audience member in the past twelve months.
+        ul#post-10.likert
+          li
+            input(type='radio', name='group10', value='1')
+            label 0
+          li
+            input(type='radio', name='group10', value='2')
+            label 1
+          li
+            input(type='radio', name='group10', value='3')
+            label 2
+          li
+            input(type='radio', name='group10', value='4')
+            label 3
+          li
+            input(type='radio', name='group10', value='5')
+            label 4-6
+          li
+            input(type='radio', name='group10', value='6')
+            label 7-10
+          li
+            input(type='radio', name='group10', value='7')
+            label >11
+        label.statement 11. I listen attentively to music for (__) per day.
+        ul#post-11.likert
+          li
+            input(type='radio', name='group11', value='1')
+            label 0-15 min
+          li
+            input(type='radio', name='group11', value='2')
+            label 15-30 min
+          li
+            input(type='radio', name='group11', value='3')
+            label 30-60 min
+          li
+            input(type='radio', name='group11', value='4')
+            label 60-90 min
+          li
+            input(type='radio', name='group11', value='5')
+            label 2hrs
+          li
+            input(type='radio', name='group11', value='6')
+            label 2-3hrs
+          li
+            input(type='radio', name='group11', value='7')
+            label >4hrs
+        label.statement 12. Which of the following numbers is larger than 10?
+        ul#post-12.likert
+          li
+            input(type='radio', name='group12', value='1')
+            label 11
+          li
+            input(type='radio', name='group12', value='2')
+            label 2
+          li
+            input(type='radio', name='group12', value='3')
+            label 3
+          li
+            input(type='radio', name='group12', value='4')
+            label 4
+          li
+            input(type='radio', name='group12', value='5')
+            label 5
+          li
+            input(type='radio', name='group12', value='6')
+            label 6
+          li
+            input(type='radio', name='group12', value='7')
+            label 7
+        label.statement 13. I see myself as extroverted, enthusiastic?
+        ul#post-13.likert
+          li
+            input(type='radio', name='group13', value='1')
+            label Strongly disagree
+          li
+            input(type='radio', name='group13', value='2')
+            label Disgree
+          li
+            input(type='radio', name='group13', value='3')
+            label Somewhat disagree
+          li
+            input(type='radio', name='group13', value='4')
+            label Neutral
+          li
+            input(type='radio', name='group13', value='5')
+            label Somewhat agree
+          li
+            input(type='radio', name='group13', value='6')
+            label Agree
+          li
+            input(type='radio', name='group13', value='7')
+            label Strongly agree
+        label.statement 14. I see myself as critical, quarrelsome?
+        ul#post-14.likert
+          li
+            input(type='radio', name='group14', value='1')
+            label Strongly disagree
+          li
+            input(type='radio', name='group14', value='2')
+            label Disgree
+          li
+            input(type='radio', name='group14', value='3')
+            label Somewhat disagree
+          li
+            input(type='radio', name='group14', value='4')
+            label Neutral
+          li
+            input(type='radio', name='group14', value='5')
+            label Somewhat agree
+          li
+            input(type='radio', name='group14', value='6')
+            label Agree
+          li
+            input(type='radio', name='group14', value='7')
+            label Strongly agree
+        label.statement 15. I see myself as dependable, self-disciplined?
+        ul#post-15.likert
+          li
+            input(type='radio', name='group15', value='1')
+            label Strongly disagree
+          li
+            input(type='radio', name='group15', value='2')
+            label Disgree
+          li
+            input(type='radio', name='group15', value='3')
+            label Somewhat disagree
+          li
+            input(type='radio', name='group15', value='4')
+            label Neutral
+          li
+            input(type='radio', name='group15', value='5')
+            label Somewhat agree
+          li
+            input(type='radio', name='group15', value='6')
+            label Agree
+          li
+            input(type='radio', name='group15', value='7')
+            label Strongly agree
+        label.statement 16. I see myself as anxious, easily upset?
+        ul#post-16.likert
+          li
+            input(type='radio', name='group16', value='1')
+            label Strongly disagree
+          li
+            input(type='radio', name='group16', value='2')
+            label Disgree
+          li
+            input(type='radio', name='group16', value='3')
+            label Somewhat disagree
+          li
+            input(type='radio', name='group16', value='4')
+            label Neutral
+          li
+            input(type='radio', name='group16', value='5')
+            label Somewhat agree
+          li
+            input(type='radio', name='group16', value='6')
+            label Agree
+          li
+            input(type='radio', name='group16', value='7')
+            label Strongly agree
+        label.statement 17. I see myself as open to new experiences, complex?
+        ul#post-17.likert
+          li
+            input(type='radio', name='group17', value='1')
+            label Strongly disagree
+          li
+            input(type='radio', name='group17', value='2')
+            label Disgree
+          li
+            input(type='radio', name='group17', value='3')
+            label Somewhat disagree
+          li
+            input(type='radio', name='group17', value='4')
+            label Neutral
+          li
+            input(type='radio', name='group17', value='5')
+            label Somewhat agree
+          li
+            input(type='radio', name='group17', value='6')
+            label Agree
+          li
+            input(type='radio', name='group17', value='7')
+            label Strongly agree
+        label.statement 18. I see myself as open to reserved, quiet?
+        ul#post-18.likert
+          li
+            input(type='radio', name='group18', value='1')
+            label Strongly disagree
+          li
+            input(type='radio', name='group18', value='2')
+            label Disgree
+          li
+            input(type='radio', name='group18', value='3')
+            label Somewhat disagree
+          li
+            input(type='radio', name='group18', value='4')
+            label Neutral
+          li
+            input(type='radio', name='group18', value='5')
+            label Somewhat agree
+          li
+            input(type='radio', name='group18', value='6')
+            label Agree
+          li
+            input(type='radio', name='group18', value='7')
+            label Strongly agree
+        label.statement 19. I see myself as open to sympathetic, warm?
+        ul#post-19.likert
+          li
+            input(type='radio', name='group19', value='1')
+            label Strongly disagree
+          li
+            input(type='radio', name='group19', value='2')
+            label Disgree
+          li
+            input(type='radio', name='group19', value='3')
+            label Somewhat disagree
+          li
+            input(type='radio', name='group19', value='4')
+            label Neutral
+          li
+            input(type='radio', name='group19', value='5')
+            label Somewhat agree
+          li
+            input(type='radio', name='group19', value='6')
+            label Agree
+          li
+            input(type='radio', name='group19', value='7')
+            label Strongly agree
+        label.statement 20. I see myself as open to disorganized, careless?
+        ul#post-20.likert
+          li
+            input(type='radio', name='group20', value='1')
+            label Strongly disagree
+          li
+            input(type='radio', name='group20', value='2')
+            label Disgree
+          li
+            input(type='radio', name='group20', value='3')
+            label Somewhat disagree
+          li
+            input(type='radio', name='group20', value='4')
+            label Neutral
+          li
+            input(type='radio', name='group20', value='5')
+            label Somewhat agree
+          li
+            input(type='radio', name='group20', value='6')
+            label Agree
+          li
+            input(type='radio', name='group20', value='7')
+            label Strongly agree
+        label.statement 21. I see myself as calm, emotionally stable?
+        ul#post-21.likert
+          li
+            input(type='radio', name='group21', value='1')
+            label Strongly disagree
+          li
+            input(type='radio', name='group21', value='2')
+            label Disgree
+          li
+            input(type='radio', name='group21', value='3')
+            label Somewhat disagree
+          li
+            input(type='radio', name='group21', value='4')
+            label Neutral
+          li
+            input(type='radio', name='group21', value='5')
+            label Somewhat agree
+          li
+            input(type='radio', name='group21', value='6')
+            label Agree
+          li
+            input(type='radio', name='group21', value='7')
+            label Strongly agree
+        label.statement 22. I see myself as conventional, uncreative?
+        ul#post-22.likert
+          li
+            input(type='radio', name='group22', value='1')
+            label Strongly disagree
+          li
+            input(type='radio', name='group22', value='2')
+            label Disgree
+          li
+            input(type='radio', name='group22', value='3')
+            label Somewhat disagree
+          li
+            input(type='radio', name='group22', value='4')
+            label Neutral
+          li
+            input(type='radio', name='group22', value='5')
+            label Somewhat agree
+          li
+            input(type='radio', name='group22', value='6')
+            label Agree
+          li
+            input(type='radio', name='group22', value='7')
+            label Strongly agree
+        label.statement 23. I see myself as conventional, uncreative?
+        ul#post-23.likert
+          li
+            input(type='radio', name='group23', value='1')
+            label Strongly disagree
+          li
+            input(type='radio', name='group23', value='2')
+            label Disgree
+          li
+            input(type='radio', name='group23', value='3')
+            label Somewhat disagree
+          li
+            input(type='radio', name='group23', value='4')
+            label Neutral
+          li
+            input(type='radio', name='group23', value='5')
+            label Somewhat agree
+          li
+            input(type='radio', name='group23', value='6')
+            label Agree
+          li
+            input(type='radio', name='group23', value='7')
+            label Strongly agree
+        label.statement 24. I see myself as conventional, uncreative?
+        ul#post-24.likert
+          li
+            input(type='radio', name='group24', value='1')
+            label Strongly disagree
+          li
+            input(type='radio', name='group24', value='2')
+            label Disgree
+          li
+            input(type='radio', name='group24', value='3')
+            label Somewhat disagree
+          li
+            input(type='radio', name='group24', value='4')
+            label Neutral
+          li
+            input(type='radio', name='group24', value='5')
+            label Somewhat agree
+          li
+            input(type='radio', name='group24', value='6')
+            label Agree
+          li
+            input(type='radio', name='group24', value='7')
+            label Strongly agree
+        label.statement 25. I see myself as conventional, uncreative?
+        ul#post-25.likert
+          li
+            input(type='radio', name='group25', value='1')
+            label Strongly disagree
+          li
+            input(type='radio', name='group25', value='2')
+            label Disgree
+          li
+            input(type='radio', name='group25', value='3')
+            label Somewhat disagree
+          li
+            input(type='radio', name='group25', value='4')
+            label Neutral
+          li
+            input(type='radio', name='group25', value='5')
+            label Somewhat agree
+          li
+            input(type='radio', name='group25', value='6')
+            label Agree
+          li
+            input(type='radio', name='group25', value='7')
+            label Strongly agree
+        .buttons
+          button.clear Clear
+          button.submit Submit
+    script(type='text/javascript').
+      var formList = [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null]
+      $("li > input").click(function(){
+      var statement = parseInt($(this).parent().parent().attr("id").replace(/[^0-9]/ig,""))
+      var option = parseInt($(this).attr("value"))
+      console.log(option)
+      formList[statement+2]=option
+      console.log(formList)
+      })
+      $(".clear").click(function(event){
+      $("input").checked=false;
+      $("#post-20").empty()
+      formList = [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null]
+      })
+      $(".submit").click(function(event){
+      event.preventDefault()
+      var age = $( "#age option:selected" ).text();
+      if(age!="")
+      formList[0]=age
+      var gender = $( "#gender option:selected" ).text();
+      if(gender!="")
+      formList[1]=gender
+      var nationality = $("#nationality").val()
+      if(nationality!="")
+      formList[2]=nationality
+      console.log(formList)
+      var uncheckedList = []
+      $(".statement").css("background-color","white")
+      for(var index in formList){
+      if(formList[index]==null){
+      uncheckedList.push(index)
+      $(".statement:eq("+index+")").css("background-color","yellow")
+      }
+      }
+      console.log(uncheckedList)
+      if(uncheckedList.length>0){
+      alert("Please finished the missing statement(s) marked in yellow.")
+      }else{
+      window.location.href="/index" 
+      }
+      })

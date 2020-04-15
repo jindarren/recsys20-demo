@@ -1,0 +1,249 @@
+body {
+    top:0;
+    margin-top: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+    border:0px;
+    padding:0px;
+    height:100%;
+    max-height:100%;
+    font-family:arial, verdana, sans-serif;
+    font-size: 1em;
+    background:#999;
+}
+
+h1 {
+    border:0;
+    border-width: 0px;
+    padding:5px;
+    background: #3333FF;
+    color: white;
+    font-size:150%;
+}
+
+h2 {
+    display: box;
+    padding: 5px;
+    background: #7777FF;
+    color: white;
+    font-size:150%;
+}
+
+.box {
+    margin-left: 200px;
+    margin-right: 0px;
+    top: 0px;
+    margin-top: 0px;
+    border: 0px;
+    padding: 20px;
+    height: 100%;
+    max-height: 100%;
+    background: #fff;
+}
+
+.header {
+    color: white;
+    background-color: #333;
+    font-size: 200%;
+    padding: 3px 19px;
+    text-align: left;
+}
+
+.examplebox {padding: 5px;
+	     border: solid;
+	     background: #FFFFFF;
+	     border-color: #FF0000;
+	     border-width: thin;}
+
+.yellowbox {padding: 5px;
+	    border: solid;
+	    background: #FFFF00;
+	    border-color: #FF0000;
+	    border-width: 2px;}
+
+.container {margin-top: 15px;
+	    margin-left: 15px;
+	    float: left;
+	   }
+
+.canvasboxstyle:-moz-full-screen{display:flex;align-items:center;justify-content:center;}
+
+.menu {width: 12em;
+       margin-bottom: 1em;
+       padding: 1em 1.5em;
+       font-size: 70%;
+       background-color: #FFBB66;
+       border: 1px solid #330000;
+       white-space: normal;}
+/*
+.main {
+    margin-top: 15px;
+    margin-left: 1em ;
+    margin-right: 1em;
+    margin-bottom: 1em;
+    padding: 1em 1.5em;
+    max-width: 900px;
+    border:1px solid #330000;
+    color: black;
+    background-color: #FFF;
+}
+*/
+.main {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1em;
+    padding: 1em 1.5em;
+    max-width: 900px;
+    border:1px solid #330000;
+    color: black;
+    background-color: #FFF;
+}
+
+/*
+label { position:relative; padding-left:20px; display:block; }
+label input[type=radio] { position:absolute; top:-2px; left:-5px; }
+*/
+
+table{ border-collapse: collapse }
+
+th { background-color: #555; color: white; }
+
+th,td{ padding: 5px; }
+
+td{ background-color: white }
+
+table tr:hover td{background: #f2f2f2}
+
+/* ---------------------------------------- */
+
+input[type=radio].css-radio {
+position:absolute;
+z-index:-1000;
+left:-1000px;
+overflow: hidden;
+clip: rect(0 0 0 0);
+height:1px;
+width:1px;
+margin:-1px;
+padding:0;
+border:0;
+}
+
+input[type=radio].css-radio + label.css-radiolabel {
+padding-left: 55px;
+height: 50px;
+display: inline-block;
+line-height:50px;
+background-repeat: no-repeat;
+background-position: 0 0;
+font-size: 100%;
+vertical-align: middle;
+cursor: pointer;
+}
+
+input[type=radio].css-radio:checked + label.css-radiolabel {
+background-position: 0 -50px;
+}
+
+label.css-radiolabel {
+background-image:url(http://www.psytoolkit.org/radio.png);
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+}
+
+
+/* -- checkbox ----------------------------------- */
+
+input[type=checkbox].css-checkbox {
+    position:absolute;
+    z-index:-1000;
+    left:-1000px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    height:1px;
+    width:1px;
+    margin:-1px;
+    padding:0;
+    border:0;
+}
+
+input[type=checkbox].css-checkbox + label.css-checklabel {
+    padding-left:55px;
+    height:50px;
+    display:inline-block;
+    line-height:50px;
+    background-repeat:no-repeat;
+    background-position: 0 0;
+    font-size:100%;
+    vertical-align:middle;
+    cursor:pointer;
+}
+
+input[type=checkbox].css-checkbox:checked + label.css-checklabel {
+    background-position: 0 -50px;
+}
+
+label.css-checklabel {
+    background-image:url(http://www.psytoolkit.org/check.png);
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* -- button ----------------------------- */
+
+.mybutton {
+    background-color: white;
+    color: blue ;
+    padding: 5px;
+    font-size: 120%;
+    border: 5px solid blue;
+    cursor: pointer;
+    border-radius: 15px;
+}
+
+.mybutton:disabled,
+.mybutton[disabled]{
+    background-color: white;
+    color: grey ;
+    padding: 5px;
+    font-size: 120%;
+    border: 5px solid grey;
+    cursor: pointer;
+    border-radius: 15px;
+}
+
+/* -- scale question tooltip ------------------------ */
+
+span.ttwrapper{
+    position:relative;
+    display:inline-block;
+            /*Hack for old IEs*/
+            *position:static;
+            *display:inline;
+}
+
+.tt {outline:none; }
+.tt strong {line-height:30px;}
+.tt:hover {text-decoration:none;} 
+.tt span {
+    z-index: 10;
+    display: none;
+    padding: 14px 20px;
+    margin-top: -20px;
+    margin-left: 65px;
+    line-height: 16px;
+    border-radius: 4px;
+    box-shadow: 5px 5px 8px #CCC;
+}
+
+.tt:hover span{display:inline; position:absolute; color:#111; border:1px solid #DCA; background:#fffAF0;}
+.tttxt {z-index:20;position:absolute;top:11px;border:0;left:-12px;}

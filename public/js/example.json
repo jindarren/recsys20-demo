@@ -1,0 +1,39 @@
+
+  System action:
+        # 1: "Initialize",
+        # 2: "Recommend",
+        # 3: "System_Suggest",  / 'agent' = 'crit' /
+        # 4: "Request_Critique", - (/ 'agent' = 'skip' / - if the user consecutively skips the song for 3 time )
+        # 5: "Respond_Unknown",
+        # 6: "Request_Rate",
+        # 7: "Coherence"
+        # 8: "Explain"
+
+ User action:
+        # 1: "Accept_Song"  (modality="button")
+        # 2: "Next" /button (modality="button")
+        # 3: "Let_bot_suggest" (modality="button")
+        # 4: "Accept_Suggestion" (modality="button")
+        # 5: "Reject_Suggestion" (modality="button")
+        # 6: "User_Critique"
+        # 7: "Chit_chat"
+
+{
+"agent": "you",
+"text": "lower energy",
+"action": "User_critique",
+"critique": [{"energy": "lower"}],
+"critiqued_song": {},
+"timestamp": 1554271816733
+}
+
+{
+"agent": "robot",
+"text": "Sure",
+"action": "Coherence",
+"critique": [{"energy": "lower"}],
+"critiqued_song": {},
+"timestamp": 1554271817388
+}
+
+function(party, text, modality, action, crit, critedSong)
