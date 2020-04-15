@@ -1,0 +1,199 @@
+id,name,popularity,artist,danceability,energy,speechiness,acousticness,instrumentalness,liveness,valence,genre
+5p7ujcrUXASCNwRaWNHR1C,Without Me,94,Halsey,0.752,0.488,0.0705,0.297,0.00000911,0.0936,0.533,dance pop
+1A6OTy97kk0mMdm78rHsm8,Sunflower - Spider-Man: Into the Spider-Verse,92,Post Malone,0.757,0.501,0.0466,0.541,0,0.0718,0.91,dance pop
+7jr3iPu4O4bTCVwLMbdU2i,Kiss and Make Up,88,Dua Lipa,0.678,0.729,0.137,0.0658,0,0.303,0.643,dance pop
+4T3fNx3CgwDRRYgmFCbD4J,Better,94,Khalid,0.442,0.585,0.0964,0.0984,0.391,0.14,0.116,dance pop
+116H0KvKr2Zl4RPuVBruDO,MIA (feat. Drake),97,Bad Bunny,0.818,0.54,0.0544,0.0143,0.000512,0.099,0.174,dance pop
+6QfS2wq5sSC1xAJCQsTSlj,Shallow - Radio Edit,88,Lady Gaga,0.575,0.33,0.031,0.416,0,0.0872,0.277,dance pop
+25sgk305KZfyuqVBQIahim,Sweet but Psycho,90,Ava Max,0.719,0.704,0.0476,0.0691,0,0.166,0.628,dance pop
+6xtcFXSo8H9BZN637BMVKS,Let You Love Me,91,Rita Ora,0.531,0.854,0.198,0.288,0,0.0773,0.456,dance pop
+2dpaYNEQHiRxtZbfNsse99,Happier,99,Marshmello,0.687,0.792,0.0452,0.191,0,0.167,0.671,dance pop
+6SkHm6poyKfzV6kc9any8k,Suncity (feat. Empress Of),84,Khalid,0.694,0.63,0.162,0.0998,0.000635,0.12,0.341,dance pop
+15kQGEy89K8deJcZVFEn0N,This Feeling,92,The Chainsmokers,0.575,0.571,0.0439,0.0558,0,0.0912,0.449,dance pop
+2hnxrRNzF74mdDzpQZQukQ,There's No Way (feat. Julia Michaels),88,Lauv,0.755,0.625,0.0896,0.49,0,0.157,0.374,dance pop
+5N5k9nd479b1xpDZ4usjrg,Promises (with Sam Smith),97,Calvin Harris,0.781,0.768,0.0394,0.0119,0.00000491,0.325,0.486,dance pop
+6rrTr2HEAzlpC4KWZxF3S1,Woman Like Me (feat. Nicki Minaj),88,Little Mix,0.757,0.849,0.0536,0.173,0,0.0878,0.826,dance pop
+1ArLnG0bHaHPXqf08sEKM0,Consequences - orchestra,83,Camila Cabello,0.547,0.289,0.0348,0.645,0,0.148,0.213,dance pop
+5tAa8Uaqr4VvA3693mbIhU,Ruin My Life,84,Zara Larsson,0.665,0.699,0.0578,0.423,0,0.0969,0.585,dance pop
+1N7YeVU0ZwAFbOhwM61ef6,Head Above Water,86,Avril Lavigne,0.578,0.694,0.0706,0.0112,0,0.102,0.268,dance pop
+5N4erncE7kuUccm7zEmwzk,Electricity (with Dua Lipa),94,Silk City,0.588,0.67,0.0473,0.0104,0.00000333,0.338,0.505,dance pop
+0Dn40gxVCMo5TkgS8Ik18Q,Falling Down,97,Lil Peep,0.669,0.574,0.0286,0.0175,0.00294,0.146,0.273,dance pop
+05mAIVLkIWc2d1UBYZBCp8,1999,84,Charli XCX,0.739,0.742,0.0329,0.0227,0.00000139,0.229,0.659,dance pop
+2rbDhOo9Fh61Bbu23T2qCk,Always Remember Us This Way,83,Lady Gaga,0.553,0.502,0.0409,0.299,0,0.764,0.296,dance pop
+7l3E7lcozEodtVsSTCkcaA,ZEZE (feat. Travis Scott & Offset),95,Kodak Black,0.826,0.615,0.219,0.071,0,0.0965,0.543,dance pop
+4zIO3ilp5HvTeK3HJHxhMP,Natural,94,Imagine Dragons,0.448,0.612,0.0708,0.216,0,0.08,0.213,dance pop
+6jreFSOTUAViWjKyzOC4Kg,REMEDY,89,Alesso,0.601,0.775,0.0473,0.269,0,0.0883,0.483,dance pop
+14JzyD6FlBD5z0wV5P07YI,when the party's over,88,Billie Eilish,0.498,0.104,0.0621,0.979,0.0000786,0.0895,0.205,dance pop
+1wsLHgXJ4SKIfd5ePSX1hD,Polaroid,83,Jonas Blue,0.652,0.897,0.036,0.293,0,0.0722,0.475,dance pop
+4VUwkH455At9kENOfzTqmF,Beautiful (feat. Camila Cabello),93,Bazzi,0.638,0.717,0.0337,0.346,0,0.105,0.249,dance pop
+5Xn4IyTtW6FUGIUyWjbUHG,Goodbye (feat. Nicki Minaj & Willy William),90,Jason Derulo,0.643,0.904,0.0739,0.0776,0,0.189,0.481,dance pop
+0qbfdprRS71e9up5pOmbQo,Trust My Lonely,78,Alessia Cara,0.583,0.662,0.156,0.00541,0.00000196,0.284,0.636,dance pop
+3EPXxR3ImUwfayaurPi3cm,Be Alright,96,Dean Lewis,0.553,0.586,0.0362,0.697,0,0.0813,0.443,dance pop
+4J4zx8xGJpuGndrVc06KaT,Diamond Heart,86,Alan Walker,0.499,0.638,0.0438,0.129,0,0.631,0.253,dance pop
+2JqnpexlO9dmvjUMCaLCLJ,Love Someone,88,Lukas Graham,0.55,0.415,0.052,0.161,0,0.108,0.274,dance pop
+6X6SdJzxyw7GzxwP2fr9WV,All I Am,87,Jess Glynne,0.74,0.669,0.0373,0.0445,0,0.184,0.536,dance pop
+0QIjsbm2fh1cJ45XO9eGqq,Wake Up in the Sky,91,Gucci Mane,0.8,0.578,0.0485,0.00381,0,0.359,0.367,dance pop
+2jZIfoe48eUeOEnP9Ho4h2,No One Compares To You,76,Jack & Jack,0.703,0.748,0.0435,0.123,0,0.0642,0.625,dance pop
+5HeKOKc4phmLn8e4I7EkzD,My Blood,85,Twenty One Pilots,0.749,0.723,0.0432,0.0563,0.022,0.0977,0.674,dance pop
+04MLEeAMuV9IlHEsD8vF6A,No Stylist,91,French Montana,0.765,0.704,0.127,0.0215,0,0.227,0.498,dance pop
+1ZuH6byJDLmuWjqSCv7Wz2,Love No More,66,Loud Luxury,0.765,0.672,0.0538,0.0205,0.0000592,0.258,0.222,dance pop
+7d6XJZjnm7iWcKwYL9z5kC,Noticed,90,Lil Mosey,0.699,0.558,0.0603,0.462,0,0.116,0.493,dance pop
+1l9G7M8gNyQsgOGWZGoQsT,Look What I Found,78,Lady Gaga,0.849,0.493,0.0417,0.456,0.000463,0.133,0.447,dance pop
+33zcmmElV1YbRZe57biUjg,Celoso,87,Lele Pons,0.746,0.703,0.107,0.352,0,0.331,0.667,dance pop
+3ngc7rGlfeFaskU90EWl4R,You Say,83,Lauren Daigle,0.494,0.637,0.0333,0.669,0,0.0882,0.1,dance pop
+1BxkZE73h9BN3qwuA15TA3,Drip Too Hard,91,Lil Baby,0.9,0.653,0.289,0.0945,0,0.528,0.399,dance pop
+0YammaEkYSeo9vQYZ1OwS6,Say My Name,85,David Guetta,0.703,0.66,0.123,0.137,0,0.192,0.79,dance pop
+7noud145AHZGg74vpWOsCa,Trip,83,Ella Mai,0.717,0.605,0.075,0.214,0,0.138,0.387,dance pop
+3edzl4zvKFi0D3iuF6cs2f,PASS OUT (feat. 21 Savage),85,Quavo,0.917,0.786,0.208,0.0403,0,0.195,0.441,dance pop
+1gnwGVoG7V08vMX3hyr90x,Tints (feat. Kendrick Lamar),82,Anderson .Paak,0.798,0.867,0.12,0.101,0,0.0634,0.668,dance pop
+575NJxNUVDqwJGdzBrlLbv,Lost In Japan - Remix,85,Shawn Mendes,0.694,0.852,0.257,0.0882,0,0.334,0.377,dance pop
+3QybPutx0Tjk472bBKjNWn,Mo Bamba,87,Sheck Wes,0.738,0.629,0.0495,0.268,0.00114,0.163,0.319,dance pop
+2NRGaA1GyCmTYfm2GRPkUe,Fine China,81,Future,0.656,0.542,0.323,0.0484,0,0.106,0.551,dance pop
+3m2aDCqn8eT5ElXDUiboGU,Get Dripped (feat. Playboi Carti),80,Lil Yachty,0.955,0.492,0.395,0.0987,0,0.417,0.904,dance pop
+6gzIcEUuswJQGfJNPYMjjv,Hard Work Pays Off,81,Future,0.736,0.482,0.196,0.327,0,0.229,0.608,dance pop
+2xLMifQCjDGFmkHkpNLD9h,SICKO MODE,97,Travis Scott,0.834,0.73,0.222,0.00513,0,0.124,0.446,dance pop
+1Jl21sidRpEdlVBvYbssLx,Sin (feat. Jaden Smith),85,Young Thug,0.889,0.385,0.165,0.00544,0,0.274,0.235,dance pop
+1jQvUmf16VE9WQCPuK2e8K,STOOPID,90,6ix9ine,0.733,0.63,0.395,0.13,0,0.162,0.832,dance pop
+5vDvBD3ReINP8dXUplj477,Leave Me Alone,65,Flipp Dinero,0.792,0.743,0.0851,0.107,0,0.183,0.742,dance pop
+5qHirGR7M9tdm6C17DlzSY,REEL IT IN,87,Aminé,0.754,0.342,0.0991,0.073,0,0.193,0.423,dance pop
+69PkhA9q3xCWU2CzoZnLAu,LOSE IT (feat. Lil Baby),81,Quavo,0.962,0.573,0.308,0.0161,0,0.109,0.728,dance pop
+0Fpen1PTuEnCmOJtUU9Iud,New Patek,89,Lil Uzi Vert,0.85,0.785,0.345,0.0367,0,0.155,0.718,dance pop
+7lAK3oHbfEnvUQWosrMMpR,YOSEMITE,88,Travis Scott,0.785,0.554,0.0409,0.283,0.0000034,0.116,0.144,dance pop
+0dbTQYW3Ad1FTzIA9t90E8,Mona Lisa (feat. Kendrick Lamar),91,Lil Wayne,0.855,0.694,0.169,0.371,0,0.109,0.49,dance pop
+39Bq9cOTO0H8M6P9iKLVdq,DrIP DrIp Drip (feat. Meek Mill),75,Tory Lanez,0.71,0.814,0.0561,0.162,0,0.16,0.714,dance pop
+2MfcvcvWSUkstTDZXYIakq,Transformer (feat. Nicki Minaj),77,Future,0.753,0.616,0.165,0.00151,0.0000071,0.291,0.287,dance pop
+2Vx8E3K5icPZR7OCklWBXX,Nonstop,62,Drake,0.909,0.405,0.14,0.0306,0.00698,0.105,0.455,dance pop
+4S8d14HvHb70ImctNgVzQQ,I Love It (& Lil Pump),98,Kanye West,0.901,0.522,0.33,0.0114,0,0.259,0.329,dance pop
+33tNYw9oMtSkGe27NpgS64,WORKIN ME,86,Quavo,0.79,0.629,0.142,0.182,0.00000706,0.338,0.267,dance pop
+1Wc1SQwiThvSu9dMc5opth,SaintLaurentYSL (feat. Lil Baby),75,Lil Yachty,0.892,0.301,0.74,0.566,0,0.172,0.305,dance pop
+0JP9xo3adEtGSdUEISiszL,Moonlight,95,XXXTENTACION,0.921,0.537,0.0804,0.556,0.00404,0.102,0.711,dance pop
+3BgL0IcxKAd0sukooPIVhA,GOKU,75,Jaden Smith,0.471,0.887,0.274,0.195,0,0.116,0.268,dance pop
+29tc0GbW0pTSBZSCZF3NWk,Lean Wit Me,88,Juice WRLD,0.665,0.651,0.156,0.0414,0,0.0896,0.237,dance pop
+5BQrp63SHCVf4bzCzJePne,Don't Cry (feat. XXXTENTACION),88,Lil Wayne,0.585,0.709,0.319,0.409,0,0.183,0.21,dance pop
+4uX8Wh4wxpLne11BhoHs5x,Hopeless Romantic (feat. Swae Lee),75,Wiz Khalifa,0.874,0.492,0.0604,0.299,0,0.0983,0.587,dance pop
+1iRdVQ01qr3HrCrBNnTnGh,Yoppa (with BlocBoy JB),73,Lil Mosey,0.814,0.495,0.0772,0.125,0,0.11,0.347,dance pop
+7wBJfHzpfI3032CSD7CE2m,STARGAZING,90,Travis Scott,0.487,0.789,0.044,0.00947,0.00000405,0.189,0.0564,dance pop
+6yz0Jndhv0QjKdpcEMbOjz,Shake It Up,84,Trippie Redd,0.776,0.608,0.104,0.128,0,0.0932,0.402,dance pop
+7txPE73wHbuXYkM1h8zNrG,Mob Ties,57,Drake,0.755,0.575,0.0673,0.0443,0.00127,0.276,0.493,dance pop
+6f5i916F3jU6BhOOD7iGqf,Ned Flanders (feat. A$AP Ferg),82,MadeinTYO,0.936,0.495,0.229,0.0254,0,0.087,0.299,dance pop
+798nzni0JSUWMVJJBCYYF1,The Flute Song,79,Russ,0.789,0.524,0.273,0.212,0,0.221,0.343,dance pop
+7q8cy4uoA2itYATsKeXhcq,Multi Millionaire (feat. Lil Uzi Vert),80,Lil Pump,0.855,0.82,0.0983,0.023,0,0.168,0.721,dance pop
+0CBQ0m3mufWH75LTYB3s6h,Let It Fly (feat. Travis Scott),87,Lil Wayne,0.902,0.819,0.317,0.0414,0,0.106,0.746,dance pop
+2qfR91VvO7hRp4IajDT08h,Dip,82,Tyga,0.877,0.562,0.26,0.0152,0,0.0933,0.376,dance pop
+60SdxE8apGAxMiRrpbmLY0,Lucky You (feat. Joyner Lucas),95,Eminem,0.876,0.786,0.306,0.0627,0,0.127,0.575,dance pop
+5NiqIB4BwRpoU1V6U195OU,151 Rum,77,J.I.D,0.73,0.86,0.191,0.199,0.00182,0.322,0.647,dance pop
+5bJ1DrEM4hNCafcDd1oxHx,Self Care,86,Mac Miller,0.52,0.538,0.206,0.367,0.00187,0.119,0.177,dance pop
+6ArSQdZWckNt208EzsgUM5,Taking A Walk,78,Trippie Redd,0.767,0.538,0.052,0.68,0,0.192,0.343,dance pop
+7eBqSVxrzQZtK2mmgRG6lC,Murder On My Mind,81,YNW Melly,0.759,0.73,0.0516,0.145,0.00000306,0.11,0.74,dance pop
+0kCBorRrKZkSztd9m0QI3r,Chanel (Go Get It) [feat. Gunna & Lil Baby],84,Young Thug,0.938,0.5,0.144,0.00183,0,0.077,0.462,dance pop
+0ibOcbkp2XG46Do8jcy0bL,Nephew (feat. Lil Pump),83,Smokepurpp,0.792,0.454,0.458,0.00422,0,0.285,0.674,dance pop
+2iicKPnvOKfbJZJZtuQnjy,Neighbor (feat. Travis Scott),79,Juicy J,0.921,0.748,0.13,0.00908,0,0.0798,0.801,dance pop
+1eq1wUnLVLg4pdEfx9kajC,Rolling in the Deep,75,Adele,0.73,0.77,0.0298,0.138,0,0.0473,0.507,dance pop
+0IqKeD8ZSP72KbGYyzEcAs,Take Me To Church,39,Hozier,0.566,0.664,0.0464,0.634,0,0.116,0.437,dance pop
+4JehYebiI9JE8sR8MisGVb,Halo,81,Beyoncé,0.508,0.72,0.0628,0.272,0,0.0563,0.472,dance pop
+1EzrEOXmMH3G43AXT1y7pA,I'm Yours,86,Jason Mraz,0.686,0.457,0.0468,0.595,0,0.105,0.718,dance pop
+2dLLR6qlu5UJ5gk0dKz0h3,Royals,79,Lorde,0.616,0.432,0.133,0.106,0,0.132,0.302,dance pop
+3U4isOIWM3VvDubwSI3y7a,All of Me,85,John Legend,0.422,0.264,0.0322,0.922,0,0.132,0.331,dance pop
+4VrWlk8IQxevMvERoX08iC,Chandelier,80,Sia,0.399,0.787,0.0499,0.0197,0.0000607,0.0685,0.572,dance pop
+6sy3LkhNFjJWlaeSMNwQ62,Counting Stars,75,OneRepublic,0.664,0.705,0.0382,0.0654,0,0.115,0.477,dance pop
+7qiZfU4dY1lWllzX7mPBI3,Shape of You,89,Ed Sheeran,0.825,0.652,0.0802,0.581,0,0.0931,0.931,dance pop
+0prNGof3XqfTvNDxHonvdK,Scars To Your Beautiful,76,Alessia Cara,0.573,0.739,0.129,0.0285,0,0.111,0.451,dance pop
+6tF92PMv01Ug9Dh8Rmy6nH,New Rules,67,Dua Lipa,0.762,0.7,0.0694,0.00261,0.0000156,0.153,0.608,dance pop
+0ofbQMrRDsUaVKq2mGLEAb,Havana,36,Camila Cabello,0.768,0.517,0.0312,0.186,0.000038,0.104,0.418,dance pop
+1bhUWB0zJMIKr9yVPrkEuI,Perfect Duet (Ed Sheeran & Beyoncé),86,Ed Sheeran,0.587,0.299,0.0263,0.779,0,0.123,0.356,pop
+6FlAGda9qkDhTU7ctFM4uG,Crazy,68,Gnarls Barkley,0.864,0.474,0.0367,0.0259,0.0487,0.0906,0.602,neo soul
+0Qh38w01QRXK6KHIv0e3hb,What About Us,81,P!nk,0.489,0.588,0.0507,0.0285,0.00000211,0.0906,0.187,dance pop
+7IQ7Tk8D6fFAgl6aL7u5ia,Rude (Acoustic),73,MAGIC!,0.736,0.847,0.0756,0.358,0,0.101,0.915,pop
+023OVLNzXhX0j7CxswUt6D,Cheerleader - Felix Jaehn Remix Radio Edit,66,OMI,0.78,0.68,0.0305,0.141,0.000012,0.138,0.594,dance pop
+7BKLCZ1jbUBVqRi2FVlTVw,Closer,87,The Chainsmokers,0.748,0.524,0.0338,0.414,0,0.111,0.661,edm
+6GmUVqe73u5YRfUUynZK6I,Let Her Go,73,Passenger,0.479,0.545,0.0688,0.365,0,0.0963,0.244,neo mellow
+4G8gkOterJn0Ywt6uhqbhp,Radioactive,74,Imagine Dragons,0.448,0.784,0.0627,0.106,0.000108,0.668,0.236,modern rock
+3d8y0t70g7hw2FOWl9Z4Fm,Ophelia,71,The Lumineers,0.664,0.573,0.0277,0.613,0.000363,0.0857,0.566,folk-pop
+7DrluKkTviBwCc8AV3VGmf,Clandestino,90,Shakira,0.766,0.822,0.16,0.39,0.0000337,0.349,0.881,colombian pop
+3VlbOrM6nYPprVvzBZllE5,Too Good At Goodbyes,80,Sam Smith,0.661,0.373,0.0505,0.615,0,0.177,0.523,pop
+3Du2K5dLzmduCNp6uwuaL0,Sorry Not Sorry,84,Demi Lovato,0.702,0.635,0.265,0.0223,0,0.283,0.873,dance pop
+3d9DChrdc6BOeFsbrZ3Is0,Under The Bridge,83,Red Hot Chili Peppers,0.559,0.345,0.0459,0.0576,0.000105,0.141,0.458,alternative rock
+4sPmO7WMQUAf45kwMOtONw,Hello,73,Adele,0.481,0.451,0.0347,0.336,0,0.0872,0.289,pop
+2RiBogNRfulkNf7fVbPOrJ,Saturday Sun,75,Vance Joy,0.637,0.864,0.0468,0.484,0,0.222,0.706,modern rock
+7vS3Y0IKjde7Xg85LWIEdP,Problem,76,Ariana Grande,0.66,0.805,0.153,0.0192,0.00000883,0.159,0.625,dance pop
+4aWmUDTfIPGksMNLV2rQP2,Despacito (Featuring Daddy Yankee),42,Luis Fonsi,0.66,0.786,0.17,0.209,0,0.112,0.846,dance pop
+466s1BacUmiRdR3ISvNjyx,Bang Bang,70,Jessie J,0.703,0.747,0.0895,0.283,0,0.396,0.7,dance pop
+32OlwWuMpZ6b0aN2RZOeMS,Uptown Funk,82,Mark Ronson,0.856,0.609,0.0824,0.00801,0.0000815,0.0344,0.928,dance pop
+5jrdCoLpJSvHHorevXBATy,Dark Horse,78,Katy Perry,0.645,0.585,0.0513,0.00314,0,0.165,0.353,dance pop
+4Ce37cRWvM1vIGGynKcs22,Starving,81,Hailee Steinfeld,0.729,0.615,0.0647,0.378,0,0.105,0.508,dance pop
+0d2iYfpKoM0QCKvcLCkBao,Eastside (with Halsey & Khalid),98,benny blanco,0.56,0.68,0.321,0.555,0,0.116,0.319,pop
+0sooJd5WbNnnz5k6yO7FIQ,Pompeii,38,Bastille,0.682,0.714,0.0399,0.074,0,0.278,0.581,metropopolis
+41Fflg7qHiVOD6dEPvsCzO,Worth It,77,Fifth Harmony,0.884,0.765,0.0882,0.063,0.00000704,0.118,0.594,dance pop
+4kbj5MwxO1bq9wjT5g9HaA,Shut Up and Dance,80,WALK THE MOON,0.578,0.866,0.0619,0.00701,0,0.257,0.619,indie pop
+4h8VwCb1MTGoLKueQ1WgbD,Wake Me Up,85,Avicii,0.518,0.784,0.0524,0.00346,0.00187,0.171,0.588,big room
+5Hroj5K7vLpIG4FNCRIjbP,Best Day Of My Life,77,American Authors,0.673,0.902,0.0347,0.0629,0.000174,0.0552,0.521,brooklyn indie
+2G7V7zsVDxg1yRsu7Ew9RJ,In My Feelings,97,Drake,0.835,0.626,0.125,0.0589,0.00006,0.396,0.35,canadian hip hop
+0Y1MWB026LYxGvhq4EcMiC,Boom Clap,61,Charli XCX,0.659,0.911,0.0786,0.154,0.000304,0.191,0.576,candy pop
+0tKcYR2II1VCQWT79i5NrW,Thunder,33,Imagine Dragons,0.6,0.81,0.0479,0.00683,0.21,0.155,0.298,modern rock
+4tYokojnBEp5pBWO7wTRPA,Let It Go - James Bay Spotify Session 2015,72,James Bay,0.5,0.213,0.0462,0.879,0.00000737,0.721,0.37,neo mellow
+0CcQNd8CINkwQfe1RDtGV6,Believer,29,Imagine Dragons,0.779,0.787,0.108,0.0524,0,0.14,0.708,modern rock
+0n4bITAu0Y0nigrz3MFJMb,Blurred Lines,76,Robin Thicke,0.862,0.608,0.0402,0.00373,0.00000614,0.0856,0.836,dance pop
+3JvrhDOgAt6p7K8mDyZwRd,Riptide,79,Vance Joy,0.484,0.731,0.0379,0.431,0,0.151,0.51,modern rock
+794F99D5BQHS5ZGRXAs7I5,Anaconda,66,Nicki Minaj,0.964,0.605,0.179,0.0668,0.00000778,0.214,0.646,dance pop
+2cOUlop2ZakjOKe4WinesN,Slow Hands,80,Niall Horan,0.726,0.431,0.0554,0.0139,0,0.054,0.86,dance pop
+2stPxcgjdSImK7Gizl8ZUN,The Man,62,Aloe Blacc,0.308,0.769,0.065,0.0331,0,0.214,0.488,r&b
+0dA2Mk56wEzDgegdC6R17g,Stay (with Alessia Cara),41,Zedd,0.679,0.634,0.0654,0.232,0,0.115,0.498,complextro
+2JZKXgq5zsokN01KWyiY6n,Mirrors,66,Justin Timberlake,0.574,0.512,0.0503,0.234,0,0.0946,0.512,dance pop
+7q0aQpiLv5tIsupcgQ3Ny4,Budapest,69,George Ezra,0.717,0.455,0.0276,0.0846,0,0.11,0.389,neo-singer-songwriter
+5xTtaWoae3wi06K5WfVUUH,Shake It Off,72,Taylor Swift,0.648,0.785,0.165,0.0561,0,0.148,0.943,dance pop
+1N62wozuHCvczCkY4QidpP,Over My Head (Cable Car),73,The Fray,0.592,0.729,0.0448,0.022,0,0.0653,0.709,neo mellow
+2JHBMVs8E7bJJBLkXpKgHn,I Will Wait,70,Mumford & Sons,0.481,0.766,0.0334,0.0103,0.0067,0.302,0.436,folk-pop
+7wZUrN8oemZfsEd1CGkbXE,Bleeding Love,80,Leona Lewis,0.638,0.656,0.0357,0.188,0,0.146,0.225,dance pop
+0QZ5yyl6B6utIWkxeBDxQN,The Night We Met,78,Lord Huron,0.441,0.379,0.0449,0.968,0.262,0.639,0.105,folk-pop
+2y4lAQpi5VTNLu2ldeTdUH,We Can't Stop,78,Miley Cyrus,0.613,0.622,0.0334,0.00882,0,0.37,0.484,dance pop
+7nnWIPM5hwE3DaUBkvOIpy,Drive,75,Incubus,0.645,0.792,0.036,0.0562,0.0121,0.119,0.666,alternative metal
+1V6gIisPpYqgFeWbMLI0bA,Heart Attack,74,Demi Lovato,0.504,0.785,0.104,0.0738,0,0.239,0.502,dance pop
+5imMBAW7spQjapwJeZ0z3u,Underneath It All - Acoustic Live - German Radio,56,No Doubt,0.665,0.253,0.0505,0.838,0,0.168,0.477,alternative rock
+1wjzFQodRWrPcQ0AnYnvQ9,I Like Me Better,87,Lauv,0.752,0.505,0.253,0.535,0.00000255,0.104,0.419,dance pop
+36ONiya0OANYknz0GgJmwB,Don’t Matter To Me,64,Drake,0.825,0.317,0.0583,0.497,0.0128,0.11,0.136,canadian hip hop
+5Ohxk2dO5COHF1krpoPigN,Sign of the Times,80,Harry Styles,0.516,0.595,0.0313,0.0275,0,0.109,0.222,dance pop
+4pLwZjInHj3SimIyN9SnOz,Side To Side,40,Ariana Grande,0.648,0.738,0.247,0.0408,0,0.292,0.603,dance pop
+5aAx2yezTd8zXrkmtKl66Z,Starboy,41,The Weeknd,0.681,0.594,0.282,0.165,0.00000349,0.134,0.535,canadian pop
+5tz69p7tJuGPeMGwNTxYuV,1-800-273-8255,85,Logic,0.62,0.574,0.0479,0.57,0,0.19,0.352,conscious hip hop
+0KKkJNfGyhkQ5aFogxQAPU,That's What I Like,85,Bruno Mars,0.853,0.56,0.0406,0.013,0,0.0944,0.86,pop
+6PCUP3dWmTjcTtXY02oFdT,Castle on the Hill,83,Ed Sheeran,0.461,0.834,0.0989,0.0232,0.0000114,0.14,0.471,pop
+2jdAk8ATWIL3dwT47XpRfu,Slow Dancing in a Burning Room,77,John Mayer,0.668,0.361,0.0273,0.573,0.00506,0.0805,0.288,neo mellow
+4pdPtRcBmOSQDlJ3Fk945m,Let Me Love You,42,DJ Snake,0.476,0.718,0.0576,0.0784,0.0000102,0.122,0.142,dance pop
+1xznGGDReH1oQq0xzbwXa3,One Dance,43,Drake,0.791,0.619,0.0532,0.00784,0.00423,0.351,0.371,canadian hip hop
+7mldq42yDuxiUNn08nvzHO,Body Like A Back Road,81,Sam Hunt,0.731,0.469,0.0326,0.463,0.00000104,0.103,0.631,contemporary country
+4BHzQ9C00ceJxfG16AlNWb,Send My Love (To Your New Lover),74,Adele,0.69,0.524,0.103,0.0415,0.00000316,0.17,0.562,pop
+3AJwUDP919kvQ9QcozQPxg,Yellow,82,Coldplay,0.429,0.661,0.0281,0.00239,0.00013,0.234,0.285,permanent wave
+7dZ1Odmx9jWIweQSatnRqo,Million Reasons,82,Lady Gaga,0.665,0.424,0.0444,0.437,0,0.107,0.134,dance pop
+2sLS4tVaEoMYrNS67PVz0V,She Will Be Loved - Acoustic,74,Maroon 5,0.614,0.509,0.0315,0.504,0.00000731,0.696,0.593,pop
+0ll8uFnc0nANY35E0Lfxvg,Somewhere Only We Know,71,Keane,0.447,0.662,0.0259,0.0597,0.00000288,0.0869,0.307,neo mellow
+0YHUITU3w6ws1v8ehT264g,Shout Out to My Ex,25,Little Mix,0.774,0.739,0.0952,0.0316,0.00000595,0.119,0.823,dance pop
+7iDa6hUg2VgEL1o1HjmfBn,Meant to Be (feat. Florida Georgia Line),87,Bebe Rexha,0.643,0.783,0.0856,0.047,0,0.083,0.579,dance pop
+2VFf8YhTnmhWF108o9UEr7,No One - Acoustic,71,Alicia Keys,0.379,0.325,0.0331,0.712,0,0.0997,0.433,hip pop
+2Gl0FzuLxflY6nPifJp5Dr,First Time,78,Kygo,0.633,0.592,0.112,0.197,0,0.099,0.679,edm
+4bgCdwNpbU3sCJ3mupBW8S,I Don't Want to Be - Stripped Version,71,Gavin DeGraw,0.545,0.582,0.0368,0.142,0,0.144,0.536,acoustic pop
+2WZyfujzMweFLnozyUJBkW,Boston,69,Augustana,0.404,0.571,0.0303,0.182,0.0000208,0.129,0.29,acoustic pop
+0vg4WnUWvze6pBOJDTq99k,You're Beautiful,78,James Blunt,0.675,0.479,0.0278,0.633,0.0000176,0.088,0.454,neo mellow
+2jppsxdHlNHz9eK0QyYlTq,If I Were a Boy,68,Beyoncé,0.632,0.518,0.0313,0.107,0,0.354,0.427,dance pop
+6t9smWoGTgUF2LVSQuJK5P,A Thousand Miles (Live Acoustic),24,Vanessa Carlton,0.44,0.236,0.0279,0.88,0.0000309,0.108,0.329,dance pop
+3ZffCQKLFLUvYM59XKLbVm,Wake Me Up When September Ends,78,Green Day,0.546,0.814,0.0314,0.023,0,0.0972,0.146,permanent wave
+3gvAGvbMCRvVDDp8ZaIPV5,Lost in My Mind,54,The Head and the Heart,0.375,0.546,0.0294,0.451,0.000312,0.278,0.37,chamber pop
+78TTtXnFQPzwqlbtbwqN0y,FourFiveSeconds,81,Rihanna,0.576,0.267,0.044,0.878,0,0.119,0.326,dance pop
+1ivuWgxFQb2xzxVNSlB1hF,DJ Turn It Up,74,Yellow Claw,0.829,0.695,0.0473,0.000956,0.178,0.112,0.369,bass trap
+65ES1qwOB577ZnTkizMXJJ,HUMBLE. - SKRILLEX REMIX,77,Skrillex,0.898,0.935,0.291,0.00778,0.0000363,0.217,0.884,brostep
+2gZUPNdnz5Y45eiGxpHGSc,POWER,79,Kanye West,0.543,0.915,0.113,0.0162,0,0.744,0.577,pop rap
+2xKTOaIAh0IJ92jXP4BX1P,I Ain't Done,66,Andy Mineo,0.762,0.533,0.0677,0.0074,0.00173,0.186,0.416,christian hip hop
+5IaHrVsrferBYDm0bDyABy,Taste (feat. Offset),94,Tyga,0.884,0.559,0.12,0.0236,0,0.101,0.342,hip hop
+4EAV2cKiqKP5UPZmY6dejk,Everyday,81,Logic,0.67,0.752,0.0374,0.041,0,0.0749,0.442,conscious hip hop
+2Zb7wnGUnNPCas2E0wWSQ5,Ni**as In Paris,15,JAY Z,0.786,0.868,0.3,0.135,0,0.218,0.771,bulgarian hip hop
+2E124GmJRnBJuXbTb4cPUB,FEFE (feat. Nicki Minaj & Murda Beatz),95,6ix9ine,0.931,0.387,0.412,0.088,0,0.136,0.376,emo rap
+0djL9IcG5ppLXOwJ5e14oP,NO NAME,24,NF,0.493,0.785,0.294,0.245,0,0.168,0.264,hip hop
+0snQkGI5qnAmohLE7jTsTn,Toxicity,78,System Of A Down,0.413,0.873,0.0535,0.000264,0.0025,0.204,0.481,alternative metal
+2YC6ET3q1F29B0V7UcPV70,Break Stuff,63,Limp Bizkit,0.427,0.908,0.165,0.00325,0.0000612,0.0475,0.617,alternative metal
+5sNESr6pQfIhL3krM8CtZn,Numb / Encore,76,JAY Z,0.687,0.793,0.166,0.0603,0,0.582,0.751,bulgarian hip hop
+0gD6lWJhbXHWNVwQziSVvl,Plug Walk,22,Rich The Kid,0.882,0.503,0.179,0.224,0,0.108,0.176,hip hop
+6iyp6udVpLuq3MCUulZT4h,44 More,24,Logic,0.818,0.572,0.228,0.0717,0,0.101,0.236,conscious hip hop
+1xIxMz1sNQ4b6svH1GuTtF,Gimme The Loot,66,The Notorious B.I.G.,0.713,0.647,0.439,0.0867,0,0.636,0.694,east coast hip hop
+34xsvZ1A2Ou1oo1VyOwQG1,Loudest MF,58,Yellow Claw,0.696,0.958,0.4,0.00403,0.371,0.0874,0.461,bass trap
+1geovaCdfs5fSa4NNgFPVe,Bella Ciao,70,Hardwell,0.616,0.892,0.0462,0.00214,0.000186,0.227,0.235,big room
+45HAjqRWiNv6mMPw4NvZrU,Come Together,69,Gary Clark Jr.,0.447,0.788,0.0464,0.00257,0.0000168,0.0744,0.505,blues-rock
+1cqWEQ6TRfYr3SBNh7Ni2w,Bodies,63,Drowning Pool,0.613,0.919,0.081,0.00212,0.000584,0.104,0.586,alternative metal
