@@ -242,6 +242,23 @@ def switch_critique_level(interaction_log, cur_rec, categorical_attributes, nume
 
 
 
+def obtain_top_k_critique_with_recommendation_list(top_K, sorted_critique_utility_list, frequent_critiques_satisfied_items_dict,estimated_score_dict):
+    topK_critique_item_list = []
+    for critique, utility in sorted_critique_utility_list[0:top_K]:
+        satisfied_item_list = frequent_critiques_satisfied_items_dict[critique]
+        satisfied_item_score_dict = {}
+        for item in satisfied_item_list:
+            satisfied_item_score_dict[item] = estimated_score_dict[item]
+        sorted_satisfied_item_score_list = helper.sort_dict(satisfied_item_score_dict)
+        sorted_satisfied_item_list = []
+        for item in sorted_satisfied_item_score_list:
+            sorted_satisfied_item_list.append(item[0])
+            if len(sorted_satisfied_item_list) >= top_K:
+                break
+
+        topK_critique_item_list.append({'critique': critique, 'recommendation' : sorted_satisfied_item_list})
+    return topK_critique_item_list
+
 
 def generate_system_critiques_preference_oriented(user_info,estimated_score_dict, item_pool, cur_rec, top_K, unit_or_compound, categorical_attributes, numerical_attributes):
     # Step 1: Generate a critique array for each item 
@@ -284,17 +301,9 @@ def generate_system_critiques_preference_oriented(user_info,estimated_score_dict
     user_attribute_frequency = user_info['attribute_frequency']
     sorted_critique_utility_list = compute_critique_utility_preference_oriented(user_attribute_frequency, frequent_critiques_freq_dict,min_support, frequent_critiques_satisfied_items_dict, estimated_score_dict)
 
+    topK_critique_item_list = obtain_top_k_critique_with_recommendation_list(top_K,sorted_critique_utility_list, frequent_critiques_satisfied_items_dict,estimated_score_dict)
 
-    topK_critique_item_dict = {}
-    for critique, utility in sorted_critique_utility_list[0:top_K]:
-        satisfied_item_list = frequent_critiques_satisfied_items_dict[critique]
-        satisfied_item_score_dict = {}
-        for item in satisfied_item_list:
-            satisfied_item_score_dict[item] = estimated_score_dict[item]
-        sorted_satisfied_item_score_list = helper.sort_dict(satisfied_item_score_dict)
-        topK_critique_item_dict[len(topK_critique_item_dict)+1] = {'critique': critique, 'item' : sorted_satisfied_item_score_list}
-
-    return topK_critique_item_dict
+    return topK_critique_item_list
 
 
 
@@ -346,16 +355,9 @@ def generate_system_critiques_diversity_oriented(user_info, interaction_log,  es
         user_listened_songs, item_pool, frequent_critiques_satisfied_items_dict , categorical_attributes, numerical_attributes)
 
 
-    topK_critique_item_dict = {}
-    for critique, utility in sorted_critique_diversity_utility_list[0:top_K]:
-        satisfied_item_list = frequent_critiques_satisfied_items_dict[critique]
-        satisfied_item_score_dict = {}
-        for item in satisfied_item_list:
-            satisfied_item_score_dict[item] = estimated_score_dict[item]
-        sorted_satisfied_item_score_list = helper.sort_dict(satisfied_item_score_dict)
-        topK_critique_item_dict[len(topK_critique_item_dict)+1] = {'critique': critique, 'item' : sorted_satisfied_item_score_list}
+    topK_critique_item_list = obtain_top_k_critique_with_recommendation_list(top_K, sorted_critique_diversity_utility_list, frequent_critiques_satisfied_items_dict,estimated_score_dict)
 
-    return topK_critique_item_dict
+    return topK_critique_item_list
 
 
 

@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import pprint
+import copy
 from function import helper 
 
 pp = pprint.PrettyPrinter(indent=4)
@@ -39,14 +40,39 @@ def numerical_attributes_value_function(user_pref_v, item_v, attribute):
     else:
         return 0
     return 1
+
 # ------------------------------------------------------------------
 # Multi-attribute Utility Theory (MAUT) : Get Utility for each items
 # ------------------------------------------------------------------
 
+def filter_items_by_user_constraints(user_constraints, item_pool, minimal_threshold):
+    
+    filtered_item_pool = copy.deepcopy(item_pool)
+    for key, critique_unit_dict in user_constraints.items():
+        attr = critique_unit_dict['attribute']
+        crit_direction = critique_unit_dict['crit_direction']
+        crit_value = critique_unit_dict['value']
 
-def filter_items_by_user_constraints(user_constraints, item_pool):
-    filtered_item_pool = []
+        if len(filtered_item_pool) < minimal_threshold:
+            break
+        for item in filtered_item_pool:
+            attribut_interval,interval_label = helper.get_numerical_attribute_intervalindex(attr)
+            intervals = pd.IntervalIndex.from_breaks(attribut_interval, closed='left')
 
+            cur_interval_find = list(intervals.contains(crit_value))
+            cur_index = cur_interval_find.index(True)
+
+            item_interval_find = list(intervals.contains(item[attr]))
+            item_index = item_interval_find.index(True)
+            satisfied_flag = False
+            if item_index == cur_index and crit_direction == 'similar':
+                satisfied_flag = True
+            if item_index < cur_index and crit_direction == 'lower':
+                satisfied_flag = True
+            if item_index > cur_index and crit_direction == 'higher':
+                satisfied_flag = True
+            if satisfied_flag == False:
+                filtered_item_pool.remove(item)
 
     return filtered_item_pool
 
@@ -207,3 +233,18 @@ def compute_recommendation(user_preference_model, user_critique_preference, item
             return top_K_recommmendation_list
         else:
             return integrated_score_dict
+
+def update_recommendation_pool(user_preference_model, user_critique_preference, integrated_item_pool, max_item_pool_number, categorical_attributes, numerical_attributes, method, alpha):
+        
+    sorted_estimated_score_dict = compute_recommendation(user_preference_model, user_critique_preference, integrated_item_pool, len(integrated_item_pool), categorical_attributes, numerical_attributes, method, alpha)
+    
+    max_item_pool_list = []
+    for rec in sorted_estimated_score_dict:
+        max_item_pool_list.append(rec[0])
+
+    updated_item_pool = []
+    for item in integrated_item_pool:
+        if item['id'] in max_item_pool_list:
+            updated_item_pool.append(item)
+
+    return updated_item_pool

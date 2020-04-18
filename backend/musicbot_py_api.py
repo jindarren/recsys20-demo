@@ -97,19 +97,47 @@ class GetRec(Resource):
         user_profile = json_data['user_profile']
         user_preference_model = user_profile['user']['user_preference_model'] 
         user_critique_preference = user_profile['user']['user_critique_preference'] 
-        item_pool = user_profile['vis']
+        user_constraints = user_profile['user']['user_constraints'] 
+        item_pool = user_profile['pool']
+        new_item_pool = user_profile['new_pool']
+
         top_K = 10
         method = 'MAUT_COMPAT' # (1) MAUT (2) COMPAT (3) MAUT_COMPAT
         alpha = 0.5
-        recommendations = recommendation.compute_recommendation(user_preference_model, user_critique_preference, item_pool, top_K, categorical_attributes, numerical_attributes, method, alpha)
-        recommendation_list = {'recommendation_list': recommendations}
+
+        minimal_threshold = 10
+         
+        topK_recommendations_score_dict = {}
+        if len(new_item_pool) > 0:
+            topK_recommendations_score_dict = recommendation.compute_recommendation(user_preference_model, user_critique_preference, new_item_pool, top_K, categorical_attributes, numerical_attributes, method, alpha)
+        else: 
+            filtered_item_pool = recommendation.filter_items_by_user_constraints(user_constraints, item_pool, minimal_threshold)
+            print("after filtering, %d pieces of music left." % len(filtered_item_pool))
+            if len(filtered_item_pool) > 0:
+                topK_recommendations_score_dict = recommendation.compute_recommendation(user_preference_model, user_critique_preference, filtered_item_pool, top_K, categorical_attributes, numerical_attributes, method, alpha)
+
+        topK_recommendation_list = []
+        if len(topK_recommendations_score_dict) > 0:
+            for rec in topK_recommendations_score_dict:
+                topK_recommendation_list.append(rec[0])
+
+        updated_item_pool = []
+        if len(new_item_pool) > 0:
+            integrated_item_pool = item_pool + new_item_pool
+            max_item_pool_number = 150
+            updated_item_pool = recommendation.update_recommendation_pool(user_preference_model, user_critique_preference, integrated_item_pool, max_item_pool_number, categorical_attributes, numerical_attributes, method, alpha)
+            user_profile['pool'] = updated_item_pool
+            user_profile['new_pool'] = []
+
+        
+        recommendation_and_user_profile = {'recommendation_list': topK_recommendation_list, 'user_profile': user_profile}
         
         end = time.process_time()
         time_helper.print_current_time()
         print ('Get Recommendation ---- run time : %ss ' % str(end-start))
 
 
-        return recommendation_list, 201
+        return recommendation_and_user_profile, 201
 
 class GetSysCri(Resource):
  
@@ -126,14 +154,14 @@ class GetSysCri(Resource):
         user_critique_preference = user_profile['user']['user_critique_preference'] 
 
         user_interaction_log = user_profile['logger']
-        item_pool = user_profile['vis']
+        item_pool = user_profile['pool']
         cur_rec = user_profile['topRecommendedSong']
         top_K = 10
         unit_or_compound = [1]
         
         method = 'MAUT_COMPAT'
         alpha = 0.5
-        estimated_score_dict = recommendation.compute_recommendation(user_preference_model, user_critique_preference, item_pool, top_K, categorical_attributes, numerical_attributes, method, alpha, sort=False)
+        estimated_score_dict = recommendation.compute_recommendation(user_preference_model, user_critique_preference, item_pool, len(item_pool), categorical_attributes, numerical_attributes, method, alpha, sort=False)
         
         sys_crit_version = 'diversity_oriented' # preference_oriented / diversity_oriented / personality_adjusted
         sys_crit = None
@@ -145,7 +173,7 @@ class GetSysCri(Resource):
             sys_crit = system_critiquing.generate_system_critiques_personality_adjusted(user_preference_model, user_interaction_log, estimated_score_dict, item_pool, cur_rec, top_K, unit_or_compound, categorical_attributes, numerical_attributes)
 
         # pp.pprint(sys_crit)
-        sys_crit_with_rec_list = {'sys_crit': sys_crit}
+        sys_crit_with_rec_list = {'sys_crit_with_recommendation': sys_crit}
 
         end = time.process_time()
         time_helper.print_current_time()

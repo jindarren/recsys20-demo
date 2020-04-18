@@ -1,5 +1,5 @@
 {
-    "vis": [
+    "pool": [
         {
             "id": "5BdwrzgWxGGstdiV2mHtEK",
             "name": "Me Hace Falta (Cap. 2)",
@@ -2400,6 +2400,9 @@
             "seed": "Youtopia,Youtopia - Michael Woods Remix,Safe And Sound,Get Lucky (feat. Pharrell Williams & Nile Rodgers) - Radio Edit, and Radioactive",
             "seedType": "track"
         }
+    ],
+    "new_pool":[
+
     ],
     "user": {
         "preferenceData": {
