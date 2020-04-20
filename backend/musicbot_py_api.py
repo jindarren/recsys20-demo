@@ -25,7 +25,7 @@ numerical_attributes = ['popularity', 'danceability', 'energy',  'speechiness', 
 
 # 操作（post / get）资源列表
 class InitializeUserModel(Resource):
-    def get(self):
+    def post(self):
         start = time.process_time()
         time_helper.print_current_time()
         print("Initialize User Model")
@@ -54,7 +54,7 @@ class InitializeUserModel(Resource):
 
 class UpdateUserModel(Resource):
     
-    def get(self):
+    def post(self):
         start = time.process_time()
         time_helper.print_current_time()
         print("Update User Model ")
@@ -87,7 +87,7 @@ class UpdateUserModel(Resource):
  
 class GetRec(Resource):
  
-    def get(self):
+    def post(self):
 
         start = time.process_time()
         time_helper.print_current_time()
@@ -141,7 +141,7 @@ class GetRec(Resource):
 
 class GetSysCri(Resource):
  
-    def get(self):
+    def post(self):
 
         start = time.process_time()
         time_helper.print_current_time()

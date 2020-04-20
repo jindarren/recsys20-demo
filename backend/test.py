@@ -54,7 +54,7 @@ parms = {
 }
 
 for i in range(2):
-	res = requests.get(url, data=json.dumps(parms))  # request API to return results
+	res = requests.post(url, data=json.dumps(parms))  # request API to return results
 	print(i)
 
  
