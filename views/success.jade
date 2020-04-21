@@ -29,3 +29,18 @@ html
         p You have finished the study. Thank you~
         div(style='width:40%;height:auto')
             img(src="https://media.giphy.com/media/osjgQPWRx3cac/giphy.gif")
+        script(type = "text/javascript", src = "../jquery/dist/jquery.min.js", charset = 'utf-8')
+        script.
+            $.getJSON("/data/user_profile_with_preference_model_updated.json",function (data) {
+                var rawData = JSON.stringify(data)
+                $.ajax({
+                    type: "POST",
+                    url: "/initialize_user_model",
+                    data: rawData,
+                    success: function (result) {
+                        console.log(result)
+                    },
+                    dataType: "json"
+                });
+            })
+

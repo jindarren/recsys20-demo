@@ -38,6 +38,7 @@ mongoose.connect("mongodb://localhost:27017/bot", function (err) {
 app.use(express.static(__dirname + '/public')); // js, css, images
 app.use(express.static(path.join(__dirname, 'bower_components')));
 app.use(express.static(path.join(__dirname, 'node_modules')));
+app.use(express.static(path.join(__dirname, 'backend')));
 
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));

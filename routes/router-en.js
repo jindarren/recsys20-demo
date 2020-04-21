@@ -641,7 +641,23 @@ function uniqueArr(arr1, arr2){
         }
     }
     return arr4
-} 
+}
+
+router.post('/initialize_user_model',function (req,res) {
+    var profile = JSON.stringify({'user_profile': req.body})
+
+    request.post('http://127.0.0.1:5000/initialize_user_model', {
+        json: profile
+    }, (error, res, body) => {
+        if (error) {
+            console.error(error)
+            return
+        }
+        console.log(`statusCode: ${res.statusCode}`)
+        console.log(body)
+    })
+
+})
 
 
 router.post('/initiate', function(req, res) {
