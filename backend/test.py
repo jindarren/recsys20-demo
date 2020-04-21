@@ -1,9 +1,11 @@
 import requests
 import json
-from tool import load_data, store_data
+import pprint
 
 import sys
-import pprint
+
+from tool import load_data,store_data
+
 
 
 pp = pprint.PrettyPrinter(indent=4)
@@ -25,9 +27,9 @@ user_profile = load_data.load_json_data(user_profile_data)
 
 
 # api setting
-# test_function = 'initialize_user_model'
+test_function = 'initialize_user_model'
 # test_function = 'update_user_model'
-test_function = 'get_rec'
+# test_function = 'get_rec'
 # test_function = 'get_sys_cri'
 
 url = ''
@@ -60,9 +62,9 @@ for i in range(2):
  
 text = res.text
 text_json = json.loads(text)
-# pp.pprint(text_json)
-user_profile = text_json['user_profile']
-print(len(user_profile['pool']))
+pp.pprint(text_json)
+# user_profile = text_json['user_profile']
+# print(len(user_profile['pool']))
 
 # store_data.store_data_to_json(text_json, "data/user_profile_with_preference_model_updated_after_rec.json")
 # with open("data/user_preference_model.json", 'w') as user_pref_file:

@@ -1,6 +1,6 @@
 import json
 import time
-from flask import Flask, g
+from flask import Flask, g, Response
 from flask import jsonify, request
 from flask_restful import reqparse, Api, Resource
 # from flask_httpauth import HTTPTokenAuth
@@ -50,7 +50,7 @@ class InitializeUserModel(Resource):
         time_helper.print_current_time()
         print ('Initialize User Model ---- run time : %ss ' % str(end-start))
 
-        return user_profile
+        return json.dumps(user_profile)
 
 class UpdateUserModel(Resource):
     
@@ -83,7 +83,7 @@ class UpdateUserModel(Resource):
 
         # pp.pprint(user_profile)
         # 资源添加成功，返回201
-        return user_profile
+        return json.dumps(user_profile)
  
 class GetRec(Resource):
  
@@ -137,7 +137,7 @@ class GetRec(Resource):
         print ('Get Recommendation ---- run time : %ss ' % str(end-start))
 
 
-        return recommendation_and_user_profile, 201
+        return json.dumps(recommendation_and_user_profile), 201
 
 class GetSysCri(Resource):
  
@@ -181,7 +181,7 @@ class GetSysCri(Resource):
 
 
 
-        return sys_crit_with_rec_list, 201
+        return json.dumps(sys_crit_with_rec_list), 201
 
 
 # 设置路由，即路由地址为http://127.0.0.1:5000/xxx
