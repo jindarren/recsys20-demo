@@ -30,9 +30,10 @@ class InitializeUserModel(Resource):
         time_helper.print_current_time()
         print("Initialize User Model")
         json_data = request.get_json(force=True)
-
-        print(json_data)
+        #json_data = request.form
+        #print(json_data)
         user_profile = json_data['user_profile']
+        print(type(user_profile))
         user_historical_record = user_profile['user']['preferenceData']['track']
         # initialize the user preference model
         user_initial_preference_value =  user_modeling.initialize_user_preference_value(user_historical_record, categorical_attributes, numerical_attributes)

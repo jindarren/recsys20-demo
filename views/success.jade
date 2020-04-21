@@ -32,14 +32,18 @@ html
         script(type = "text/javascript", src = "../jquery/dist/jquery.min.js", charset = 'utf-8')
         script.
             $.getJSON("/data/user_profile_with_preference_model_updated.json",function (data) {
-                var rawData = JSON.stringify(data)
+                var profile = {}
+                console.log(typeof(data))
+                profile["user_profile"] = data
+                console.log(profile)
                 $.ajax({
                     type: "POST",
                     url: "/initialize_user_model",
-                    data: rawData,
+                    data: JSON.stringify(profile),
                     success: function (result) {
                         console.log(result)
                     },
+                    contentType:"application/json;charset=utf-8",
                     dataType: "json"
                 });
             })

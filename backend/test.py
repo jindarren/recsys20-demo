@@ -55,6 +55,8 @@ parms = {
     'user_profile': user_profile,
 }
 
+print(json.dumps(parms))
+
 for i in range(2):
 	res = requests.post(url, data=json.dumps(parms))  # request API to return results
 	print(i)
@@ -62,7 +64,7 @@ for i in range(2):
  
 text = res.text
 text_json = json.loads(text)
-pp.pprint(text_json)
+#pp.pprint(text_json)
 # user_profile = text_json['user_profile']
 # print(len(user_profile['pool']))
 

@@ -644,17 +644,15 @@ function uniqueArr(arr1, arr2){
 }
 
 router.post('/initialize_user_model',function (req,res) {
-    var profile = JSON.stringify({'user_profile': req.body})
 
-    request.post('http://127.0.0.1:5000/initialize_user_model', {
-        json: profile
-    }, (error, res, body) => {
+    console.log(req.body)
+    request.post({url:'http://127.0.0.1:5000/initialize_user_model',
+        json: req.body}, (error, response, body) => {
         if (error) {
             console.error(error)
             return
         }
-        console.log(`statusCode: ${res.statusCode}`)
-        console.log(body)
+        res.json(body)
     })
 
 })
