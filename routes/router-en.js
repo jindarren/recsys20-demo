@@ -165,8 +165,8 @@ passport.deserializeUser(function(obj, done) {
 passport.use(new SpotifyStrategy({
         clientID: appKey,
         clientSecret: appSecret,
-        // callbackURL: 'https://music-bot.top:3001/callback'
-        callbackURL: 'https://localhost:3000/callback'
+        callbackURL: 'https://music-bot.top:3000/callback'
+        //callbackURL: 'https://localhost:3000/callback'
     },
     function(accessToken, refreshToken, profile, done) {
         // asynchronous verification, for effect...
@@ -644,7 +644,6 @@ function uniqueArr(arr1, arr2){
 }
 
 router.post('/initialize_user_model',function (req,res) {
-
     console.log(req.body)
     request.post({url:'http://127.0.0.1:5000/initialize_user_model',
         json: req.body}, (error, response, body) => {
@@ -654,7 +653,42 @@ router.post('/initialize_user_model',function (req,res) {
         }
         res.json(body)
     })
+})
 
+router.post('/update_user_model',function (req,res) {
+    console.log(req.body)
+    request.post({url:'http://127.0.0.1:5000/update_user_model',
+        json: req.body}, (error, response, body) => {
+        if (error) {
+            console.error(error)
+            return
+        }
+        res.json(body)
+    })
+})
+
+router.post('/get_rec',function (req,res) {
+    console.log(req.body)
+    request.post({url:'http://127.0.0.1:5000/get_rec',
+        json: req.body}, (error, response, body) => {
+        if (error) {
+            console.error(error)
+            return
+        }
+        res.json(body)
+    })
+})
+
+router.post('/get_sys_cri',function (req,res) {
+    console.log(req.body)
+    request.post({url:'http://127.0.0.1:5000/get_sys_cri',
+        json: req.body}, (error, response, body) => {
+        if (error) {
+            console.error(error)
+            return
+        }
+        res.json(body)
+    })
 })
 
 

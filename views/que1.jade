@@ -687,22 +687,114 @@ html
           li
             input(type='radio', name='group25', value='7')
             label Strongly agree
+        label.statement 26. The system provided me with surprising recommendations that helped me discover new music that I wouldn’t have found elsewhere.
+        ul#post-26.likert
+          li
+            input(type='radio', name='group26', value='1')
+            label Strongly disagree
+          li
+            input(type='radio', name='group26', value='2')
+            label Disgree
+          li
+            input(type='radio', name='group26', value='3')
+            label Somewhat disagree
+          li
+            input(type='radio', name='group26', value='4')
+            label Neutral
+          li
+            input(type='radio', name='group26', value='5')
+            label Somewhat agree
+          li
+            input(type='radio', name='group26', value='6')
+            label Agree
+          li
+            input(type='radio', name='group26', value='7')
+            label Strongly agree
+        label.statement 27. The system provided me with recommendations that I had not considered in the first place but turned out to be a positive and surprising discovery.
+        ul#post-27.likert
+          li
+            input(type='radio', name='group27', value='1')
+            label Strongly disagree
+          li
+            input(type='radio', name='group27', value='2')
+            label Disgree
+          li
+            input(type='radio', name='group27', value='3')
+            label Somewhat disagree
+          li
+            input(type='radio', name='group27', value='4')
+            label Neutral
+          li
+            input(type='radio', name='group27', value='5')
+            label Somewhat agree
+          li
+            input(type='radio', name='group27', value='6')
+            label Agree
+          li
+            input(type='radio', name='group27', value='7')
+            label Strongly agree
+        label.statement 28. The system provided me with recommendations that were a pleasant surprise to me because I would not have discovered them somewhere else.
+        ul#post-28.likert
+          li
+            input(type='radio', name='group28', value='1')
+            label Strongly disagree
+          li
+            input(type='radio', name='group28', value='2')
+            label Disgree
+          li
+            input(type='radio', name='group28', value='3')
+            label Somewhat disagree
+          li
+            input(type='radio', name='group28', value='4')
+            label Neutral
+          li
+            input(type='radio', name='group28', value='5')
+            label Somewhat agree
+          li
+            input(type='radio', name='group28', value='6')
+            label Agree
+          li
+            input(type='radio', name='group28', value='7')
+            label Strongly agree
+        label.statement 29. I tend to trust the recommender, even though having little knowledge of it.
+        ul#post-29.likert
+          li
+            input(type='radio', name='group29', value='1')
+            label Strongly disagree
+          li
+            input(type='radio', name='group29', value='2')
+            label Disgree
+          li
+            input(type='radio', name='group29', value='3')
+            label Somewhat disagree
+          li
+            input(type='radio', name='group29', value='4')
+            label Neutral
+          li
+            input(type='radio', name='group29', value='5')
+            label Somewhat agree
+          li
+            input(type='radio', name='group29', value='6')
+            label Agree
+          li
+            input(type='radio', name='group29', value='7')
+            label Strongly agree
         .buttons
           button.clear Clear
           button.submit Submit
     script(type='text/javascript').
-      var formList = [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null]
+      var formList = [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null]
       $("li > input").click(function(){
-      var statement = parseInt($(this).parent().parent().attr("id").replace(/[^0-9]/ig,""))
-      var option = parseInt($(this).attr("value"))
-      console.log(option)
-      formList[statement+2]=option
-      console.log(formList)
+        var statement = parseInt($(this).parent().parent().attr("id").replace(/[^0-9]/ig,""))
+        var option = parseInt($(this).attr("value"))
+        console.log(option)
+        formList[statement+2]=option
+        console.log(formList)
       })
       $(".clear").click(function(event){
-      $("input").checked=false;
-      $("#post-20").empty()
-      formList = [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null]
+        $("input").checked=false;
+        //$("#post-20").empty()
+      formList = [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null]
       })
       $(".submit").click(function(event){
       event.preventDefault()

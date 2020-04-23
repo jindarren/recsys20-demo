@@ -27,14 +27,14 @@ var showNextSong, showCurrentSong, showNextSong2, showNextSong3, showCurrentSong
 var loggers = [], logger = {};
 
 
-{
-"agent": "you",
-"text": "lower energy",
-"action": "User_critique",
-"critique": [{"energy": "lower"}],
-"critiqued_song": {},
-"timestamp": 1554271816733
-}
+// {
+// "agent": "you",
+// "text": "lower energy",
+// "action": "User_critique",
+// "critique": [{"energy": "lower"}],
+// "critiqued_song": {},
+// "timestamp": 1554271816733
+// }
 
 logger.dialog = []
 logger.exp_energy = []
@@ -48,7 +48,7 @@ logger.exp_category = []
 logger.exp_feature = []
 
 var nextSongUtters = ["Great, here is another song.", "OK, maybe you also like this song.", "Good, please try the next song."],
-    rateUtters = ["Please rate your liked song.", "Don't forget to rate the song.","You also need to rate the song."]
+    rateUtters = ["Please rate your liked song in terms of pleasant surprise.", "Don't forget to rate the song in terms of pleasant surprise.","You also need to rate the song in terms of pleasant surprise."]
 
 
 var systemLang = storage.language
