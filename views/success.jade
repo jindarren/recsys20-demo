@@ -41,7 +41,7 @@ html
                     url: "/initialize_user_model",
                     data: JSON.stringify(profile),
                     success: function (result) {
-                        console.log(result)
+                        console.log(JSON.parse(result))
                     },
                     contentType:"application/json;charset=utf-8",
                     dataType: "json"

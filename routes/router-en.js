@@ -165,8 +165,8 @@ passport.deserializeUser(function(obj, done) {
 passport.use(new SpotifyStrategy({
         clientID: appKey,
         clientSecret: appSecret,
-        callbackURL: 'http://music-bot.top:3000/callback'
-        //callbackURL: 'http://localhost:3000/callback'
+        //callbackURL: 'http://music-bot.top:3000/callback'
+        callbackURL: 'http://localhost:3000/callback'
     },
     function(accessToken, refreshToken, profile, done) {
         // asynchronous verification, for effect...
@@ -983,6 +983,10 @@ router.get('/callback',
         });
 
         res.cookie('refresh-token', req.authInfo.refreshToken, {
+            maxAge: 3600000
+        });
+
+        res.cookie('user-id', req.user.id, {
             maxAge: 3600000
         });
 

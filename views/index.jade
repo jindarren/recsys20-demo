@@ -14,6 +14,8 @@ html(lang='en-us')
       .context
         #likedsongs
             h5(style="text-align:center; font-weight:bold; background:yellow") Task: create a playlist that contains 10 good songs.
+            p Please rate your liked songs in terms of
+              strong pleasant surprise
             ul.list-group
         #task1(style="display:none") You have finished the task, please fill the final questionnaire.
 
@@ -31,54 +33,70 @@ html(lang='en-us')
         #accordion
           h3 Tips for tuning the recommendations by audio features
           div
-            p Currently the system supports searching by 5 audio features, 
+            p.desc Currently the system supports searching by 5 audio features,
+            br
 
-            p
+            p.desc
               span.exp(data-container="body" data-toggle='popover', data-placement='auto', data-content='Energy represents a perceptual measure of intensity and activity. Typically, energetic tracks feel fast, loud, and noisy. For example, death metal has high energy, while a Bach prelude scores low on the scale.', style="color:#2061E5") Energy:
-              span To tweak recommendation by energy, you can say "I need more/less energy", "I need higher/lower energy".
+              span To tweak recommendation by energy, you can say
+            p.example "I need more/less energy"
+            p.example "I need higher/lower energy"
+            br
             
-            p
+            p.desc
               span.exp(data-container="body" data-toggle='popover', data-placement='auto', data-content='Danceability describes how suitable a track is for dancing based on a combination of musical elements including tempo, rhythm stability, beat strength, and overall regularity.', style="color:#2061E5") Danceability:
-              span To tweak recommendation by danceability, you can say "I need higher/lower danceability", "I need to dance", "Play a song for dancing".
+              span To tweak recommendation by danceability, you can say
+            p.example "I need higher/lower danceability"
+            p.example "I need to dance"
+            p.example "Play a song for dancing"
+            br
 
-            p
+            p.desc
               span.exp(data-container="body" data-toggle='popover', data-placement='auto', data-content='Speechiness detects the presence of spoken words in a track.', style="color:#2061E5") Speechiness:
-              span To tweak recommendation by speechiness, you can say "I need more/less speech", "Play a song with less speech".
+              span To tweak recommendation by speechiness, you can say
+            p.example "I need more/less speech"
+            p.example "Play a song with less speech"
+            br
 
-            p
+            p.desc
               span.exp(data-container="body" data-toggle='popover', data-placement='auto', data-content='Tempo is the speed or pace of a given piece and derives directly from the average beat duration.', style="color:#2061E5") Tempo:
-              span To tweak recommendation by tempo, you can say "I like slow/fast songs", "Play some fast music".
+              span To tweak recommendation by tempo, you can say
+            p.example "I like slow/fast songs"
+            p.example "Play some fast music"
+            br
 
-            p
-              span.exp(data-container="body" data-toggle='popover', data-placement='auto', data-content='Tracks with high valence sound more positive (e.g. happy, cheerful, euphoric), while tracks with low valence sound more negative (e.g. sad, depressed, angry).', style="color:#2061E5") valence:
-              span To tweak recommendation by tempo, you can say "I feel happy", "feel sad".
+            p.desc
+              span.exp(data-container="body" data-toggle='popover', data-placement='auto', data-content='Tracks with high valence sound more positive (e.g. happy, cheerful, euphoric), while tracks with low valence sound more negative (e.g. sad, depressed, angry).', style="color:#2061E5") Valence:
+              span To tweak recommendation by tempo, you can say
+            p.example "I feel happy"
+            p.example "feel sad"
 
           h3 Tips for tuning the recommendations by music categories
           div
-            p
+            p.desc
               | If you want to search for songs by genres such as pop, rock, jazz, R&B,
               | you can say
-            p "Play songs for traveling"
-            p "Songs for party"
-            p "Play songs for the family"
-            p "Play jazz songs"
-            p "I like rock"
-            p "Play a pop song"
-            p ...
+            br
+            p.example "Play songs for traveling"
+            p.example "Songs for party"
+            p.example "Play songs for the family"
+            p.example "Play jazz songs"
+            p.example "I like rock"
+            p.example "Play a pop song"
           h3 Tips for tuning the recommendations by music languages
           div
-            p You can specify the language of songs by saying
-            p "I like Chinese songs"
-            p "Play a English song"
-            p "Find me some good music on Chinese"
-            p "I want to listen to English music"
-            p ...
+            p.desc You can specify the language of songs by saying
+            br
+            p.example "I like Chinese songs"
+            p.example "Play a English song"
+            p.example "Find me some good music on Chinese"
+            p.example "I want to listen to English music"
           h3 Tips for tuning the recommendations by artists
           div
-            p If you want to search for songs by artists, you can say
-            p "Play Justin Bieber songs"
-            p "I like Lady Gaga music"
-            p ...
+            p.desc If you want to search for songs by artists, you can say
+            br
+            p.example "Play Justin Bieber songs"
+            p.example "I like Lady Gaga music"
     script(type = "text/javascript", src = "../jquery/dist/jquery.min.js", charset = 'utf-8')
     script(type = "text/javascript", src = "../jquery.cookie/jquery.cookie.js", charset = 'utf-8')
     script(type = "text/javascript", src = "../jquery-ui/jquery-ui.min.js", charset = 'utf-8')

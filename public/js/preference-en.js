@@ -1,5 +1,3 @@
-var storage=window.localStorage;
-storage.clear();
 var spotifyToken = $.cookie('spotify-token')
 
 

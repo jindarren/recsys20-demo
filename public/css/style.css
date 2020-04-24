@@ -20,6 +20,7 @@ body{
     -webkit-background-size: cover;
     -o-background-size: cover;
     background-position: center 0;
+    font-size: 12px;
 }
 
 
@@ -277,8 +278,17 @@ input{border:0;outline:none;}
 
 }
 
-.task p{
-  color: #212021;
+.desc{
+    color: #7f7f7f;
+    padding:0px;
+    margin:0px;
+}
+
+.example{
+    color: #0b0b0b;
+    font-weight: bold;
+    padding:1px;
+    margin:1px;
 }
 
 #task1, #task2{
