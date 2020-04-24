@@ -5,13 +5,14 @@ import copy
 from function import helper, recommendation, diversity_calculation 
 from efficient_apriori import apriori
 import sys
-from function.data_processing_analysis import pca_analysis
+from analysis.data_processing_analysis import pca_analysis
 sys.path.append("..") 
 from tool import time_helper, store_data
 
 pp = pprint.PrettyPrinter(indent=4)
 
-
+min_support = 0.1
+min_confidence = 0.8
 
 
 def generate_critique_array(item_pool, cur_rec, categorical_attributes, numerical_attributes):
@@ -147,8 +148,9 @@ def compute_critique_utility_diversity_oriented (diversity_calculation_method, u
         if diversity_calculation_method == 'unexpectedness':
             critique_diversity_utility = diversity_calculation.calculate_unexpectedness_for_set(user_listened_songs_info_df, crit_item_info_df, combined_songs_info_df, categorical_attributes, numerical_attributes)
 
-        # combined_pc_df = pca_analysis(user_listened_songs_info_df, crit_item_info_df,combined_songs_info_df, categorical_attributes, numerical_attributes)
-        # store_data.store_data_to_xlsx(combined_pc_df, crit)
+        combined_pc_df = pca_analysis(user_listened_songs_info_df, crit_item_info_df,combined_songs_info_df, categorical_attributes, numerical_attributes)
+        crit_name = crit[0].replace('|', '_')
+        store_data.store_data_to_xlsx(combined_pc_df, crit_name)
 
         critique_diversity_utility_dict[crit] = critique_diversity_utility
     
@@ -265,8 +267,7 @@ def generate_system_critiques_preference_oriented(user_info,estimated_score_dict
     item_critique_arrays, item_critique_arrays_dict = generate_critique_array (item_pool, cur_rec, categorical_attributes, numerical_attributes)
 
     # Step 2: Find frequent critiques set (Compound & Unit)
-    min_support = 0.2
-    min_confidence = 0.5
+
     num_critique_sets_dict, rules = apriori(item_critique_arrays, min_support=min_support, min_confidence=min_confidence)
 
     frequent_critiques_freq_dict = {}
@@ -325,15 +326,13 @@ def generate_system_critiques_diversity_oriented(user_info, interaction_log,  es
 
     # Step 2: Find frequent critiques set (Compound & Unit)
 
-    min_support = 0.2
-    min_confidence = 0.5
     num_critique_sets_dict, rules = apriori(item_critique_arrays, min_support=min_support, min_confidence=min_confidence)
 
     frequent_critiques_freq_dict = {}
     for num in unit_or_compound:
         for crit, freq in num_critique_sets_dict[num].items():
             frequent_critiques_freq_dict[crit] = freq
-    pp.pprint(frequent_critiques_freq_dict)
+    # pp.pprint(frequent_critiques_freq_dict)
 
 
 
@@ -343,8 +342,8 @@ def generate_system_critiques_diversity_oriented(user_info, interaction_log,  es
     
     
     # Step 4: Compute critique diversity power for frequent critiques
-    diversity_calculation_method = 'dissimilarity' 
-    # diversity_calculation_method = 'entropy'
+    # diversity_calculation_method = 'dissimilarity' 
+    diversity_calculation_method = 'entropy'
     # diversity_calculation_method = 'unexpectedness'
 
     user_listened_songs = interaction_log['listenedSongs']

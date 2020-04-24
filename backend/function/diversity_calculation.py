@@ -3,7 +3,7 @@ import numpy as np
 import pprint
 import copy
 from function import helper
-from function.data_processing_analysis import preprocessing_constrctur_feature_vectors
+from analysis.data_processing_analysis import preprocessing_constrctur_feature_vectors
 from statistics import mean 
 from scipy.stats import entropy
 

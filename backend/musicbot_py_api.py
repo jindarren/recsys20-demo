@@ -28,17 +28,14 @@ class InitializeUserModel(Resource):
     def post(self):
         start = time.process_time()
         time_helper.print_current_time()
-        print("Initialize User Model")
+        print("Initialize User Model ---- start")
+
         json_data = request.get_json(force=True)
-        #json_data = request.form
-        #print(json_data)
         user_profile = json_data['user_profile']
-        print(type(user_profile))
         user_historical_record = user_profile['user']['preferenceData']['track']
         # initialize the user preference model
-        user_initial_preference_value =  user_modeling.initialize_user_preference_value(user_historical_record, categorical_attributes, numerical_attributes)
-        user_preference_attribute_frequency = user_modeling.initialize_user_preference_attribute_frequency( categorical_attributes, numerical_attributes)
-        user_profile['user']['user_preference_model'] = {'preference_value':user_initial_preference_value, 'attribute_frequency':user_preference_attribute_frequency}
+        user_preference_model = user_modeling.initialize_user_preference_model(user_historical_record, categorical_attributes, numerical_attributes)
+        user_profile['user']['user_preference_model'] = user_preference_model
         # initialize the user constraints (empty)
         user_constraint = {}
         user_profile['user']['user_constraints'] =  user_constraint
@@ -59,7 +56,7 @@ class UpdateUserModel(Resource):
     def post(self):
         start = time.process_time()
         time_helper.print_current_time()
-        print("Update User Model ")
+        print("Update User Model ---- start")
 
         json_data = request.get_json(force=True)
         user_profile = json_data['user_profile']
@@ -93,7 +90,7 @@ class GetRec(Resource):
 
         start = time.process_time()
         time_helper.print_current_time()
-        print("Get Recommendation")
+        print("Get Recommendation ---- start")
 
         json_data = request.get_json(force=True)
         user_profile = json_data['user_profile']
@@ -108,13 +105,18 @@ class GetRec(Resource):
         alpha = 0.5
 
         minimal_threshold = 10
+        time_helper.print_current_time()
+        print("Get Recommendation ---- Method: %s (alpha:%f)." % (method,alpha)) 
          
         topK_recommendations_score_dict = {}
         if len(new_item_pool) > 0:
             topK_recommendations_score_dict = recommendation.compute_recommendation(user_preference_model, user_critique_preference, new_item_pool, top_K, categorical_attributes, numerical_attributes, method, alpha)
         else: 
             filtered_item_pool = recommendation.filter_items_by_user_constraints(user_constraints, item_pool, minimal_threshold)
+            
+            time_helper.print_current_time()
             print("after filtering, %d pieces of music left." % len(filtered_item_pool))
+            
             if len(filtered_item_pool) > 0:
                 topK_recommendations_score_dict = recommendation.compute_recommendation(user_preference_model, user_critique_preference, filtered_item_pool, top_K, categorical_attributes, numerical_attributes, method, alpha)
 
@@ -125,9 +127,16 @@ class GetRec(Resource):
 
         updated_item_pool = []
         if len(new_item_pool) > 0:
+            time_helper.print_current_time()
+            print("Get Recommendation ---- New Pool: %d songs." % (len(new_item_pool))) 
+            print("Get Recommendation ---- Original Item Pool: %d songs." % (len(item_pool))) 
             integrated_item_pool = item_pool + new_item_pool
+            assert(len(integrated_item_pool) == len(item_pool + len(new_item_pool)))
+
             max_item_pool_number = 150
             updated_item_pool = recommendation.update_recommendation_pool(user_preference_model, user_critique_preference, integrated_item_pool, max_item_pool_number, categorical_attributes, numerical_attributes, method, alpha)
+            print("Get Recommendation ---- Updated Item Pool: %d songs." % (len(updated_item_pool))) 
+            
             user_profile['pool'] = updated_item_pool
             user_profile['new_pool'] = []
 
@@ -147,7 +156,7 @@ class GetSysCri(Resource):
 
         start = time.process_time()
         time_helper.print_current_time()
-        print("Get System Critiques")
+        print("Get System Critiques ---- start")
 
 
         json_data = request.get_json(force=True)
@@ -165,7 +174,13 @@ class GetSysCri(Resource):
         alpha = 0.5
         estimated_score_dict = recommendation.compute_recommendation(user_preference_model, user_critique_preference, item_pool, len(item_pool), categorical_attributes, numerical_attributes, method, alpha, sort=False)
         
+        # sys_crit_version = json_data['sys_crit_version'] # preference_oriented / diversity_oriented / personality_adjusted
+        
         sys_crit_version = 'diversity_oriented' # preference_oriented / diversity_oriented / personality_adjusted
+        time_helper.print_current_time()
+        print("Get System Critiques ---- system critique generation version: %s" % sys_crit_version)
+
+
         sys_crit = None
         if sys_crit_version == 'preference_oriented':
             sys_crit = system_critiquing.generate_system_critiques_preference_oriented(user_preference_model, estimated_score_dict, item_pool, cur_rec, top_K, unit_or_compound, categorical_attributes, numerical_attributes)
