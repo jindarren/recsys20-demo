@@ -5,7 +5,7 @@ import copy
 from function import helper, recommendation, diversity_calculation 
 from efficient_apriori import apriori
 import sys
-from analysis.data_processing_analysis import pca_analysis
+# from analysis.data_processing_analysis import pca_analysis
 sys.path.append("..") 
 from tool import time_helper, store_data
 
