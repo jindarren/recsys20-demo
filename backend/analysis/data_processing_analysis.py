@@ -3,10 +3,13 @@ import pandas as pd
 import numpy as np
 import pprint
 import copy
-from function import helper
+
 from statistics import mean 
 from scipy.stats import entropy
 
+import sys
+sys.path.append("..") 
+from function import helper
 
 from sklearn.preprocessing import OneHotEncoder,MaxAbsScaler
 from sklearn.decomposition import PCA

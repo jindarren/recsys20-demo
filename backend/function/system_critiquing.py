@@ -148,9 +148,9 @@ def compute_critique_utility_diversity_oriented (diversity_calculation_method, u
         if diversity_calculation_method == 'unexpectedness':
             critique_diversity_utility = diversity_calculation.calculate_unexpectedness_for_set(user_listened_songs_info_df, crit_item_info_df, combined_songs_info_df, categorical_attributes, numerical_attributes)
 
-        combined_pc_df = pca_analysis(user_listened_songs_info_df, crit_item_info_df,combined_songs_info_df, categorical_attributes, numerical_attributes)
-        crit_name = crit[0].replace('|', '_')
-        store_data.store_data_to_xlsx(combined_pc_df, crit_name)
+        # combined_pc_df = pca_analysis(user_listened_songs_info_df, crit_item_info_df,combined_songs_info_df, categorical_attributes, numerical_attributes)
+        # crit_name = crit[0].replace('|', '_')
+        # store_data.store_data_to_xlsx(combined_pc_df, crit_name)
 
         critique_diversity_utility_dict[crit] = critique_diversity_utility
     

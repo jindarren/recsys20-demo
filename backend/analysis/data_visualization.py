@@ -33,6 +33,6 @@ if __name__ == "__main__":
     os.chdir(current_path)
     for each_file in filelist:
         combined_pc_df = pd.read_excel("../data/critique_related/"+each_file)
-        crit = each_file.replace('.xlsx', '')
-        crit_name = crit.replace('|', ' ')
+        crit_name = each_file.replace('.xlsx', '')
+
         pca_visualization(combined_pc_df,crit_name)
