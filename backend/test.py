@@ -27,10 +27,10 @@ user_profile = load_data.load_json_data(user_profile_data)
 
 
 # api setting
-test_function = 'initialize_user_model'
+# test_function = 'initialize_user_model'
 # test_function = 'update_user_model'
 # test_function = 'get_rec'
-# test_function = 'get_sys_cri'
+test_function = 'get_sys_cri'
 
 url = ''
 parms = ''
@@ -55,8 +55,6 @@ parms = {
     'user_profile': user_profile,
 }
 
-print(json.dumps(parms))
-
 for i in range(2):
 	res = requests.post(url, data=json.dumps(parms))  # request API to return results
 	print(i)
@@ -64,7 +62,7 @@ for i in range(2):
  
 text = res.text
 text_json = json.loads(text)
-#pp.pprint(text_json)
+# pp.pprint(text_json)
 # user_profile = text_json['user_profile']
 # print(len(user_profile['pool']))
 

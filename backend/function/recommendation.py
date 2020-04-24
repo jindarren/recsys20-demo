@@ -48,6 +48,7 @@ def numerical_attributes_value_function(user_pref_v, item_v, attribute):
 def filter_items_by_user_constraints(user_constraints, item_pool, minimal_threshold):
     
     filtered_item_pool = copy.deepcopy(item_pool)
+
     for key, critique_unit_dict in user_constraints.items():
         attr = critique_unit_dict['attribute']
         crit_direction = critique_unit_dict['crit_direction']
@@ -56,7 +57,7 @@ def filter_items_by_user_constraints(user_constraints, item_pool, minimal_thresh
         if len(filtered_item_pool) < minimal_threshold:
             break
         for item in filtered_item_pool:
-            attribut_interval,interval_label = helper.get_numerical_attribute_intervalindex(attr)
+            attribut_interval, interval_label = helper.get_numerical_attribute_intervalindex(attr)
             intervals = pd.IntervalIndex.from_breaks(attribut_interval, closed='left')
 
             cur_interval_find = list(intervals.contains(crit_value))
@@ -236,7 +237,7 @@ def compute_recommendation(user_preference_model, user_critique_preference, item
 
 def update_recommendation_pool(user_preference_model, user_critique_preference, integrated_item_pool, max_item_pool_number, categorical_attributes, numerical_attributes, method, alpha):
         
-    sorted_estimated_score_dict = compute_recommendation(user_preference_model, user_critique_preference, integrated_item_pool, len(integrated_item_pool), categorical_attributes, numerical_attributes, method, alpha)
+    sorted_estimated_score_dict = compute_recommendation(user_preference_model, user_critique_preference, integrated_item_pool, max_item_pool_number, categorical_attributes, numerical_attributes, method, alpha)
     
     max_item_pool_list = []
     for rec in sorted_estimated_score_dict:

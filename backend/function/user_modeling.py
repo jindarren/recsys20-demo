@@ -4,6 +4,7 @@ import pprint
 import ast
 import copy
 from function import helper 
+from tool import time_helper
 
 pp = pprint.PrettyPrinter(indent=4)
 
@@ -14,10 +15,8 @@ def categorical_attribute_preference(user_historical_attr_df):
 def numerical_attribute_preference(user_historical_attr_df,attribute):
 
     attribute_intervalindex,interval_label = helper.get_numerical_attribute_intervalindex(attribute)
-    # user_historical_attr_bins = pd.cut(user_historical_attr_df, attribute_intervalindex, labels = list(range(len(attribute_intervalindex)-1)))
-    print(attribute_intervalindex)
     user_historical_attr_bins = pd.cut(user_historical_attr_df, attribute_intervalindex,right=False, labels = interval_label)
-    print(user_historical_attr_bins)
+
    
     return user_historical_attr_bins.value_counts().to_dict()
 
@@ -38,7 +37,7 @@ def initialize_user_preference_value(user_historical_record, categorical_attribu
         user_historical_attr_df = user_historical_record_df[attr]
         user_preference_value_dict[attr] = numerical_attribute_preference(user_historical_attr_df, attr)
     
-    pp.pprint(user_preference_value_dict)
+    # pp.pprint(user_preference_value_dict)
     return user_preference_value_dict 
 
 def initialize_user_preference_attribute_frequency(categorical_attributes, numerical_attributes):
@@ -47,9 +46,19 @@ def initialize_user_preference_attribute_frequency(categorical_attributes, numer
         user_preference_attribute_frequency_dict[attr] = 1
     for attr in numerical_attributes:
         user_preference_attribute_frequency_dict[attr] = 1
-        
-    pp.pprint(user_preference_attribute_frequency_dict)
     return user_preference_attribute_frequency_dict 
+
+def initialize_user_preference_model(user_historical_record, categorical_attributes, numerical_attributes):
+
+    user_initial_preference_value =  initialize_user_preference_value(user_historical_record, categorical_attributes, numerical_attributes)
+    user_preference_attribute_frequency = initialize_user_preference_attribute_frequency( categorical_attributes, numerical_attributes)
+    user_preference_model = {'preference_value':user_initial_preference_value, 'attribute_frequency':user_preference_attribute_frequency}
+    
+    time_helper.print_current_time()
+    print("Initialize User Model ---- Preference Model about %d categorical attributes." % len(categorical_attributes))
+    time_helper.print_current_time()
+    print("Initialize User Model ---- Preference Model about %d numerical attributes." % len(numerical_attributes))
+    return user_preference_model
 
 
 
@@ -101,21 +110,19 @@ def update_user_preference_value(updated_user_preference_value,liked_song_info,c
 def update_user_model(user_model, user_interaction_dialog, user_listened_longs, categorical_attributes, numerical_attributes):
     updated_user_preference_value = user_model['user_preference_model']['preference_value']
     updated_user_attribute_frequency = user_model['user_preference_model']['attribute_frequency']
-
-
     updated_user_constraints = user_model['user_constraints']
-
     updated_user_critique_preference = user_model['user_critique_preference']
+    
     updated_user_preference_model = user_model['user_preference_model']
 
-    sys_critique_list = []
     critique_song_id = ''
     liked_song_id = ''
+
     for utterance_info in user_interaction_dialog:
         current_action = utterance_info['action']
-        # Condition 1: user critiquing / system suggest
+        # Condition 1: user critiquing / system suggest critiquing - Yes
         # -> update (1) user critique preference, (2) preference model: attribute frequency, (3) user constraints,
-        if current_action == "User_Critique" or current_action == "System_Suggest":
+        if current_action == "User_Critique" or current_action == "Accept_Suggestion":
             critique_list = utterance_info['critique']
             critique_song_id = utterance_info['critiqued_song']
             critique_song_info = {}
@@ -140,10 +147,7 @@ def update_user_model(user_model, user_interaction_dialog, user_listened_longs, 
         # -> keep info : critique_list, critique
         if current_action == "Recommend" :
             
-            if 'critique' in utterance_info.keys():
-                # sys_critique_list = utterance_info['critique']
-                # critique_song_id = utterance_info['critiqued_song']
-                liked_song_id = utterance_info['text']
+            liked_song_id = utterance_info['text']
 
         
 
