@@ -45,8 +45,15 @@ def numerical_attributes_value_function(user_pref_v, item_v, attribute):
 # Multi-attribute Utility Theory (MAUT) : Get Utility for each items
 # ------------------------------------------------------------------
 
-def filter_items_by_user_constraints(user_constraints, item_pool, minimal_threshold):
+
+# ------------------------------------------------------------------
+# Multi-attribute Utility Theory (MAUT) : Get Utility for each items
+# ------------------------------------------------------------------
+
+def filter_items_by_user_constraints(user_constraints, item_pool, minimal_threshold,  categorical_attributes, numerical_attributes):
     
+    # revise
+
     filtered_item_pool = copy.deepcopy(item_pool)
 
     for key, critique_unit_dict in user_constraints.items():
@@ -56,28 +63,33 @@ def filter_items_by_user_constraints(user_constraints, item_pool, minimal_thresh
 
         if len(filtered_item_pool) < minimal_threshold:
             break
-        for item in filtered_item_pool:
-            attribut_interval, interval_label = helper.get_numerical_attribute_intervalindex(attr)
-            intervals = pd.IntervalIndex.from_breaks(attribut_interval, closed='left')
+        if attr in categorical_attributes:
+            for item in filtered_item_pool:
+                if item[attr] != crit_direction:
+                    filtered_item_pool.remove(item)
+                    
+        if attr in numerical_attributes:
+            for item in filtered_item_pool:
+                
+                attribut_interval, interval_label = helper.get_numerical_attribute_intervalindex(attr)
+                intervals = pd.IntervalIndex.from_breaks(attribut_interval, closed='left')
 
-            cur_interval_find = list(intervals.contains(crit_value))
-            cur_index = cur_interval_find.index(True)
+                cur_interval_find = list(intervals.contains(crit_value))
+                cur_index = cur_interval_find.index(True)
 
-            item_interval_find = list(intervals.contains(item[attr]))
-            item_index = item_interval_find.index(True)
-            satisfied_flag = False
-            if item_index == cur_index and crit_direction == 'similar':
-                satisfied_flag = True
-            if item_index < cur_index and crit_direction == 'lower':
-                satisfied_flag = True
-            if item_index > cur_index and crit_direction == 'higher':
-                satisfied_flag = True
-            if satisfied_flag == False:
-                filtered_item_pool.remove(item)
+                item_interval_find = list(intervals.contains(item[attr]))
+                item_index = item_interval_find.index(True)
+                satisfied_flag = False
+                if item_index == cur_index and crit_direction == 'similar':
+                    satisfied_flag = True
+                if item_index < cur_index and crit_direction == 'lower':
+                    satisfied_flag = True
+                if item_index > cur_index and crit_direction == 'higher':
+                    satisfied_flag = True
+                if satisfied_flag == False:
+                    filtered_item_pool.remove(item)
 
     return filtered_item_pool
-
-
 
 def compute_recommendation_by_MAUT(user_preference_model, item_pool, top_K, categorical_attributes, numerical_attributes, sort=True):
     # based on user preference model and item value

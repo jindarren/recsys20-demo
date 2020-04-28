@@ -112,7 +112,7 @@ class GetRec(Resource):
         if len(new_item_pool) > 0:
             topK_recommendations_score_dict = recommendation.compute_recommendation(user_preference_model, user_critique_preference, new_item_pool, top_K, categorical_attributes, numerical_attributes, method, alpha)
         else: 
-            filtered_item_pool = recommendation.filter_items_by_user_constraints(user_constraints, item_pool, minimal_threshold)
+            filtered_item_pool = recommendation.filter_items_by_user_constraints(user_constraints, item_pool, minimal_threshold,  categorical_attributes, numerical_attributes)
             
             time_helper.print_current_time()
             print("after filtering, %d pieces of music left." % len(filtered_item_pool))
