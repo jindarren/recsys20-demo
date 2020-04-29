@@ -6,6 +6,7 @@ const recognition = new SpeechRecognition();
 var spotifyToken = $.cookie('spotify-token')
 var refreshToken = $.cookie('refresh-token')
 
+
 var storage = window.localStorage;
 
 var skipTimes = 0;
@@ -131,20 +132,39 @@ $(document).ready(function() {
 
   //alert("Please make sure you have submitted the pre-study questionnaire!")
   //refresh the token
+  var userid = $.cookie('user-id')
 
   console.log(spotifyToken)
   $.ajax({
-    url: "/initiate?token="+spotifyToken,
+    url: "/initiate?token="+spotifyToken+"&id="+userid,
     type: "POST",
     contentType: "application/json;charset=utf-8",
-    data: storage.profile,
+    // data: storage.profile,
     dataType: "json",
     success: function(data) {
       console.log(data)
 
-      topRecommendedSong = data.vis[0];
-      data.topRecommendedSong = topRecommendedSong
+        //initialize user model
+        var profile_py = {}
+        profile_py["user_profile"] = {}
+        profile_py["user_profile"]["user"] = data.user
 
+        $.ajax({
+            type: "POST",
+            url: "/initialize_user_model",
+            data: JSON.stringify(profile_py),
+            success: function (result) {
+                data.user = JSON.parse(result)
+                console.log(user)
+
+            },
+            contentType:"application/json;charset=utf-8",
+            dataType: "json"
+        });
+
+
+      topRecommendedSong = data.pool[0];
+      data.topRecommendedSong = topRecommendedSong
 
       for(var index=0; index<data.vis.length; index++){
         playlist.push(data.vis[index])
@@ -302,7 +322,7 @@ $(document).ready(function() {
           url: "/initiate?token="+spotifyToken,
           type: "POST",
           contentType: "application/json;charset=utf-8",
-          data: storage.profile,
+          // data: storage.profile,
           dataType: "json",
           success: function(data2) {
             topRecommendedSong = data2.vis[0];

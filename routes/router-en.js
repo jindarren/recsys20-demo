@@ -10,6 +10,7 @@ const fs = require('fs');
 var franc = require('franc-min') //for language detection
 var pinyin = require("pinyin");
 
+
 var avaGenres =[
     "acoustic",
     "afrobeat",
@@ -165,8 +166,8 @@ passport.deserializeUser(function(obj, done) {
 passport.use(new SpotifyStrategy({
         clientID: appKey,
         clientSecret: appSecret,
-        callbackURL: 'http://music-bot.top:3000/callback'
-        //callbackURL: 'http://localhost:3000/callback'
+        //callbackURL: 'http://music-bot.top:3000/callback'
+        callbackURL: 'http://localhost:3000/callback'
     },
     function(accessToken, refreshToken, profile, done) {
         // asynchronous verification, for effect...
@@ -694,9 +695,9 @@ router.post('/get_sys_cri',function (req,res) {
 
 router.post('/initiate', function(req, res) {
     //pass token to the webAPI used by recommender
-    var profile = req.body
     var token = req.query.token;
-    var userID = profile.id;
+    var userID = req.query.id;
+    console.log(req.query.id)
     // var artists = profile.selectedArtists.split(",");
     // var tracks = profile.selectedTracks.split(",");
     // var genres = profile.selectedGenres.split(",");
@@ -896,57 +897,88 @@ router.post('/initiate', function(req, res) {
                     recResult.push(dataList[data][item])
             }
         }
-        getAverageFeatures(token,tracks,artists).then(function(data3){
-            var user = new User({
-                id: userID,
+        // getAverageFeatures(token,tracks,artists).then(function(data3){
+        //     var user = new User({
+        //         id: userID,
+        //         preferenceData: {
+        //             artist: artists,
+        //             track: tracks,
+        //             genre: genres,
+        //             language: "English",
+        //             // popularity: data3.popularity,
+        //             // danceability: data3.danceability,
+        //             // energy: data3.energy,
+        //             // speechiness: data3.speechiness,
+        //             // valence: data3.valence,
+        //             // tempo: data3.tempo,
+        //             // popularityRange: [0,100],
+        //             // danceabilityRange: [0.2,0.8],
+        //             // energyRange: [0.2,0.8],
+        //             // speechinessRange: [0.2,0.8],
+        //             // valenceRange: [0.2,0.8],
+        //             // tempoRange: [0.2,0.8],
+        //             timestamp: new Date()
+        //         },
+        //         // attributeWeight: {
+        //         //     artistWeight: 1,
+        //         //     genreWeight: 1,
+        //         //     languageWeight: 1,
+        //         //     popularityWeight: 1,
+        //         //     danceabilityWeight: 1,
+        //         //     energyWeight: 1,
+        //         //     speechinessWeight: 1,
+        //         //     valenceWeight: 1,
+        //         //     tempoWeight: 1,
+        //         //     timestamp: new Date()
+        //         // },
+        //         // logger:{}
+        //     });
+        //
+        //     // //save a new user
+        //     // user.save(function(err) {
+        //     //     if (err)
+        //     //         console.log(err)
+        //     //     console.log("user profile is added")
+        //     // })
+        //     console.log(user)
+        //     res.json({
+        //         vis: recResult,
+        //         user: user
+        //     })
+        // }).catch(function (error) {//加上catch
+        //   console.log(error);
+        // })
+        var user = new User({
+            id: userID,
+            pool:recResult,
+            new_pool:[],
+            user: {
+                _id:userID,
                 preferenceData: {
                     artist: artists,
                     track: tracks,
                     genre: genres,
                     language: "English",
-                    popularity: data3.popularity,
-                    danceability: data3.danceability,
-                    energy: data3.energy,
-                    speechiness: data3.speechiness,
-                    valence: data3.valence,
-                    tempo: data3.tempo,
-                    popularityRange: [0,100],
-                    danceabilityRange: [0.2,0.8],
-                    energyRange: [0.2,0.8],
-                    speechinessRange: [0.2,0.8],
-                    valenceRange: [0.2,0.8],
-                    tempoRange: [0.2,0.8],
                     timestamp: new Date()
                 },
-                attributeWeight: {
-                    artistWeight: 1,
-                    genreWeight: 1,
-                    languageWeight: 1,
-                    popularityWeight: 1,
-                    danceabilityWeight: 1,
-                    energyWeight: 1,
-                    speechinessWeight: 1,
-                    valenceWeight: 1,
-                    tempoWeight: 1,
-                    timestamp: new Date()
-                },
-                logger:{}
-            });
+                user_preference_model:{},
+                user_constraints:{},
+                user_critique_preference:{}
+            },
+            topRecommendedSong:{},
+            logger:{},
+        });
 
-            // //save a new user
-            // user.save(function(err) {
-            //     if (err)
-            //         console.log(err)
-            //     console.log("user profile is added")
-            // })
-            console.log(user)
-            res.json({
-                vis: recResult,
-                user: user
-            })
-        }).catch(function (error) {//加上catch 
-          console.log(error);
-        })
+        console.log(user.id)
+        console.log(user.user)
+        res.json(user)
+
+        //save a new user
+        // user.save(function(err) {
+        //     if (err)
+        //         console.log(err)
+        //     console.log("user profile is added")
+        // })
     }).catch(function (error) {//加上catch 
       console.log(error);
     })
