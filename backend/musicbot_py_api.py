@@ -100,7 +100,7 @@ class GetRec(Resource):
         item_pool = user_profile['pool']
         new_item_pool = user_profile['new_pool']
 
-        top_K = 10
+        top_K = 20
         method = 'MAUT_COMPAT' # (1) MAUT (2) COMPAT (3) MAUT_COMPAT
         alpha = 0.5
 
