@@ -37,10 +37,10 @@ class InitializeUserModel(Resource):
         user_preference_model = user_modeling.initialize_user_preference_model(user_historical_record, categorical_attributes, numerical_attributes)
         user_profile['user']['user_preference_model'] = user_preference_model
         # initialize the user constraints (empty)
-        user_constraint = {}
+        user_constraint = []
         user_profile['user']['user_constraints'] =  user_constraint
         #  # initialize the user critique preference (empty)
-        user_critique_preference = {}
+        user_critique_preference = []
         user_profile['user']['user_critique_preference'] =  user_critique_preference
 
         # pp.pprint(user_initial_preference_value)
@@ -63,18 +63,19 @@ class UpdateUserModel(Resource):
         user_interaction_dialog = user_profile['logger']['latest_dialog']
         user_listened_longs = user_profile['logger']['listenedSongs']
         user_model = user_profile['user']
+        current_recommended_item = user_profile['topRecommendedSong']
         # update the user model (three parts)
         updated_user_preference_model, updated_user_constraints, updated_user_critique_preference = user_modeling.update_user_model(user_model, \
-            user_interaction_dialog, user_listened_longs, categorical_attributes, numerical_attributes)
+            user_interaction_dialog, user_listened_longs, current_recommended_item, categorical_attributes, numerical_attributes)
         user_profile['user']['user_preference_model'] = updated_user_preference_model
         user_profile['user']['user_constraints'] = updated_user_constraints
         user_profile['user']['user_critique_preference'] = updated_user_critique_preference
         
-        # update the user interaction log 
-        for log in user_interaction_dialog:
-            user_profile['logger']['dialog'].append(copy.deepcopy(log))
+        # # update the user interaction log 
+        # for log in user_interaction_dialog:
+        #     user_profile['logger']['dialog'].append(copy.deepcopy(log))
         
-        user_profile['logger']['latest_dialog'] = []
+        # user_profile['logger']['latest_dialog'] = []
         
         end = time.process_time()
         time_helper.print_current_time()
@@ -100,7 +101,7 @@ class GetRec(Resource):
         item_pool = user_profile['pool']
         new_item_pool = user_profile['new_pool']
 
-        top_K = 20
+        top_K = 10
         method = 'MAUT_COMPAT' # (1) MAUT (2) COMPAT (3) MAUT_COMPAT
         alpha = 0.5
 

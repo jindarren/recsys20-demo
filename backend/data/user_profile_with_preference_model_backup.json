@@ -3007,8 +3007,8 @@
                 "valence": 1
             }
         },
-        "user_constraints": {},
-        "user_critique_preference": {}
+        "user_constraints": [],
+        "user_critique_preference": []
     },
     "topRecommendedSong": {
         "id": "5p7ujcrUXASCNwRaWNHR1C",
@@ -3099,7 +3099,7 @@
                     "timestamp": 1554364434094
                 }
             ],
-            "latest_dialog":[
+            "latest_dialog": [
                 {
                     "agent": "robot",
                     "text": "Great~ Here is another song.",

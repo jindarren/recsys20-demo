@@ -69,20 +69,20 @@ def update_user_critique_preference(updated_user_critique_preference, attr, crit
     new_critique_preference['crit_direction'] = criti_value
     if attr in numerical_attributes:
         new_critique_preference['value'] = critique_song_info[attr]
-    updated_user_critique_preference[len(updated_user_critique_preference)+1] = copy.deepcopy(new_critique_preference)
+    updated_user_critique_preference.append(copy.deepcopy(new_critique_preference))
 
     return updated_user_critique_preference
     
 def update_user_constraints(updated_user_critique_preference, constraint_number):
-    top_k_constraints = {}
+    top_k_constraints = []
     top_k_constraints_attr_list = []
-    for i in range(len(updated_user_critique_preference)+1):
+    for i in range(len(updated_user_critique_preference)):
         if len(updated_user_critique_preference) - i > 0:
-            constraint = updated_user_critique_preference[len(updated_user_critique_preference)-i]
+            constraint = updated_user_critique_preference[len(updated_user_critique_preference)-i-1]
             if constraint['attribute'] in top_k_constraints_attr_list:
                 continue
             else:
-                top_k_constraints[len(top_k_constraints)+1] = constraint
+                top_k_constraints.append(constraint)
                 top_k_constraints_attr_list.append(constraint['attribute'])
 
         if len(top_k_constraints) == constraint_number:
@@ -107,7 +107,7 @@ def update_user_preference_value(updated_user_preference_value,liked_song_info,c
 
     return copy.deepcopy(updated_user_preference_value)
 
-def update_user_model(user_model, user_interaction_dialog, user_listened_longs, categorical_attributes, numerical_attributes):
+def update_user_model(user_model, user_interaction_dialog, user_listened_longs, current_recommended_item, categorical_attributes, numerical_attributes):
     updated_user_preference_value = user_model['user_preference_model']['preference_value']
     updated_user_attribute_frequency = user_model['user_preference_model']['attribute_frequency']
     updated_user_constraints = user_model['user_constraints']
@@ -116,13 +116,14 @@ def update_user_model(user_model, user_interaction_dialog, user_listened_longs, 
     updated_user_preference_model = user_model['user_preference_model']
 
     critique_song_id = ''
-    liked_song_id = ''
 
     for utterance_info in user_interaction_dialog:
-        current_action = utterance_info['action']
+        current_action = utterance_info['action'].lower()
         # Condition 1: user critiquing / system suggest critiquing - Yes
         # -> update (1) user critique preference, (2) preference model: attribute frequency, (3) user constraints,
-        if current_action == "User_Critique" or current_action == "Accept_Suggestion":
+        # print(current_action )
+        if current_action == "user_critique" or current_action == "accept_suggestion":
+            
             critique_list = utterance_info['critique']
             critique_song_id = utterance_info['critiqued_song']
             critique_song_info = {}
@@ -145,14 +146,14 @@ def update_user_model(user_model, user_interaction_dialog, user_listened_longs, 
 
         # Condition 2: Recommend
         # -> keep info : critique_list, critique
-        if current_action == "Recommend" :
+        # if current_action == "Recommend" :
             
-            liked_song_id = utterance_info['text']
+        #     liked_song_id = utterance_info['text']
 
         
 
         # Condition 3: accept the recommendation
-        if current_action == "Accept_Song":
+        if current_action == "accept_song":
 
             # --- Revise ---- system critique - accept -> update critique preference, attribute frequency, user constraints
             # # if the recommended song is based on system critiques
@@ -181,10 +182,11 @@ def update_user_model(user_model, user_interaction_dialog, user_listened_longs, 
             # ------------------------------------------------
             # Update preference value based on the liked songs
             # ------------------------------------------------
-            liked_song_info = {}
-            for song in user_listened_longs:
-                if song['id'] == liked_song_id:
-                    liked_song_info = song
+            liked_song_info = current_recommended_item
+            # liked_song_info = {}
+            # for song in user_listened_longs:
+            #     if song['id'] == liked_song_id:
+            #         liked_song_info = song
             updated_user_preference_value = update_user_preference_value(updated_user_preference_value, liked_song_info, categorical_attributes, numerical_attributes)
             
         updated_user_preference_model = {'preference_value': updated_user_preference_value, 'attribute_frequency': updated_user_attribute_frequency}
