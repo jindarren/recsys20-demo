@@ -169,6 +169,7 @@ $(document).ready(function () {
         profile_py["user_profile"] = {}
         profile_py["user_profile"]["user"] = data.user
         profile_py["user_profile"]["logger"] = data.logger
+        profile_py["user_profile"]["topRecommendedSong"] = data.topRecommendedSong
 
         $.ajax({
             type: "POST",
@@ -1692,6 +1693,8 @@ $(document).ready(function () {
                         updateData.logger = {}
                         updateData.logger.latest_dialog = dialog
                         updateData.logger.listenedSongs = logger.listenedSongs
+                        var listenedSongsLength = logger.listenedSongs.length
+                        updateData.logger.topRecommendedSong = logger.listenedSongs[listenedSongsLength-1]
 
                         console.log(updateData)
 
