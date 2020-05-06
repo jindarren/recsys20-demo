@@ -190,6 +190,31 @@ $(document).ready(function () {
 
     }
 
+
+    function getRecommendation(data) {
+
+        var profile_py = {}
+        profile_py["user_profile"] = {}
+        profile_py["user_profile"]["pool"] = data.pool
+        profile_py["user_profile"]["new_pool"] = data.new_pool
+        profile_py["user_profile"]["user"] = data.user
+
+        $.ajax({
+            type: "POST",
+            url: "/get_rec",
+            data: JSON.stringify(profile_py),
+            success: function (result) {
+                console.log(result)
+
+                var returned = JSON.parse(result)
+                console.log(returned)
+            },
+            contentType: "application/json;charset=utf-8",
+            dataType: "json"
+        });
+
+    }
+
     console.log(spotifyToken)
     $.ajax({
         url: "/initiate?token=" + spotifyToken + "&id=" + userid,
@@ -1327,6 +1352,15 @@ $(document).ready(function () {
                  music-valence
                  song
                  */
+
+                var updateData = {}
+                updateData.user = usermodel.user
+                updateData.pool = playlist
+                updateData.new_pool = []
+
+                getRecommendation(updateData)
+
+
                 var intent = text.action;
                 var response = text.fulfillment.speech;
 
@@ -1344,7 +1378,8 @@ $(document).ready(function () {
                 if (intent == "music_player_control.skip_forward") {
                     skipTimes++;
                     nextSong()
-                } else if (intent == "music.search") {
+                }
+                else if (intent == "music.search") {
                     artist = text.parameters["artist"]
                     song = text.parameters["song"]
                     language = text.parameters["music-languages"]
@@ -1368,7 +1403,8 @@ $(document).ready(function () {
                         requestLink = ''
 
                     // playRequestLink(requestLink)
-                } else if (intent == "critique.response") {
+                }
+                else if (intent == "critique.response") {
                     needReply = false;
                     var response = text.parameters["RESPONSE"]
                     if (response == "yes") {
@@ -1427,7 +1463,8 @@ $(document).ready(function () {
 
                         console.log(playlist)
                         songIndex = 0
-                    } else if (response == "no") {
+                    }
+                    else if (response == "no") {
                         if (critiquesIndex < critiques.length - 1) {
                             needReply = true;
                             critiquesIndex++;
@@ -1439,7 +1476,8 @@ $(document).ready(function () {
                             speakandsing(robot, "OK, I have no more suggestions, but maybe you want to try this song.", "Respond_NoSuggestion")
                         }
                     }
-                } else if (intent == "music_player_control.features") {
+                }
+                else if (intent == "music_player_control.features") {
                     valence = text.parameters["music-valence"]
                     tempo = text.parameters["music-tempo"]
                     action = text.parameters["feature-actions"]
@@ -1560,7 +1598,8 @@ $(document).ready(function () {
                             data.user.attributeWeight.popularityWeight += 1;
                         }
                     }
-                } else if (!intent) {
+                }
+                else if (!intent) {
                     requestLink = ''
                     isMissed = true
                     // playRequestLink(requestLink)
@@ -1652,7 +1691,7 @@ $(document).ready(function () {
                 var dialogNum = logger.dialog.length
                 var dialog = logger.dialog[dialogNum-1]
 
-
+                //update user model
                 if(dialog.action=="User_Critique"){
                     var critique = []
                     if(data.action=="music.search"){
