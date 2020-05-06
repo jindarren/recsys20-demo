@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e570dfdc-3b19-4d1b-90a6-cefe1fb88223" name="Default" comment="test for python API">
+    <list default="true" id="e570dfdc-3b19-4d1b-90a6-cefe1fb88223" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/script.js" afterPath="$PROJECT_DIR$/public/js/script.js" />
     </list>
@@ -92,13 +92,13 @@
       <file leaf-file-name="script.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/public/js/script.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="485">
-              <caret line="1701" column="0" lean-forward="true" selection-start-line="1701" selection-start-column="0" selection-end-line="1701" selection-end-column="0" />
+            <state relative-caret-position="22721">
+              <caret line="1696" column="34" lean-forward="false" selection-start-line="1696" selection-start-column="34" selection-end-line="1696" selection-end-column="34" />
               <folding>
-                <marker date="1588735063000" expanded="true" signature="35595:35601" ph=" " />
-                <marker date="1588735063000" expanded="true" signature="35601:35607" ph=" " />
-                <marker date="1588735063000" expanded="true" signature="55453:55459" ph=" " />
-                <marker date="1588735063000" expanded="true" signature="55459:55465" ph=" " />
+                <marker date="1588735177000" expanded="true" signature="35595:35601" ph=" " />
+                <marker date="1588735177000" expanded="true" signature="35601:35607" ph=" " />
+                <marker date="1588735177000" expanded="true" signature="55453:55459" ph=" " />
+                <marker date="1588735177000" expanded="true" signature="55459:55465" ph=" " />
               </folding>
             </state>
           </provider>
@@ -496,7 +496,7 @@
       <workItem from="1588301886323" duration="2755000" />
       <workItem from="1588318368447" duration="2854000" />
       <workItem from="1588349577442" duration="7211000" />
-      <workItem from="1588436683355" duration="6540000" />
+      <workItem from="1588436683355" duration="6658000" />
     </task>
     <task id="LOCAL-00001" summary="test for python API">
       <created>1587472273064</created>
@@ -554,11 +554,18 @@
       <option name="project" value="LOCAL" />
       <updated>1588734615867</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="test for python API">
+      <created>1588735082015</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1588735082015</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="49178000" />
+    <option name="totallyTimeSpent" value="49296000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -573,7 +580,7 @@
     <frame x="3840" y="196" width="1440" height="877" extended-state="0" />
     <editor active="false" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18604651" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18604651" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23821656" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -683,10 +690,10 @@
         <state relative-caret-position="952">
           <caret line="56" column="21" lean-forward="false" selection-start-line="56" selection-start-column="21" selection-end-line="56" selection-end-column="21" />
           <folding>
-            <marker date="1588735063000" expanded="true" signature="35595:35601" ph=" " />
-            <marker date="1588735063000" expanded="true" signature="35601:35607" ph=" " />
-            <marker date="1588735063000" expanded="true" signature="55453:55459" ph=" " />
-            <marker date="1588735063000" expanded="true" signature="55459:55465" ph=" " />
+            <marker date="1588735177000" expanded="true" signature="35595:35601" ph=" " />
+            <marker date="1588735177000" expanded="true" signature="35601:35607" ph=" " />
+            <marker date="1588735177000" expanded="true" signature="55453:55459" ph=" " />
+            <marker date="1588735177000" expanded="true" signature="55459:55465" ph=" " />
           </folding>
         </state>
       </provider>
@@ -767,10 +774,10 @@
         <state relative-caret-position="952">
           <caret line="56" column="21" lean-forward="true" selection-start-line="56" selection-start-column="21" selection-end-line="56" selection-end-column="21" />
           <folding>
-            <marker date="1588735063000" expanded="true" signature="35595:35601" ph=" " />
-            <marker date="1588735063000" expanded="true" signature="35601:35607" ph=" " />
-            <marker date="1588735063000" expanded="true" signature="55453:55459" ph=" " />
-            <marker date="1588735063000" expanded="true" signature="55459:55465" ph=" " />
+            <marker date="1588735177000" expanded="true" signature="35595:35601" ph=" " />
+            <marker date="1588735177000" expanded="true" signature="35601:35607" ph=" " />
+            <marker date="1588735177000" expanded="true" signature="55453:55459" ph=" " />
+            <marker date="1588735177000" expanded="true" signature="55459:55465" ph=" " />
           </folding>
         </state>
       </provider>
@@ -1033,13 +1040,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/public/js/script.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="485">
-          <caret line="1701" column="0" lean-forward="true" selection-start-line="1701" selection-start-column="0" selection-end-line="1701" selection-end-column="0" />
+        <state relative-caret-position="22721">
+          <caret line="1696" column="34" lean-forward="false" selection-start-line="1696" selection-start-column="34" selection-end-line="1696" selection-end-column="34" />
           <folding>
-            <marker date="1588735063000" expanded="true" signature="35595:35601" ph=" " />
-            <marker date="1588735063000" expanded="true" signature="35601:35607" ph=" " />
-            <marker date="1588735063000" expanded="true" signature="55453:55459" ph=" " />
-            <marker date="1588735063000" expanded="true" signature="55459:55465" ph=" " />
+            <marker date="1588735177000" expanded="true" signature="35595:35601" ph=" " />
+            <marker date="1588735177000" expanded="true" signature="35601:35607" ph=" " />
+            <marker date="1588735177000" expanded="true" signature="55453:55459" ph=" " />
+            <marker date="1588735177000" expanded="true" signature="55459:55465" ph=" " />
           </folding>
         </state>
       </provider>

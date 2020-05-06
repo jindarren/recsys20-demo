@@ -1694,7 +1694,7 @@ $(document).ready(function () {
                         updateData.logger.latest_dialog = dialog
                         updateData.logger.listenedSongs = logger.listenedSongs
                         var listenedSongsLength = logger.listenedSongs.length
-                        updateData.logger.topRecommendedSong = logger.listenedSongs[listenedSongsLength-1]
+                        updateData.topRecommendedSong = logger.listenedSongs[listenedSongsLength-1]
 
                         console.log(updateData)
 
