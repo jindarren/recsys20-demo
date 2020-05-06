@@ -160,10 +160,10 @@ $(document).ready(function () {
 
     function updateUserModel(data) {
 
-        // var profile_py = {}
-        // profile_py["user_profile"] = {}
-        // profile_py["user_profile"]["user"] = data.user
-        // profile_py["user_profile"]["logger"] = data.logger
+        var profile_py = {}
+        profile_py["user_profile"] = {}
+        profile_py["user_profile"]["user"] = data.user
+        profile_py["user_profile"]["logger"] = data.logger
 
         $.ajax({
             type: "POST",
