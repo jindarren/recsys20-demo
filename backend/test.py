@@ -29,8 +29,8 @@ user_profile = load_data.load_json_data(user_profile_data)
 # api setting
 # test_function = 'initialize_user_model'
 # test_function = 'update_user_model'
-test_function = 'get_rec'
-# test_function = 'get_sys_cri'
+# test_function = 'get_rec'
+test_function = 'get_sys_cri'
 
 url = ''
 parms = ''
@@ -53,6 +53,7 @@ if test_function == 'get_sys_cri':
 
 parms = {
     'user_profile': user_profile,
+	'sys_crit_version': 'preference_oriented'
 }
 
 for i in range(2):

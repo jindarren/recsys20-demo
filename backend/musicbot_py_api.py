@@ -177,7 +177,7 @@ class GetSysCri(Resource):
         
         # sys_crit_version = json_data['sys_crit_version'] # preference_oriented / diversity_oriented / personality_adjusted
         
-        sys_crit_version = 'diversity_oriented' # preference_oriented / diversity_oriented / personality_adjusted
+        sys_crit_version = json_data['sys_crit_version'] # preference_oriented / diversity_oriented / personality_adjusted
         time_helper.print_current_time()
         print("Get System Critiques ---- system critique generation version: %s" % sys_crit_version)
 
@@ -187,8 +187,8 @@ class GetSysCri(Resource):
             sys_crit = system_critiquing.generate_system_critiques_preference_oriented(user_preference_model, estimated_score_dict, item_pool, cur_rec, top_K, unit_or_compound, categorical_attributes, numerical_attributes)
         if sys_crit_version == 'diversity_oriented':
             sys_crit = system_critiquing.generate_system_critiques_diversity_oriented(user_preference_model, user_interaction_log, estimated_score_dict, item_pool, cur_rec, top_K, unit_or_compound, categorical_attributes, numerical_attributes)
-        if sys_crit_version == 'personality_adjusted':
-            sys_crit = system_critiquing.generate_system_critiques_personality_adjusted(user_preference_model, user_interaction_log, estimated_score_dict, item_pool, cur_rec, top_K, unit_or_compound, categorical_attributes, numerical_attributes)
+        # if sys_crit_version == 'personality_adjusted':
+        #     sys_crit = system_critiquing.generate_system_critiques_personality_adjusted(user_preference_model, user_interaction_log, estimated_score_dict, item_pool, cur_rec, top_K, unit_or_compound, categorical_attributes, numerical_attributes)
 
         # pp.pprint(sys_crit)
         sys_crit_with_rec_list = {'sys_crit_with_recommendation': sys_crit}
