@@ -1691,6 +1691,7 @@ $(document).ready(function () {
                         updateData.user = usermodel.user
                         updateData.logger = {}
                         updateData.logger.latest_dialog = dialog
+                        updateData.logger.listenedSongs = logger.listenedSongs
 
                         console.log(updateData)
 
