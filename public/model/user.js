@@ -13,6 +13,7 @@ var userSchema = new mongoose.Schema({
 	user:{},
     topRecommendedSong:{},
 	logger:{},
+	timestamp: Date
 });
 
 var User = mongoose.model('User', userSchema);
