@@ -215,6 +215,34 @@ $(document).ready(function () {
 
     }
 
+
+    function systemCritiques(data) {
+
+        var profile_py = {}
+        profile_py["user_profile"] = {}
+        profile_py["user_profile"]["pool"] = data.pool
+        profile_py["user_profile"]["new_pool"] = data.new_pool
+        profile_py["user_profile"]["user"] = data.user
+        profile_py["user_profile"]["topRecommendedSong"] = data.topRecommendedSong
+        profile_py["user_profile"]["logger"] = data.logger
+        profile_py["sys_crit_version"]=data.sys_crit_version
+
+        $.ajax({
+            type: "POST",
+            url: "/get_sys_cri",
+            data: JSON.stringify(profile_py),
+            success: function (result) {
+                console.log(result)
+
+                var returned = JSON.parse(result)
+                console.log(returned)
+            },
+            contentType: "application/json;charset=utf-8",
+            dataType: "json"
+        });
+
+    }
+
     console.log(spotifyToken)
     $.ajax({
         url: "/initiate?token=" + spotifyToken + "&id=" + userid,
@@ -567,10 +595,10 @@ $(document).ready(function () {
 
                         playlist = []
 
-                        for (var index = 0; index < 100; index++) {
+                        for (var index = 0; index < 150; index++) {
                             playlist.push(data.pool[index])
-                            playlist.push(data.pool[100 + index])
-                            playlist.push(data.pool[200 + index])
+                            // playlist.push(data.pool[100 + index])
+                            // playlist.push(data.pool[200 + index])
                         }
 
                         data.topRecommendedSong = playlist[songIndex]
@@ -792,7 +820,7 @@ $(document).ready(function () {
                     if (isSystemCrit == 1) {
                         var line = $('<div id="speak' + id + '" class="speak"><iframe src="https://open.spotify.com/embed/track/' + id + '" width="100%" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe></div>')
                         showFeedback = setTimeout(function () {
-                            $("#speak" + id).append('<div class="feedback-box"><button type="button" id="like" class="feedback">Like</button><button type="button" id="next" class="feedback">Next</button></div>')
+                            $("#speak" + id).append('<div class="feedback-box"><button type="button" id="like" class="feedback">Like</button><button type="button" id="next" class="feedback">Next</button><button type="button" id="suggest" class="feedback">Let bot suggest</button></div>')
 
                             $("#speak" + id + " #like").click(function () {
                                 updateChat(you, "I like this song.", "Accept_Song", "btn")
@@ -944,13 +972,28 @@ $(document).ready(function () {
                                     updateChat(you, "Next song.", "Next","btn")
                                     setTimeout(function () {
                                         $("#speak" + id + " div").fadeOut();
-                                        updateChat(skip, 'Since you have skipped many songs, can you just describe what kind of music you want to listen to?',"Request_Critique");
+                                        updateChat(skip, 'Since you have skipped many songs, you can click the "Let bot suggest" button to get suggestions, or you can just tell me what kind of music you want to listen to?',"Request_Critique");
                                     }, 300)
                                 }
 
                             })
 
                             $("#speak" + id + " #suggest").click(function () {
+
+
+                                var updateData = {}
+                                updateData.user = usermodel.user
+                                updateData.pool = playlist
+                                updateData.new_pool = []
+                                updateData.logger = logger
+                                updateData.logger.latest_dialog = [dialog]
+                                updateData.logger.listenedSongs = logger.listenedSongs
+                                var listenedSongsLength = logger.listenedSongs.length
+                                updateData.topRecommendedSong = logger.listenedSongs[listenedSongsLength-1]
+
+                                systemCritiques(updateData)
+
+
                                 nextTimes = 0
                                 $("#speak" + id + " .feedback-box").fadeOut()
                                 updateChat(you, "I need some suggestions","Let_bot_suggest", "btn")
@@ -960,10 +1003,8 @@ $(document).ready(function () {
 
                                 playlist = []
 
-                                for (var index = 0; index < 100; index++) {
+                                for (var index = 0; index < 150; index++) {
                                     playlist.push(data.pool[index])
-                                    playlist.push(data.pool[100 + index])
-                                    playlist.push(data.pool[200 + index])
                                 }
 
                                 for (var item in playlist) {
