@@ -154,7 +154,8 @@ $(document).ready(function () {
             success: function (result) {
                 var returned = JSON.parse(result)
                 user = returned.user
-                console.log(user)
+                usermodel.user = returned.user
+                console.log(usermodel)
 
             },
             contentType: "application/json;charset=utf-8",
