@@ -1692,7 +1692,7 @@ $(document).ready(function () {
                         var updateData = {}
                         updateData.user = usermodel.user
                         updateData.logger = {}
-                        updateData.logger.latest_dialog = dialog
+                        updateData.logger.latest_dialog = [dialog]
                         updateData.logger.listenedSongs = logger.listenedSongs
 
                         var listenedSongsLength = logger.listenedSongs.length
