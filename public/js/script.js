@@ -30,7 +30,6 @@ var loggers = [], logger = {};
 var usermodel = {}
 
 var sysCritVersion = window.location.search
-
 console.log(sysCritVersion)
 
 
