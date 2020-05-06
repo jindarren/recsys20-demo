@@ -539,14 +539,15 @@ $(document).ready(function () {
                 var reg = /[\u4e00-\u9fa5]/g;
 
                 round++;
-                $('#message').val('');
 
                 var style = 'you';
                 if (party == you) {
+                    $('#message').val('');
                     style = 'you';
                     var line = $('<div class="speak"><span class="dialog"></span></div>');
                     line.addClass(style)
                     line.find('.dialog').text(text);
+
                 }
                 else if (party == robot) {
                     style = 'robot';
