@@ -2401,9 +2401,7 @@
             "seedType": "track"
         }
     ],
-    "new_pool":[
-
-    ],
+    "new_pool": [],
     "user": {
         "preferenceData": {
             "artist": [
@@ -2908,14 +2906,16 @@
                     "Capital Cities": 1,
                     "Calvin Harris": 1,
                     "Dido": 1,
-                    "Daft Punk": 1
+                    "Daft Punk": 1,
+                    "Halsey": 1
                 },
                 "genre": {
                     "rock": 9,
                     "edm": 5,
                     "pop": 4,
                     "dance": 1,
-                    "electro": 1
+                    "electro": 1,
+                    "dance pop": 1
                 },
                 "popularity": {
                     "[0, 10)": 8,
@@ -2926,14 +2926,14 @@
                     "[20, 30)": 1,
                     "[10, 20)": 1,
                     "[100, 110)": 0,
-                    "[90, 100)": 0,
+                    "[90, 100)": 1,
                     "[80, 90)": 0,
                     "[30, 40)": 0
                 },
                 "danceability": {
                     "[0.5, 0.6)": 8,
                     "[0.6, 0.7)": 5,
-                    "[0.7, 0.8)": 3,
+                    "[0.7, 0.8)": 4,
                     "[0.4, 0.5)": 3,
                     "[0.8, 0.9)": 1,
                     "[1.0, 1.1)": 0,
@@ -2949,7 +2949,7 @@
                     "[0.9, 1.0)": 3,
                     "[0.5, 0.6)": 3,
                     "[0.6, 0.7)": 1,
-                    "[0.4, 0.5)": 1,
+                    "[0.4, 0.5)": 2,
                     "[0.3, 0.4)": 1,
                     "[1.0, 1.1)": 0,
                     "[0.2, 0.3)": 0,
@@ -2957,7 +2957,7 @@
                     "[0.0, 0.1)": 0
                 },
                 "speechiness": {
-                    "[0.0, 0.1)": 18,
+                    "[0.0, 0.1)": 19,
                     "[0.1, 0.2)": 2,
                     "[1.0, 1.1)": 0,
                     "[0.9, 1.0)": 0,
@@ -2970,7 +2970,7 @@
                     "[0.2, 0.3)": 0
                 },
                 "tempo": {
-                    "[120, 140)": 11,
+                    "[120, 140)": 12,
                     "[100, 120)": 5,
                     "[160, 180)": 3,
                     "[60, 80)": 1,
@@ -2989,7 +2989,7 @@
                     "[0.2, 0.3)": 8,
                     "[0.8, 0.9)": 3,
                     "[0.7, 0.8)": 3,
-                    "[0.5, 0.6)": 2,
+                    "[0.5, 0.6)": 3,
                     "[0.4, 0.5)": 2,
                     "[0.3, 0.4)": 1,
                     "[0.1, 0.2)": 1,
@@ -3004,14 +3004,26 @@
                 "genre": 1,
                 "popularity": 1,
                 "danceability": 1,
-                "energy": 1,
+                "energy": 2,
                 "speechiness": 1,
                 "tempo": 1,
                 "valence": 1
             }
         },
-        "user_constraints": [],
-        "user_critique_preference": []
+        "user_constraints": [
+            {
+                "attribute": "energy",
+                "crit_direction": "lower",
+                "value": 0.729
+            }
+        ],
+        "user_critique_preference": [
+            {
+                "attribute": "energy",
+                "crit_direction": "lower",
+                "value": 0.729
+            }
+        ]
     },
     "topRecommendedSong": {
         "id": "5p7ujcrUXASCNwRaWNHR1C",
@@ -3054,64 +3066,64 @@
             {
                 "agent": "robot",
                 "text": "Hi there. Just imagine you are taking subway to your home from the univeristy.",
-                "action":"Initialize Conversation",
+                "action": "Initialize Conversation",
                 "timestamp": 1554364132940
             },
             {
                 "agent": "robot",
                 "text": "Now you need to find 5 good songs that you would like to listen to on the trip.",
-                "action":"Initialize Conversation",
+                "action": "Initialize Conversation",
                 "timestamp": 1554364138941
             },
             {
                 "agent": "robot",
                 "text": "Once you are ready for the study, you can click the 'Start study' button on the left side. You can rate a recommended song after listening to it for a while.",
-                "action":"Initialize Conversation",
+                "action": "Initialize Conversation",
                 "timestamp": 1554364142382
             },
             {
                 "agent": "robot",
                 "text": "I have found some songs for you based on your preference, but you can also search for other songs by using the tips shown on the right side.",
-                "action":"Initialize Conversation",
+                "action": "Initialize Conversation",
                 "timestamp": 1554364144942
             },
             {
                 "agent": "robot",
                 "text": "We recommend this song because you like the songs of middle speechiness, and the songs \u5c0f\u5e78\u8fd0,\u544a\u767d\u6c14\u7403, and \u8ffd\u5149\u8005.",
-                "action":"Explain",
+                "action": "Explain",
                 "timestamp": 1554364149944
             },
             {
                 "agent": "robot",
                 "text": "1A6OTy97kk0mMdm78rHsm8",
-                "action":"Recommend",
+                "action": "Recommend",
                 "timestamp": 1554364152943
             },
             {
                 "agent": "you",
                 "text": "I like this song.",
                 "modality": "btn",
-                "action":"Accept_Song",
+                "action": "Accept_Song",
                 "timestamp": 1554364434042
             },
             {
                 "agent": "robot",
                 "text": "Please rate your liked song",
-                "action":"Request_Rate",
+                "action": "Request_Rate",
                 "timestamp": 1554364434094
             }
         ],
-        "latest_dialog":[
+        "latest_dialog": [
             {
                 "agent": "robot",
                 "text": "Great~ Here is another song.",
-                "action":"Coherence",                  
+                "action": "Coherence",
                 "timestamp": 1554364436650
             },
             {
                 "agent": "robot",
                 "text": "7jr3iPu4O4bTCVwLMbdU2i",
-                "action":"Recommend",     
+                "action": "Recommend",
                 "timestamp": 1554364438655
             },
             {
@@ -3119,7 +3131,11 @@
                 "text": "lower energy",
                 "modality": "typing",
                 "action": "User_Critique",
-                "critique": [{"energy": "lower"}],
+                "critique": [
+                    {
+                        "energy": "lower"
+                    }
+                ],
                 "critiqued_song": "7jr3iPu4O4bTCVwLMbdU2i",
                 "timestamp": 1554364438665
             },
@@ -3138,8 +3154,12 @@
             {
                 "agent": "robot",
                 "text": "4T3fNx3CgwDRRYgmFCbD4J",
-                "action":"Recommend",  
-                "user_critique": [{"energy": "lower"}],
+                "action": "Recommend",
+                "user_critique": [
+                    {
+                        "energy": "lower"
+                    }
+                ],
                 "critiqued_song": "7jr3iPu4O4bTCVwLMbdU2i",
                 "timestamp": 1554364466208
             },
@@ -3147,62 +3167,61 @@
                 "agent": "you",
                 "text": "I like this song.",
                 "modality": "btn",
-                "action":"Accept_Song",
-                
+                "action": "Accept_Song",
                 "timestamp": 1554364493262
             },
             {
                 "agent": "robot",
                 "text": "Please rate your liked song",
-                "action":"Request_Rate", 
+                "action": "Request_Rate",
                 "timestamp": 1554364493313
             }
         ],
         "listenedSongs": [
             {
-                "id":"1A6OTy97kk0mMdm78rHsm8",
-                "name":"Sunflower - Spider-Man: Into the Spider-Verse",
-                "popularity":92,
-                "artist":"Post Malone",
-                "danceability":0.757,
-                "energy":0.501,
-                "speechiness":0.0466,
-                "acousticness":0.541,
-                "instrumentalness":0.0,
-                "liveness":0.0718,
-                "tempo":122,
-                "valence":0.91,
-                "genre":"dance pop"
+                "id": "1A6OTy97kk0mMdm78rHsm8",
+                "name": "Sunflower - Spider-Man: Into the Spider-Verse",
+                "popularity": 92,
+                "artist": "Post Malone",
+                "danceability": 0.757,
+                "energy": 0.501,
+                "speechiness": 0.0466,
+                "acousticness": 0.541,
+                "instrumentalness": 0.0,
+                "liveness": 0.0718,
+                "tempo": 122,
+                "valence": 0.91,
+                "genre": "dance pop"
             },
             {
-                "id":"7jr3iPu4O4bTCVwLMbdU2i",
-                "name":"Kiss and Make Up",
-                "popularity":88,
-                "artist":"Dua Lipa",
-                "danceability":0.678,
-                "energy":0.729,
-                "speechiness":0.137,
-                "acousticness":0.0658,
-                "instrumentalness":0.0,
-                "liveness":0.303,
-                "valence":0.643,
-                "tempo":132,
-                "genre":"dance pop"
+                "id": "7jr3iPu4O4bTCVwLMbdU2i",
+                "name": "Kiss and Make Up",
+                "popularity": 88,
+                "artist": "Dua Lipa",
+                "danceability": 0.678,
+                "energy": 0.729,
+                "speechiness": 0.137,
+                "acousticness": 0.0658,
+                "instrumentalness": 0.0,
+                "liveness": 0.303,
+                "valence": 0.643,
+                "tempo": 132,
+                "genre": "dance pop"
             },
             {
-                "id":"4T3fNx3CgwDRRYgmFCbD4J",
-                "name":"Better",
-                "popularity":94,
-                "artist":"Khalid",
-                "danceability":0.442,
-                "energy":0.585,
-                "speechiness":0.0964,
-                "acousticness":0.0984,
-                "instrumentalness":0.391,
-                "liveness":0.14,
-                "valence":0.116,
-                "tempo":142,
-                "genre":"dance pop"
+                "id": "4T3fNx3CgwDRRYgmFCbD4J",
+                "name": "Better",
+                "popularity": 94,
+                "artist": "Khalid",
+                "danceability": 0.442,
+                "energy": 0.585,
+                "speechiness": 0.0964,
+                "acousticness": 0.0984,
+                "instrumentalness": 0.391,
+                "liveness": 0.14,
+                "valence": 0.116,
+                "tempo": 142,
+                "genre": "dance pop"
             }
         ],
         "likedSongs":[
@@ -3213,5 +3232,4 @@
             "7jr3iPu4O4bTCVwLMbdU2i"
         ]
     }
-    
 }

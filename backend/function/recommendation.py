@@ -45,18 +45,13 @@ def numerical_attributes_value_function(user_pref_v, item_v, attribute):
 # Multi-attribute Utility Theory (MAUT) : Get Utility for each items
 # ------------------------------------------------------------------
 
-
-# ------------------------------------------------------------------
-# Multi-attribute Utility Theory (MAUT) : Get Utility for each items
-# ------------------------------------------------------------------
-
 def filter_items_by_user_constraints(user_constraints, item_pool, minimal_threshold,  categorical_attributes, numerical_attributes):
     
     # revise
 
     filtered_item_pool = copy.deepcopy(item_pool)
 
-    for key, critique_unit_dict in user_constraints.items():
+    for critique_unit_dict in user_constraints:
         attr = critique_unit_dict['attribute']
         crit_direction = critique_unit_dict['crit_direction']
         crit_value = critique_unit_dict['value']
@@ -168,7 +163,7 @@ def compute_recommendation_compatibility_score(user_critique_preference, item_po
         satisfied_critique_attribute_list = []
         unsatisfied_critique_attribute_list = []
 
-        for key, crit_unit in user_critique_preference.items():
+        for crit_unit in user_critique_preference:
 
             # Step 1: Obtain the value for each critique
             attr = crit_unit['attribute']
