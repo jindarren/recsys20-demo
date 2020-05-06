@@ -29,6 +29,11 @@ var loggers = [], logger = {};
 
 var usermodel = {}
 
+var sysCritVersion = window.location.search
+
+console.log(sysCritVersion)
+
+
 
 // {
 // "agent": "you",
@@ -991,7 +996,8 @@ $(document).ready(function () {
                                 var listenedSongsLength = logger.listenedSongs.length
                                 updateData.topRecommendedSong = logger.listenedSongs[listenedSongsLength-1]
 
-                                systemCritiques(updateData)
+
+                                systemCritiques(updateData,sysCritVersion)
 
 
                                 nextTimes = 0
