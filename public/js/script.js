@@ -160,10 +160,10 @@ $(document).ready(function () {
 
     function updateUserModel(data) {
 
-        var profile_py = {}
-        profile_py["user_profile"] = {}
-        profile_py["user_profile"]["user"] = data.user
-        profile_py["user_profile"]["logger"] = data.logger
+        // var profile_py = {}
+        // profile_py["user_profile"] = {}
+        // profile_py["user_profile"]["user"] = data.user
+        // profile_py["user_profile"]["logger"] = data.logger
 
         $.ajax({
             type: "POST",
@@ -1677,19 +1677,20 @@ $(document).ready(function () {
 
                     }
 
-                    dialog.critique=critique
+                    if(critique.length>0){
+                        dialog.critique=critique
 
-                    //perform update model request
-                    var updateData = {}
-                    updateData.user = usermodel.user
-                    updateData.logger = {}
-                    updateData.logger.latest_dialog = dialog
+                        //perform update model request
+                        var updateData = {}
+                        updateData.user = usermodel.user
+                        updateData.logger = {}
+                        updateData.logger.latest_dialog = dialog
 
-                    console.log(updateData)
+                        console.log(updateData)
 
-                    updateUserModel(updateData)
+                        updateUserModel(updateData)
 
-
+                    }
 
                 }
                 console.log(logger)
