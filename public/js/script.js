@@ -40,6 +40,11 @@ var usermodel = {}
 // }
 
 logger.dialog = []
+logger.listenedSongs=[]
+logger.likedSongs=[]
+logger.dislikedSongs=[]
+logger.duration=""
+logger.rating=[]
 // logger.exp_energy = []
 // logger.exp_danceability = []
 // logger.exp_speechiness = []
@@ -754,6 +759,7 @@ $(document).ready(function () {
                 dialog.action = "Recommend"
                 dialog.timestamp = new Date().getTime()
                 logger.dialog.push(dialog)
+                logger.listenedSongs.push(playlist[songIndex])
 
                 showCurrentSong = setTimeout(function () {
                     if (isSystemCrit == 1) {
