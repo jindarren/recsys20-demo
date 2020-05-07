@@ -65,8 +65,12 @@ def filter_items_by_user_constraints(user_constraints, item_pool, minimal_thresh
 
         if attr in categorical_attributes:
             for item in filtered_item_pool:
-                if item[attr] != crit_direction:
-                    filtered_item_pool.remove(item)
+                if type(crit_direction) == str:
+                    if item[attr] != crit_direction:
+                        filtered_item_pool.remove(item)
+                if type(crit_direction) == list:
+                    if item[attr] not in crit_direction:
+                        filtered_item_pool.remove(item)
                     
         if attr in numerical_attributes:
 
@@ -209,7 +213,10 @@ def compute_recommendation_compatibility_score(user_critique_preference, item_po
                 # 1. Categorical Attributes
                 if attr in categorical_attributes:
                     satisfiability = False
-                    if each_item[attr] == crit_direction:
+                    if type(crit_direction) == str and each_item[attr] == crit_direction:
+                        satisfiability = True
+                        print()
+                    if type(crit_direction) == list and each_item[attr] in crit_direction:
                         satisfiability = True
                     satisfied_critique_attribute_list, unsatisfied_critique_attribute_list = update_based_on_satisfiability\
                         (attr,satisfiability, satisfied_critique_attribute_list, unsatisfied_critique_attribute_list)
