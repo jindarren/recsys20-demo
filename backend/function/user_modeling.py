@@ -38,6 +38,9 @@ def initialize_user_preference_value(user_historical_record, categorical_attribu
         user_preference_value_dict[attr] = numerical_attribute_preference(user_historical_attr_df, attr)
     
     # pp.pprint(user_preference_value_dict)
+    time_helper.print_current_time()
+    print("Initialize User Model ---- Estimate users' preference value for each attribute from users' interaction history.")
+   
     return user_preference_value_dict 
 
 def initialize_user_preference_attribute_frequency(categorical_attributes, numerical_attributes):
@@ -46,6 +49,11 @@ def initialize_user_preference_attribute_frequency(categorical_attributes, numer
         user_preference_attribute_frequency_dict[attr] = 1
     for attr in numerical_attributes:
         user_preference_attribute_frequency_dict[attr] = 1
+
+    time_helper.print_current_time()
+    print("Initialize User Model ---- Initialize attribute frequency as 1 for all attributes.")
+   
+
     return user_preference_attribute_frequency_dict 
 
 def initialize_user_preference_model(user_historical_record, categorical_attributes, numerical_attributes):
@@ -53,7 +61,7 @@ def initialize_user_preference_model(user_historical_record, categorical_attribu
     user_initial_preference_value =  initialize_user_preference_value(user_historical_record, categorical_attributes, numerical_attributes)
     user_preference_attribute_frequency = initialize_user_preference_attribute_frequency( categorical_attributes, numerical_attributes)
     user_preference_model = {'preference_value':user_initial_preference_value, 'attribute_frequency':user_preference_attribute_frequency}
-    
+
     time_helper.print_current_time()
     print("Initialize User Model ---- Preference Model about %d categorical attributes." % len(categorical_attributes))
     time_helper.print_current_time()
@@ -74,8 +82,9 @@ def update_user_critique_preference(updated_user_critique_preference, attr, crit
     return updated_user_critique_preference
     
 def update_user_constraints(updated_user_critique_preference, constraint_number):
+
     top_k_constraints = []
-    top_k_constraints_attr_list = []
+    top_k_constraints_attr_list = [] # store the attributes that has been constrained
     for i in range(len(updated_user_critique_preference)):
         if len(updated_user_critique_preference) - i > 0:
             constraint = updated_user_critique_preference[len(updated_user_critique_preference)-i-1]
@@ -112,25 +121,28 @@ def update_user_model(user_model, user_interaction_dialog, user_listened_longs, 
     updated_user_attribute_frequency = user_model['user_preference_model']['attribute_frequency']
     updated_user_constraints = user_model['user_constraints']
     updated_user_critique_preference = user_model['user_critique_preference']
-    
-    updated_user_preference_model = user_model['user_preference_model']
-
-    critique_song_id = ''
 
     for utterance_info in user_interaction_dialog:
         current_action = utterance_info['action'].lower()
         # Condition 1: user critiquing / system suggest critiquing - Yes
         # -> update (1) user critique preference, (2) preference model: attribute frequency, (3) user constraints,
         # print(current_action )
+        time_helper.print_current_time()
+        print("Update User Model ---- User Action: %s." % (current_action))
+
         if current_action == "user_critique" or current_action == "accept_suggestion":
-            
             critique_list = utterance_info['critique']
-            critique_song_id = utterance_info['critiqued_song']
-            critique_song_info = {}
-            for song in user_listened_longs:
-                if song['id'] == critique_song_id:
-                    critique_song_info = song
-         
+            critique_song_info = current_recommended_item
+            # [Revised 2020-05-07: Actually, the critiqued item is just the current recommended item.]
+            # critique_song_id = utterance_info['critiqued_song']
+            # critique_song_info = {}
+            # for song in user_listened_longs:
+            #     if song['id'] == critique_song_id:
+            #         critique_song_info = song
+            
+            time_helper.print_current_time()
+            print("Update User Model ---- Number of Critiques: %d." % len(critique_list))
+
             for crit in critique_list:
                 for attr, criti_value in crit.items():
                     # preference model: attribute frequency
@@ -138,22 +150,23 @@ def update_user_model(user_model, user_interaction_dialog, user_listened_longs, 
                     # user critique preference
                     updated_user_critique_preference = update_user_critique_preference(updated_user_critique_preference, attr, criti_value, critique_song_info, numerical_attributes)
 
+
             # pp.pprint(updated_user_critique_preference)
+
             # user constraint
             constraint_number = 3
             updated_user_constraints = update_user_constraints(updated_user_critique_preference, constraint_number)
+
+            time_helper.print_current_time()
+            print("Update User Model ---- Number of Current User Constraints: %d." % len(updated_user_constraints))
+
             # pp.pprint(updated_user_constraints)
 
-        # Condition 2: Recommend
-        # -> keep info : critique_list, critique
-        # if current_action == "Recommend" :
-            
-        #     liked_song_id = utterance_info['text']
 
         
 
-        # Condition 3: accept the recommendation
-        if current_action == "accept_song":
+        # Condition 2: accept the recommendation
+        if current_action == "accept_item":
 
             # --- Revise ---- system critique - accept -> update critique preference, attribute frequency, user constraints
             # # if the recommended song is based on system critiques
@@ -183,11 +196,12 @@ def update_user_model(user_model, user_interaction_dialog, user_listened_longs, 
             # Update preference value based on the liked songs
             # ------------------------------------------------
             liked_song_info = current_recommended_item
-            # liked_song_info = {}
-            # for song in user_listened_longs:
-            #     if song['id'] == liked_song_id:
-            #         liked_song_info = song
             updated_user_preference_value = update_user_preference_value(updated_user_preference_value, liked_song_info, categorical_attributes, numerical_attributes)
             
-        updated_user_preference_model = {'preference_value': updated_user_preference_value, 'attribute_frequency': updated_user_attribute_frequency}
+            time_helper.print_current_time()
+            print("Update User Model ---- Update preference value based on the accepted item.")
+
+
+    updated_user_preference_model = {'preference_value': updated_user_preference_value, 'attribute_frequency': updated_user_attribute_frequency}
+    
     return updated_user_preference_model, updated_user_constraints, updated_user_critique_preference

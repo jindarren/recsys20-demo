@@ -52,11 +52,11 @@ if test_function == 'get_sys_cri':
 	url ="http://127.0.0.1:5000/get_sys_cri"
 
 parms = {
-    'user_profile': user_profile,
-	'sys_crit_version': 'preference_oriented'
+	'user_profile': user_profile,
+	'sys_crit_version': 'preference_oriented',
 }
 
-for i in range(2):
+for i in range(1):
 	res = requests.post(url, data=json.dumps(parms))  # request API to return results
 	print(i)
 

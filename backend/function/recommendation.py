@@ -3,10 +3,11 @@ import numpy as np
 import pprint
 import copy
 from function import helper 
+from tool import time_helper
 
 pp = pprint.PrettyPrinter(indent=4)
 # ------------------------------------------------------------------
-#  Obtain Attribute Weigth 
+#  Obtain Attribute Weigth (normalized by attribute frequency)
 # ------------------------------------------------------------------
 def obtain_attribute_weight(user_pref_attribute_frequency):
     user_pref_attribute_weight_dict = {}
@@ -30,7 +31,6 @@ def numerical_attributes_value_function(user_pref_v, item_v, attribute):
     # step 1: find the interval that contains the item's attribute value
     value_interval_label = helper.get_numerical_attribute_interval_label(attribute, item_v)
 
-
     # step 2: compute the sum of preference value 
     user_pref_v_sum = sum(user_pref_v.values())
 
@@ -41,8 +41,10 @@ def numerical_attributes_value_function(user_pref_v, item_v, attribute):
         return 0
     return 1
 
+
+
 # ------------------------------------------------------------------
-# Multi-attribute Utility Theory (MAUT) : Get Utility for each items
+# Fliter By User Constraints Before Computing Recommendations
 # ------------------------------------------------------------------
 
 def filter_items_by_user_constraints(user_constraints, item_pool, minimal_threshold,  categorical_attributes, numerical_attributes):
@@ -54,37 +56,63 @@ def filter_items_by_user_constraints(user_constraints, item_pool, minimal_thresh
     for critique_unit_dict in user_constraints:
         attr = critique_unit_dict['attribute']
         crit_direction = critique_unit_dict['crit_direction']
-        crit_value = critique_unit_dict['value']
+        crit_value = ''
+        if attr in numerical_attributes:
+            crit_value = critique_unit_dict['value']
 
         if len(filtered_item_pool) < minimal_threshold:
             break
+
         if attr in categorical_attributes:
             for item in filtered_item_pool:
                 if item[attr] != crit_direction:
                     filtered_item_pool.remove(item)
                     
         if attr in numerical_attributes:
+
+            attribut_interval, interval_label = helper.get_numerical_attribute_intervalindex(attr)
+            intervals = pd.IntervalIndex.from_breaks(attribut_interval, closed='left')
+
+            cur_interval_find = list(intervals.contains(crit_value))
+            cur_index = cur_interval_find.index(True)
+
             for item in filtered_item_pool:
                 
-                attribut_interval, interval_label = helper.get_numerical_attribute_intervalindex(attr)
-                intervals = pd.IntervalIndex.from_breaks(attribut_interval, closed='left')
-
-                cur_interval_find = list(intervals.contains(crit_value))
-                cur_index = cur_interval_find.index(True)
-
                 item_interval_find = list(intervals.contains(item[attr]))
                 item_index = item_interval_find.index(True)
                 satisfied_flag = False
+
+                assert len(cur_interval_find) == len(intervals)
+
                 if item_index == cur_index and crit_direction == 'similar':
                     satisfied_flag = True
-                if item_index < cur_index and crit_direction == 'lower':
-                    satisfied_flag = True
-                if item_index > cur_index and crit_direction == 'higher':
-                    satisfied_flag = True
+
+                # case 1: current critiqued item value has been already the lowest range - allows to return items within same range
+                if cur_index == 0:
+                    if item_index <= cur_index and crit_direction == 'lower':
+                        satisfied_flag = True
+
+                # case 2: current critiqued item value has been already the highest range - allows to return items within same range
+                elif cur_index == len(cur_interval_find)-1: 
+                    if item_index >= cur_index and crit_direction == 'higher':
+                        satisfied_flag = True
+
+                else:
+                    if item_index < cur_index and crit_direction == 'lower':
+                        satisfied_flag = True
+                    if item_index > cur_index and crit_direction == 'higher':
+                        satisfied_flag = True
+
+
                 if satisfied_flag == False:
                     filtered_item_pool.remove(item)
 
     return filtered_item_pool
+
+
+# ------------------------------------------------------------------
+# Multi-attribute Utility Theory (MAUT) : Get Utility for each items
+# ------------------------------------------------------------------
 
 def compute_recommendation_by_MAUT(user_preference_model, item_pool, top_K, categorical_attributes, numerical_attributes, sort=True):
     # based on user preference model and item value
@@ -125,6 +153,8 @@ def compute_recommendation_by_MAUT(user_preference_model, item_pool, top_K, cate
         
         item_utility_dict[item_id] = item_utility
     
+    time_helper.print_current_time()
+    print("Get Recommendation ---- Compute recommendation Multi-attribute Utility score (MAUT) ---- Done.") 
     if sort:
         sorted_item_utility_list = helper.sort_dict(item_utility_dict)
         # pp.pprint(sorted_item_utility_list)
@@ -163,7 +193,7 @@ def compute_recommendation_compatibility_score(user_critique_preference, item_po
         satisfied_critique_attribute_list = []
         unsatisfied_critique_attribute_list = []
 
-        for crit_unit in user_critique_preference:
+        for crit_unit in reversed(user_critique_preference):
 
             # Step 1: Obtain the value for each critique
             attr = crit_unit['attribute']
@@ -208,6 +238,10 @@ def compute_recommendation_compatibility_score(user_critique_preference, item_po
         item_compatibility_score_dict[item_id] = item_compatibility_score
     
 
+
+    time_helper.print_current_time()
+    print("Get Recommendation ---- Compute recommendation compatibility score (COMPAT) ---- Done.") 
+         
     if sort:
         sorted_item_compatibility_score_list = helper.sort_dict(item_compatibility_score_dict)
         top_K_recommmendation_list = sorted_item_compatibility_score_list[0:top_K]
@@ -243,7 +277,7 @@ def compute_recommendation(user_preference_model, user_critique_preference, item
             return integrated_score_dict
 
 def update_recommendation_pool(user_preference_model, user_critique_preference, integrated_item_pool, max_item_pool_number, categorical_attributes, numerical_attributes, method, alpha):
-        
+
     sorted_estimated_score_dict = compute_recommendation(user_preference_model, user_critique_preference, integrated_item_pool, max_item_pool_number, categorical_attributes, numerical_attributes, method, alpha)
     
     max_item_pool_list = []

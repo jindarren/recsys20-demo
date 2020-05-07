@@ -22,7 +22,6 @@ def get_numerical_attribute_intervalindex(attribute):
     intervalindex = pd.IntervalIndex.from_breaks(attribute_intervalindex, closed='left')
     interval_label = intervalindex.astype(str)
    
-
     return attribute_intervalindex, interval_label
 
 def get_numerical_attribute_interval_label(attribute, value):
