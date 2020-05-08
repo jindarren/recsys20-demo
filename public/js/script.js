@@ -1003,6 +1003,8 @@ $(document).ready(function () {
                                 var listenedSongsLength = logger.listenedSongs.length
                                 updateData.topRecommendedSong = logger.listenedSongs[listenedSongsLength-1]
 
+                                console.log(updateData,sysCritVersion)
+
 
                                 systemCritiques(updateData,sysCritVersion)
 
