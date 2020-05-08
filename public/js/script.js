@@ -29,6 +29,11 @@ var loggers = [], logger = {};
 
 var usermodel = {}
 
+
+//preference_oriented
+//diversity_oriented
+//personality_adjusted
+
 var sysCritVersion = window.location.search
 console.log(sysCritVersion)
 
@@ -991,6 +996,8 @@ $(document).ready(function () {
                                 updateData.pool = playlist
                                 updateData.new_pool = []
                                 updateData.logger = logger
+                                // if(sysCritVersion=="diversity_oriented")
+                                //     updateData.logger.dialog
                                 updateData.logger.latest_dialog = [dialog]
                                 updateData.logger.listenedSongs = logger.listenedSongs
                                 var listenedSongsLength = logger.listenedSongs.length
