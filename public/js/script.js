@@ -996,6 +996,7 @@ $(document).ready(function () {
                                 updateData.pool = playlist
                                 updateData.new_pool = []
                                 updateData.logger = logger
+                                updateData.sys_crit_version=sysCritVersion
                                 // if(sysCritVersion=="diversity_oriented")
                                 //     updateData.logger.dialog
                                 updateData.logger.latest_dialog = [dialog]
@@ -1003,11 +1004,9 @@ $(document).ready(function () {
                                 var listenedSongsLength = logger.listenedSongs.length
                                 updateData.topRecommendedSong = logger.listenedSongs[listenedSongsLength-1]
 
-                                console.log(updateData,sysCritVersion)
+                                console.log(updateData)
 
-
-                                systemCritiques(updateData,sysCritVersion)
-
+                                systemCritiques(updateData)
 
                                 nextTimes = 0
                                 $("#speak" + id + " .feedback-box").fadeOut()
