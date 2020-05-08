@@ -34,8 +34,7 @@ var usermodel = {}
 //diversity_oriented
 //personality_adjusted
 
-var sysCritVersion = window.location.search
-console.log(sysCritVersion)
+var sysCritVersion = window.location.search.substring(1)
 
 
 
