@@ -155,7 +155,7 @@ def compute_critique_utility_diversity_oriented (diversity_calculation_method, u
     
     sorted_critique_diversity_utility_list = helper.sort_dict(critique_diversity_utility_dict)
     
-    pp.pprint(sorted_critique_diversity_utility_list)
+    # pp.pprint(sorted_critique_diversity_utility_list)
 
 
 
@@ -222,7 +222,7 @@ def switch_critique_level(interaction_log, cur_rec, categorical_attributes, nume
     for utterance_info in previous_dialogue:
         critique_list = []
         action = utterance_info['action'].lower()
-        if action == "user_critique" or current_action == "accept_suggestion":
+        if action == "user_critique" or action == "system_suggest":
             critique_list = utterance_info['critique']
         if len(critique_list) > 0:
             for each_crit in critique_list:
@@ -342,11 +342,18 @@ def generate_system_critiques_preference_oriented(user_info, estimated_score_dic
     # compatibility_score_dict = recommendation.compute_recommendation_by_MAUT(user_info, item_pool, len(item_pool), categorical_attributes, numerical_attributes)
     user_attribute_frequency = user_info['attribute_frequency']
     sorted_critique_utility_list = compute_critique_utility_preference_oriented(user_attribute_frequency, frequent_critiques_freq_dict,min_support, frequent_critiques_satisfied_items_dict, estimated_score_dict)
-
+    
+    time_helper.print_current_time()
+    print('compute critique utility - preference-oriented - Done.')
+    
+    
     top_K = min([top_K, len(sorted_critique_utility_list)])
     sorted_critique_diveristy_utility_list = compute_critique_diversity_utility(sorted_critique_utility_list, top_K)
     
-    pp.pprint(sorted_critique_diveristy_utility_list)
+    time_helper.print_current_time()
+    print('obtain critique diversified - Done.')
+
+    # pp.pprint(sorted_critique_diveristy_utility_list)
     topK_critique_item_list = obtain_top_k_critique_with_recommendation_list(top_K, sorted_critique_diveristy_utility_list, frequent_critiques_satisfied_items_dict,estimated_score_dict)
 
     return topK_critique_item_list
@@ -395,11 +402,22 @@ def generate_system_critiques_diversity_oriented(user_info, interaction_log,  es
     time_helper.print_current_time()
     print('diversity calculation method:', diversity_calculation_method)
     
-    sorted_critique_diversity_utility_list = compute_critique_utility_diversity_oriented(diversity_calculation_method, \
+    sorted_critique_utility_list = compute_critique_utility_diversity_oriented(diversity_calculation_method, \
         user_listened_songs, item_pool, frequent_critiques_satisfied_items_dict , categorical_attributes, numerical_attributes)
-
-
-    topK_critique_item_list = obtain_top_k_critique_with_recommendation_list(top_K, sorted_critique_diversity_utility_list, frequent_critiques_satisfied_items_dict,estimated_score_dict)
+    
+    time_helper.print_current_time()
+    print('compute critique utility - diversity-oriented - Done.')
+    
+    
+    top_K = min([top_K, len(sorted_critique_utility_list)])
+    sorted_critique_diveristy_utility_list = compute_critique_diversity_utility(sorted_critique_utility_list, top_K)
+    
+    time_helper.print_current_time()
+    print('obtain critique diversified - Done.')
+    
+    pp.pprint(sorted_critique_diveristy_utility_list)
+ 
+    topK_critique_item_list = obtain_top_k_critique_with_recommendation_list(top_K, sorted_critique_diveristy_utility_list, frequent_critiques_satisfied_items_dict,estimated_score_dict)
 
     return topK_critique_item_list
 
