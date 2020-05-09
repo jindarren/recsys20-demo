@@ -63,12 +63,13 @@ def filter_items_by_user_constraints(user_constraints, item_pool, minimal_thresh
 
         if len(filtered_item_pool) < minimal_threshold:
             break
-        
+        print(critique_unit_dict)
         if attr in categorical_attributes:
             for item in filtered_item_pool:
                 if type(crit_direction) == str:
                     if item[attr].lower() != crit_direction.lower():
                         filtered_id_list.append(item['id'])
+                      
                 if type(crit_direction) == list:
                     if item[attr] not in crit_direction:
                         filtered_id_list.append(item['id'])
@@ -118,7 +119,7 @@ def filter_items_by_user_constraints(user_constraints, item_pool, minimal_thresh
             if item['id'] not in filtered_id_list:
                 updated_filtered_item_pool.append(item)
         filtered_item_pool = copy.deepcopy(updated_filtered_item_pool)
-    
+        print(filtered_item_pool)
 
     return filtered_item_pool
 
