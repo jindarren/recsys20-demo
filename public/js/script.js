@@ -33,7 +33,6 @@ var usermodel = {}
 //preference_oriented
 //diversity_oriented
 //personality_adjusted
-
 var sysCritVersion = window.location.search.substring(1)
 
 
@@ -149,6 +148,18 @@ $(document).ready(function () {
         //refresh the token
     var userid = $.cookie('user-id')
 
+    function reRankPlaylist(recomList) {
+        var newPlayList = []
+        for(var item in recomList){
+            var songID = recomList[item]
+
+            var filtered = playlist.filter(function(el) { return el.id == songID; });
+            newPlayList.push(filtered)
+            playlist.splice(playlist.indexOf(filtered),1)
+        }
+        playlist = newPlayList.concat(playlist)
+    }
+
     function initializeUserModel(user) {
 
         var profile_py = {}
@@ -216,6 +227,8 @@ $(document).ready(function () {
 
                 var returned = JSON.parse(result)
                 console.log(returned)
+                reRankPlaylist(returned.recommendation_list)
+                console.log(playlist)
             },
             contentType: "application/json;charset=utf-8",
             dataType: "json"
@@ -244,6 +257,9 @@ $(document).ready(function () {
 
                 var returned = JSON.parse(result)
                 console.log(returned)
+
+                reRankPlaylist(returned.recommendation_list)
+                console.log(playlist)
             },
             contentType: "application/json;charset=utf-8",
             dataType: "json"
@@ -530,10 +546,10 @@ $(document).ready(function () {
                 dialog.action = action
                 if (party == you)
                     dialog.modality = modality
-                if (party == you || party == crit){
-                    dialog.critique = critique
-                    dialog.critiqued_song = playlist[songIndex].id
-                }
+                // if (action == "User_Critique" || party == crit){
+                //     dialog.critique = critique
+                //     dialog.critiqued_song = playlist[songIndex].id
+                // }
 
                 dialog.timestamp = new Date().getTime()
                 logger.dialog.push(dialog)
@@ -815,7 +831,7 @@ $(document).ready(function () {
                 })
             }
 
-            var showMusic = function (id, noExp, scenario) {
+            var showMusic = function (id) {
 
                 var dialog = {}
                 dialog.agent = "robot"
@@ -1780,6 +1796,7 @@ $(document).ready(function () {
 
                     if(critique.length>0){
                         dialog.critique=critique
+                        dialog.critiqued_song = playlist[songIndex].id
 
                         //perform update model request
                         var updateData = {}
@@ -1795,6 +1812,8 @@ $(document).ready(function () {
 
                         updateUserModel(updateData)
 
+                    }else{
+                        dialog.action = "Chit_chat"
                     }
 
                 }
