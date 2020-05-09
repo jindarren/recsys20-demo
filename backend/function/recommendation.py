@@ -53,7 +53,9 @@ def filter_items_by_user_constraints(user_constraints, item_pool, minimal_thresh
 
     filtered_item_pool = copy.deepcopy(item_pool)
 
+
     for critique_unit_dict in user_constraints:
+        filtered_id_list = []
         attr = critique_unit_dict['attribute']
         crit_direction = critique_unit_dict['crit_direction']
         crit_value = ''
@@ -62,16 +64,16 @@ def filter_items_by_user_constraints(user_constraints, item_pool, minimal_thresh
 
         if len(filtered_item_pool) < minimal_threshold:
             break
-
+        
         if attr in categorical_attributes:
             for item in filtered_item_pool:
                 if type(crit_direction) == str:
                     if item[attr] != crit_direction:
-                        filtered_item_pool.remove(item)
+                        filtered_id_list.append(item['id'])
                 if type(crit_direction) == list:
                     if item[attr] not in crit_direction:
-                        filtered_item_pool.remove(item)
-                    
+                        filtered_id_list.append(item['id'])
+
         if attr in numerical_attributes:
 
             attribut_interval, interval_label = helper.get_numerical_attribute_intervalindex(attr)
@@ -109,7 +111,15 @@ def filter_items_by_user_constraints(user_constraints, item_pool, minimal_thresh
 
 
                 if satisfied_flag == False:
-                    filtered_item_pool.remove(item)
+                    filtered_id_list.append(item['id'])
+
+
+        updated_filtered_item_pool = []
+        for item in filtered_item_pool:
+            if item['id'] not in filtered_id_list:
+                updated_filtered_item_pool.append(item)
+        filtered_item_pool = copy.deepcopy(updated_filtered_item_pool)
+    
 
     return filtered_item_pool
 
@@ -213,11 +223,13 @@ def compute_recommendation_compatibility_score(user_critique_preference, item_po
                 # 1. Categorical Attributes
                 if attr in categorical_attributes:
                     satisfiability = False
+
                     if type(crit_direction) == str and each_item[attr] == crit_direction:
                         satisfiability = True
                         print()
                     if type(crit_direction) == list and each_item[attr] in crit_direction:
                         satisfiability = True
+                       
                     satisfied_critique_attribute_list, unsatisfied_critique_attribute_list = update_based_on_satisfiability\
                         (attr,satisfiability, satisfied_critique_attribute_list, unsatisfied_critique_attribute_list)
                     # print('sat:',satisfied_critique_attribute_list)
