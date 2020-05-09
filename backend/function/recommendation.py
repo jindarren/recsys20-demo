@@ -53,7 +53,6 @@ def filter_items_by_user_constraints(user_constraints, item_pool, minimal_thresh
 
     filtered_item_pool = copy.deepcopy(item_pool)
 
-
     for critique_unit_dict in user_constraints:
         filtered_id_list = []
         attr = critique_unit_dict['attribute']
@@ -68,7 +67,7 @@ def filter_items_by_user_constraints(user_constraints, item_pool, minimal_thresh
         if attr in categorical_attributes:
             for item in filtered_item_pool:
                 if type(crit_direction) == str:
-                    if item[attr] != crit_direction:
+                    if item[attr].lower() != crit_direction.lower():
                         filtered_id_list.append(item['id'])
                 if type(crit_direction) == list:
                     if item[attr] not in crit_direction:
