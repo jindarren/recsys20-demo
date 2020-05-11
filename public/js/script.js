@@ -20,10 +20,10 @@ var isSystemCrit = 1;
 var listenedSongs = []
 var isFinished = false
 var topRecommendedSong;
-var critiqueList = [];
 var nextTimes = 0;
 var showNextSong, showCurrentSong, showNextSong2, showNextSong3, showCurrentSong2, showFeedback, showTry;
 // const synth = window.speechSynthesis;
+var sysCritRecommendations=[]
 
 var loggers = [], logger = {};
 
@@ -153,7 +153,7 @@ $(document).ready(function () {
         for(var item in recomList){
             var songID = recomList[item]
 
-            var filtered = playlist.filter(function(el) { return el.id == songID; });
+            var filtered = playlist.filter(function(el) { return el.id == songID;})[0];
             newPlayList.push(filtered)
             playlist.splice(playlist.indexOf(filtered),1)
         }
@@ -170,43 +170,45 @@ $(document).ready(function () {
             type: "POST",
             url: "/initialize_user_model",
             data: JSON.stringify(profile_py),
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
             success: function (result) {
                 var returned = JSON.parse(result)
                 user = returned.user
                 usermodel.user = returned.user
-                console.log(usermodel)
+                console.log("初始: ", returned)
 
             },
-            contentType: "application/json;charset=utf-8",
-            dataType: "json"
+            error: function (error) {
+            console.log(error)
+            }
         });
 
     }
 
-    function updateUserModel(data) {
 
+    function updateUserModel(data) {
         var profile_py = {}
         profile_py["user_profile"] = {}
         profile_py["user_profile"]["user"] = data.user
         profile_py["user_profile"]["logger"] = data.logger
         profile_py["user_profile"]["topRecommendedSong"] = data.topRecommendedSong
 
-        $.ajax({
+        return $.ajax({
             type: "POST",
             url: "/update_user_model",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
             data: JSON.stringify(profile_py),
             success: function (result) {
-                console.log(result)
-
                 var returned = JSON.parse(result)
-                data.user = returned.user
-                data.logger = returned.logger
-                console.log(data)
+                usermodel.user = returned.user
+                console.log("更新: ", returned)
             },
-            contentType: "application/json;charset=utf-8",
-            dataType: "json"
+            error: function(error){
+                console.log("error")
+            },
         });
-
     }
 
 
@@ -218,22 +220,22 @@ $(document).ready(function () {
         profile_py["user_profile"]["new_pool"] = data.new_pool
         profile_py["user_profile"]["user"] = data.user
 
-        $.ajax({
+        return $.ajax({
             type: "POST",
             url: "/get_rec",
             data: JSON.stringify(profile_py),
-            success: function (result) {
-                console.log(result)
-
-                var returned = JSON.parse(result)
-                console.log(returned)
-                reRankPlaylist(returned.recommendation_list)
-                console.log(playlist)
-            },
             contentType: "application/json;charset=utf-8",
-            dataType: "json"
+            dataType: "json",
+            success: function (result) {
+                var returned = JSON.parse(result)
+                console.log("UC推荐: ", returned)
+                if(returned.recommendation_list.length>0)
+                    reRankPlaylist(returned.recommendation_list)
+            },
+            error: function (error) {
+                console.log(error)
+            }
         });
-
     }
 
 
@@ -248,23 +250,24 @@ $(document).ready(function () {
         profile_py["user_profile"]["logger"] = data.logger
         profile_py["sys_crit_version"]=data.sys_crit_version
 
-        $.ajax({
+        console.log(profile_py)
+
+        return $.ajax({
             type: "POST",
             url: "/get_sys_cri",
             data: JSON.stringify(profile_py),
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
             success: function (result) {
-                console.log(result)
-
                 var returned = JSON.parse(result)
-                console.log(returned)
-
+                console.log("SC推荐: ", returned)
                 reRankPlaylist(returned.recommendation_list)
                 console.log(playlist)
             },
-            contentType: "application/json;charset=utf-8",
-            dataType: "json"
+            error: function (error) {
+                console.log(error)
+            }
         });
-
     }
 
     console.log(spotifyToken)
@@ -366,8 +369,8 @@ $(document).ready(function () {
 
             var songIndex = 0;
             var timeoutResumeInfinity;
-            var critiques = [],
-                critiquesIndex = 0;
+            // var critiques = [],
+            //     critiquesIndex = 0;
             var needReply = false;
 
             /******************** music chat function ***********************/
@@ -418,7 +421,6 @@ $(document).ready(function () {
                 $(".chat").empty()
 
                 numberOfLikedSongs = 0
-                songIndex = 0
 
                 //clear the chat content for new scenario
                 listenedSongs = []
@@ -503,42 +505,166 @@ $(document).ready(function () {
             })
 
             function checkMusic() {
+                showMusic(playlist[songIndex].id)
 
-                if (listenedSongs.indexOf(playlist[songIndex].id) < 0) {
-                    listenedSongs.push(playlist[songIndex].id)
-                    setTimeout(function () {
-                        showMusic(playlist[songIndex].id)
-                    }, 500)
-
-                } else {
-                    if (songIndex < playlist.length - 1) {
-                        songIndex++
-                        data.topRecommendedSong = playlist[songIndex]
-                        checkMusic()
-                    } else {
-                        updateChat(robot, "Sorry, we have no more recommendation for you. Please try to tell us what kind of music you want to listen to.","Respond_NoSuggestion")
-                        playlist = data.pool
-                        songIndex = 0
-                        checkMusic()
-                    }
-                }
+                // if (listenedSongs.indexOf(playlist[songIndex].id) < 0) {
+                //     listenedSongs.push(playlist[songIndex].id)
+                //     setTimeout(function () {
+                //         showMusic(playlist[songIndex].id)
+                //     }, 500)
+                //
+                // } else {
+                //     if (songIndex < playlist.length - 1) {
+                //         //songIndex++
+                //         data.topRecommendedSong = playlist[songIndex]
+                //         checkMusic()
+                //     } else {
+                //         updateChat(robot, "Sorry, we have no more recommendation for you. Please try to tell us what kind of music you want to listen to.","Respond_NoSuggestion")
+                //         playlist = data.pool
+                //         songIndex = 0
+                //         checkMusic()
+                //     }
+                // }
             }
 
             function nextSong() {
-                if (songIndex < playlist.length - 1) {
-                    playlist.splice(playlist.indexOf(playlist[songIndex].id), 1);
-                    songIndex++;
-                    data.topRecommendedSong = playlist[songIndex]
-                }
-                else {
-                    songIndex = 0;
-                    playlist = data.pool
-                    updateChat(robot, "Sorry, we have no more recommendation for you. Please try to tell us what kind of music you want to listen to.","Respond_NoSuggestion")
-                }
+                // if (songIndex < playlist.length - 1) {
+                //     playlist.splice(playlist.indexOf(playlist[songIndex].id), 1);
+                //     //songIndex++;
+                //     data.topRecommendedSong = playlist[songIndex]
+                // }
+                // else {
+                //     songIndex = 0;
+                //     playlist = data.pool
+                //     updateChat(robot, "Sorry, we have no more recommendation for you. Please try to tell us what kind of music you want to listen to.","Respond_NoSuggestion")
+                // }
+            }
+
+            function getSysCrit(){
+                var dialogNum = logger.dialog.length
+                var dialog = logger.dialog[dialogNum-1]
+
+                var updateData = {}
+                updateData.user = usermodel.user
+                updateData.pool = playlist
+                updateData.new_pool = []
+                updateData.logger = logger
+                updateData.sys_crit_version=sysCritVersion
+
+                updateData.logger.latest_dialog = [dialog]
+                updateData.logger.listenedSongs = logger.listenedSongs
+                var listenedSongsLength = logger.listenedSongs.length
+                updateData.topRecommendedSong = logger.listenedSongs[listenedSongsLength-1]
+
+                console.log(updateData)
+
+                systemCritiques(updateData).then(function (rawCrits) {
+                    var crits = JSON.parse(rawCrits)
+                    var critiques = [];
+                    var critiquesIndex = 0;
+
+                    console.log(crits)
+
+                    var firstThreeCrits = crits.sys_crit_with_recommendation.slice(0,3)
+
+                    console.log(firstThreeCrits)
+
+                    for (var crt in firstThreeCrits) {
+
+                        var wording = "Based on your music preference, we think you might like the ";
+                        var songType = "",
+                            features = "";
+                        var actionSet = {},
+                            action = [];
+
+                        var returnedCritiques = firstThreeCrits[crt].critique
+
+                        console.log(returnedCritiques)
+
+                        for (var index in returnedCritiques) {
+
+                            if (returnedCritiques[index].split("|")[0] == "language") {
+                                var actionItem = {}
+                                actionItem.prop = "language"
+                                actionItem.val =  returnedCritiques[index].split("|")[1]
+                                actionItem.type = "equal"
+                                action.push(actionItem)
+                                songType += actionItem.val + " "
+
+                            } else if (returnedCritiques[index].split("|")[0] == "genre") {
+                                var actionItem = {}
+                                actionItem.prop = "genre"
+                                actionItem.val = returnedCritiques[index].split("|")[1]
+                                actionItem.type = "equal"
+                                action.push(actionItem)
+                                songType += actionItem.val + " "
+
+                            } else if (returnedCritiques[index].split("|")[0] == "artist") {
+                                var actionItem = {}
+                                actionItem.prop = "artist"
+                                actionItem.val = returnedCritiques[index].split("|")[1]
+                                actionItem.type = "equal"
+                                action.push(actionItem)
+                                songType += action.artist + " "
+
+                            } else if (returnedCritiques[index].split("|")[1] == "lower") {
+                                var actionItem = {}
+                                actionItem.prop = returnedCritiques[index].split("|")[0]
+                                // actionItem.val = -0.1
+                                actionItem.type = "lower"
+                                action.push(actionItem)
+                                features += "lower " + returnedCritiques[index].split("|")[0] + ", "
+                            } else if (returnedCritiques[index].split("|")[1] == "higher") {
+                                var actionItem = {}
+                                actionItem.prop = returnedCritiques[index].split("|")[0]
+                                // actionItem.val = 0.1
+                                actionItem.type = "higher"
+                                action.push(actionItem)
+                                features += "higher " + returnedCritiques[index].split("|")[0] + ", "
+                            } else if (returnedCritiques[index].split("|")[1] == "similar") {
+                                var actionItem = {}
+                                actionItem.prop = returnedCritiques[index].split("|")[0]
+                                // actionItem.val = 0.1
+                                actionItem.type = "similar"
+                                action.push(actionItem)
+                                features += "similar " + returnedCritiques[index].split("|")[0] + ", "
+                            }
+                        }
+
+                        if (songType && !features) {
+                            wording += songType + "music"
+                            actionSet.speech = wording + "?"
+                        }
+                        else if (!songType && features) {
+                            wording += "songs with " + features
+                            actionSet.speech = wording.substr(0, wording.length - 2) + "?"
+                        }
+                        else if (songType && features) {
+                            wording += songType + "songs with " + features
+                            actionSet.speech = wording.substr(0, wording.length - 2) + "?"
+                        }
+
+
+                        actionSet.action = action
+                        actionSet.recommendation= firstThreeCrits[crt].recommendation
+                        console.log(actionSet)
+
+                        critiques.push(actionSet)
+
+                    }
+
+                    console.log(critiques)
+
+                    $('.spinner').remove();
+                    updateChat(crit, critiques[critiquesIndex].speech, "System_Suggest");
+                    reRankPlaylist(critiques[critiquesIndex].recommendation)
+
+                })
+
             }
 
             // add a new line to the chat
-            var updateChat = function (party, text, action, modality, critique) {
+            var updateChat = function (party, text, action, modality) {
 
                 var dialog = {}
                 dialog.agent = party
@@ -578,11 +704,9 @@ $(document).ready(function () {
                     if (reg.test(text)) {
                         $.get("/topinyin?text=" + text, function (data, err) {
                             utterance.text = data.pinyin;
-                            // synth.speak(utterance);
                         })
                     } else {
                         utterance.text = text;
-                        // synth.speak(utterance);
                     }
                 }
                 else if (party == crit) {
@@ -591,15 +715,16 @@ $(document).ready(function () {
                     line.addClass(style)
                     line.find('.dialog').text(text);
                     utterance.text = text;
-                    // synth.speak(utterance);
                 }
                 else if (party == skip) {
                     style = 'robot';
                     var line = $('<div id="round' + round + '" class="speak"><span class="dialog"></span></div>');
                     line.addClass(style)
                     line.find('.dialog').text(text);
+
+                    line.append('<div class="feedback-box"><button type="button" id="suggest" class="feedback">Let bot suggest</button></div>')
+
                     utterance.text = text;
-                    // synth.speak(utterance);
                     chat.append(line);
 
                     $("#round" + round + " .feedback").click(function () {
@@ -618,126 +743,126 @@ $(document).ready(function () {
                         //   success: function(data2) {}
                         // })
 
-                        playlist = []
-
-                        for (var index = 0; index < 150; index++) {
-                            playlist.push(data.pool[index])
-                            // playlist.push(data.pool[100 + index])
-                            // playlist.push(data.pool[200 + index])
-                        }
-
-                        data.topRecommendedSong = playlist[songIndex]
-
-                        for (var item in playlist) {
-                            if (playlist[item] == undefined)
-                                playlist.splice(item, 1)
-                        }
-                        data.playlist = playlist
-                        console.log(data)
+                        // playlist = []
+                        //
+                        // for (var index = 0; index < 150; index++) {
+                        //     playlist.push(data.pool[index])
+                        // }
+                        //
+                        // data.topRecommendedSong = playlist[songIndex]
+                        //
+                        // for (var item in playlist) {
+                        //     if (playlist[item] == undefined)
+                        //         playlist.splice(item, 1)
+                        // }
+                        // data.playlist = playlist
+                        // console.log(data)
 
                         //-------------------Start critiquing-------------------//
 
-                        $.ajax({
-                            url: "/generateCritiquing?id=" + data.user.id,
-                            type: "POST",
-                            contentType: "application/json;charset=utf-8",
-                            data: JSON.stringify(data),
-                            dataType: "json",
-                            success: function (result) {
-                                critiques = [];
-                                critiquesIndex = 0;
+                        // $.ajax({
+                        //     url: "/generateCritiquing?id=" + data.user.id,
+                        //     type: "POST",
+                        //     contentType: "application/json;charset=utf-8",
+                        //     data: JSON.stringify(data),
+                        //     dataType: "json",
+                        //     success: function (result) {
+                        //         critiques = [];
+                        //         critiquesIndex = 0;
+                        //
+                        //         console.log(result)
+                        //
+                        //         for (var crt in result.diversifyCritique) {
+                        //
+                        //             var wording = "Based on your music preference, we think you might like the ";
+                        //             var songType = "",
+                        //                 features = "";
+                        //             var actionSet = {},
+                        //                 action = [];
+                        //
+                        //             for (var index in result.diversifyCritique[crt]) {
+                        //
+                        //                 if (result.diversifyCritique[crt][index].split("|")[0] == "language") {
+                        //                     var actionItem = {}
+                        //                     actionItem.prop = "language"
+                        //                     actionItem.val = result.diversifyCritique[crt][index].split("|")[1]
+                        //                     actionItem.type = "equal"
+                        //                     action.push(actionItem)
+                        //                     songType += actionItem.val + " "
+                        //                     //data.user.attributeWeight.languageWeight += 1;
+                        //
+                        //                 } else if (result.diversifyCritique[crt][index].split("|")[0] == "genre") {
+                        //                     var actionItem = {}
+                        //                     actionItem.prop = "genre"
+                        //                     actionItem.val = result.diversifyCritique[crt][index].split("|")[1]
+                        //                     actionItem.type = "equal"
+                        //                     action.push(actionItem)
+                        //                     songType += actionItem.val + " "
+                        //                     //data.user.attributeWeight.genreWeight +=1;
+                        //
+                        //                 } else if (result.diversifyCritique[crt][index].split("|")[0] == "artist") {
+                        //                     var actionItem = {}
+                        //                     actionItem.prop = "artist"
+                        //                     actionItem.val = result.diversifyCritique[crt][index].split("|")[1]
+                        //                     actionItem.type = "equal"
+                        //                     action.push(actionItem)
+                        //                     songType += action.artist + " "
+                        //                     //data.user.attributeWeight.artistWeight += 1;
+                        //
+                        //                 } else if (result.diversifyCritique[crt][index].split("|")[1] == "lower") {
+                        //                     var actionItem = {}
+                        //                     actionItem.prop = result.diversifyCritique[crt][index].split("|")[0]
+                        //                     // actionItem.val = -0.1
+                        //                     actionItem.type = "lower"
+                        //                     action.push(actionItem)
+                        //                     features += "lower " + result.diversifyCritique[crt][index].split("|")[0] + ", "
+                        //                 } else if (result.diversifyCritique[crt][index].split("|")[1] == "higher") {
+                        //                     var actionItem = {}
+                        //                     actionItem.prop = result.diversifyCritique[crt][index].split("|")[0]
+                        //                     // actionItem.val = 0.1
+                        //                     actionItem.type = "higher"
+                        //                     action.push(actionItem)
+                        //                     features += "higher " + result.diversifyCritique[crt][index].split("|")[0] + ", "
+                        //                 } else if (result.diversifyCritique[crt][index].split("|")[1] == "similar") {
+                        //                     var actionItem = {}
+                        //                     actionItem.prop = result.diversifyCritique[crt][index].split("|")[0]
+                        //                     // actionItem.val = 0.1
+                        //                     actionItem.type = "similar"
+                        //                     action.push(actionItem)
+                        //                     features += "similar " + result.diversifyCritique[crt][index].split("|")[0] + ", "
+                        //                 }
+                        //
+                        //             }
+                        //
+                        //             if (songType && !features) {
+                        //                 wording += songType + "music"
+                        //                 actionSet.speech = wording + "?"
+                        //             }
+                        //             else if (!songType && features) {
+                        //                 wording += "songs with " + features
+                        //                 actionSet.speech = wording.substr(0, wording.length - 2) + "?"
+                        //             }
+                        //             else if (songType && features) {
+                        //                 wording += songType + "songs with " + features
+                        //                 actionSet.speech = wording.substr(0, wording.length - 2) + "?"
+                        //             }
+                        //
+                        //             actionSet.action = action
+                        //             critiques.push(actionSet)
+                        //         }
+                        //
+                        //         console.log(critiques)
+                        //
+                        //         $('.spinner').remove();
+                        //         updateChat(crit, critiques[critiquesIndex].speech, "System_Suggest");
+                        //
+                        //     },
+                        //     error: function (msg) {
+                        //         console.log(msg)
+                        //     }
+                        // })
 
-                                console.log(result)
-
-                                for (var crt in result.diversifyCritique) {
-
-                                    var wording = "Based on your music preference, we think you might like the ";
-                                    var songType = "",
-                                        features = "";
-                                    var actionSet = {},
-                                        action = [];
-
-                                    for (var index in result.diversifyCritique[crt]) {
-
-                                        if (result.diversifyCritique[crt][index].split("|")[0] == "language") {
-                                            var actionItem = {}
-                                            actionItem.prop = "language"
-                                            actionItem.val = result.diversifyCritique[crt][index].split("|")[1]
-                                            actionItem.type = "equal"
-                                            action.push(actionItem)
-                                            songType += actionItem.val + " "
-                                            //data.user.attributeWeight.languageWeight += 1;
-
-                                        } else if (result.diversifyCritique[crt][index].split("|")[0] == "genre") {
-                                            var actionItem = {}
-                                            actionItem.prop = "genre"
-                                            actionItem.val = result.diversifyCritique[crt][index].split("|")[1]
-                                            actionItem.type = "equal"
-                                            action.push(actionItem)
-                                            songType += actionItem.val + " "
-                                            //data.user.attributeWeight.genreWeight +=1;
-
-                                        } else if (result.diversifyCritique[crt][index].split("|")[0] == "artist") {
-                                            var actionItem = {}
-                                            actionItem.prop = "artist"
-                                            actionItem.val = result.diversifyCritique[crt][index].split("|")[1]
-                                            actionItem.type = "equal"
-                                            action.push(actionItem)
-                                            songType += action.artist + " "
-                                            //data.user.attributeWeight.artistWeight += 1;
-
-                                        } else if (result.diversifyCritique[crt][index].split("|")[1] == "lower") {
-                                            var actionItem = {}
-                                            actionItem.prop = result.diversifyCritique[crt][index].split("|")[0]
-                                            // actionItem.val = -0.1
-                                            actionItem.type = "lower"
-                                            action.push(actionItem)
-                                            features += "lower " + result.diversifyCritique[crt][index].split("|")[0] + ", "
-                                        } else if (result.diversifyCritique[crt][index].split("|")[1] == "higher") {
-                                            var actionItem = {}
-                                            actionItem.prop = result.diversifyCritique[crt][index].split("|")[0]
-                                            // actionItem.val = 0.1
-                                            actionItem.type = "higher"
-                                            action.push(actionItem)
-                                            features += "higher " + result.diversifyCritique[crt][index].split("|")[0] + ", "
-                                        } else if (result.diversifyCritique[crt][index].split("|")[1] == "similar") {
-                                            var actionItem = {}
-                                            actionItem.prop = result.diversifyCritique[crt][index].split("|")[0]
-                                            // actionItem.val = 0.1
-                                            actionItem.type = "similar"
-                                            action.push(actionItem)
-                                            features += "similar " + result.diversifyCritique[crt][index].split("|")[0] + ", "
-                                        }
-
-                                    }
-
-                                    if (songType && !features) {
-                                        wording += songType + "music"
-                                        actionSet.speech = wording + "?"
-                                    }
-                                    else if (!songType && features) {
-                                        wording += "songs with " + features
-                                        actionSet.speech = wording.substr(0, wording.length - 2) + "?"
-                                    }
-                                    else if (songType && features) {
-                                        wording += songType + "songs with " + features
-                                        actionSet.speech = wording.substr(0, wording.length - 2) + "?"
-                                    }
-
-                                    actionSet.action = action
-                                    critiques.push(actionSet)
-                                }
-
-                                console.log(critiques)
-
-                                $('.spinner').remove();
-                                updateChat(crit, critiques[critiquesIndex].speech, "System_Suggest");
-
-                            },
-                            error: function (msg) {
-                                console.log(msg)
-                            }
-                        })
+                        getSysCrit()
 
                     })
                 }
@@ -753,7 +878,7 @@ $(document).ready(function () {
 
                     //perform critiquing on existing set
 
-                    var newlist = data.pool.concat()
+                    // var newlist = data.pool.concat()
 
                     // while(true){
                     //   if(critiqueList.indexOf(critiques[critiquesIndex])<0){
@@ -764,56 +889,59 @@ $(document).ready(function () {
                     //     critiquesIndex++
                     // }
 
-                    for (var index2 in critiques[critiquesIndex].action) {
-                        var templist = []
+                    // for (var index2 in critiques[critiquesIndex].action) {
+                    //     var templist = []
+                    //
+                    //     var critAttr = critiques[critiquesIndex].action[index2].prop
+                    //     var critType = critiques[critiquesIndex].action[index2].type
+                    //     data.user.attributeWeight[critAttr + "Weight"] += 1;
+                    //
+                    //     newlist.map(function (track) {
+                    //         if (critType == "equal") {
+                    //             console.log(critiques[critiquesIndex].action[index2].val)
+                    //             if (track[critAttr] == critiques[critiquesIndex].action[index2].val) {
+                    //                 templist.push(track)
+                    //             }
+                    //         } else if (critType == "lower") {
+                    //             console.log(data.user.preferenceData[critAttr])
+                    //             if (track[critAttr] < data.topRecommendedSong[critAttr] - data.user.preferenceData_variance[critAttr]) {
+                    //                 templist.push(track)
+                    //                 data.user.preferenceData[critAttr + "Range"][0] = 0
+                    //                 data.user.preferenceData[critAttr + "Range"][1] = data.topRecommendedSong[critAttr] - data.user.preferenceData_variance[critAttr]
+                    //                 data.user.preferenceData[critAttr + "Range"][2] = "low"
+                    //             }
+                    //         } else if (critType == "higher") {
+                    //             console.log(data.user.preferenceData[critAttr])
+                    //             if (track[critAttr] > data.topRecommendedSong[critAttr] + data.user.preferenceData_variance[critAttr]) {
+                    //                 templist.push(track)
+                    //                 data.user.preferenceData[critAttr + "Range"][0] = data.topRecommendedSong[critAttr] + data.user.preferenceData_variance[critAttr]
+                    //                 data.user.preferenceData[critAttr + "Range"][1] = 1
+                    //                 data.user.preferenceData[critAttr + "Range"][2] = "high"
+                    //             }
+                    //         } else if (critType == "similar") {
+                    //             console.log(data.user.preferenceData[critAttr])
+                    //             if (track[critAttr] >= data.topRecommendedSong[critAttr] - data.user.preferenceData_variance[critAttr] && track[critAttr] <= data.topRecommendedSong[critAttr] + data.user.preferenceData_variance[critAttr]) {
+                    //                 templist.push(track)
+                    //                 data.user.preferenceData[critAttr + "Range"][0] = data.topRecommendedSong[critAttr] - data.user.preferenceData_variance[critAttr]
+                    //                 data.user.preferenceData[critAttr + "Range"][1] = data.topRecommendedSong[critAttr] + data.user.preferenceData_variance[critAttr]
+                    //                 data.user.preferenceData[critAttr + "Range"][2] = "middle"
+                    //             }
+                    //         }
+                    //     })
+                    //     newlist = templist.concat()
+                    //     console.log(newlist)
+                    // }
+                    // playlist = newlist.concat()
+                    //
+                    // console.log(playlist)
+                    // songIndex = 0
 
-                        var critAttr = critiques[critiquesIndex].action[index2].prop
-                        var critType = critiques[critiquesIndex].action[index2].type
-                        data.user.attributeWeight[critAttr + "Weight"] += 1;
-
-                        newlist.map(function (track) {
-                            if (critType == "equal") {
-                                console.log(critiques[critiquesIndex].action[index2].val)
-                                if (track[critAttr] == critiques[critiquesIndex].action[index2].val) {
-                                    templist.push(track)
-                                }
-                            } else if (critType == "lower") {
-                                console.log(data.user.preferenceData[critAttr])
-                                if (track[critAttr] < data.topRecommendedSong[critAttr] - data.user.preferenceData_variance[critAttr]) {
-                                    templist.push(track)
-                                    data.user.preferenceData[critAttr + "Range"][0] = 0
-                                    data.user.preferenceData[critAttr + "Range"][1] = data.topRecommendedSong[critAttr] - data.user.preferenceData_variance[critAttr]
-                                    data.user.preferenceData[critAttr + "Range"][2] = "low"
-                                }
-                            } else if (critType == "higher") {
-                                console.log(data.user.preferenceData[critAttr])
-                                if (track[critAttr] > data.topRecommendedSong[critAttr] + data.user.preferenceData_variance[critAttr]) {
-                                    templist.push(track)
-                                    data.user.preferenceData[critAttr + "Range"][0] = data.topRecommendedSong[critAttr] + data.user.preferenceData_variance[critAttr]
-                                    data.user.preferenceData[critAttr + "Range"][1] = 1
-                                    data.user.preferenceData[critAttr + "Range"][2] = "high"
-                                }
-                            } else if (critType == "similar") {
-                                console.log(data.user.preferenceData[critAttr])
-                                if (track[critAttr] >= data.topRecommendedSong[critAttr] - data.user.preferenceData_variance[critAttr] && track[critAttr] <= data.topRecommendedSong[critAttr] + data.user.preferenceData_variance[critAttr]) {
-                                    templist.push(track)
-                                    data.user.preferenceData[critAttr + "Range"][0] = data.topRecommendedSong[critAttr] - data.user.preferenceData_variance[critAttr]
-                                    data.user.preferenceData[critAttr + "Range"][1] = data.topRecommendedSong[critAttr] + data.user.preferenceData_variance[critAttr]
-                                    data.user.preferenceData[critAttr + "Range"][2] = "middle"
-                                }
-                            }
-                        })
-                        newlist = templist.concat()
-                        console.log(newlist)
-                    }
-                    playlist = newlist.concat()
-
-                    console.log(playlist)
-                    songIndex = 0
                     checkMusic()
+
 
                 })
 
+                var critiquesIndex = 0
                 $("#round" + round + " #no").click(function () {
                     $("#round" + round + " button").fadeOut()
                     updateChat(you, "I don't want.", "Reject_Suggestion", "btn")
@@ -821,6 +949,7 @@ $(document).ready(function () {
                         needReply = true;
                         critiquesIndex++;
                         updateChat(crit, critiques[critiquesIndex].speech, "System_Suggest");
+                        reRankPlaylist(critiques[critiquesIndex].recommendation)
 
                     } else if (critiquesIndex == critiques.length - 1) {
                         critiquesIndex = 0
@@ -1005,23 +1134,23 @@ $(document).ready(function () {
 
                             $("#speak" + id + " #suggest").click(function () {
 
-
-                                var updateData = {}
-                                updateData.user = usermodel.user
-                                updateData.pool = playlist
-                                updateData.new_pool = []
-                                updateData.logger = logger
-                                updateData.sys_crit_version=sysCritVersion
-                                // if(sysCritVersion=="diversity_oriented")
-                                //     updateData.logger.dialog
-                                updateData.logger.latest_dialog = [dialog]
-                                updateData.logger.listenedSongs = logger.listenedSongs
-                                var listenedSongsLength = logger.listenedSongs.length
-                                updateData.topRecommendedSong = logger.listenedSongs[listenedSongsLength-1]
-
-                                console.log(updateData)
-
-                                systemCritiques(updateData)
+                                // var updateData = {}
+                                // updateData.user = usermodel.user
+                                // updateData.pool = playlist
+                                // updateData.new_pool = []
+                                // updateData.logger = logger
+                                // updateData.sys_crit_version=sysCritVersion
+                                //
+                                // updateData.logger.latest_dialog = [dialog]
+                                // updateData.logger.listenedSongs = logger.listenedSongs
+                                // var listenedSongsLength = logger.listenedSongs.length
+                                // updateData.topRecommendedSong = logger.listenedSongs[listenedSongsLength-1]
+                                //
+                                // console.log(updateData)
+                                //
+                                // systemCritiques(updateData).then(function (data) {
+                                //     console.log(data)
+                                // })
 
                                 nextTimes = 0
                                 $("#speak" + id + " .feedback-box").fadeOut()
@@ -1030,126 +1159,126 @@ $(document).ready(function () {
                                 var line = $('<div class="speak"><div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>');
                                 chat.append(line);
 
-                                playlist = []
-
-                                for (var index = 0; index < 150; index++) {
-                                    playlist.push(data.pool[index])
-                                }
-
-                                for (var item in playlist) {
-                                    if (playlist[item] == undefined)
-                                        playlist.splice(item, 1)
-                                }
-
-                                data.topRecommendedSong = playlist[songIndex]
-
-
-                                data.playlist = playlist
-                                console.log(data)
+                                // playlist = []
+                                //
+                                // for (var index = 0; index < 150; index++) {
+                                //     playlist.push(data.pool[index])
+                                // }
+                                //
+                                // for (var item in playlist) {
+                                //     if (playlist[item] == undefined)
+                                //         playlist.splice(item, 1)
+                                // }
+                                //
+                                // data.topRecommendedSong = playlist[songIndex]
+                                //
+                                // data.playlist = playlist
+                                // console.log(data)
 
                                 //-------------------Start critiquing-------------------//
 
-                                $.ajax({
-                                    url: "/generateCritiquing?id=" + data.user.id,
-                                    type: "POST",
-                                    contentType: "application/json;charset=utf-8",
-                                    data: JSON.stringify(data),
-                                    dataType: "json",
-                                    success: function (result) {
-                                        critiques = [];
-                                        critiquesIndex = 0;
-
-                                        console.log(result)
-
-                                        for (var crt in result.diversifyCritique) {
-
-                                            var wording = "Based on your music preference, we think you might like the ";
-                                            var songType = "",
-                                                features = "";
-                                            var actionSet = {},
-                                                action = [];
-
-                                            for (var index in result.diversifyCritique[crt]) {
-
-                                                if (result.diversifyCritique[crt][index].split("|")[0] == "language") {
-                                                    var actionItem = {}
-                                                    actionItem.prop = "language"
-                                                    actionItem.val = result.diversifyCritique[crt][index].split("|")[1]
-                                                    actionItem.type = "equal"
-                                                    action.push(actionItem)
-                                                    songType += actionItem.val + " "
-                                                    //data.user.attributeWeight.languageWeight += 1;
-
-                                                } else if (result.diversifyCritique[crt][index].split("|")[0] == "genre") {
-                                                    var actionItem = {}
-                                                    actionItem.prop = "genre"
-                                                    actionItem.val = result.diversifyCritique[crt][index].split("|")[1]
-                                                    actionItem.type = "equal"
-                                                    action.push(actionItem)
-                                                    songType += actionItem.val + " "
-                                                    //data.user.attributeWeight.genreWeight +=1;
-
-                                                } else if (result.diversifyCritique[crt][index].split("|")[0] == "artist") {
-                                                    var actionItem = {}
-                                                    actionItem.prop = "artist"
-                                                    actionItem.val = result.diversifyCritique[crt][index].split("|")[1]
-                                                    actionItem.type = "equal"
-                                                    action.push(actionItem)
-                                                    songType += action.artist + " "
-                                                    //data.user.attributeWeight.artistWeight += 1;
-
-                                                } else if (result.diversifyCritique[crt][index].split("|")[1] == "lower") {
-                                                    var actionItem = {}
-                                                    actionItem.prop = result.diversifyCritique[crt][index].split("|")[0]
-                                                    // actionItem.val = -0.1
-                                                    actionItem.type = "lower"
-                                                    action.push(actionItem)
-                                                    features += "lower " + result.diversifyCritique[crt][index].split("|")[0] + ", "
-                                                } else if (result.diversifyCritique[crt][index].split("|")[1] == "higher") {
-                                                    var actionItem = {}
-                                                    actionItem.prop = result.diversifyCritique[crt][index].split("|")[0]
-                                                    // actionItem.val = 0.1
-                                                    actionItem.type = "higher"
-                                                    action.push(actionItem)
-                                                    features += "higher " + result.diversifyCritique[crt][index].split("|")[0] + ", "
-                                                } else if (result.diversifyCritique[crt][index].split("|")[1] == "similar") {
-                                                    var actionItem = {}
-                                                    actionItem.prop = result.diversifyCritique[crt][index].split("|")[0]
-                                                    // actionItem.val = 0.1
-                                                    actionItem.type = "similar"
-                                                    action.push(actionItem)
-                                                    features += "similar " + result.diversifyCritique[crt][index].split("|")[0] + ", "
-                                                }
-
-                                            }
-
-                                            if (songType && !features) {
-                                                wording += songType + "music"
-                                                actionSet.speech = wording + "?"
-                                            }
-                                            else if (!songType && features) {
-                                                wording += "songs with " + features
-                                                actionSet.speech = wording.substr(0, wording.length - 2) + "?"
-                                            }
-                                            else if (songType && features) {
-                                                wording += songType + "songs with " + features
-                                                actionSet.speech = wording.substr(0, wording.length - 2) + "?"
-                                            }
-
-                                            actionSet.action = action
-                                            critiques.push(actionSet)
-                                        }
-
-                                        console.log(critiques)
-
-                                        $('.spinner').remove();
-                                        updateChat(crit, critiques[critiquesIndex].speech,"System_Suggest");
-
-                                    },
-                                    error: function (msg) {
-                                        console.log(msg)
-                                    }
-                                })
+                                // $.ajax({
+                                //     url: "/generateCritiquing?id=" + data.user.id,
+                                //     type: "POST",
+                                //     contentType: "application/json;charset=utf-8",
+                                //     data: JSON.stringify(data),
+                                //     dataType: "json",
+                                //     success: function (result) {
+                                //         critiques = [];
+                                //         critiquesIndex = 0;
+                                //
+                                //         console.log(result)
+                                //
+                                //         for (var crt in result.diversifyCritique) {
+                                //
+                                //             var wording = "Based on your music preference, we think you might like the ";
+                                //             var songType = "",
+                                //                 features = "";
+                                //             var actionSet = {},
+                                //                 action = [];
+                                //
+                                //             for (var index in result.diversifyCritique[crt]) {
+                                //
+                                //                 if (result.diversifyCritique[crt][index].split("|")[0] == "language") {
+                                //                     var actionItem = {}
+                                //                     actionItem.prop = "language"
+                                //                     actionItem.val = result.diversifyCritique[crt][index].split("|")[1]
+                                //                     actionItem.type = "equal"
+                                //                     action.push(actionItem)
+                                //                     songType += actionItem.val + " "
+                                //                     //data.user.attributeWeight.languageWeight += 1;
+                                //
+                                //                 } else if (result.diversifyCritique[crt][index].split("|")[0] == "genre") {
+                                //                     var actionItem = {}
+                                //                     actionItem.prop = "genre"
+                                //                     actionItem.val = result.diversifyCritique[crt][index].split("|")[1]
+                                //                     actionItem.type = "equal"
+                                //                     action.push(actionItem)
+                                //                     songType += actionItem.val + " "
+                                //                     //data.user.attributeWeight.genreWeight +=1;
+                                //
+                                //                 } else if (result.diversifyCritique[crt][index].split("|")[0] == "artist") {
+                                //                     var actionItem = {}
+                                //                     actionItem.prop = "artist"
+                                //                     actionItem.val = result.diversifyCritique[crt][index].split("|")[1]
+                                //                     actionItem.type = "equal"
+                                //                     action.push(actionItem)
+                                //                     songType += action.artist + " "
+                                //                     //data.user.attributeWeight.artistWeight += 1;
+                                //
+                                //                 } else if (result.diversifyCritique[crt][index].split("|")[1] == "lower") {
+                                //                     var actionItem = {}
+                                //                     actionItem.prop = result.diversifyCritique[crt][index].split("|")[0]
+                                //                     // actionItem.val = -0.1
+                                //                     actionItem.type = "lower"
+                                //                     action.push(actionItem)
+                                //                     features += "lower " + result.diversifyCritique[crt][index].split("|")[0] + ", "
+                                //                 } else if (result.diversifyCritique[crt][index].split("|")[1] == "higher") {
+                                //                     var actionItem = {}
+                                //                     actionItem.prop = result.diversifyCritique[crt][index].split("|")[0]
+                                //                     // actionItem.val = 0.1
+                                //                     actionItem.type = "higher"
+                                //                     action.push(actionItem)
+                                //                     features += "higher " + result.diversifyCritique[crt][index].split("|")[0] + ", "
+                                //                 } else if (result.diversifyCritique[crt][index].split("|")[1] == "similar") {
+                                //                     var actionItem = {}
+                                //                     actionItem.prop = result.diversifyCritique[crt][index].split("|")[0]
+                                //                     // actionItem.val = 0.1
+                                //                     actionItem.type = "similar"
+                                //                     action.push(actionItem)
+                                //                     features += "similar " + result.diversifyCritique[crt][index].split("|")[0] + ", "
+                                //                 }
+                                //
+                                //             }
+                                //
+                                //             if (songType && !features) {
+                                //                 wording += songType + "music"
+                                //                 actionSet.speech = wording + "?"
+                                //             }
+                                //             else if (!songType && features) {
+                                //                 wording += "songs with " + features
+                                //                 actionSet.speech = wording.substr(0, wording.length - 2) + "?"
+                                //             }
+                                //             else if (songType && features) {
+                                //                 wording += songType + "songs with " + features
+                                //                 actionSet.speech = wording.substr(0, wording.length - 2) + "?"
+                                //             }
+                                //
+                                //             actionSet.action = action
+                                //             critiques.push(actionSet)
+                                //         }
+                                //
+                                //         console.log(critiques)
+                                //
+                                //         $('.spinner').remove();
+                                //         updateChat(crit, critiques[critiquesIndex].speech,"System_Suggest");
+                                //
+                                //     },
+                                //     error: function (msg) {
+                                //         console.log(msg)
+                                //     }
+                                // })
+                                getSysCrit()
                             })
                             chat.stop().animate({
                                 scrollTop: chat.prop("scrollHeight")
@@ -1334,15 +1463,18 @@ $(document).ready(function () {
                     });
 
                 }, 1000)
+
+                playlist.splice(songIndex,1)
             }
 
 
             if (isPreStudy) {
                 //Initializae
-                updateChat(robot, 'Hello. Welcome to play music bot! To warm up for study, you can read some tips on right side and try to talk with bot for good music. For example, type "Play a song"',"Initialize");
+                updateChat(robot, 'Hello. Welcome to play music bot! To warm up for study, you can read some tips on right side and try to talk with bot for good music.',"Initialize");
                 showTry = setTimeout(function () {
                     updateChat(robot, "Once you are ready for the study, you can click the 'Start study' button on the left side. You can rate a recommended song after listening to it for a while.","Initialize")
-                }, 6000)
+                    showMusic(playlist[songIndex].id)
+                }, 3000)
             }
 
             $('input#message').bind('keypress', function (event) {
@@ -1423,12 +1555,44 @@ $(document).ready(function () {
                  song
                  */
 
-                var updateData = {}
-                updateData.user = usermodel.user
-                updateData.pool = playlist
-                updateData.new_pool = []
 
-                getRecommendation(updateData)
+
+                function updateAndGetRec() {
+                    return new Promise(function(resolve, reject) {
+
+                        var dialogNum = logger.dialog.length
+                        var dialog = logger.dialog[dialogNum-1]
+
+                        dialog.critique=critique
+                        dialog.critiqued_song = playlist[songIndex].id
+
+                        //perform update model request
+                        var updateData = {}
+                        updateData.user = usermodel.user
+                        updateData.logger = {}
+                        updateData.logger.latest_dialog = [dialog]
+                        updateData.logger.listenedSongs = logger.listenedSongs
+
+                        var listenedSongsLength = logger.listenedSongs.length
+                        updateData.topRecommendedSong = logger.listenedSongs[listenedSongsLength-1]
+
+                        console.log(updateData)
+
+                        updateUserModel(updateData).done(function () {
+                            //Get recommendation
+                            var updateData2 = {}
+                            updateData2.user = usermodel.user
+                            updateData2.pool = playlist
+                            updateData2.new_pool = []
+
+                            getRecommendation(updateData2).then(function (data) {
+                                var returnData = JSON.parse(data)
+                                console.log(returnData)
+                                resolve(returnData.recommendation_list.length)
+                            })
+                        })
+                    });
+                }
 
 
                 var intent = text.action;
@@ -1437,11 +1601,9 @@ $(document).ready(function () {
                 var artist, song, language, genre, valence, tempo, action, feature;
                 var explaination = ""
 
-                // utterance.onstart = function(event) {
-                //   resumeInfinity();
-                // };
 
                 var requestLink;
+                var critique = []
 
                 var isMissed = false
                 //search by artist
@@ -1450,29 +1612,41 @@ $(document).ready(function () {
                     nextSong()
                 }
                 else if (intent == "music.search") {
-                    artist = text.parameters["artist"]
-                    song = text.parameters["song"]
-                    language = text.parameters["music-languages"]
-                    genre = text.parameters["genre"]
-                    if (artist.length > 0) {
-                        requestLink = '/searchArtist?q=' + artist[0] + '&token=' + spotifyToken;
-                        data.user.attributeWeight.artistWeight += 1;
-                        explaination = "OK, I recommend this song to you, because you like " + artist + "'s songs."
-                    } else if (song) {
-                        requestLink = '/searchTrack?q=' + song + '&token=' + spotifyToken;
-                        explaination = "OK, I recommend this song to you, because you like the song " + song + "."
-                    } else if (language) {
-                        requestLink = '/searchPlaylist?q=' + language + '&token=' + spotifyToken;
-                        data.user.attributeWeight.languageWeight += 1;
-                        explaination = "OK, I recommend this song to you, because you like the " + language + "."
-                    } else if (genre) {
-                        requestLink = '/searchPlaylist?q=' + genre + "&token=" + spotifyToken;
-                        data.user.attributeWeight.genreWeight += 1;
-                        explaination = "OK, I recommend this song to you, because you like the songs of " + genre + "."
-                    } else
-                        requestLink = ''
 
-                    // playRequestLink(requestLink)
+                    artist = text.parameters["artist"]
+                    genre = text.parameters["genre"]
+
+                    if(artist.length>0)
+                        critique.push({"artist":artist.toString()})
+                    if(genre!="")
+                        critique.push({"genre":genre})
+
+                    console.log(critique)
+
+                    if(critique.length>0){
+
+                        updateAndGetRec().then(function (data) {
+                            var num = parseInt(data)
+                            console.log(num)
+                            if(num==0){
+                                if (artist.length > 0) {
+                                    requestLink = '/searchArtist?q=' + artist[0] + '&token=' + spotifyToken;
+                                    explaination = "OK, I recommend this song to you, because you like " + artist + "'s songs."
+
+                                } else if (genre) {
+                                    requestLink = '/searchPlaylist?q=' + genre + "&token=" + spotifyToken;
+                                    explaination = "OK, I recommend this song to you, because you like the songs of " + genre + "."
+                                } else
+                                    requestLink = ''
+
+                                playRequestLink(requestLink)
+                            }else{
+                                songIndex = 0
+                                speakandsing(robot, response, "Coherence")
+                            }
+                        })
+                    }
+
                 }
                 else if (intent == "critique.response") {
                     needReply = false;
@@ -1552,161 +1726,165 @@ $(document).ready(function () {
                     tempo = text.parameters["music-tempo"]
                     action = text.parameters["feature-actions"]
                     feature = text.parameters["music-features"]
-                    if (valence) {
-                        if (valence == "happy") {
-                            //userCrit("valence","higher")
-                            //data.user.preferenceData.valence += data.user.preferenceData_variance.valence
-                            requestLink = '/getRecom?artistSeeds=' + seed_artists + '&seed_tracks=' + seed_tracks + '&genreSeeds=' + seed_genres + '&min_valence=' + data.user.preferenceData.valence + '&token=' + spotifyToken;
-                        }
-                        else if (valence == "neutral") {
-                            //userCrit("valence","similar")
-                            requestLink = '/getRecom?artistSeeds=' + seed_artists + '&seed_tracks=' + seed_tracks + '&genreSeeds=' + seed_genres + '&target_valence=' + data.user.preferenceData.valence + '&token=' + spotifyToken;
-                        }
-                        else if (valence == "sad") {
-                            //userCrit("valence","lower")
-                            //data.user.preferenceData.valence -= data.user.preferenceData_variance.valence
-                            requestLink = '/getRecom?artistSeeds=' + seed_artists + '&seed_tracks=' + seed_tracks + '&genreSeeds=' + seed_genres + '&max_valence=' + data.user.preferenceData.valence + '&token=' + spotifyToken;
-                        }
-                        data.user.attributeWeight.valenceWeight += 1;
-                        explaination = "OK, I recommend this song to you, because you like the " + valence + " songs"
-                    } else if (tempo) {
-                        if (tempo == "fast") {
-                            //userCrit("tempo","higher")
-                            //data.user.preferenceData.tempo += data.user.preferenceData_variance.tempo
-                            requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&min_tempo=' + data.user.preferenceData.tempo + '&token=' + spotifyToken;
-                        }
-                        else if (tempo == "normal") {
-                            //userCrit("tempo","similar")
-                            requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&target_tempo=' + data.user.preferenceData.tempo + '&token=' + spotifyToken;
-                        } else if (tempo == "slow") {
-                            //userCrit("tempo","lower")
-                            //data.user.preferenceData.tempo -= data.user.preferenceData_variance.tempo
-                            requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&max_tempo=' + data.user.preferenceData.tempo + '&token=' + spotifyToken;
-                        }
-                        data.user.attributeWeight.tempoWeight += 1;
-                        explaination = "OK, I recommend this song to you, because you like the " + tempo + " songs"
-                    } else if (feature) {
-                        if (feature == "energy") {
-                            if (action == "higher") {
-                                //userCrit("energy","higher")
-                                //data.user.preferenceData.energy += data.user.preferenceData_variance.energy
-                                //requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&min_energy=' + data.user.preferenceData.energy + "&token=" + spotifyToken;
-                                requestLink = '/getRecom?genreSeeds=' + seed_genres + "&token=" + spotifyToken;
 
-                                explaination = "OK, I recommend this song to you, because you like the songs of higher energy."
+                    if(tempo=="fast")
+                        critique.push({"tempo":"higher"})
+                    else if(tempo=="normal")
+                        critique.push({"tempo":"normal"})
+                    else if(tempo=="slow")
+                        critique.push({"tempo":"lower"})
+
+                    if(valence=="happy")
+                        critique.push({"valence":"higher"})
+                    else if(valence=="neutral")
+                        critique.push({"valence":"normal"})
+                    else if(valence=="sad")
+                        critique.push({"valence":"lower"})
+
+                    if(feature!="") {
+                        var item = {}
+                        item[feature] = action
+                        console.log(item)
+                        critique.push(item)
+                    }
+
+                    if(critique.length>0){
+                        var returnedRec = updateAndGetRec()
+                        if(returnedRec.length==0){
+                            if (valence) {
+                                if (valence == "happy") {
+                                    requestLink = '/getRecom?artistSeeds=' + seed_artists + '&seed_tracks=' + seed_tracks + '&genreSeeds=' + seed_genres + '&min_valence=' + data.user.preferenceData.valence + '&token=' + spotifyToken;
+                                }
+                                else if (valence == "neutral") {
+                                    requestLink = '/getRecom?artistSeeds=' + seed_artists + '&seed_tracks=' + seed_tracks + '&genreSeeds=' + seed_genres + '&target_valence=' + data.user.preferenceData.valence + '&token=' + spotifyToken;
+                                }
+                                else if (valence == "sad") {
+                                    requestLink = '/getRecom?artistSeeds=' + seed_artists + '&seed_tracks=' + seed_tracks + '&genreSeeds=' + seed_genres + '&max_valence=' + data.user.preferenceData.valence + '&token=' + spotifyToken;
+                                }
+                                explaination = "OK, I recommend this song to you, because you like the " + valence + " songs"
+                            } else if (tempo) {
+                                if (tempo == "fast") {
+                                    requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&min_tempo=' + data.user.preferenceData.tempo + '&token=' + spotifyToken;
+                                }
+                                else if (tempo == "normal") {
+                                    requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&target_tempo=' + data.user.preferenceData.tempo + '&token=' + spotifyToken;
+                                } else if (tempo == "slow") {
+                                    requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&max_tempo=' + data.user.preferenceData.tempo + '&token=' + spotifyToken;
+                                }
+                                explaination = "OK, I recommend this song to you, because you like the " + tempo + " songs"
+                            } else if (feature) {
+                                if (feature == "energy") {
+                                    if (action == "higher") {
+
+                                        requestLink = '/getRecom?genreSeeds=' + seed_genres + "&token=" + spotifyToken;
+
+                                        explaination = "OK, I recommend this song to you, because you like the songs of higher energy."
+                                    }
+                                    else if (action == "lower") {
+                                        requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&max_energy=' + data.user.preferenceData.energy + "&token=" + spotifyToken;
+                                        explaination = "OK, I recommend this song to you, because you like the songs of lower energy."
+                                    }
+                                    else if (action == "") {
+
+                                        requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + 'min_energy=' + data.user.preferenceData.energy + "&token=" + spotifyToken;
+                                        explaination = "OK, I recommend this song to you, because you like the songs of higher energy."
+                                    }
+                                } else if (feature == "danceability") {
+                                    if (action == "higher") {
+
+                                        requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&min_danceability=' + data.user.preferenceData.danceability + "&token=" + spotifyToken;
+                                        explaination = "OK, I recommend this song to you, because you like the songs of higher danceability."
+                                    }
+                                    else if (action == "lower") {
+
+                                        requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&max_danceability=' + data.user.preferenceData.danceability + "&token=" + spotifyToken;
+                                        explaination = "OK, I recommend this song to you, because you like the songs of lower danceability."
+                                    }
+                                    else if (action == "") {
+
+                                        requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&min_danceability=' + data.user.preferenceData.danceability + "&token=" + spotifyToken;
+                                        explaination = "OK, I recommend this song to you, because you like the songs of higher danceability."
+                                    }
+                                } else if (feature == "speech") {
+                                    if (action == "higher") {
+
+                                        requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&min_speechiness=' + data.user.preferenceData.speechiness + "&token=" + spotifyToken;
+                                        explaination = "OK, I recommend this song to you, because you like the songs of higher speechiness."
+                                    }
+                                    else if (action == "lower") {
+
+                                        requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&max_speechiness=' + data.user.preferenceData.speechiness + "&token=" + spotifyToken;
+                                        explaination = "OK, I recommend this song to you, because you like the songs of lower speechiness."
+                                    }
+                                    else if (action == "") {
+
+                                        requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&min_speechiness=' + data.user.preferenceData.speechiness + "&token=" + spotifyToken;
+                                        explaination = "OK, I recommend this song to you, because you like the songs of higher speechiness."
+                                    }
+                                }
+                                else if (feature == "popularity") {
+                                    if (action == "higher") {
+
+                                        requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&min_popularity=' + data.user.preferenceData.popularity + "&token=" + spotifyToken;
+                                        explaination = "OK, I recommend this song to you, because you like the songs of higher popularity."
+                                    }
+                                    else if (action == "lower") {
+                                        requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&max_popularity=' + data.user.preferenceData.popularity + "&token=" + spotifyToken;
+                                        explaination = "OK, I recommend this song to you, because you like the songs of lower popularity."
+                                    }
+                                    else if (action == "") {
+                                        requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&min_popularity=' + data.user.preferenceData.popularity + "&token=" + spotifyToken;
+                                        explaination = "OK, I recommend this song to you, because you like the songs of higher popularity."
+                                    }
+                                }
                             }
-                            else if (action == "lower") {
-                                //userCrit("energy","lower")
-                                //data.user.preferenceData.energy -= data.user.preferenceData_variance.energy
-                                requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&max_energy=' + data.user.preferenceData.energy + "&token=" + spotifyToken;
-                                explaination = "OK, I recommend this song to you, because you like the songs of lower energy."
-                            }
-                            else if (action == "") {
-                                //userCrit("energy","higher")
-                                //data.user.preferenceData.energy += data.user.preferenceData_variance.energy
-                                requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + 'min_energy=' + data.user.preferenceData.energy + "&token=" + spotifyToken;
-                                explaination = "OK, I recommend this song to you, because you like the songs of higher energy."
-                            }
-                            //data.user.attributeWeight.energyWeight += 1;
-                        } else if (feature == "danceability") {
-                            if (action == "higher") {
-                                //userCrit("danceability","higher")
-                                //data.user.preferenceData.danceability += data.user.preferenceData_variance.danceability
-                                requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&min_danceability=' + data.user.preferenceData.danceability + "&token=" + spotifyToken;
-                                explaination = "OK, I recommend this song to you, because you like the songs of higher danceability."
-                            }
-                            else if (action == "lower") {
-                                //userCrit("danceability","lower")
-                                //data.user.preferenceData.danceability -= data.user.preferenceData_variance.danceability
-                                requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&max_danceability=' + data.user.preferenceData.danceability + "&token=" + spotifyToken;
-                                explaination = "OK, I recommend this song to you, because you like the songs of lower danceability."
-                            }
-                            else if (action == "") {
-                                //userCrit("danceability","higher")
-                                //data.user.preferenceData.danceability += data.user.preferenceData_variance.danceability
-                                requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&min_danceability=' + data.user.preferenceData.danceability + "&token=" + spotifyToken;
-                                explaination = "OK, I recommend this song to you, because you like the songs of higher danceability."
-                            }
-                            data.user.attributeWeight.danceabilityWeight += 1;
-                        } else if (feature == "speech") {
-                            if (action == "higher") {
-                                //userCrit("speechiness","higher")
-                                //data.user.preferenceData.speechiness += data.user.preferenceData.speechiness
-                                requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&min_speechiness=' + data.user.preferenceData.speechiness + "&token=" + spotifyToken;
-                                explaination = "OK, I recommend this song to you, because you like the songs of higher speechiness."
-                            }
-                            else if (action == "lower") {
-                                //userCrit("speechiness","lower")
-                                // data.user.preferenceData.speechiness -= data.user.preferenceData.speechiness
-                                requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&max_speechiness=' + data.user.preferenceData.speechiness + "&token=" + spotifyToken;
-                                explaination = "OK, I recommend this song to you, because you like the songs of lower speechiness."
-                            }
-                            else if (action == "") {
-                                //userCrit("speechiness","higher")
-                                // data.user.preferenceData.speechiness += data.user.preferenceData.speechiness
-                                requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&min_speechiness=' + data.user.preferenceData.speechiness + "&token=" + spotifyToken;
-                                explaination = "OK, I recommend this song to you, because you like the songs of higher speechiness."
-                            }
-                            data.user.attributeWeight.speechinessWeight += 1;
-                        }
-                        else if (feature == "popularity") {
-                            if (action == "higher") {
-                                // data.user.preferenceData.popularity += data.user.preferenceData.popularity
-                                requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&min_popularity=' + data.user.preferenceData.popularity + "&token=" + spotifyToken;
-                                explaination = "OK, I recommend this song to you, because you like the songs of higher popularity."
-                            }
-                            else if (action == "lower") {
-                                // data.user.preferenceData.popularity -= data.user.preferenceData.popularity
-                                requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&max_popularity=' + data.user.preferenceData.popularity + "&token=" + spotifyToken;
-                                explaination = "OK, I recommend this song to you, because you like the songs of lower popularity."
-                            }
-                            else if (action == "") {
-                                // data.user.preferenceData.popularity += data.user.preferenceData.popularity
-                                requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&min_popularity=' + data.user.preferenceData.popularity + "&token=" + spotifyToken;
-                                explaination = "OK, I recommend this song to you, because you like the songs of higher popularity."
-                            }
-                            data.user.attributeWeight.popularityWeight += 1;
+                            playRequestLink(requestLink)
+
+                        }else{
+                            songIndex = 0
+                            speakandsing(robot, response, "Coherence")
                         }
                     }
+
                 }
                 else if (!intent) {
                     requestLink = ''
                     isMissed = true
-                    // playRequestLink(requestLink)
+                    playRequestLink(requestLink)
                 }
 
-                //function playRequestLink (requestLink){
-                if (requestLink) {
-                    //show loading animation
-                    var line = $('<div class="speak"><div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>');
-                    chat.append(line);
-                    $.get(requestLink, function (res) {
-                        //remove loading animation
-                        $('.spinner').remove();
-                        console.log(res)
-                        playlist = res.tracks
-                        songIndex = 0
-                        speakandsing(robot, response, "Coherence")
-                    })
-                } else if (!requestLink && isMissed) {
-                    if (numberOfMiss < 2) {
-                        numberOfMiss++;
-                        updateChat(robot, "Sorry, I do not understand. Can you rephrase the sentence?", "Respond_Unknown")
+                function playRequestLink (requestLink){
+                    if (requestLink) {
+                        //show loading animation
+                        var line = $('<div class="speak"><div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>');
+                        chat.append(line);
+                        $.get(requestLink, function (res) {
+                            //remove loading animation
+                            $('.spinner').remove();
+                            console.log(res)
+                            playlist = res.tracks
+                            songIndex = 0
+                            speakandsing(robot, response, "Coherence")
+                        })
+                    } else if (!requestLink && isMissed) {
+                        if (numberOfMiss < 2) {
+                            numberOfMiss++;
+                            updateChat(robot, "Sorry, I do not understand. Can you rephrase the sentence?", "Respond_Unknown")
+                        } else {
+                            numberOfMiss = 0
+                            var random = Math.random()
+                            if (random >= 0 && random < 0.3)
+                                updateChat(robot, "You can try to say 'I like fast songs' or 'I like pop music'", "Initialize")
+                            else if (random >= 0.3 && random < 0.6)
+                                updateChat(robot, "You can try to say 'Play a song for dancing' or 'I feel happy'", "Initialize")
+                            else if (random >= 0.6 && random < 1)
+                                updateChat(robot, "You can try to say 'I need more energy' or 'I like Chinese songs'", "Initialize")
+                        }
                     } else {
-                        numberOfMiss = 0
-                        var random = Math.random()
-                        if (random >= 0 && random < 0.3)
-                            updateChat(robot, "You can try to say 'I like fast songs' or 'I like pop music'", "Initialize")
-                        else if (random >= 0.3 && random < 0.6)
-                            updateChat(robot, "You can try to say 'Play a song for dancing' or 'I feel happy'", "Initialize")
-                        else if (random >= 0.6 && random < 1)
-                            updateChat(robot, "You can try to say 'I need more energy' or 'I like Chinese songs'", "Initialize")
+                        if (!needReply)
+                            speakandsing(robot,"Ok, I found a song for you.", "Coherence")
                     }
-                } else {
-                    if (!needReply)
-                        speakandsing(robot,"Ok, I found a song for you.", "Coherence")
                 }
-                //}
 
 
                 function speakandsing(agent, text, action) {
@@ -1744,7 +1922,7 @@ $(document).ready(function () {
 
                         showCurrentSong2 = setTimeout(function () {
                             showMusic(playlist[songIndex].id)
-                        }, 4000)
+                        }, 3000)
 
                     } else {
                         checkMusic()
@@ -1757,71 +1935,7 @@ $(document).ready(function () {
             }
 
             socket.on('bot reply', function (data) {
-
-                var dialogNum = logger.dialog.length
-                var dialog = logger.dialog[dialogNum-1]
-
-                //update user model
-                if(dialog.action=="User_Critique"){
-                    var critique = []
-                    if(data.action=="music.search"){
-                        if(data.parameters.artist.length>0)
-                            critique.push({"artist":data.parameters.artist.toString()})
-                        if(data.parameters.genre!="")
-                            critique.push({"genre":data.parameters.genre})
-                    }
-                    else if(data.action=="music_player_control.features"){
-                        if(data.parameters['music-tempo']=="fast")
-                            critique.push({"tempo":"higher"})
-                        else if(data.parameters['music-tempo']=="normal")
-                            critique.push({"tempo":"normal"})
-                        else if(data.parameters['music-tempo']=="slow")
-                            critique.push({"tempo":"lower"})
-
-                        if(data.parameters['music-valence']=="happy")
-                            critique.push({"valence":"higher"})
-                        else if(data.parameters['music-valence']=="neutral")
-                            critique.push({"valence":"normal"})
-                        else if(data.parameters['music-valence']=="sad")
-                            critique.push({"valence":"lower"})
-
-                        if(data.parameters['music-features']!="") {
-                            var item = {}
-                            item[data.parameters['music-features']] = data.parameters['feature-actions']
-                            console.log(item)
-                            critique.push(item)
-                        }
-
-                    }
-
-                    if(critique.length>0){
-                        dialog.critique=critique
-                        dialog.critiqued_song = playlist[songIndex].id
-
-                        //perform update model request
-                        var updateData = {}
-                        updateData.user = usermodel.user
-                        updateData.logger = {}
-                        updateData.logger.latest_dialog = [dialog]
-                        updateData.logger.listenedSongs = logger.listenedSongs
-
-                        var listenedSongsLength = logger.listenedSongs.length
-                        updateData.topRecommendedSong = logger.listenedSongs[listenedSongsLength-1]
-
-                        console.log(updateData)
-
-                        updateUserModel(updateData)
-
-                    }else{
-                        dialog.action = "Chit_chat"
-                    }
-
-                }
-                console.log(logger)
-                console.log(data)
-
-
-                synthVoice(data);
+                synthVoice(data)
             });
 
             function resumeInfinity() {
