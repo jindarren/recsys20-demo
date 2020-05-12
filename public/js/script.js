@@ -14,18 +14,14 @@ var skipTimes = 0;
 var playlist = [];
 var numberOfLikedSongs = 0;
 var isPreStudy = true
-var isFirstScenario = false;
-var isSecondScenario = false;
 var isSystemCrit = 1;
 var listenedSongs = []
 var isFinished = false
 var topRecommendedSong;
 var nextTimes = 0;
 var showNextSong, showCurrentSong, showNextSong2, showNextSong3, showCurrentSong2, showFeedback, showTry;
-// const synth = window.speechSynthesis;
-var sysCritRecommendations=[]
 
-var loggers = [], logger = {};
+var logger = {};
 
 var usermodel = {}
 
@@ -35,32 +31,22 @@ var usermodel = {}
 //personality_adjusted
 var sysCritVersion = window.location.search.substring(1)
 
-
-
-// {
-// "agent": "you",
-// "text": "lower energy",
-// "action": "User_critique",
-// "critique": [{"energy": "lower"}],
-// "critiqued_song": {},
-// "timestamp": 1554271816733
-// }
-
 logger.dialog = []
-logger.listenedSongs=[]
-logger.likedSongs=[]
-logger.dislikedSongs=[]
-logger.duration=""
-logger.rating=[]
-// logger.exp_energy = []
-// logger.exp_danceability = []
-// logger.exp_speechiness = []
-// logger.exp_tempo = []
-// logger.exp_valence = []
-// logger.exp_artist = []
+logger.listenedSongs = []
+logger.likedSongs = []
+logger.dislikedSongs = []
+logger.duration = ""
+logger.rating = []
+
+logger.exp_energy = []
+logger.exp_danceability = []
+logger.exp_speechiness = []
+logger.exp_tempo = []
+logger.exp_valence = []
+logger.exp_artist = []
 // logger.exp_lang = []
-// logger.exp_category = []
-// logger.exp_feature = []
+logger.exp_category = []
+logger.exp_feature = []
 
 var nextSongUtters = ["Great, here is another song.", "OK, maybe you also like this song.", "Good, please try the next song."],
     rateUtters = ["Please rate your liked song in terms of pleasant surprise.", "Don't forget to rate the song in terms of pleasant surprise.", "You also need to rate the song in terms of pleasant surprise."]
@@ -87,22 +73,6 @@ $(document).ready(function () {
     var userID = ""
     // JSON.parse(storage.profile).id
 
-    // #popup(style="display:none")
-    // div#popup-container
-    //   p#user-id(style="display:none") 请复制黄色文字&nbsp&nbsp
-    //     span XXXXXX
-    //     | &nbsp&nbsp粘贴到下方问卷的第一个问题处
-    //   i.fa.fa-close.fa-3x
-    // iframe
-
-    // if(isPreStudy){
-    //   $("#popup").show()
-    //   $("#user-id span").text(userID)
-    //   if(systemLang == "en")
-    //     $("#popup iframe").attr("src","https://music-bot.top:3001/que1")
-    //   else if(systemLang == "zh")
-    //     $("#popup iframe").attr("src","https://www.wjx.cn/jq/37653170.aspx")
-    // }
 
     $(".exp").on("mouseenter", function () {
         var feature = $(this).text()
@@ -150,12 +120,14 @@ $(document).ready(function () {
 
     function reRankPlaylist(recomList) {
         var newPlayList = []
-        for(var item in recomList){
+        for (var item in recomList) {
             var songID = recomList[item]
 
-            var filtered = playlist.filter(function(el) { return el.id == songID;})[0];
+            var filtered = playlist.filter(function (el) {
+                return el.id == songID;
+            })[0];
             newPlayList.push(filtered)
-            playlist.splice(playlist.indexOf(filtered),1)
+            playlist.splice(playlist.indexOf(filtered), 1)
         }
         playlist = newPlayList.concat(playlist)
     }
@@ -180,7 +152,7 @@ $(document).ready(function () {
 
             },
             error: function (error) {
-            console.log(error)
+                console.log(error)
             }
         });
 
@@ -205,7 +177,7 @@ $(document).ready(function () {
                 usermodel.user = returned.user
                 console.log("更新: ", returned)
             },
-            error: function(error){
+            error: function (error) {
                 console.log("error")
             },
         });
@@ -228,8 +200,9 @@ $(document).ready(function () {
             dataType: "json",
             success: function (result) {
                 var returned = JSON.parse(result)
+                playlist = returned.user_profile.pool
                 console.log("UC推荐: ", returned)
-                if(returned.recommendation_list.length>0)
+                if (returned.recommendation_list.length > 0)
                     reRankPlaylist(returned.recommendation_list)
             },
             error: function (error) {
@@ -248,7 +221,7 @@ $(document).ready(function () {
         profile_py["user_profile"]["user"] = data.user
         profile_py["user_profile"]["topRecommendedSong"] = data.topRecommendedSong
         profile_py["user_profile"]["logger"] = data.logger
-        profile_py["sys_crit_version"]=data.sys_crit_version
+        profile_py["sys_crit_version"] = data.sys_crit_version
 
         console.log(profile_py)
 
@@ -275,7 +248,6 @@ $(document).ready(function () {
         url: "/initiate?token=" + spotifyToken + "&id=" + userid,
         type: "POST",
         contentType: "application/json;charset=utf-8",
-        // data: storage.profile,
         dataType: "json",
         success: function (data) {
 
@@ -290,8 +262,6 @@ $(document).ready(function () {
             for (var index = 0; index < data.pool.length; index++) {
                 playlist.push(data.pool[index])
             }
-
-            data.pool = playlist.concat()
 
             var copyPlaylist = data.pool.concat()
 
@@ -400,172 +370,141 @@ $(document).ready(function () {
                 logger.rating = []
                 logger.task1 = new Date().getTime()
                 logger.dialog = []
+
+                logger.listenedSongs = []
+                logger.likedSongs = []
+                logger.dislikedSongs = []
+                logger.duration = ""
+
+
                 logger.exp_energy = []
                 logger.exp_danceability = []
                 logger.exp_speechiness = []
                 logger.exp_tempo = []
                 logger.exp_valence = []
-
                 logger.exp_artist = []
-                logger.exp_lang = []
+                // logger.exp_lang = []
                 logger.exp_category = []
                 logger.exp_feature = []
-                playlist = data.pool
+
+                playlist = []
                 songIndex = 0
 
                 isFinished = false
                 isPreStudy = false
-                isFirstScenario = true
 
                 //clear the chat content for new scenario
                 $(".chat").empty()
+                $("input#message").attr("disabled", false)
 
-                numberOfLikedSongs = 0
 
                 //clear the chat content for new scenario
                 listenedSongs = []
                 numberOfLikedSongs = 0
                 $(".list-group").empty()
 
-                // if(Math.random()>0.5){
-                //   isSystemCrit=0
-                // }
-                isSystemCrit = 0
+                //是否开启系统critique
+                isSystemCrit = 1
 
                 $("#start-task").hide()
                 $("#likedsongs").show()
 
-                // $('body').css("background-image", 'url("../img/metro.png")')
                 $(".list-group-item").hide()
 
                 // initial chat state
-                updateChat(robot, 'Hi there. Now you need to create a playlist that contains 10 good songs.',"Initialize");
+                updateChat(robot, 'Hi there. Now you need to create a playlist that contains 5 good songs.', "Initialize");
                 setTimeout(function () {
-                    updateChat(robot, "I have found some songs for you based on your preference, but you can also search for other songs by using the tips shown on the right side.","Initialize")
-                }, 3000)
+                    updateChat(robot, "I have found some songs for you based on your preference, but you can also search for other songs by using the tips shown on the right side.", "Initialize")
+                    var line = $('<div class="speak"><div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>');
+                    chat.append(line);
+                }, 2000)
 
                 $.ajax({
-                    url: "/initiate?token=" + spotifyToken,
+                    url: "/initiate?token=" + spotifyToken + "&id=" + userid,
                     type: "POST",
                     contentType: "application/json;charset=utf-8",
-                    // data: storage.profile,
                     dataType: "json",
                     success: function (data2) {
-                        topRecommendedSong = data2.vis[0];
-                        data.topRecommendedSong = topRecommendedSong
 
-                        playlist = []
 
-                        for (var index = 0; index < data.pool.length; index++) {
-                            playlist.push(data.pool[index])
+                        usermodel = data2
+                        console.log(usermodel)
+                        topRecommendedSong = usermodel.pool[0];
+                        usermodel.topRecommendedSong = topRecommendedSong
+
+                        //initialize user model
+                        initializeUserModel(usermodel.user)
+
+                        for (var index = 0; index < data2.pool.length; index++) {
+                            playlist.push(data2.pool[index])
                         }
 
-                        data.pool = playlist.concat()
-                        copyPlaylist = data.pool.concat()
+                        copyPlaylist = data2.pool.concat()
+
 
                         setTimeout(function () {
+                            $('.spinner').remove();
+
                             if (listenedSongs.indexOf(playlist[songIndex].id) < 0) {
                                 listenedSongs.push(playlist[songIndex].id)
                                 setTimeout(function () {
-                                    var explaination = ""
-                                    if (playlist[songIndex].danceability >= data.user.preferenceData.danceabilityRange[0] && playlist[songIndex].danceability <= data.user.preferenceData.danceabilityRange[1])
-                                        explaination = "We recommend this song because you like the songs of " + data.user.preferenceData.danceabilityRange[2] + " danceability"
-                                    else if (playlist[songIndex].energy >= data.user.preferenceData.energyRange[0] && playlist[songIndex].energy <= data.user.preferenceData.energyRange[1])
-                                        explaination = "We recommend this song because you like the songs of " + data.user.preferenceData.energyRange[2] + " energy"
-                                    else if (playlist[songIndex].speechiness >= data.user.preferenceData.speechinessRange[0] && playlist[songIndex].speechiness <= data.user.preferenceData.speechinessRange[1])
-                                        explaination = "We recommend this song because you like the songs of " + data.user.preferenceData.speechinessRange[2] + " speechiness"
-                                    else if (playlist[songIndex].tempo >= data.user.preferenceData.tempoRange[0] && playlist[songIndex].tempo <= data.user.preferenceData.tempoRange[1])
-                                        explaination = "We recommend this song because you like the songs of " + data.user.preferenceData.tempoRange[2] + " tempo"
-                                    else if (playlist[songIndex].valence >= data.user.preferenceData.valenceRange[0] && playlist[songIndex].valence <= data.user.preferenceData.valenceRange[1])
-                                        explaination = "We recommend this song because you like the songs of " + data.user.preferenceData.valenceRange[2] + " valence"
-                                    else
-                                        explaination = "We recommend this song because you like music"
+
+                                    explaination = "We recommend this song because you like "
 
                                     if (playlist[songIndex].seedType == "artist")
-                                        explaination += ", and " + playlist[songIndex].seed + "'s songs."
+                                        explaination += playlist[songIndex].seed + "'s songs."
                                     else if (playlist[songIndex].seedType == "track")
-                                        explaination += ", and the songs " + playlist[songIndex].seed + "."
+                                        explaination += "the songs " + playlist[songIndex].seed + "."
                                     else if (playlist[songIndex].seedType == "genre")
-                                        explaination += ", and the songs of " + playlist[songIndex].seed + "."
+                                        explaination += "the songs of " + playlist[songIndex].seed + "."
+
                                     if (explaination != "")
                                         updateChat(robot, explaination, "Explain")
                                 }, 1000)
 
                                 setTimeout(function () {
                                     showMusic(playlist[songIndex].id)
-                                }, 4000)
+                                }, 3000)
 
                             } else {
-                                checkMusic()
+                                showMusic(playlist[songIndex].id)
                             }
-                        }, 6000)
+                        }, 5000)
                     }
                 })
 
             })
 
-            function checkMusic() {
-                showMusic(playlist[songIndex].id)
+            var critiques = [];
+            var critiquesIndex = 0;
 
-                // if (listenedSongs.indexOf(playlist[songIndex].id) < 0) {
-                //     listenedSongs.push(playlist[songIndex].id)
-                //     setTimeout(function () {
-                //         showMusic(playlist[songIndex].id)
-                //     }, 500)
-                //
-                // } else {
-                //     if (songIndex < playlist.length - 1) {
-                //         //songIndex++
-                //         data.topRecommendedSong = playlist[songIndex]
-                //         checkMusic()
-                //     } else {
-                //         updateChat(robot, "Sorry, we have no more recommendation for you. Please try to tell us what kind of music you want to listen to.","Respond_NoSuggestion")
-                //         playlist = data.pool
-                //         songIndex = 0
-                //         checkMusic()
-                //     }
-                // }
-            }
-
-            function nextSong() {
-                // if (songIndex < playlist.length - 1) {
-                //     playlist.splice(playlist.indexOf(playlist[songIndex].id), 1);
-                //     //songIndex++;
-                //     data.topRecommendedSong = playlist[songIndex]
-                // }
-                // else {
-                //     songIndex = 0;
-                //     playlist = data.pool
-                //     updateChat(robot, "Sorry, we have no more recommendation for you. Please try to tell us what kind of music you want to listen to.","Respond_NoSuggestion")
-                // }
-            }
-
-            function getSysCrit(){
+            function getSysCrit() {
                 var dialogNum = logger.dialog.length
-                var dialog = logger.dialog[dialogNum-1]
+                var dialog = logger.dialog[dialogNum - 1]
 
                 var updateData = {}
                 updateData.user = usermodel.user
                 updateData.pool = playlist
                 updateData.new_pool = []
                 updateData.logger = logger
-                updateData.sys_crit_version=sysCritVersion
+                updateData.sys_crit_version = sysCritVersion
 
                 updateData.logger.latest_dialog = [dialog]
                 updateData.logger.listenedSongs = logger.listenedSongs
                 var listenedSongsLength = logger.listenedSongs.length
-                updateData.topRecommendedSong = logger.listenedSongs[listenedSongsLength-1]
+                updateData.topRecommendedSong = logger.listenedSongs[listenedSongsLength - 1]
 
                 console.log(updateData)
 
                 systemCritiques(updateData).then(function (rawCrits) {
+                    critiques = [];
+                    critiquesIndex = 0;
+
                     var crits = JSON.parse(rawCrits)
-                    var critiques = [];
-                    var critiquesIndex = 0;
 
                     console.log(crits)
 
-                    var firstThreeCrits = crits.sys_crit_with_recommendation.slice(0,3)
+                    var firstThreeCrits = crits.sys_crit_with_recommendation.slice(0, 3)
 
                     console.log(firstThreeCrits)
 
@@ -579,14 +518,12 @@ $(document).ready(function () {
 
                         var returnedCritiques = firstThreeCrits[crt].critique
 
-                        console.log(returnedCritiques)
-
                         for (var index in returnedCritiques) {
 
                             if (returnedCritiques[index].split("|")[0] == "language") {
                                 var actionItem = {}
                                 actionItem.prop = "language"
-                                actionItem.val =  returnedCritiques[index].split("|")[1]
+                                actionItem.val = returnedCritiques[index].split("|")[1]
                                 actionItem.type = "equal"
                                 action.push(actionItem)
                                 songType += actionItem.val + " "
@@ -646,7 +583,8 @@ $(document).ready(function () {
 
 
                         actionSet.action = action
-                        actionSet.recommendation= firstThreeCrits[crt].recommendation
+                        actionSet.recommendation = firstThreeCrits[crt].recommendation
+                        actionSet.critiques = returnedCritiques
                         console.log(actionSet)
 
                         critiques.push(actionSet)
@@ -656,7 +594,7 @@ $(document).ready(function () {
                     console.log(critiques)
 
                     $('.spinner').remove();
-                    updateChat(crit, critiques[critiquesIndex].speech, "System_Suggest");
+                    updateChat(crit, critiques[critiquesIndex].speech, "System_Suggest", critiques[critiquesIndex].critiques);
                     reRankPlaylist(critiques[critiquesIndex].recommendation)
 
                 })
@@ -672,10 +610,20 @@ $(document).ready(function () {
                 dialog.action = action
                 if (party == you)
                     dialog.modality = modality
-                // if (action == "User_Critique" || party == crit){
-                //     dialog.critique = critique
-                //     dialog.critiqued_song = playlist[songIndex].id
-                // }
+
+                if (party == crit) {
+                    var critList = critiques[critiquesIndex].critiques
+
+                    var critiqueList = []
+
+                    for (var index in critList) {
+                        var critiqueContent = {}
+                        critiqueContent[critList[index].split("|")[0]] = critList[index].split("|")[1]
+                        critiqueList.push(critiqueContent)
+                    }
+                    dialog.critique = critiqueList
+                    dialog.critiqued_song = playlist[songIndex].id
+                }
 
                 dialog.timestamp = new Date().getTime()
                 logger.dialog.push(dialog)
@@ -701,13 +649,13 @@ $(document).ready(function () {
                     line.addClass(style)
                     line.find('.dialog').text(text);
 
-                    if (reg.test(text)) {
-                        $.get("/topinyin?text=" + text, function (data, err) {
-                            utterance.text = data.pinyin;
-                        })
-                    } else {
-                        utterance.text = text;
-                    }
+                    // if (reg.test(text)) {
+                    //     $.get("/topinyin?text=" + text, function (data, err) {
+                    //         utterance.text = data.pinyin;
+                    //     })
+                    // } else {
+                    //     utterance.text = text;
+                    // }
                 }
                 else if (party == crit) {
                     style = 'robot';
@@ -734,134 +682,6 @@ $(document).ready(function () {
                         var line = $('<div class="speak"><div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>');
                         chat.append(line);
 
-                        // $.ajax({
-                        //   url: "/initiate?token=" + spotifyToken+"&scenario="+scenario,
-                        //   type: "POST",
-                        //   contentType: "application/json;charset=utf-8",
-                        //   data: storage.profile,
-                        //   dataType: "json",
-                        //   success: function(data2) {}
-                        // })
-
-                        // playlist = []
-                        //
-                        // for (var index = 0; index < 150; index++) {
-                        //     playlist.push(data.pool[index])
-                        // }
-                        //
-                        // data.topRecommendedSong = playlist[songIndex]
-                        //
-                        // for (var item in playlist) {
-                        //     if (playlist[item] == undefined)
-                        //         playlist.splice(item, 1)
-                        // }
-                        // data.playlist = playlist
-                        // console.log(data)
-
-                        //-------------------Start critiquing-------------------//
-
-                        // $.ajax({
-                        //     url: "/generateCritiquing?id=" + data.user.id,
-                        //     type: "POST",
-                        //     contentType: "application/json;charset=utf-8",
-                        //     data: JSON.stringify(data),
-                        //     dataType: "json",
-                        //     success: function (result) {
-                        //         critiques = [];
-                        //         critiquesIndex = 0;
-                        //
-                        //         console.log(result)
-                        //
-                        //         for (var crt in result.diversifyCritique) {
-                        //
-                        //             var wording = "Based on your music preference, we think you might like the ";
-                        //             var songType = "",
-                        //                 features = "";
-                        //             var actionSet = {},
-                        //                 action = [];
-                        //
-                        //             for (var index in result.diversifyCritique[crt]) {
-                        //
-                        //                 if (result.diversifyCritique[crt][index].split("|")[0] == "language") {
-                        //                     var actionItem = {}
-                        //                     actionItem.prop = "language"
-                        //                     actionItem.val = result.diversifyCritique[crt][index].split("|")[1]
-                        //                     actionItem.type = "equal"
-                        //                     action.push(actionItem)
-                        //                     songType += actionItem.val + " "
-                        //                     //data.user.attributeWeight.languageWeight += 1;
-                        //
-                        //                 } else if (result.diversifyCritique[crt][index].split("|")[0] == "genre") {
-                        //                     var actionItem = {}
-                        //                     actionItem.prop = "genre"
-                        //                     actionItem.val = result.diversifyCritique[crt][index].split("|")[1]
-                        //                     actionItem.type = "equal"
-                        //                     action.push(actionItem)
-                        //                     songType += actionItem.val + " "
-                        //                     //data.user.attributeWeight.genreWeight +=1;
-                        //
-                        //                 } else if (result.diversifyCritique[crt][index].split("|")[0] == "artist") {
-                        //                     var actionItem = {}
-                        //                     actionItem.prop = "artist"
-                        //                     actionItem.val = result.diversifyCritique[crt][index].split("|")[1]
-                        //                     actionItem.type = "equal"
-                        //                     action.push(actionItem)
-                        //                     songType += action.artist + " "
-                        //                     //data.user.attributeWeight.artistWeight += 1;
-                        //
-                        //                 } else if (result.diversifyCritique[crt][index].split("|")[1] == "lower") {
-                        //                     var actionItem = {}
-                        //                     actionItem.prop = result.diversifyCritique[crt][index].split("|")[0]
-                        //                     // actionItem.val = -0.1
-                        //                     actionItem.type = "lower"
-                        //                     action.push(actionItem)
-                        //                     features += "lower " + result.diversifyCritique[crt][index].split("|")[0] + ", "
-                        //                 } else if (result.diversifyCritique[crt][index].split("|")[1] == "higher") {
-                        //                     var actionItem = {}
-                        //                     actionItem.prop = result.diversifyCritique[crt][index].split("|")[0]
-                        //                     // actionItem.val = 0.1
-                        //                     actionItem.type = "higher"
-                        //                     action.push(actionItem)
-                        //                     features += "higher " + result.diversifyCritique[crt][index].split("|")[0] + ", "
-                        //                 } else if (result.diversifyCritique[crt][index].split("|")[1] == "similar") {
-                        //                     var actionItem = {}
-                        //                     actionItem.prop = result.diversifyCritique[crt][index].split("|")[0]
-                        //                     // actionItem.val = 0.1
-                        //                     actionItem.type = "similar"
-                        //                     action.push(actionItem)
-                        //                     features += "similar " + result.diversifyCritique[crt][index].split("|")[0] + ", "
-                        //                 }
-                        //
-                        //             }
-                        //
-                        //             if (songType && !features) {
-                        //                 wording += songType + "music"
-                        //                 actionSet.speech = wording + "?"
-                        //             }
-                        //             else if (!songType && features) {
-                        //                 wording += "songs with " + features
-                        //                 actionSet.speech = wording.substr(0, wording.length - 2) + "?"
-                        //             }
-                        //             else if (songType && features) {
-                        //                 wording += songType + "songs with " + features
-                        //                 actionSet.speech = wording.substr(0, wording.length - 2) + "?"
-                        //             }
-                        //
-                        //             actionSet.action = action
-                        //             critiques.push(actionSet)
-                        //         }
-                        //
-                        //         console.log(critiques)
-                        //
-                        //         $('.spinner').remove();
-                        //         updateChat(crit, critiques[critiquesIndex].speech, "System_Suggest");
-                        //
-                        //     },
-                        //     error: function (msg) {
-                        //         console.log(msg)
-                        //     }
-                        // })
-
                         getSysCrit()
 
                     })
@@ -876,86 +696,27 @@ $(document).ready(function () {
                     $("#round" + round + " button").fadeOut()
                     updateChat(you, "Yes, please!", "Accept_Suggestion", "btn")
 
-                    //perform critiquing on existing set
-
-                    // var newlist = data.pool.concat()
-
-                    // while(true){
-                    //   if(critiqueList.indexOf(critiques[critiquesIndex])<0){
-                    //     critiqueList.push(critiques[critiquesIndex])
-                    //     break;
-                    //   }
-                    //   else
-                    //     critiquesIndex++
-                    // }
-
-                    // for (var index2 in critiques[critiquesIndex].action) {
-                    //     var templist = []
-                    //
-                    //     var critAttr = critiques[critiquesIndex].action[index2].prop
-                    //     var critType = critiques[critiquesIndex].action[index2].type
-                    //     data.user.attributeWeight[critAttr + "Weight"] += 1;
-                    //
-                    //     newlist.map(function (track) {
-                    //         if (critType == "equal") {
-                    //             console.log(critiques[critiquesIndex].action[index2].val)
-                    //             if (track[critAttr] == critiques[critiquesIndex].action[index2].val) {
-                    //                 templist.push(track)
-                    //             }
-                    //         } else if (critType == "lower") {
-                    //             console.log(data.user.preferenceData[critAttr])
-                    //             if (track[critAttr] < data.topRecommendedSong[critAttr] - data.user.preferenceData_variance[critAttr]) {
-                    //                 templist.push(track)
-                    //                 data.user.preferenceData[critAttr + "Range"][0] = 0
-                    //                 data.user.preferenceData[critAttr + "Range"][1] = data.topRecommendedSong[critAttr] - data.user.preferenceData_variance[critAttr]
-                    //                 data.user.preferenceData[critAttr + "Range"][2] = "low"
-                    //             }
-                    //         } else if (critType == "higher") {
-                    //             console.log(data.user.preferenceData[critAttr])
-                    //             if (track[critAttr] > data.topRecommendedSong[critAttr] + data.user.preferenceData_variance[critAttr]) {
-                    //                 templist.push(track)
-                    //                 data.user.preferenceData[critAttr + "Range"][0] = data.topRecommendedSong[critAttr] + data.user.preferenceData_variance[critAttr]
-                    //                 data.user.preferenceData[critAttr + "Range"][1] = 1
-                    //                 data.user.preferenceData[critAttr + "Range"][2] = "high"
-                    //             }
-                    //         } else if (critType == "similar") {
-                    //             console.log(data.user.preferenceData[critAttr])
-                    //             if (track[critAttr] >= data.topRecommendedSong[critAttr] - data.user.preferenceData_variance[critAttr] && track[critAttr] <= data.topRecommendedSong[critAttr] + data.user.preferenceData_variance[critAttr]) {
-                    //                 templist.push(track)
-                    //                 data.user.preferenceData[critAttr + "Range"][0] = data.topRecommendedSong[critAttr] - data.user.preferenceData_variance[critAttr]
-                    //                 data.user.preferenceData[critAttr + "Range"][1] = data.topRecommendedSong[critAttr] + data.user.preferenceData_variance[critAttr]
-                    //                 data.user.preferenceData[critAttr + "Range"][2] = "middle"
-                    //             }
-                    //         }
-                    //     })
-                    //     newlist = templist.concat()
-                    //     console.log(newlist)
-                    // }
-                    // playlist = newlist.concat()
-                    //
-                    // console.log(playlist)
-                    // songIndex = 0
-
-                    checkMusic()
-
+                    console.log(playlist)
+                    showMusic(playlist[songIndex].id)
 
                 })
 
-                var critiquesIndex = 0
                 $("#round" + round + " #no").click(function () {
                     $("#round" + round + " button").fadeOut()
                     updateChat(you, "I don't want.", "Reject_Suggestion", "btn")
                     if (critiquesIndex < critiques.length - 1) {
                         needReply = true;
                         critiquesIndex++;
+                        console.log(critiques[critiquesIndex].critiques)
                         updateChat(crit, critiques[critiquesIndex].speech, "System_Suggest");
+
+
                         reRankPlaylist(critiques[critiquesIndex].recommendation)
 
                     } else if (critiquesIndex == critiques.length - 1) {
                         critiquesIndex = 0
                         updateChat(robot, "Sorry, I have no any other suggestions:(", "Respond_NoSuggestion");
-                        playlist = data.pool
-                        checkMusic()
+                        showMusic(playlist[songIndex].id)
                     }
                 })
             }
@@ -971,6 +732,9 @@ $(document).ready(function () {
                 logger.listenedSongs.push(playlist[songIndex])
 
                 showCurrentSong = setTimeout(function () {
+                    console.log(numberOfLikedSongs)
+
+
                     if (isSystemCrit == 1) {
                         var line = $('<div id="speak' + id + '" class="speak"><iframe src="https://open.spotify.com/embed/track/' + id + '" width="100%" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe></div>')
                         showFeedback = setTimeout(function () {
@@ -979,13 +743,13 @@ $(document).ready(function () {
                             $("#speak" + id + " #like").click(function () {
                                 updateChat(you, "I like this song.", "Accept_Song", "btn")
                                 setTimeout(function () {
-                                    updateChat(robot, rateUtters[parseInt((rateUtters.length * Math.random()))],"Request_Rate")
+                                    updateChat(robot, rateUtters[parseInt((rateUtters.length * Math.random()))], "Request_Rate")
                                 }, 50)
                                 nextTimes = 0
                                 if (!isFinished) {
                                     $("#speak" + id + " .feedback-box").fadeOut()
 
-                                    if (numberOfLikedSongs < 10) {
+                                    if (numberOfLikedSongs < 5) {
                                         if (data.user.preferenceData.track.length < 5)
                                             data.user.preferenceData.track.push(playlist[songIndex].id)
                                         else
@@ -1001,10 +765,9 @@ $(document).ready(function () {
                                             });
                                             $("#" + playlist[songIndex].id + "> .fa-close").hide()
                                             numberOfLikedSongs++
-                                            if (numberOfLikedSongs < 10) {
-                                                updateChat(robot, nextSongUtters[parseInt((nextSongUtters.length * Math.random()))],"Coherence")
+                                            if (numberOfLikedSongs < 5) {
+                                                updateChat(robot, nextSongUtters[parseInt((nextSongUtters.length * Math.random()))], "Coherence")
                                                 showNextSong = setTimeout(function () {
-                                                    nextSong()
                                                     $("#speak" + id + " div").fadeOut();
                                                     if (listenedSongs.indexOf(playlist[songIndex].id) < 0) {
                                                         listenedSongs.push(playlist[songIndex].id)
@@ -1014,22 +777,15 @@ $(document).ready(function () {
 
 
                                                     } else {
-                                                        checkMusic()
+                                                        showMusic(playlist[songIndex].id)
                                                     }
-
                                                 }, 10)
-
                                             }
 
-                                            if (numberOfLikedSongs == 10 && isFirstScenario) {
+                                            if (numberOfLikedSongs == 5 && !isPreStudy) {
                                                 isFinished = true
                                                 $("#popup").show()
                                                 $("#user-id span").text(isSystemCrit + "|" + userID)
-
-                                                // if(systemLang == "en")
-                                                //   $("#popup iframe").attr("src","https://music-bot.top:3001/que2")
-                                                // else if(systemLang == "zh")
-                                                //   $("#popup iframe").attr("src","https://www.wjx.cn/jq/37654389.aspx")
 
                                                 logger.task1 = new Date().getTime() - logger.task1
                                                 logger.listenedSongs = listenedSongs.concat()
@@ -1040,62 +796,24 @@ $(document).ready(function () {
                                                     rating.value = $(this).find(".rating-stars").attr("title")
                                                     logger.rating.push(rating)
                                                 })
-                                                loggers.push(logger)
 
-                                                data.user.logger = loggers
-                                                console.log(data.user)
+                                                data.logger = logger
+                                                console.log("上传日志: ", data)
+                                                window.localStorage.setItem("log",JSON.stringify(data))
 
-                                                $.ajax({
-                                                    url: '/addRecord',
-                                                    type: 'POST',
-                                                    contentType: 'application/json',
-                                                    data: JSON.stringify(data),
-                                                    dataType: 'json'
-                                                });
 
                                                 window.location.href = "/que2"
 
-                                            } else if (numberOfLikedSongs == 10 && isSecondScenario) {
-                                                isFinished = true
-                                                $("#popup").show()
-                                                $("#user-id span").text(isSystemCrit + "|" + userID)
-                                                window.location.href = "/que2"
-                                                // if(systemLang == "en")
-                                                //   $("#popup iframe").attr("src","https://music-bot.top:3001/que2")
-                                                // else if(systemLang == "zh")
-                                                //   $("#popup iframe").attr("src","https://www.wjx.cn/jq/37652495.aspx")
-
-                                                logger.task2 = new Date().getTime() - logger.task2
-                                                logger.listenedSongs = listenedSongs.concat()
-                                                logger.rating = []
-                                                $("li.list-group-item").each(function (i) {
-                                                    var rating = {}
-                                                    rating.id = $(this).attr("id")
-                                                    rating.value = $(this).find(".rating-stars").attr("title")
-                                                    logger.rating.push(rating)
-                                                })
-
-                                                loggers.push(logger)
-
-                                                // data.user.logger = loggers
-                                                // console.log(data.user)
-
-                                                // $.ajax({
-                                                //   url: '/addRecord',
-                                                //   type: 'POST',
-                                                //   contentType:'application/json',
-                                                //   data: JSON.stringify(data),
-                                                //   dataType:'json'
-                                                // });
                                             } else if (numberOfLikedSongs == 5 && isPreStudy) {
-                                                updateChat(robot, "Now, you should be familiar with the system. You can click the 'start study' button to start.","Initialize")
+                                                updateChat(robot, "Now, you should be familiar with the system. You can click the 'start study' button to start.", "Initialize")
+                                                $("input#message").attr("disabled", true)
                                             }
                                         });
 
                                         // remove a liked song
                                         $("#" + playlist[songIndex].id + "> .fa-close").click(function () {
-                                            // numberOfLikedSongs--
                                             $(this).parent().remove()
+                                            showMusic(playlist[songIndex].id)
                                         })
                                     }
                                 }
@@ -1105,9 +823,8 @@ $(document).ready(function () {
                                 nextTimes++;
                                 if (nextTimes < 3) {
                                     $("#speak" + id + " .feedback-box").fadeOut()
-                                    updateChat(you, "Next song.","Next","btn")
+                                    updateChat(you, "Next song.", "Next", "btn")
 
-                                    nextSong()
                                     showNextSong2 = setTimeout(function () {
                                         $("#speak" + id + " div").fadeOut();
                                         if (listenedSongs.indexOf(playlist[songIndex].id) < 0) {
@@ -1118,15 +835,15 @@ $(document).ready(function () {
                                             }, 1000)
 
                                         } else {
-                                            checkMusic()
+                                            showMusic(playlist[songIndex].id)
                                         }
                                     }, 500)
                                 } else {
                                     $("#speak" + id + " .feedback-box").fadeOut()
-                                    updateChat(you, "Next song.", "Next","btn")
+                                    updateChat(you, "Next song.", "Next", "btn")
                                     setTimeout(function () {
                                         $("#speak" + id + " div").fadeOut();
-                                        updateChat(skip, 'Since you have skipped many songs, you can click the "Let bot suggest" button to get suggestions, or you can just tell me what kind of music you want to listen to?',"Request_Critique");
+                                        updateChat(skip, 'Since you have skipped many songs, you can click the "Let bot suggest" button to get suggestions, or you can just tell me what kind of music you want to listen to?', "Request_Critique");
                                     }, 300)
                                 }
 
@@ -1134,150 +851,13 @@ $(document).ready(function () {
 
                             $("#speak" + id + " #suggest").click(function () {
 
-                                // var updateData = {}
-                                // updateData.user = usermodel.user
-                                // updateData.pool = playlist
-                                // updateData.new_pool = []
-                                // updateData.logger = logger
-                                // updateData.sys_crit_version=sysCritVersion
-                                //
-                                // updateData.logger.latest_dialog = [dialog]
-                                // updateData.logger.listenedSongs = logger.listenedSongs
-                                // var listenedSongsLength = logger.listenedSongs.length
-                                // updateData.topRecommendedSong = logger.listenedSongs[listenedSongsLength-1]
-                                //
-                                // console.log(updateData)
-                                //
-                                // systemCritiques(updateData).then(function (data) {
-                                //     console.log(data)
-                                // })
-
                                 nextTimes = 0
                                 $("#speak" + id + " .feedback-box").fadeOut()
-                                updateChat(you, "I need some suggestions","Let_bot_suggest", "btn")
+                                updateChat(you, "I need some suggestions", "Let_bot_suggest", "btn")
                                 $("#speak" + id + " div").fadeOut();
                                 var line = $('<div class="speak"><div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>');
                                 chat.append(line);
 
-                                // playlist = []
-                                //
-                                // for (var index = 0; index < 150; index++) {
-                                //     playlist.push(data.pool[index])
-                                // }
-                                //
-                                // for (var item in playlist) {
-                                //     if (playlist[item] == undefined)
-                                //         playlist.splice(item, 1)
-                                // }
-                                //
-                                // data.topRecommendedSong = playlist[songIndex]
-                                //
-                                // data.playlist = playlist
-                                // console.log(data)
-
-                                //-------------------Start critiquing-------------------//
-
-                                // $.ajax({
-                                //     url: "/generateCritiquing?id=" + data.user.id,
-                                //     type: "POST",
-                                //     contentType: "application/json;charset=utf-8",
-                                //     data: JSON.stringify(data),
-                                //     dataType: "json",
-                                //     success: function (result) {
-                                //         critiques = [];
-                                //         critiquesIndex = 0;
-                                //
-                                //         console.log(result)
-                                //
-                                //         for (var crt in result.diversifyCritique) {
-                                //
-                                //             var wording = "Based on your music preference, we think you might like the ";
-                                //             var songType = "",
-                                //                 features = "";
-                                //             var actionSet = {},
-                                //                 action = [];
-                                //
-                                //             for (var index in result.diversifyCritique[crt]) {
-                                //
-                                //                 if (result.diversifyCritique[crt][index].split("|")[0] == "language") {
-                                //                     var actionItem = {}
-                                //                     actionItem.prop = "language"
-                                //                     actionItem.val = result.diversifyCritique[crt][index].split("|")[1]
-                                //                     actionItem.type = "equal"
-                                //                     action.push(actionItem)
-                                //                     songType += actionItem.val + " "
-                                //                     //data.user.attributeWeight.languageWeight += 1;
-                                //
-                                //                 } else if (result.diversifyCritique[crt][index].split("|")[0] == "genre") {
-                                //                     var actionItem = {}
-                                //                     actionItem.prop = "genre"
-                                //                     actionItem.val = result.diversifyCritique[crt][index].split("|")[1]
-                                //                     actionItem.type = "equal"
-                                //                     action.push(actionItem)
-                                //                     songType += actionItem.val + " "
-                                //                     //data.user.attributeWeight.genreWeight +=1;
-                                //
-                                //                 } else if (result.diversifyCritique[crt][index].split("|")[0] == "artist") {
-                                //                     var actionItem = {}
-                                //                     actionItem.prop = "artist"
-                                //                     actionItem.val = result.diversifyCritique[crt][index].split("|")[1]
-                                //                     actionItem.type = "equal"
-                                //                     action.push(actionItem)
-                                //                     songType += action.artist + " "
-                                //                     //data.user.attributeWeight.artistWeight += 1;
-                                //
-                                //                 } else if (result.diversifyCritique[crt][index].split("|")[1] == "lower") {
-                                //                     var actionItem = {}
-                                //                     actionItem.prop = result.diversifyCritique[crt][index].split("|")[0]
-                                //                     // actionItem.val = -0.1
-                                //                     actionItem.type = "lower"
-                                //                     action.push(actionItem)
-                                //                     features += "lower " + result.diversifyCritique[crt][index].split("|")[0] + ", "
-                                //                 } else if (result.diversifyCritique[crt][index].split("|")[1] == "higher") {
-                                //                     var actionItem = {}
-                                //                     actionItem.prop = result.diversifyCritique[crt][index].split("|")[0]
-                                //                     // actionItem.val = 0.1
-                                //                     actionItem.type = "higher"
-                                //                     action.push(actionItem)
-                                //                     features += "higher " + result.diversifyCritique[crt][index].split("|")[0] + ", "
-                                //                 } else if (result.diversifyCritique[crt][index].split("|")[1] == "similar") {
-                                //                     var actionItem = {}
-                                //                     actionItem.prop = result.diversifyCritique[crt][index].split("|")[0]
-                                //                     // actionItem.val = 0.1
-                                //                     actionItem.type = "similar"
-                                //                     action.push(actionItem)
-                                //                     features += "similar " + result.diversifyCritique[crt][index].split("|")[0] + ", "
-                                //                 }
-                                //
-                                //             }
-                                //
-                                //             if (songType && !features) {
-                                //                 wording += songType + "music"
-                                //                 actionSet.speech = wording + "?"
-                                //             }
-                                //             else if (!songType && features) {
-                                //                 wording += "songs with " + features
-                                //                 actionSet.speech = wording.substr(0, wording.length - 2) + "?"
-                                //             }
-                                //             else if (songType && features) {
-                                //                 wording += songType + "songs with " + features
-                                //                 actionSet.speech = wording.substr(0, wording.length - 2) + "?"
-                                //             }
-                                //
-                                //             actionSet.action = action
-                                //             critiques.push(actionSet)
-                                //         }
-                                //
-                                //         console.log(critiques)
-                                //
-                                //         $('.spinner').remove();
-                                //         updateChat(crit, critiques[critiquesIndex].speech,"System_Suggest");
-                                //
-                                //     },
-                                //     error: function (msg) {
-                                //         console.log(msg)
-                                //     }
-                                // })
                                 getSysCrit()
                             })
                             chat.stop().animate({
@@ -1292,18 +872,17 @@ $(document).ready(function () {
                             $("#speak" + id).append('<div class="feedback-box"><button type="button" id="like" class="feedback">Like</button><button type="button" id="next" class="feedback">Next</button></div>')
 
                             $("#speak" + id + " #like").click(function () {
-                                updateChat(you, "I like this song.", "Accept_Song","btn")
+                                updateChat(you, "I like this song.", "Accept_Song", "btn")
                                 setTimeout(function () {
-                                    updateChat(robot, rateUtters[parseInt((rateUtters.length * Math.random()))],"Request_Rate")
+                                    updateChat(robot, rateUtters[parseInt((rateUtters.length * Math.random()))], "Request_Rate")
                                 }, 50)
 
                                 nextTimes = 0
 
                                 if (!isFinished) {
                                     $("#speak" + id + " .feedback-box").fadeOut()
-                                    //updateChat(you, "I like this song.", "btn")
 
-                                    if (numberOfLikedSongs < 10) {
+                                    if (numberOfLikedSongs < 5) {
                                         // console.log(data.user.preferenceData.track)
                                         if (data.user.preferenceData.track.length < 5)
                                             data.user.preferenceData.track.push(playlist[songIndex].id)
@@ -1320,10 +899,9 @@ $(document).ready(function () {
                                             });
                                             $("#" + playlist[songIndex].id + "> .fa-close").hide()
                                             numberOfLikedSongs++
-                                            if (numberOfLikedSongs < 10) {
-                                                updateChat(robot, nextSongUtters[parseInt((nextSongUtters.length * Math.random()))],"Coherence")
+                                            if (numberOfLikedSongs < 5) {
+                                                updateChat(robot, nextSongUtters[parseInt((nextSongUtters.length * Math.random()))], "Coherence")
                                                 showNextSong = setTimeout(function () {
-                                                    nextSong()
                                                     $("#speak" + id + " div").fadeOut();
 
                                                     if (listenedSongs.indexOf(playlist[songIndex].id) < 0) {
@@ -1334,20 +912,13 @@ $(document).ready(function () {
                                                         }, 1000)
 
                                                     } else {
-                                                        checkMusic()
+                                                        showMusic(playlist[songIndex].id)
                                                     }
 
                                                 }, 10)
                                             }
 
-                                            if (numberOfLikedSongs == 10 && isFirstScenario) {
-                                                // $("#popup").show()
-                                                // $("#user-id span").text(isSystemCrit+"|"+userID)
-
-                                                // if(systemLang == "en")
-                                                //   $("#popup iframe").attr("src","https://music-bot.top:3001/que2")
-                                                // else if(systemLang == "zh")
-                                                //   $("#popup iframe").attr("src","https://www.wjx.cn/jq/37654389.aspx")
+                                            if (numberOfLikedSongs == 5 && !isPreStudy) {
 
                                                 logger.task1 = new Date().getTime() - logger.task1
                                                 logger.listenedSongs = listenedSongs.concat()
@@ -1358,62 +929,24 @@ $(document).ready(function () {
                                                     rating.value = $(this).find(".rating-stars").attr("title")
                                                     logger.rating.push(rating)
                                                 })
-                                                loggers.push(logger)
 
-                                                data.user.logger = loggers
-                                                console.log(data.user)
+                                                data.logger = logger
+                                                console.log("上传日志: ", data)
+                                                window.localStorage.setItem("log",JSON.stringify(data))
 
-                                                $.ajax({
-                                                    url: '/addRecord',
-                                                    type: 'POST',
-                                                    contentType: 'application/json',
-                                                    data: JSON.stringify(data),
-                                                    dataType: 'json'
-                                                });
 
                                                 window.location.href = "/que2"
 
-                                            } else if (numberOfLikedSongs == 10 && isSecondScenario) {
-                                                console.log("scenario2")
-                                                $("#popup").show()
-                                                $("#user-id span").text(isSystemCrit + "|" + userID)
-                                                window.location.href = "/que2"
-                                                // if(systemLang == "en")
-                                                //   $("#popup iframe").attr("src","https://music-bot.top:3001/que2")
-                                                // else if(systemLang == "zh")
-                                                //   $("#popup iframe").attr("src","https://www.wjx.cn/jq/37652495.aspx")
-
-                                                logger.task2 = new Date().getTime() - logger.task2
-                                                logger.listenedSongs = listenedSongs.concat()
-                                                logger.rating = []
-                                                $("li.list-group-item").each(function (i) {
-                                                    var rating = {}
-                                                    rating.id = $(this).attr("id")
-                                                    rating.value = $(this).find(".rating-stars").attr("title")
-                                                    logger.rating.push(rating)
-                                                })
-
-                                                // loggers.push(logger)
-                                                // data.user.logger = loggers
-                                                // console.log(data.user)
-
-                                                // $.ajax({
-                                                //   url: '/addRecord',
-                                                //   type: 'POST',
-                                                //   contentType:'application/json',
-                                                //   data: JSON.stringify(data),
-                                                //   dataType:'json'
-                                                // });
                                             } else if (numberOfLikedSongs == 5 && isPreStudy) {
-                                                updateChat(robot, "Now, you should be familiar with the system. You click the 'start study' button to start.","Initialize")
+                                                updateChat(robot, "Now, you should be familiar with the system. You click the 'start study' button to start.", "Initialize")
+                                                $("input#message").attr("disabled", true)
                                             }
                                         });
                                         // remove a liked song
                                         $("#" + playlist[songIndex].id + "> .fa-close").click(function () {
-                                            // numberOfLikedSongs--
                                             $(this).parent().remove()
+                                            showMusic(playlist[songIndex].id)
                                         })
-
                                     }
                                 }
                             })
@@ -1422,9 +955,8 @@ $(document).ready(function () {
                                 nextTimes++
                                 if (nextTimes < 3) {
                                     $("#speak" + id + " .feedback-box").fadeOut()
-                                    updateChat(you, "Next song.", "Next","btn")
+                                    updateChat(you, "Next song.", "Next", "btn")
 
-                                    nextSong()
                                     setTimeout(function () {
                                         $("#speak" + id + " div").fadeOut();
                                         if (listenedSongs.indexOf(playlist[songIndex].id) < 0) {
@@ -1435,18 +967,17 @@ $(document).ready(function () {
                                             }, 1000)
 
                                         } else {
-                                            checkMusic()
+                                            showMusic(playlist[songIndex].id)
                                         }
                                     }, 300)
                                 } else {
                                     $("#speak" + id + " .feedback-box").fadeOut()
-                                    updateChat(you, "Next song.", "Next","btn")
+                                    updateChat(you, "Next song.", "Next", "btn")
                                     setTimeout(function () {
                                         $("#speak" + id + " div").fadeOut();
-                                        updateChat(robot, 'Since you have skipped many songs, can you tell me what kind of music you want to listen to?',"Request_Critique");
+                                        updateChat(robot, 'Since you have skipped many songs, can you tell me what kind of music you want to listen to?', "Request_Critique");
                                     }, 300)
                                 }
-
                             })
 
                             chat.stop().animate({
@@ -1464,15 +995,15 @@ $(document).ready(function () {
 
                 }, 1000)
 
-                playlist.splice(songIndex,1)
+                playlist.splice(songIndex, 1)
             }
 
 
             if (isPreStudy) {
                 //Initializae
-                updateChat(robot, 'Hello. Welcome to play music bot! To warm up for study, you can read some tips on right side and try to talk with bot for good music.',"Initialize");
+                updateChat(robot, 'Hello. Welcome to play music bot! To warm up for study, you can read some tips on right side and try to talk with bot for good music.', "Initialize");
                 showTry = setTimeout(function () {
-                    updateChat(robot, "Once you are ready for the study, you can click the 'Start study' button on the left side. You can rate a recommended song after listening to it for a while.","Initialize")
+                    updateChat(robot, "Once you are ready for the study, you can click the 'Start study' button on the left side. You can rate a recommended song after listening to it for a while.", "Initialize")
                     showMusic(playlist[songIndex].id)
                 }, 3000)
             }
@@ -1492,10 +1023,10 @@ $(document).ready(function () {
                         clearTimeout(showNextSong3)
                         nextTimes = 0
                         socket.emit('chat message', text);
-                        updateChat(you, text, "User_Critique","typing");
+                        updateChat(you, text, "User_Critique", "typing");
 
                         if (text.indexOf("next") > -1) {
-                            nextSong()
+                            showMusic(playlist[songIndex])
                         }
                     }
                 }
@@ -1555,15 +1086,13 @@ $(document).ready(function () {
                  song
                  */
 
-
-
                 function updateAndGetRec() {
-                    return new Promise(function(resolve, reject) {
+                    return new Promise(function (resolve, reject) {
 
                         var dialogNum = logger.dialog.length
-                        var dialog = logger.dialog[dialogNum-1]
+                        var dialog = logger.dialog[dialogNum - 1]
 
-                        dialog.critique=critique
+                        dialog.critique = critique
                         dialog.critiqued_song = playlist[songIndex].id
 
                         //perform update model request
@@ -1574,7 +1103,7 @@ $(document).ready(function () {
                         updateData.logger.listenedSongs = logger.listenedSongs
 
                         var listenedSongsLength = logger.listenedSongs.length
-                        updateData.topRecommendedSong = logger.listenedSongs[listenedSongsLength-1]
+                        updateData.topRecommendedSong = logger.listenedSongs[listenedSongsLength - 1]
 
                         console.log(updateData)
 
@@ -1601,34 +1130,35 @@ $(document).ready(function () {
                 var artist, song, genre, valence, tempo, action, feature;
                 var explaination = ""
 
-
                 var requestLink;
                 var critique = []
 
                 var isMissed = false
                 //search by artist
-                if (intent == "music_player_control.skip_forward") {
+                if (intent.indexOf("smalltalk")>-1){
+                    updateChat(robot, response, "Small_talk", "text");
+                }
+                else if (intent == "music_player_control.skip_forward") {
                     skipTimes++;
-                    nextSong()
                 }
                 else if (intent == "music.search") {
 
                     artist = text.parameters["artist"]
                     genre = text.parameters["genre"]
 
-                    if(artist.length>0)
-                        critique.push({"artist":artist.toString()})
-                    if(genre!="")
-                        critique.push({"genre":genre})
+                    if (artist.length > 0)
+                        critique.push({"artist": artist.toString()})
+                    if (genre != "")
+                        critique.push({"genre": genre})
 
                     console.log(critique)
 
-                    if(critique.length>0){
+                    if (critique.length > 0) {
 
                         updateAndGetRec().then(function (data) {
                             var num = parseInt(data)
                             console.log(num)
-                            if(num==0){
+                            if (num == 0) {
                                 if (artist.length > 0) {
                                     requestLink = '/searchArtist?q=' + artist[0] + '&token=' + spotifyToken;
                                     explaination = "OK, I recommend this song to you, because you like " + artist + "'s songs."
@@ -1640,7 +1170,7 @@ $(document).ready(function () {
                                     requestLink = ''
 
                                 playRequestLink(requestLink)
-                            }else{
+                            } else {
                                 songIndex = 0
                                 speakandsing(robot, response, "Coherence")
                             }
@@ -1654,14 +1184,6 @@ $(document).ready(function () {
                     if (response == "yes") {
                         //perform critiquing on existing set
 
-                        // while(true){
-                        //   if(critiqueList.indexOf(critiques[critiquesIndex])<0){
-                        //     critiqueList.push(critiques[critiquesIndex])
-                        //     break;
-                        //   }
-                        //   else
-                        //     critiquesIndex++
-                        // }
 
                         var newlist = data.pool.concat()
                         for (var index2 in critiques[critiquesIndex].action) {
@@ -1727,30 +1249,30 @@ $(document).ready(function () {
                     action = text.parameters["feature-actions"]
                     feature = text.parameters["music-features"]
 
-                    if(tempo=="fast")
-                        critique.push({"tempo":"higher"})
-                    else if(tempo=="normal")
-                        critique.push({"tempo":"normal"})
-                    else if(tempo=="slow")
-                        critique.push({"tempo":"lower"})
+                    if (tempo == "fast")
+                        critique.push({"tempo": "higher"})
+                    else if (tempo == "normal")
+                        critique.push({"tempo": "normal"})
+                    else if (tempo == "slow")
+                        critique.push({"tempo": "lower"})
 
-                    if(valence=="happy")
-                        critique.push({"valence":"higher"})
-                    else if(valence=="neutral")
-                        critique.push({"valence":"normal"})
-                    else if(valence=="sad")
-                        critique.push({"valence":"lower"})
+                    if (valence == "happy")
+                        critique.push({"valence": "higher"})
+                    else if (valence == "neutral")
+                        critique.push({"valence": "normal"})
+                    else if (valence == "sad")
+                        critique.push({"valence": "lower"})
 
-                    if(feature!="") {
+                    if (feature == "energy" || feature == "danceability" || feature == "speech") {
                         var item = {}
                         item[feature] = action
                         console.log(item)
                         critique.push(item)
                     }
 
-                    if(critique.length>0){
+                    if (critique.length > 0) {
                         var returnedRec = updateAndGetRec()
-                        if(returnedRec.length==0){
+                        if (returnedRec.length == 0) {
                             if (valence) {
                                 if (valence == "happy") {
                                     requestLink = '/getRecom?artistSeeds=' + seed_artists + '&seed_tracks=' + seed_tracks + '&genreSeeds=' + seed_genres + '&min_valence=' + data.user.preferenceData.valence + '&token=' + spotifyToken;
@@ -1840,7 +1362,7 @@ $(document).ready(function () {
                             }
                             playRequestLink(requestLink)
 
-                        }else{
+                        } else {
                             songIndex = 0
                             speakandsing(robot, response, "Coherence")
                         }
@@ -1853,7 +1375,7 @@ $(document).ready(function () {
                     playRequestLink(requestLink)
                 }
 
-                function playRequestLink (requestLink){
+                function playRequestLink(requestLink) {
                     if (requestLink) {
                         //show loading animation
                         var line = $('<div class="speak"><div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>');
@@ -1871,8 +1393,8 @@ $(document).ready(function () {
                             console.log(updateData)
 
                             getRecommendation(updateData).then(function (data) {
-                                // var returnData = JSON.parse(data)
-                                console.log(data)
+                                var returnData = JSON.parse(data)
+                                console.log(returnData)
                             })
 
                             songIndex = 0
@@ -1894,7 +1416,7 @@ $(document).ready(function () {
                         }
                     } else {
                         if (!needReply)
-                            speakandsing(robot,"Ok, I found a song for you.", "Coherence")
+                            speakandsing(robot, "Ok, I found a song for you.", "Coherence")
                     }
                 }
 
@@ -1906,26 +1428,26 @@ $(document).ready(function () {
                         listenedSongs.push(playlist[songIndex].id)
                         setTimeout(function () {
 
-                            if (agent=="you") {
-                                if (playlist[songIndex].danceability >= data.user.preferenceData.danceabilityRange[0] && playlist[songIndex].danceability <= data.user.preferenceData.danceabilityRange[1])
-                                    explaination = "We recommend this song because you like the songs of " + data.user.preferenceData.danceabilityRange[2] + " danceability"
-                                else if (playlist[songIndex].energy >= data.user.preferenceData.energyRange[0] && playlist[songIndex].energy <= data.user.preferenceData.energyRange[1])
-                                    explaination = "We recommend this song because you like the songs of " + data.user.preferenceData.energyRange[2] + " energy"
-                                else if (playlist[songIndex].speechiness >= data.user.preferenceData.speechinessRange[0] && playlist[songIndex].speechiness <= data.user.preferenceData.speechinessRange[1])
-                                    explaination = "We recommend this song because you like the songs of " + data.user.preferenceData.speechinessRange[2] + " speechiness"
-                                else if (playlist[songIndex].tempo >= data.user.preferenceData.tempoRange[0] && playlist[songIndex].tempo <= data.user.preferenceData.tempoRange[1])
-                                    explaination = "We recommend this song because you like the songs of " + data.user.preferenceData.tempoRange[2] + " tempo"
-                                else if (playlist[songIndex].valence >= data.user.preferenceData.valenceRange[0] && playlist[songIndex].valence <= data.user.preferenceData.valenceRange[1])
-                                    explaination = "We recommend this song because you like the songs of " + data.user.preferenceData.valenceRange[2] + " valence"
-                                else
-                                    explaination = "We recommend this song because you like music"
+                            if (agent == "you") {
+                                // if (playlist[songIndex].danceability >= data.user.preferenceData.danceabilityRange[0] && playlist[songIndex].danceability <= data.user.preferenceData.danceabilityRange[1])
+                                //     explaination = "We recommend this song because you like the songs of " + data.user.preferenceData.danceabilityRange[2] + " danceability"
+                                // else if (playlist[songIndex].energy >= data.user.preferenceData.energyRange[0] && playlist[songIndex].energy <= data.user.preferenceData.energyRange[1])
+                                //     explaination = "We recommend this song because you like the songs of " + data.user.preferenceData.energyRange[2] + " energy"
+                                // else if (playlist[songIndex].speechiness >= data.user.preferenceData.speechinessRange[0] && playlist[songIndex].speechiness <= data.user.preferenceData.speechinessRange[1])
+                                //     explaination = "We recommend this song because you like the songs of " + data.user.preferenceData.speechinessRange[2] + " speechiness"
+                                // else if (playlist[songIndex].tempo >= data.user.preferenceData.tempoRange[0] && playlist[songIndex].tempo <= data.user.preferenceData.tempoRange[1])
+                                //     explaination = "We recommend this song because you like the songs of " + data.user.preferenceData.tempoRange[2] + " tempo"
+                                // else if (playlist[songIndex].valence >= data.user.preferenceData.valenceRange[0] && playlist[songIndex].valence <= data.user.preferenceData.valenceRange[1])
+                                //     explaination = "We recommend this song because you like the songs of " + data.user.preferenceData.valenceRange[2] + " valence"
+                                // else
+                                explaination = "We recommend this song because you like "
 
                                 if (playlist[songIndex].seedType == "artist")
-                                    explaination += ", and " + playlist[songIndex].seed + "'s songs."
+                                    explaination += playlist[songIndex].seed + "'s songs."
                                 else if (playlist[songIndex].seedType == "track")
-                                    explaination += ", and the songs " + playlist[songIndex].seed + "."
+                                    explaination += "the songs " + playlist[songIndex].seed + "."
                                 else if (playlist[songIndex].seedType == "genre")
-                                    explaination += ", and the songs of " + playlist[songIndex].seed + "."
+                                    explaination += "the songs of " + playlist[songIndex].seed + "."
                             }
                             if (explaination != "")
                                 updateChat(robot, explaination, "Explain")
@@ -1933,17 +1455,15 @@ $(document).ready(function () {
                         }, 500)
 
                         showCurrentSong2 = setTimeout(function () {
+                            console.log(playlist)
                             showMusic(playlist[songIndex].id)
                         }, 3000)
 
                     } else {
-                        checkMusic()
+                        showMusic(playlist[songIndex].id)
                     }
                 }
 
-                // utterance.onend = function(event) {
-                //   clearTimeout(timeoutResumeInfinity);
-                // }
             }
 
             socket.on('bot reply', function (data) {

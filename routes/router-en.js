@@ -166,8 +166,8 @@ passport.deserializeUser(function(obj, done) {
 passport.use(new SpotifyStrategy({
         clientID: appKey,
         clientSecret: appSecret,
-        callbackURL: 'http://music-bot.top:3000/callback'
-        //callbackURL: 'http://localhost:3000/callback'
+        //callbackURL: 'http://music-bot.top:3000/callback'
+        callbackURL: 'http://localhost:3000/callback'
     },
     function(accessToken, refreshToken, profile, done) {
         // asynchronous verification, for effect...
@@ -458,46 +458,6 @@ router.get('/getAccount', function(req, res) {
     })
 })
 
-// router.put('/updateUser', function (req, res) {
-//     if (req.query.id) {
-//         User.findOne({'id': req.query.id}, function (err, user) {
-
-//             if (err)
-//                 res.json(err);
-
-//             user.preferenceData.artist = req.body.preferenceData.artist
-//             user.preferenceData.genre = req.body.preferenceData.genre
-//             user.preferenceData.language = req.body.preferenceData.language
-//             user.preferenceData.popularity = req.body.preferenceData.popularity
-//             user.preferenceData.danceability = req.body.preferenceData.danceability
-//             user.preferenceData.energy = req.body.preferenceData.energy
-//             user.preferenceData.speechiness = req.body.preferenceData.speechiness
-//             user.preferenceData.liveness = req.body.preferenceData.liveness
-//             user.preferenceData.valence = req.body.preferenceData.valence
-//             user.preferenceData.tempo = req.body.preferenceData.tempo
-
-//             user.attributeWeight.artistWeight = req.body.attributeWeight.artistWeight
-//             user.attributeWeight.genreWeight = req.body.attributeWeight.genreWeight
-//             user.attributeWeight.languageWeight = req.body.attributeWeight.languageWeight
-//             user.attributeWeight.popularityWeight = req.body.attributeWeight.popularityWeight
-//             user.attributeWeight.danceabilityWeight = req.body.attributeWeight.danceabilityWeight
-//             user.attributeWeight.energyWeight = req.body.attributeWeight.energyWeight
-//             user.attributeWeight.speechinessWeight = req.body.attributeWeight.speechinessWeight
-//             user.attributeWeight.livenessWeight = req.body.attributeWeight.livenessWeight
-//             user.attributeWeight.valenceWeight = req.body.attributeWeight.valenceWeight
-//             user.attributeWeight.tempoWeight = req.body.attributeWeight.tempoWeight
-
-
-
-//             user.save(function (err) {
-//                 if (err)
-//                     res.send(err);
-//                 res.json({message: user.id + "'s profile is updated"})
-//             })
-//         });
-//     }
-// });
-
 
 var getAudioFeatures = function(token, data) {
     var artistIds = [],
@@ -766,7 +726,7 @@ router.post('/initiate', function(req, res) {
             // else if(artists.length==4)
             //     artistText = artistNames[0]+","+artistNames[1]+","+artistNames[2]+", and "+artistNames[3]
             // else if(artists.length==5)
-            artistText = artistNames[0]+","+artistNames[1]+","+artistNames[2]+","+artistNames[3]+", and "+artistNames[4]
+            artistText = artistNames[0]+", "+artistNames[1]+", "+artistNames[2]+", "+artistNames[3]+", and "+artistNames[4]
 
             getAudioFeatures(token, data3).then(function(data4) {
                     for (var i = data4.length - 1; i >= 0; i--) {
@@ -815,7 +775,7 @@ router.post('/initiate', function(req, res) {
             // else if(tracks.length==4)
             //     trackText = trackNames[0]+","+trackNames[1]+","+trackNames[2]+", and "+trackNames[3]
             // else if(tracks.length==5)
-            trackText = trackNames[0]+","+trackNames[1]+","+trackNames[2]+","+trackNames[3]+", and "+trackNames[4]
+            trackText = trackNames[0]+", "+trackNames[1]+", "+trackNames[2]+", "+trackNames[3]+", and "+trackNames[4]
 
             getAudioFeatures(token, data).then(function(data2) {
                     for (var i = data2.length - 1; i >= 0; i--) {
@@ -868,7 +828,7 @@ router.post('/initiate', function(req, res) {
             // else if(genres.length==4)
             //     genreText = genres[0]+","+genres[1]+","+genres[2]+", and "+genres[3]
             // else if(genres.length==5)
-            genreText = genres[0]+","+genres[1]+","+genres[2]+", and "+genres[3]
+            genreText = genres[0]+", "+genres[1]+", "+genres[2]+", and "+genres[3]
             getAudioFeatures(token, data).then(function(data2) {
                 for (var i = data2.length - 1; i >= 0; i--){
                     if (recResult.indexOf(data2[i])<0){

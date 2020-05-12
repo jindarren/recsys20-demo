@@ -593,7 +593,35 @@ html
                 if (uncheckedList.length > 0) {
                     alert("Please finished the missing statement(s) marked in yellow.")
                 } else {
+
                     window.localStorage.setItem("que2",formList.toString())
+
+                    var que1List = window.localStorage.getItem("que1").split(",")
+                    var que2List = formList
+
+                    var log = JSON.parse(window.localStorage.getItem("log"))
+
+                    log.que1 = que1List
+                    log.que2 = que2List
+                    log.timestamp =  new Date()
+
+                    console.log(log)
+
+                    $.ajax({
+                        url: '/addRecord',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(log),
+                        dataType: 'json',
+                        success: function () {
+                            window.location.href = "/success"
+                        },
+                        error: function (err) {
+                            console.log(err)
+                        }
+                    });
+
+
                     window.location.href = "/success"
                 }
             })

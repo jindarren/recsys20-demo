@@ -12,8 +12,10 @@ var userSchema = new mongoose.Schema({
 	new_pool:[],
 	user:{},
     topRecommendedSong:{},
-	logger:{},
-	timestamp: Date
+	timestamp: Date,
+    logger:{},
+	que1:[],
+	que2:[]
 });
 
 var User = mongoose.model('User', userSchema);

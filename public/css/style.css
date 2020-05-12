@@ -33,7 +33,7 @@ body{
 
 .window{
   color: #DFD8DE;
-  height: 85%;
+  height: 90%;
   padding-top: 25px;
   padding-left: 10px;
   padding-right: 5px;
@@ -127,27 +127,16 @@ iframe{
   outline: none;
 }
 
-#suggest{
-  background-color: #E03649;
-}
 
-#suggest:hover{
-  background-color: #FC3B51;
-}
-
-#suggest:active{
-  background-color: #9C2734;
-}
-
-#like, #next, #yes, #no{
+#like, #next, #yes, #no, #suggest{
   background-color: #3B7CCF;
 }
 
-#like:hover, #next:hover, #yes:hover, #no:hover{
+#like:hover, #next:hover, #yes:hover, #no:hover, #suggest:hover{
   background-color: #4696FF;
 }
 
-#like:active, #next:active, #yes:active, #no:active{
+#like:active, #next:active, #yes:active, #no:active, #suggest:active{
   background-color: #20416C;
 }
 
