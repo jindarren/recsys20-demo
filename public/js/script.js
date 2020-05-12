@@ -1598,7 +1598,7 @@ $(document).ready(function () {
                 var intent = text.action;
                 var response = text.fulfillment.speech;
 
-                var artist, song, language, genre, valence, tempo, action, feature;
+                var artist, song, genre, valence, tempo, action, feature;
                 var explaination = ""
 
 
@@ -1862,7 +1862,19 @@ $(document).ready(function () {
                             //remove loading animation
                             $('.spinner').remove();
                             console.log(res)
-                            playlist = res.tracks
+
+                            var updateData = {}
+                            updateData.user = usermodel.user
+                            updateData.pool = playlist
+                            updateData.new_pool = res.tracks
+
+                            console.log(updateData)
+
+                            getRecommendation(updateData).then(function (data) {
+                                // var returnData = JSON.parse(data)
+                                console.log(data)
+                            })
+
                             songIndex = 0
                             speakandsing(robot, response, "Coherence")
                         })
