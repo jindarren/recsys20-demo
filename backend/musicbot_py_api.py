@@ -146,10 +146,13 @@ class GetRec(Resource):
             time_helper.print_current_time()
             print("Get Recommendation ---- Original Item Pool: %d songs." % (len(item_pool))) 
             integrated_item_pool = item_pool + new_item_pool
-            assert(len(integrated_item_pool) == len(item_pool + len(new_item_pool)))
+            assert(len(integrated_item_pool) == len(item_pool) + len(new_item_pool))
 
             max_item_pool_number = min([150, len(integrated_item_pool)])
+            time_helper.print_current_time()
+            print("Get Recommendation ---- Max Item Pool: %d" % max_item_pool_number)
             updated_item_pool = recommendation.update_recommendation_pool(user_preference_model, user_critique_preference, integrated_item_pool, max_item_pool_number, categorical_attributes, numerical_attributes, method, alpha)
+            time_helper.print_current_time()
             print("Get Recommendation ---- Updated Item Pool: %d songs." % (len(updated_item_pool))) 
             
             user_profile['pool'] = updated_item_pool
