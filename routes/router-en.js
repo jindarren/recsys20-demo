@@ -186,33 +186,35 @@ passport.use(new SpotifyStrategy({
     }));
 
 router.post("/addRecord", function(req, res) {
-    // User.findOne({'id': req.body.user.id}, function (err, user) {
-    //     if (err)
-    //         res.json(err);
-    //     user.logger = req.body.user.logger
-    //     user.save(function (err) {
-    //         if (err)
-    //             res.send(err);
-    //         console.log(user.id + "'s profile is updated")
-    //     })
-    // });
-    var user = new User(req.body.user);
 
-    // //save a new user
+    var user = new User(req.body);
+
+    //save a new user
     user.save(function(err) {
         if (err)
             console.log(err)
-        console.log("user profile is added")
+        res.send("user profile is added")
     })
 
 });
 
+router.get("/findRecord", function(req, res) {
+    var user = new User();
+    var id = req.query.id
+    user.find({"id": id},function (data) {
+        res.json(data)
+    })
+});
+
+
+
+
 router.get("/getRecord", function(req, res) {
     User.find({}, function(err, user) {
         if (err)
-            res.send(err);
+            res.json(err);
         else {
-            res.send(user)
+            res.json(user)
         }
     })
 });
@@ -818,16 +820,7 @@ router.post('/initiate', function(req, res) {
 
             recom(token).getRecommendationByGenre(genres.toString()).then(function(data){
             var genreText = ""
-            // console.log(data)
-            // if(genres.length==1)
-            //     genreText = genres[0]
-            // else if(genres.length==2)
-            //     genreText = genres[0]+" and "+genres[1]
-            // else if(genres.length==3)
-            //     genreText = genres[0]+","+genres[1]+", and "+genres[2]
-            // else if(genres.length==4)
-            //     genreText = genres[0]+","+genres[1]+","+genres[2]+", and "+genres[3]
-            // else if(genres.length==5)
+
             genreText = genres[0]+", "+genres[1]+", "+genres[2]+", and "+genres[3]
             getAudioFeatures(token, data).then(function(data2) {
                 for (var i = data2.length - 1; i >= 0; i--){
@@ -857,63 +850,13 @@ router.post('/initiate', function(req, res) {
                     recResult.push(dataList[data][item])
             }
         }
-        // getAverageFeatures(token,tracks,artists).then(function(data3){
-        //     var user = new User({
-        //         id: userID,
-        //         preferenceData: {
-        //             artist: artists,
-        //             track: tracks,
-        //             genre: genres,
-        //             language: "English",
-        //             // popularity: data3.popularity,
-        //             // danceability: data3.danceability,
-        //             // energy: data3.energy,
-        //             // speechiness: data3.speechiness,
-        //             // valence: data3.valence,
-        //             // tempo: data3.tempo,
-        //             // popularityRange: [0,100],
-        //             // danceabilityRange: [0.2,0.8],
-        //             // energyRange: [0.2,0.8],
-        //             // speechinessRange: [0.2,0.8],
-        //             // valenceRange: [0.2,0.8],
-        //             // tempoRange: [0.2,0.8],
-        //             timestamp: new Date()
-        //         },
-        //         // attributeWeight: {
-        //         //     artistWeight: 1,
-        //         //     genreWeight: 1,
-        //         //     languageWeight: 1,
-        //         //     popularityWeight: 1,
-        //         //     danceabilityWeight: 1,
-        //         //     energyWeight: 1,
-        //         //     speechinessWeight: 1,
-        //         //     valenceWeight: 1,
-        //         //     tempoWeight: 1,
-        //         //     timestamp: new Date()
-        //         // },
-        //         // logger:{}
-        //     });
-        //
-        //     // //save a new user
-        //     // user.save(function(err) {
-        //     //     if (err)
-        //     //         console.log(err)
-        //     //     console.log("user profile is added")
-        //     // })
-        //     console.log(user)
-        //     res.json({
-        //         vis: recResult,
-        //         user: user
-        //     })
-        // }).catch(function (error) {//加上catch
-        //   console.log(error);
-        // })
+
         var user = new User({
             id: userID,
             pool:recResult,
             new_pool:[],
             user: {
-                _id:userID,
+                id:userID,
                 preferenceData: {
                     artist: artists,
                     track: tracks,

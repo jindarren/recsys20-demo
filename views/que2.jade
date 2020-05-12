@@ -568,8 +568,8 @@ html
         script(type='text/javascript').
             var formList = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
             $("input").click(function () {
-                var statement = parseInt($(this).parent().parent().attr("id").replace(/[^0-9]/ig, ""))
-                var option = parseInt($(this).attr("value"))
+                var statement = $(this).parent().parent().attr("id").replace(/[^0-9]/ig, "")
+                var option = $(this).attr("value")
                 formList[statement - 1] = option
                 console.log(formList)
             })
@@ -589,7 +589,15 @@ html
                         $(".statement:eq(" + index + ")").css("background-color", "yellow")
                     }
                 }
-                console.log(uncheckedList)
+
+
+                var comment = $("#post-20").val()
+
+                console.log(comment)
+
+                if(comment){
+                    formList.push(comment)
+                }
                 if (uncheckedList.length > 0) {
                     alert("Please finished the missing statement(s) marked in yellow.")
                 } else {
@@ -614,14 +622,12 @@ html
                         data: JSON.stringify(log),
                         dataType: 'json',
                         success: function () {
-                            window.location.href = "/success"
+                            //window.location.href = "/success"
                         },
                         error: function (err) {
                             console.log(err)
                         }
                     });
 
-
-                    window.location.href = "/success"
                 }
             })

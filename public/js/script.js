@@ -784,8 +784,6 @@ $(document).ready(function () {
 
                                             if (numberOfLikedSongs == 5 && !isPreStudy) {
                                                 isFinished = true
-                                                $("#popup").show()
-                                                $("#user-id span").text(isSystemCrit + "|" + userID)
 
                                                 logger.task1 = new Date().getTime() - logger.task1
                                                 logger.listenedSongs = listenedSongs.concat()
