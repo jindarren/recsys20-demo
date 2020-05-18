@@ -359,6 +359,9 @@ $(document).ready(function () {
 
             $("#start-task").on("click", function () {
                 // synth.cancel()
+                $("input#message").attr("disabled", true)
+                $("input#message").attr("placeholder", "Please wait for a moment :)")
+
                 clearTimeout(showTry)
                 clearTimeout(showFeedback)
                 clearTimeout(showNextSong)
@@ -395,7 +398,6 @@ $(document).ready(function () {
 
                 //clear the chat content for new scenario
                 $(".chat").empty()
-                $("input#message").attr("disabled", false)
 
 
                 //clear the chat content for new scenario
@@ -426,7 +428,6 @@ $(document).ready(function () {
                     dataType: "json",
                     success: function (data2) {
 
-
                         usermodel = data2
                         console.log(usermodel)
                         topRecommendedSong = usermodel.pool[0];
@@ -444,6 +445,8 @@ $(document).ready(function () {
 
                         setTimeout(function () {
                             $('.spinner').remove();
+                            $("input#message").attr("disabled", false)
+                            $("input#message").attr("placeholder", "Chat with me :)")
 
                             if (listenedSongs.indexOf(playlist[songIndex].id) < 0) {
                                 listenedSongs.push(playlist[songIndex].id)
@@ -755,15 +758,15 @@ $(document).ready(function () {
                                         else
                                             data.user.preferenceData.track[5] = playlist[songIndex].id
 
-                                        $(".list-group").append("<li class='list-group-item' id='" + playlist[songIndex].id + "'>" + playlist[songIndex].name + "&nbsp;&nbsp;<i class='fa fa-close'></i><input type='number' class='rating' data-size='xs'></li>")
-                                        $("#" + playlist[songIndex].id + " .rating").rating({min: 1, max: 5, step: 1});
-                                        $("#" + playlist[songIndex].id + " .rating").on('rating:change', function (event, value, caption) {
-                                            $("#" + playlist[songIndex].id + " .rating").rating('refresh', {
+                                        $(".list-group").append("<li class='list-group-item' id='" + logger.listenedSongs.slice(-1)[0].id + "'>" + logger.listenedSongs.slice(-1)[0].name + "&nbsp;&nbsp;<i class='fa fa-close'></i><input type='number' class='rating' data-size='xs'></li>")
+                                        $("#" + logger.listenedSongs.slice(-1)[0].id + " .rating").rating({min: 1, max: 5, step: 1});
+                                        $("#" + logger.listenedSongs.slice(-1)[0].id + " .rating").on('rating:change', function (event, value, caption) {
+                                            $("#" + logger.listenedSongs.slice(-1)[0].id + " .rating").rating('refresh', {
                                                 disabled: true,
                                                 showClear: false,
                                                 showCaption: true
                                             });
-                                            $("#" + playlist[songIndex].id + "> .fa-close").hide()
+                                            $("#" + logger.listenedSongs.slice(-1)[0].id + "> .fa-close").hide()
                                             numberOfLikedSongs++
                                             if (numberOfLikedSongs < 5) {
                                                 updateChat(robot, nextSongUtters[parseInt((nextSongUtters.length * Math.random()))], "Coherence")
@@ -805,11 +808,12 @@ $(document).ready(function () {
                                             } else if (numberOfLikedSongs == 5 && isPreStudy) {
                                                 updateChat(robot, "Now, you should be familiar with the system. You can click the 'start study' button to start.", "Initialize")
                                                 $("input#message").attr("disabled", true)
+                                                $("input#message").attr("placeholder", "Please click the 'start study' button to start!")
                                             }
                                         });
 
                                         // remove a liked song
-                                        $("#" + playlist[songIndex].id + "> .fa-close").click(function () {
+                                        $("#" + logger.listenedSongs.slice(-1)[0].id + "> .fa-close").click(function () {
                                             $(this).parent().remove()
                                             showMusic(playlist[songIndex].id)
                                         })
@@ -938,6 +942,7 @@ $(document).ready(function () {
                                             } else if (numberOfLikedSongs == 5 && isPreStudy) {
                                                 updateChat(robot, "Now, you should be familiar with the system. You click the 'start study' button to start.", "Initialize")
                                                 $("input#message").attr("disabled", true)
+                                                $("input#message").attr("placeholder", "Please click the 'start study' button to start!")
                                             }
                                         });
                                         // remove a liked song
