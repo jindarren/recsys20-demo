@@ -71,13 +71,13 @@ app.use(express.static(path.join(__dirname, 'node_modules')));
 
 app.use('/', index);
 
-// const server = app.listen(process.env.PORT || 3000, () => {
-//   console.log('Express server listening on port %d in %s mode', server.address().port, app.settings.env);
-// });
-
-const server = https.createServer(options, app).listen(3000, function () {
-    console.log('Https server listening on port ' + 3000);
+const server = app.listen(process.env.PORT || 3000, () => {
+  console.log('Express server listening on port %d in %s mode', server.address().port, app.settings.env);
 });
+
+// const server = https.createServer(options, app).listen(3000, function () {
+//     console.log('Https server listening on port ' + 3000);
+// });
 
 const io = require('socket.io')(server);
 io.on('connection', function(socket){

@@ -698,8 +698,9 @@ $(document).ready(function () {
                 $("#round" + round + " #yes").click(function () {
                     $("#round" + round + " button").fadeOut()
                     updateChat(you, "Yes, please!", "Accept_Suggestion", "btn")
-
-                    console.log(playlist)
+                    var critique=[]
+                    critique.push({"valence": "lower"})
+                    console.log(updateAndGetRec(critique))
                     showMusic(playlist[songIndex].id)
 
                 })
@@ -1070,6 +1071,44 @@ $(document).ready(function () {
                 //updateChat(robot, 'Sorry, we find an error during voice recognition.', "text", "Respond_Unknown", [], {});
             });
 
+            function updateAndGetRec(critique) {
+                return new Promise(function (resolve, reject) {
+
+                    var dialogNum = logger.dialog.length
+                    var dialog = logger.dialog[dialogNum - 1]
+
+                    dialog.critique = critique
+                    dialog.critiqued_song = playlist[songIndex].id
+
+                    //perform update model request
+                    var updateData = {}
+                    updateData.user = usermodel.user
+                    updateData.logger = {}
+                    updateData.logger.latest_dialog = [dialog]
+                    updateData.logger.listenedSongs = logger.listenedSongs
+
+                    var listenedSongsLength = logger.listenedSongs.length
+                    updateData.topRecommendedSong = logger.listenedSongs[listenedSongsLength - 1]
+
+                    console.log(updateData)
+
+                    updateUserModel(updateData).done(function () {
+                        //Get recommendation
+                        var updateData2 = {}
+                        updateData2.user = usermodel.user
+                        updateData2.pool = playlist
+                        updateData2.new_pool = []
+
+                        getRecommendation(updateData2).then(function (data) {
+                            var returnData = JSON.parse(data)
+                            console.log(returnData)
+                            reRankPlaylist(returnData.recommendation_list)
+                            resolve(returnData.recommendation_list.length)
+                        })
+                    })
+                });
+            }
+
 
             var numberOfMiss = 0;
 
@@ -1088,44 +1127,6 @@ $(document).ready(function () {
                  music-valence
                  song
                  */
-
-                function updateAndGetRec() {
-                    return new Promise(function (resolve, reject) {
-
-                        var dialogNum = logger.dialog.length
-                        var dialog = logger.dialog[dialogNum - 1]
-
-                        dialog.critique = critique
-                        dialog.critiqued_song = playlist[songIndex].id
-
-                        //perform update model request
-                        var updateData = {}
-                        updateData.user = usermodel.user
-                        updateData.logger = {}
-                        updateData.logger.latest_dialog = [dialog]
-                        updateData.logger.listenedSongs = logger.listenedSongs
-
-                        var listenedSongsLength = logger.listenedSongs.length
-                        updateData.topRecommendedSong = logger.listenedSongs[listenedSongsLength - 1]
-
-                        console.log(updateData)
-
-                        updateUserModel(updateData).done(function () {
-                            //Get recommendation
-                            var updateData2 = {}
-                            updateData2.user = usermodel.user
-                            updateData2.pool = playlist
-                            updateData2.new_pool = []
-
-                            getRecommendation(updateData2).then(function (data) {
-                                var returnData = JSON.parse(data)
-                                console.log(returnData)
-                                resolve(returnData.recommendation_list.length)
-                            })
-                        })
-                    });
-                }
-
 
                 var intent = text.action;
                 var response = text.fulfillment.speech;
@@ -1158,7 +1159,7 @@ $(document).ready(function () {
 
                     if (critique.length > 0) {
 
-                        updateAndGetRec().then(function (data) {
+                        updateAndGetRec(critique).then(function (data) {
                             var num = parseInt(data)
                             console.log(num)
                             if (num == 0) {
@@ -1186,7 +1187,6 @@ $(document).ready(function () {
                     var response = text.parameters["RESPONSE"]
                     if (response == "yes") {
                         //perform critiquing on existing set
-
 
                         var newlist = data.pool.concat()
                         for (var index2 in critiques[critiquesIndex].action) {
@@ -1274,101 +1274,103 @@ $(document).ready(function () {
                     }
 
                     if (critique.length > 0) {
-                        var returnedRec = updateAndGetRec()
-                        if (returnedRec.length == 0) {
-                            if (valence) {
-                                if (valence == "happy") {
-                                    requestLink = '/getRecom?artistSeeds=' + seed_artists + '&seed_tracks=' + seed_tracks + '&genreSeeds=' + seed_genres + '&min_valence=' + data.user.preferenceData.valence + '&token=' + spotifyToken;
+                        updateAndGetRec(critique).then(function (data) {
+                            var num = parseInt(data)
+                            if (num == 0) {
+                                if (valence) {
+                                    if (valence == "happy") {
+                                        requestLink = '/getRecom?artistSeeds=' + seed_artists + '&seed_tracks=' + seed_tracks + '&genreSeeds=' + seed_genres + '&min_valence=' + data.user.preferenceData.valence + '&token=' + spotifyToken;
+                                    }
+                                    else if (valence == "neutral") {
+                                        requestLink = '/getRecom?artistSeeds=' + seed_artists + '&seed_tracks=' + seed_tracks + '&genreSeeds=' + seed_genres + '&target_valence=' + data.user.preferenceData.valence + '&token=' + spotifyToken;
+                                    }
+                                    else if (valence == "sad") {
+                                        requestLink = '/getRecom?artistSeeds=' + seed_artists + '&seed_tracks=' + seed_tracks + '&genreSeeds=' + seed_genres + '&max_valence=' + data.user.preferenceData.valence + '&token=' + spotifyToken;
+                                    }
+                                    explaination = "OK, I recommend this song to you, because you like the " + valence + " songs"
+                                } else if (tempo) {
+                                    if (tempo == "fast") {
+                                        requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&min_tempo=' + data.user.preferenceData.tempo + '&token=' + spotifyToken;
+                                    }
+                                    else if (tempo == "normal") {
+                                        requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&target_tempo=' + data.user.preferenceData.tempo + '&token=' + spotifyToken;
+                                    } else if (tempo == "slow") {
+                                        requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&max_tempo=' + data.user.preferenceData.tempo + '&token=' + spotifyToken;
+                                    }
+                                    explaination = "OK, I recommend this song to you, because you like the " + tempo + " songs"
+                                } else if (feature) {
+                                    if (feature == "energy") {
+                                        if (action == "higher") {
+
+                                            requestLink = '/getRecom?genreSeeds=' + seed_genres + "&token=" + spotifyToken;
+
+                                            explaination = "OK, I recommend this song to you, because you like the songs of higher energy."
+                                        }
+                                        else if (action == "lower") {
+                                            requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&max_energy=' + data.user.preferenceData.energy + "&token=" + spotifyToken;
+                                            explaination = "OK, I recommend this song to you, because you like the songs of lower energy."
+                                        }
+                                        else if (action == "") {
+
+                                            requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + 'min_energy=' + data.user.preferenceData.energy + "&token=" + spotifyToken;
+                                            explaination = "OK, I recommend this song to you, because you like the songs of higher energy."
+                                        }
+                                    } else if (feature == "danceability") {
+                                        if (action == "higher") {
+
+                                            requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&min_danceability=' + data.user.preferenceData.danceability + "&token=" + spotifyToken;
+                                            explaination = "OK, I recommend this song to you, because you like the songs of higher danceability."
+                                        }
+                                        else if (action == "lower") {
+
+                                            requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&max_danceability=' + data.user.preferenceData.danceability + "&token=" + spotifyToken;
+                                            explaination = "OK, I recommend this song to you, because you like the songs of lower danceability."
+                                        }
+                                        else if (action == "") {
+
+                                            requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&min_danceability=' + data.user.preferenceData.danceability + "&token=" + spotifyToken;
+                                            explaination = "OK, I recommend this song to you, because you like the songs of higher danceability."
+                                        }
+                                    } else if (feature == "speech") {
+                                        if (action == "higher") {
+
+                                            requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&min_speechiness=' + data.user.preferenceData.speechiness + "&token=" + spotifyToken;
+                                            explaination = "OK, I recommend this song to you, because you like the songs of higher speechiness."
+                                        }
+                                        else if (action == "lower") {
+
+                                            requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&max_speechiness=' + data.user.preferenceData.speechiness + "&token=" + spotifyToken;
+                                            explaination = "OK, I recommend this song to you, because you like the songs of lower speechiness."
+                                        }
+                                        else if (action == "") {
+
+                                            requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&min_speechiness=' + data.user.preferenceData.speechiness + "&token=" + spotifyToken;
+                                            explaination = "OK, I recommend this song to you, because you like the songs of higher speechiness."
+                                        }
+                                    }
+                                    else if (feature == "popularity") {
+                                        if (action == "higher") {
+
+                                            requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&min_popularity=' + data.user.preferenceData.popularity + "&token=" + spotifyToken;
+                                            explaination = "OK, I recommend this song to you, because you like the songs of higher popularity."
+                                        }
+                                        else if (action == "lower") {
+                                            requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&max_popularity=' + data.user.preferenceData.popularity + "&token=" + spotifyToken;
+                                            explaination = "OK, I recommend this song to you, because you like the songs of lower popularity."
+                                        }
+                                        else if (action == "") {
+                                            requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&min_popularity=' + data.user.preferenceData.popularity + "&token=" + spotifyToken;
+                                            explaination = "OK, I recommend this song to you, because you like the songs of higher popularity."
+                                        }
+                                    }
                                 }
-                                else if (valence == "neutral") {
-                                    requestLink = '/getRecom?artistSeeds=' + seed_artists + '&seed_tracks=' + seed_tracks + '&genreSeeds=' + seed_genres + '&target_valence=' + data.user.preferenceData.valence + '&token=' + spotifyToken;
-                                }
-                                else if (valence == "sad") {
-                                    requestLink = '/getRecom?artistSeeds=' + seed_artists + '&seed_tracks=' + seed_tracks + '&genreSeeds=' + seed_genres + '&max_valence=' + data.user.preferenceData.valence + '&token=' + spotifyToken;
-                                }
-                                explaination = "OK, I recommend this song to you, because you like the " + valence + " songs"
-                            } else if (tempo) {
-                                if (tempo == "fast") {
-                                    requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&min_tempo=' + data.user.preferenceData.tempo + '&token=' + spotifyToken;
-                                }
-                                else if (tempo == "normal") {
-                                    requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&target_tempo=' + data.user.preferenceData.tempo + '&token=' + spotifyToken;
-                                } else if (tempo == "slow") {
-                                    requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&max_tempo=' + data.user.preferenceData.tempo + '&token=' + spotifyToken;
-                                }
-                                explaination = "OK, I recommend this song to you, because you like the " + tempo + " songs"
-                            } else if (feature) {
-                                if (feature == "energy") {
-                                    if (action == "higher") {
+                                playRequestLink(requestLink)
 
-                                        requestLink = '/getRecom?genreSeeds=' + seed_genres + "&token=" + spotifyToken;
-
-                                        explaination = "OK, I recommend this song to you, because you like the songs of higher energy."
-                                    }
-                                    else if (action == "lower") {
-                                        requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&max_energy=' + data.user.preferenceData.energy + "&token=" + spotifyToken;
-                                        explaination = "OK, I recommend this song to you, because you like the songs of lower energy."
-                                    }
-                                    else if (action == "") {
-
-                                        requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + 'min_energy=' + data.user.preferenceData.energy + "&token=" + spotifyToken;
-                                        explaination = "OK, I recommend this song to you, because you like the songs of higher energy."
-                                    }
-                                } else if (feature == "danceability") {
-                                    if (action == "higher") {
-
-                                        requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&min_danceability=' + data.user.preferenceData.danceability + "&token=" + spotifyToken;
-                                        explaination = "OK, I recommend this song to you, because you like the songs of higher danceability."
-                                    }
-                                    else if (action == "lower") {
-
-                                        requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&max_danceability=' + data.user.preferenceData.danceability + "&token=" + spotifyToken;
-                                        explaination = "OK, I recommend this song to you, because you like the songs of lower danceability."
-                                    }
-                                    else if (action == "") {
-
-                                        requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&min_danceability=' + data.user.preferenceData.danceability + "&token=" + spotifyToken;
-                                        explaination = "OK, I recommend this song to you, because you like the songs of higher danceability."
-                                    }
-                                } else if (feature == "speech") {
-                                    if (action == "higher") {
-
-                                        requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&min_speechiness=' + data.user.preferenceData.speechiness + "&token=" + spotifyToken;
-                                        explaination = "OK, I recommend this song to you, because you like the songs of higher speechiness."
-                                    }
-                                    else if (action == "lower") {
-
-                                        requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&max_speechiness=' + data.user.preferenceData.speechiness + "&token=" + spotifyToken;
-                                        explaination = "OK, I recommend this song to you, because you like the songs of lower speechiness."
-                                    }
-                                    else if (action == "") {
-
-                                        requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&min_speechiness=' + data.user.preferenceData.speechiness + "&token=" + spotifyToken;
-                                        explaination = "OK, I recommend this song to you, because you like the songs of higher speechiness."
-                                    }
-                                }
-                                else if (feature == "popularity") {
-                                    if (action == "higher") {
-
-                                        requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&min_popularity=' + data.user.preferenceData.popularity + "&token=" + spotifyToken;
-                                        explaination = "OK, I recommend this song to you, because you like the songs of higher popularity."
-                                    }
-                                    else if (action == "lower") {
-                                        requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&max_popularity=' + data.user.preferenceData.popularity + "&token=" + spotifyToken;
-                                        explaination = "OK, I recommend this song to you, because you like the songs of lower popularity."
-                                    }
-                                    else if (action == "") {
-                                        requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&min_popularity=' + data.user.preferenceData.popularity + "&token=" + spotifyToken;
-                                        explaination = "OK, I recommend this song to you, because you like the songs of higher popularity."
-                                    }
-                                }
+                            } else {
+                                songIndex = 0
+                                speakandsing(robot, response, "Coherence")
                             }
-                            playRequestLink(requestLink)
-
-                        } else {
-                            songIndex = 0
-                            speakandsing(robot, response, "Coherence")
-                        }
+                        })
                     }
 
                 }
