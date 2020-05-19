@@ -12,7 +12,7 @@ from tool import time_helper, store_data
 pp = pprint.PrettyPrinter(indent=4)
 
 min_support = 0.1
-min_confidence = 0.6
+min_confidence = 0.5
 
 
 def generate_critique_array(item_pool, cur_rec, categorical_attributes, numerical_attributes):
@@ -339,6 +339,24 @@ def check_critique_conflict_with_user_preference(critique, user_constraints_crit
 
     return conflict_or_not
 
+def check_critique_conflict_for_only_numerical_attributes(critique, user_constraints_critique_dict, categorical_attributes):
+
+    conflict_or_not = False
+    for crit_unit in critique:
+        crit_split = crit_unit.split('|')
+        if crit_split[0] in user_constraints_critique_dict.keys():
+            user_constraints_critique_direction = user_constraints_critique_dict[crit_split[0]]
+            if crit_split[0] not in categorical_attributes and crit_split[1] not in user_constraints_critique_direction:
+                conflict_or_not = True
+                # print(crit_split[0])
+                # print('user constraints: ', user_constraints_critique_direction)
+                # print('system critiques: ', crit_split[1])
+            
+        else:
+            continue
+
+    return conflict_or_not
+
 def generate_system_critiques_preference_oriented(user_info, user_constraints, estimated_score_dict, item_pool, cur_rec, top_K, unit_or_compound, categorical_attributes, numerical_attributes):
     
     # Step 1: Generate a critique array for each item 
@@ -432,7 +450,7 @@ def generate_system_critiques_diversity_oriented(user_info, user_constraints, in
     frequent_critiques_freq_dict = {}
     for num in unit_or_compound:
         for crit, freq in num_critique_sets_dict[num].items():
-            if not check_critique_conflict_with_user_preference(crit, user_constraints_critique_dict):
+            if not check_critique_conflict_for_only_numerical_attributes(crit, user_constraints_critique_dict, categorical_attributes):
                 frequent_critiques_freq_dict[crit] = freq
     pp.pprint(frequent_critiques_freq_dict)
 
