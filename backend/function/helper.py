@@ -20,9 +20,10 @@ def get_numerical_attribute_intervalindex(attribute):
     
    
     intervalindex = pd.IntervalIndex.from_breaks(attribute_intervalindex, closed='left')
-    interval_label = intervalindex.astype(str)
-   
-    return attribute_intervalindex, interval_label
+    # interval_label = intervalindex.astype(str)
+    interval_label_level = ['level_'+str(i) for i in range(1, len(intervalindex)+1)]
+    assert(len(intervalindex) == len(interval_label_level))
+    return attribute_intervalindex, interval_label_level
 
 def get_numerical_attribute_interval_label(attribute, value):
 

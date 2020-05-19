@@ -149,10 +149,7 @@ class GetRec(Resource):
             assert(len(integrated_item_pool) == len(item_pool) + len(new_item_pool))
 
             max_item_pool_number = min([150, len(integrated_item_pool)])
-            time_helper.print_current_time()
-            print("Get Recommendation ---- Max Item Pool: %d" % max_item_pool_number)
             updated_item_pool = recommendation.update_recommendation_pool(user_preference_model, user_critique_preference, integrated_item_pool, max_item_pool_number, categorical_attributes, numerical_attributes, method, alpha)
-            time_helper.print_current_time()
             print("Get Recommendation ---- Updated Item Pool: %d songs." % (len(updated_item_pool))) 
             
             user_profile['pool'] = updated_item_pool
@@ -181,11 +178,12 @@ class GetSysCri(Resource):
         user_profile = json_data['user_profile']
         user_preference_model = user_profile['user']['user_preference_model'] 
         user_critique_preference = user_profile['user']['user_critique_preference'] 
+        user_constraints = user_profile['user']['user_constraints'] 
         user_interaction_log = user_profile['logger']
         item_pool = user_profile['pool']
         cur_rec = user_profile['topRecommendedSong']
         top_K = 20
-        unit_or_compound = [1,2]
+        unit_or_compound = [1]
         
         method = 'MAUT_COMPAT'
         alpha = 0.5
@@ -202,9 +200,9 @@ class GetSysCri(Resource):
         
         sys_crit = None
         if sys_crit_version == 'preference_oriented':
-            sys_crit = system_critiquing.generate_system_critiques_preference_oriented(user_preference_model, estimated_score_dict, item_pool, cur_rec, top_K, unit_or_compound, categorical_attributes, numerical_attributes)
+            sys_crit = system_critiquing.generate_system_critiques_preference_oriented(user_preference_model, user_constraints,estimated_score_dict, item_pool, cur_rec, top_K, unit_or_compound, categorical_attributes, numerical_attributes)
         if sys_crit_version == 'diversity_oriented':
-            sys_crit = system_critiquing.generate_system_critiques_diversity_oriented(user_preference_model, user_interaction_log, estimated_score_dict, item_pool, cur_rec, top_K, unit_or_compound, categorical_attributes, numerical_attributes)
+            sys_crit = system_critiquing.generate_system_critiques_diversity_oriented(user_preference_model, user_constraints, user_interaction_log, estimated_score_dict, item_pool, cur_rec, top_K, unit_or_compound, categorical_attributes, numerical_attributes)
         # if sys_crit_version == 'personality_adjusted':
         #     sys_crit = system_critiquing.generate_system_critiques_personality_adjusted(user_preference_model, user_interaction_log, estimated_score_dict, item_pool, cur_rec, top_K, unit_or_compound, categorical_attributes, numerical_attributes)
 

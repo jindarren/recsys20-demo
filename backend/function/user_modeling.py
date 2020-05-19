@@ -154,7 +154,7 @@ def update_user_model(user_model, user_interaction_dialog, user_listened_longs, 
             # pp.pprint(updated_user_critique_preference)
 
             # user constraint
-            constraint_number = 3
+            constraint_number = 5
             updated_user_constraints = update_user_constraints(updated_user_critique_preference, constraint_number)
 
             time_helper.print_current_time()
