@@ -82,8 +82,6 @@ def filter_items_by_user_constraints(user_constraints, item_pool, minimal_thresh
             cur_index = cur_interval_find.index(True)
 
             for item in filtered_item_pool:
-                ## Debug
-                print(item)
                 
                 item_interval_find = list(intervals.contains(item[attr]))
                 item_index = item_interval_find.index(True)
@@ -299,11 +297,6 @@ def update_recommendation_pool(user_preference_model, user_critique_preference, 
 
     sorted_estimated_score_dict = compute_recommendation(user_preference_model, user_critique_preference, integrated_item_pool, max_item_pool_number, categorical_attributes, numerical_attributes, method, alpha)
     
-    # # Debug
-    time_helper.print_current_time()
-    print("sorted_sorted_estimated_score: %d songs" % len(sorted_estimated_score_dict))
-    
-
     max_item_pool_list = []
     for rec in sorted_estimated_score_dict:
         max_item_pool_list.append(rec[0])
@@ -317,5 +310,4 @@ def update_recommendation_pool(user_preference_model, user_critique_preference, 
     
    
     return copy.deepcopy(updated_item_pool)
-
 
