@@ -82,6 +82,8 @@ def filter_items_by_user_constraints(user_constraints, item_pool, minimal_thresh
             cur_index = cur_interval_find.index(True)
 
             for item in filtered_item_pool:
+                ## Debug
+                print(item)
                 
                 item_interval_find = list(intervals.contains(item[attr]))
                 item_index = item_interval_find.index(True)
