@@ -301,6 +301,7 @@ def update_recommendation_pool(user_preference_model, user_critique_preference, 
     time_helper.print_current_time()
     print("sorted_sorted_estimated_score: %d songs" % len(sorted_estimated_score_dict))
     
+
     max_item_pool_list = []
     for rec in sorted_estimated_score_dict:
         max_item_pool_list.append(rec[0])
@@ -312,9 +313,7 @@ def update_recommendation_pool(user_preference_model, user_critique_preference, 
             updated_item_pool_id.append(item['id'])
             updated_item_pool.append(item)
     
-    # # Debug
-    time_helper.print_current_time()
-    print("updated_item_pool: %d songs" % len(sorted_estimated_score_dict))
-    
+   
     return copy.deepcopy(updated_item_pool)
+
 
