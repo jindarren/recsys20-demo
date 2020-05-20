@@ -139,7 +139,7 @@ class GetRec(Resource):
         print("Get Recommendation ---- Obtained top %d recommended items. "% len(topK_recommendation_list)) 
          
 
-        updated_item_pool = []
+        updated_item_pool = None
         if len(new_item_pool) > 0:
             time_helper.print_current_time()
             print("Get Recommendation ---- New Pool: %d songs." % (len(new_item_pool))) 
