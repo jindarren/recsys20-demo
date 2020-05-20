@@ -98,7 +98,7 @@ def filter_items_by_user_constraints(user_constraints, item_pool, minimal_thresh
                         satisfied_flag = True
 
                 # case 2: current critiqued item value has been already the highest range - allows to return items within same range
-                elif cur_index == len(cur_interval_find)-1: 
+                elif cur_index >= len(cur_interval_find)-2: 
                     if item_index >= cur_index and crit_direction == 'higher':
                         satisfied_flag = True
 
