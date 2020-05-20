@@ -297,6 +297,10 @@ def update_recommendation_pool(user_preference_model, user_critique_preference, 
 
     sorted_estimated_score_dict = compute_recommendation(user_preference_model, user_critique_preference, integrated_item_pool, max_item_pool_number, categorical_attributes, numerical_attributes, method, alpha)
     
+    # Debug
+    time_helper.print_current_time()
+    print("sorted_sorted_estimated_score: %d songs" % len(sorted_estimated_score_dict))
+    
     max_item_pool_list = []
     for rec in sorted_estimated_score_dict:
         max_item_pool_list.append(rec[0])
@@ -305,5 +309,10 @@ def update_recommendation_pool(user_preference_model, user_critique_preference, 
     for item in integrated_item_pool:
         if item['id'] in max_item_pool_list and item['id'] not in updated_item_pool:
             updated_item_pool.append(item)
-
+    
+    # Debug
+    time_helper.print_current_time()
+    print("updated_item_pool: %d songs" % len(sorted_estimated_score_dict))
+    
     return updated_item_pool
+
