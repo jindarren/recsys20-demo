@@ -149,7 +149,7 @@ class GetRec(Resource):
             assert(len(integrated_item_pool) == len(item_pool) + len(new_item_pool))
 
             max_item_pool_number = min([150, len(integrated_item_pool)])
-            updated_item_pool = recommendation.update_recommendation_pool(user_preference_model, user_critique_preference, integrated_item_pool, max_item_pool_number, categorical_attributes, numerical_attributes, method, alpha)
+            updated_item_pool = copy.deepcopy(recommendation.update_recommendation_pool(user_preference_model, user_critique_preference, integrated_item_pool, max_item_pool_number, categorical_attributes, numerical_attributes, method, alpha))
             print("Get Recommendation ---- Updated Item Pool: %d songs." % (len(updated_item_pool))) 
             
             user_profile['pool'] = updated_item_pool
