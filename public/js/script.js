@@ -698,10 +698,21 @@ $(document).ready(function () {
                 $("#round" + round + " #yes").click(function () {
                     $("#round" + round + " button").fadeOut()
                     updateChat(you, "Yes, please!", "Accept_Suggestion", "btn")
-                    var critique=[]
-                    critique.push({"valence": "lower"})
-                    console.log(updateAndGetRec(critique))
+                    reRankPlaylist(critiques[critiquesIndex].recommendation)
                     showMusic(playlist[songIndex].id)
+
+                    //perform update model request
+                    var updateData = {}
+                    updateData.user = usermodel.user
+                    updateData.logger = {}
+                    updateData.logger.latest_dialog = [dialog]
+                    updateData.logger.listenedSongs = logger.listenedSongs
+
+                    var listenedSongsLength = logger.listenedSongs.length
+                    updateData.topRecommendedSong = logger.listenedSongs[listenedSongsLength - 1]
+
+                    console.log(updateData)
+                    updateUserModel(updateData)
 
                 })
 
@@ -713,9 +724,6 @@ $(document).ready(function () {
                         critiquesIndex++;
                         console.log(critiques[critiquesIndex].critiques)
                         updateChat(crit, critiques[critiquesIndex].speech, "System_Suggest");
-
-
-                        reRankPlaylist(critiques[critiquesIndex].recommendation)
 
                     } else if (critiquesIndex == critiques.length - 1) {
                         critiquesIndex = 0
