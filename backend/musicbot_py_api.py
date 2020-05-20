@@ -206,7 +206,7 @@ class GetSysCri(Resource):
         # if sys_crit_version == 'personality_adjusted':
         #     sys_crit = system_critiquing.generate_system_critiques_personality_adjusted(user_preference_model, user_interaction_log, estimated_score_dict, item_pool, cur_rec, top_K, unit_or_compound, categorical_attributes, numerical_attributes)
 
-        # pp.pprint(sys_crit)
+        pp.pprint(sys_crit)
         sys_crit_with_rec_list = {'sys_crit_with_recommendation': sys_crit}
 
         end = time.process_time()
