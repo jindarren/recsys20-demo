@@ -303,7 +303,7 @@ def update_recommendation_pool(user_preference_model, user_critique_preference, 
 
     updated_item_pool = []
     for item in integrated_item_pool:
-        if item['id'] in max_item_pool_list:
+        if item['id'] in max_item_pool_list and item['id'] not in updated_item_pool:
             updated_item_pool.append(item)
 
     return updated_item_pool
