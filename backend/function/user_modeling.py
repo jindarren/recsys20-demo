@@ -131,7 +131,9 @@ def update_user_model(user_model, user_interaction_dialog, user_listened_longs, 
         print("Update User Model ---- User Action: %s." % (current_action))
 
         if current_action == "user_critique" or current_action == "accept_suggestion":
-            critique_list = utterance_info['critique']
+            critique_list = []
+            if 'critique' in utterance_info.keys():
+                critique_list = utterance_info['critique']
             critique_song_info = current_recommended_item
             # [Revised 2020-05-07: Actually, the critiqued item is just the current recommended item.]
             # critique_song_id = utterance_info['critiqued_song']

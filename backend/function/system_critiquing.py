@@ -224,7 +224,8 @@ def switch_critique_level(interaction_log, cur_rec, categorical_attributes, nume
         critique_list = []
         action = utterance_info['action'].lower()
         if action == "user_critique" or action == "system_suggest":
-            critique_list = utterance_info['critique']
+            if 'critique' in utterance_info.keys():
+                critique_list = utterance_info['critique']
         if len(critique_list) > 0:
             for each_crit in critique_list:
                 if 'genre' in each_crit.keys():
