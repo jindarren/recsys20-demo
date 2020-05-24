@@ -53,7 +53,7 @@ if test_function == 'get_sys_cri':
 
 parms = {
 	'user_profile': user_profile,
-	'sys_crit_version': 'diversity_oriented', # diversity_oriented / preference_oriented
+	'sys_crit_version': 'preference_oriented', # diversity_oriented / preference_oriented
 }
 
 for i in range(1):

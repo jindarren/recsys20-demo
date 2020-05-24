@@ -187,9 +187,8 @@ def update_based_on_satisfiability(attr, satisfiability, satisfied_critique_attr
         if attr not in unsatisfied_critique_attribute_list:
             unsatisfied_critique_attribute_list.append(attr)
     return satisfied_critique_attribute_list, unsatisfied_critique_attribute_list
-    
-                
 
+#     
 def compute_recommendation_compatibility_score(user_critique_preference, item_pool, top_K, categorical_attributes, numerical_attributes, sort=True):
     
     # based on user critique preference and item value
@@ -197,6 +196,8 @@ def compute_recommendation_compatibility_score(user_critique_preference, item_po
 
     # item compatibility score
     item_compatibility_score_dict = {}
+
+    categorical_critique_dict, numerical_critique_dict = helper.convert_to_critique_preference_dict(user_critique_preference)
 
     for each_item in item_pool:
         item_id = each_item['id']
@@ -206,57 +207,28 @@ def compute_recommendation_compatibility_score(user_critique_preference, item_po
         satisfied_critique_attribute_list = []
         unsatisfied_critique_attribute_list = []
 
-        for crit_unit in reversed(user_critique_preference):
-            if crit_unit['pos_or_neg'] == 'neg':
-                continue
-            
-            # Step 1: Obtain the value for each critique
-            attr = crit_unit['attribute']
-            crit_direction = crit_unit['crit_direction']
-            value = 0
-            if attr in numerical_attributes:
-                value = crit_unit['value']
-
-            # Step 2: check the satisfiability
-            if attr in satisfied_critique_attribute_list:
-                pass
+        # 1. Categorical Attributes
+        for attr in categorical_critique_dict.keys():
+            critique_on_attribute = categorical_critique_dict[attr]['pos']
+            if each_item[attr] in critique_on_attribute:
+                satisfied_critique_attribute_list.append(attr)
             else:
-                # 1. Categorical Attributes
-                if attr in categorical_attributes:
-                    satisfiability = False
+                unsatisfied_critique_attribute_list.append(attr)
 
-                    if type(crit_direction) == str and each_item[attr] == crit_direction:
-                        satisfiability = True
-                    if type(crit_direction) == list and each_item[attr] in crit_direction:
-                        satisfiability = True
-                       
-                    satisfied_critique_attribute_list, unsatisfied_critique_attribute_list = update_based_on_satisfiability\
-                        (attr,satisfiability, satisfied_critique_attribute_list, unsatisfied_critique_attribute_list)
-                    # print('sat:',satisfied_critique_attribute_list)
-                    # print('unsat:',unsatisfied_critique_attribute_list)
-                # 2. Numerical Attributes
-                if attr in numerical_attributes:
-                    satisfiability = False
-                    if crit_direction == 'lower':
-                        satisfiability = True if each_item[attr] < value else False
-                    if crit_direction == 'higher':
-                        satisfiability = True if each_item[attr] > value else False
-                    if crit_direction == 'similar':
-                        item_value_interval_label = helper.get_numerical_attribute_interval_label(attr, each_item[attr])
-                        crit_value_interval_label = helper.get_numerical_attribute_interval_label(attr, value)
-                        satisfiability = True if item_value_interval_label ==  crit_value_interval_label else False
-                    
+        # 2. Numerical Attributes
+        for attr in numerical_critique_dict.keys():
+            critique_on_attribute = numerical_critique_dict[attr]       
+            if each_item[attr] > critique_on_attribute[0] and each_item[attr] < critique_on_attribute[1]:
+                satisfied_critique_attribute_list.append(attr)
+            else:
+                unsatisfied_critique_attribute_list.append(attr)
 
-                    satisfied_critique_attribute_list, unsatisfied_critique_attribute_list = update_based_on_satisfiability\
-                        (attr,satisfiability, satisfied_critique_attribute_list, unsatisfied_critique_attribute_list)
-                    # print('sat:',satisfied_critique_attribute_list)
-                    # print('unsat:',unsatisfied_critique_attribute_list)
      
         if len(satisfied_critique_attribute_list) > 0:
-            item_compatibility_score = len(satisfied_critique_attribute_list) / len(satisfied_critique_attribute_list)+len(unsatisfied_critique_attribute_list)
+            item_compatibility_score = len(satisfied_critique_attribute_list) / (len(satisfied_critique_attribute_list)+len(unsatisfied_critique_attribute_list))
         item_compatibility_score_dict[item_id] = item_compatibility_score
     
-
+    # pp.pprint(item_compatibility_score_dict)
 
     time_helper.print_current_time()
     print("Get Recommendation ---- Compute recommendation compatibility score (COMPAT) ---- Done.") 
@@ -266,7 +238,86 @@ def compute_recommendation_compatibility_score(user_critique_preference, item_po
         top_K_recommmendation_list = sorted_item_compatibility_score_list[0:top_K]
         return top_K_recommmendation_list
     else:
-        return item_compatibility_score_dict
+        return item_compatibility_score_dict                
+
+# Version 1: 
+# def compute_recommendation_compatibility_score(user_critique_preference, item_pool, top_K, categorical_attributes, numerical_attributes, sort=True):
+    
+#     # based on user critique preference and item value
+#     # calculate the compatibility score for each item
+
+#     # item compatibility score
+#     item_compatibility_score_dict = {}
+
+#     for each_item in item_pool:
+#         item_id = each_item['id']
+#         item_compatibility_score = 0
+
+
+#         satisfied_critique_attribute_list = []
+#         unsatisfied_critique_attribute_list = []
+
+#         for crit_unit in reversed(user_critique_preference):
+#             if crit_unit['pos_or_neg'] == 'neg':
+#                 continue
+
+#             # Step 1: Obtain the value for each critique
+#             attr = crit_unit['attribute']
+#             crit_direction = crit_unit['crit_direction']
+#             value = 0
+#             if attr in numerical_attributes:
+#                 value = crit_unit['value']
+
+#             # Step 2: check the satisfiability
+#             if attr in satisfied_critique_attribute_list:
+#                 pass
+#             else:
+#                 # 1. Categorical Attributes
+#                 if attr in categorical_attributes:
+#                     satisfiability = False
+
+#                     if type(crit_direction) == str and each_item[attr] == crit_direction:
+#                         satisfiability = True
+#                     if type(crit_direction) == list and each_item[attr] in crit_direction:
+#                         satisfiability = True
+                       
+#                     satisfied_critique_attribute_list, unsatisfied_critique_attribute_list = update_based_on_satisfiability\
+#                         (attr,satisfiability, satisfied_critique_attribute_list, unsatisfied_critique_attribute_list)
+#                     # print('sat:',satisfied_critique_attribute_list)
+#                     # print('unsat:',unsatisfied_critique_attribute_list)
+#                 # 2. Numerical Attributes
+#                 if attr in numerical_attributes:
+#                     satisfiability = False
+#                     if crit_direction == 'lower':
+#                         satisfiability = True if each_item[attr] < value else False
+#                     if crit_direction == 'higher':
+#                         satisfiability = True if each_item[attr] > value else False
+#                     if crit_direction == 'similar':
+#                         item_value_interval_label = helper.get_numerical_attribute_interval_label(attr, each_item[attr])
+#                         crit_value_interval_label = helper.get_numerical_attribute_interval_label(attr, value)
+#                         satisfiability = True if item_value_interval_label ==  crit_value_interval_label else False
+                    
+
+#                     satisfied_critique_attribute_list, unsatisfied_critique_attribute_list = update_based_on_satisfiability\
+#                         (attr,satisfiability, satisfied_critique_attribute_list, unsatisfied_critique_attribute_list)
+#                     # print('sat:',satisfied_critique_attribute_list)
+#                     # print('unsat:',unsatisfied_critique_attribute_list)
+     
+#         if len(satisfied_critique_attribute_list) > 0:
+#             item_compatibility_score = len(satisfied_critique_attribute_list) / len(satisfied_critique_attribute_list)+len(unsatisfied_critique_attribute_list)
+#         item_compatibility_score_dict[item_id] = item_compatibility_score
+    
+
+
+#     time_helper.print_current_time()
+#     print("Get Recommendation ---- Compute recommendation compatibility score (COMPAT) ---- Done.") 
+         
+#     if sort:
+#         sorted_item_compatibility_score_list = helper.sort_dict(item_compatibility_score_dict)
+#         top_K_recommmendation_list = sorted_item_compatibility_score_list[0:top_K]
+#         return top_K_recommmendation_list
+#     else:
+#         return item_compatibility_score_dict
 
 
 

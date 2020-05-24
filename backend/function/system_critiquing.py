@@ -12,7 +12,7 @@ from tool import time_helper, store_data
 pp = pprint.PrettyPrinter(indent=4)
 
 min_support = 0.1
-min_confidence = 0.5
+min_confidence = 0.2
 
 
 def generate_critique_array(item_pool, cur_rec, categorical_attributes, numerical_attributes):
@@ -98,7 +98,7 @@ def compute_critique_utility_preference_oriented (user_attribute_frequency, freq
             item_score_dict[item] = estimated_score_dict[item]
         sorted_item_score_dict = helper.sort_dict(item_score_dict)
 
-        print(sorted_item_score_dict)
+        # print(sorted_item_score_dict)
         for i in range(topK):
             item_preference_score_term += sorted_item_score_dict[i][1]
         item_preference_score_term = item_preference_score_term/topK
@@ -319,7 +319,7 @@ def check_critique_conflict_with_user_preference(critique, cur_rec, categorical_
         # Categorical attributes
         if attr in categorical_critique_dict.keys():
             user_negative_critique_on_attributes = categorical_critique_dict[attr]['neg']
-            print('user_negative_critique_on_attributes', user_negative_critique_on_attributes)
+            # print('user_negative_critique_on_attributes', user_negative_critique_on_attributes)
             if direction in user_negative_critique_on_attributes:
                 conflict_or_not = True
 
@@ -356,8 +356,8 @@ def generate_system_critiques_preference_oriented(user_info, user_critique_prefe
     # Step 3: Filter frequent critiques that have conflict with user past critiques.
     categorical_critique_dict, numerical_critique_dict = helper.convert_to_critique_preference_dict(user_critique_preference)
 
-    pp.pprint(categorical_critique_dict)
-    pp.pprint(numerical_critique_dict)
+    # pp.pprint(categorical_critique_dict)
+    # pp.pprint(numerical_critique_dict)
 
     frequent_critiques_freq_dict = {}
     for num in unit_or_compound:
@@ -403,7 +403,7 @@ def generate_system_critiques_preference_oriented(user_info, user_critique_prefe
     print('obtain critique diversified - Done.')
 
 
-    pp.pprint(sorted_critique_diveristy_utility_list)
+    # pp.pprint(sorted_critique_diveristy_utility_list)
 
     # pp.pprint(sorted_critique_diveristy_utility_list)
     topK_critique_item_list = obtain_top_k_critique_with_recommendation_list(top_K, sorted_critique_diveristy_utility_list, frequent_critiques_satisfied_items_dict,estimated_score_dict)
@@ -475,7 +475,7 @@ def generate_system_critiques_diversity_oriented(user_info, user_critique_prefer
     time_helper.print_current_time()
     print('obtain critique diversified - Done.')
     
-    pp.pprint(sorted_critique_diveristy_utility_list)
+    # pp.pprint(sorted_critique_diveristy_utility_list)
  
     topK_critique_item_list = obtain_top_k_critique_with_recommendation_list(top_K, sorted_critique_diveristy_utility_list, frequent_critiques_satisfied_items_dict,estimated_score_dict)
 
