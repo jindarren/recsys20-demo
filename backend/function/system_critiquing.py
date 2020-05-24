@@ -98,7 +98,7 @@ def compute_critique_utility_preference_oriented (user_attribute_frequency, freq
             item_score_dict[item] = estimated_score_dict[item]
         sorted_item_score_dict = helper.sort_dict(item_score_dict)
 
-        # print(sorted_item_score_dict)
+        print(sorted_item_score_dict)
         for i in range(topK):
             item_preference_score_term += sorted_item_score_dict[i][1]
         item_preference_score_term = item_preference_score_term/topK

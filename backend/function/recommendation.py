@@ -207,7 +207,9 @@ def compute_recommendation_compatibility_score(user_critique_preference, item_po
         unsatisfied_critique_attribute_list = []
 
         for crit_unit in reversed(user_critique_preference):
-
+            if crit_unit['pos_or_neg'] == 'neg':
+                continue
+            
             # Step 1: Obtain the value for each critique
             attr = crit_unit['attribute']
             crit_direction = crit_unit['crit_direction']
