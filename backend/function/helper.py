@@ -35,6 +35,100 @@ def get_numerical_attribute_interval_label(attribute, value):
     return value_interval_label
 
 
+def convert_to_critique_preference_dict(user_critique_preference):
+    categorical_critique_dict = {}
+    numerical_critique_dict = {}
+    min_number = -1
+    max_number = 999999
+
+    for i in range(len(user_critique_preference)):
+        each_crit = user_critique_preference[len(user_critique_preference)-i-1]
+        pos_or_neg = each_crit['pos_or_neg']
+        attr = each_crit['attribute'] 
+        crit_direction = each_crit['crit_direction'] 
+        crit_value = ''
+
+        # numerical attributes
+        if 'value' in each_crit.keys():
+            crit_value = each_crit['value']
+            if attr not in numerical_critique_dict.keys():
+                if pos_or_neg == 'pos':
+                    if crit_direction == 'lower':
+                        critique_preference_on_attribute = [min_number, crit_value]
+                        numerical_critique_dict[attr] = critique_preference_on_attribute
+                    elif crit_direction == 'higher':
+                        critique_preference_on_attribute = [crit_value, max_number]
+                        numerical_critique_dict[attr] = critique_preference_on_attribute
+                    else:
+                        print("ERROR")
+                        input()
+                if pos_or_neg == 'neg':
+                    if crit_direction == 'lower':
+                        critique_preference_on_attribute = [crit_value, max_number]
+                        numerical_critique_dict[attr] = critique_preference_on_attribute
+                    elif crit_direction == 'higher':
+                        critique_preference_on_attribute = [min_number, crit_value]
+                        numerical_critique_dict[attr] = critique_preference_on_attribute
+                    else:
+                        print("ERROR")
+                        input()
+            else:
+                critique_preference_on_attribute = numerical_critique_dict[attr]
+                if pos_or_neg == 'pos':
+                    if crit_direction == 'lower':
+                        if crit_value > critique_preference_on_attribute[0] and crit_value < critique_preference_on_attribute[1]:
+                            critique_preference_on_attribute[1] = crit_value
+                            numerical_critique_dict[attr] = critique_preference_on_attribute
+                    elif crit_direction == 'higher':
+                        if crit_value > critique_preference_on_attribute[0] and crit_value < critique_preference_on_attribute[1]: 
+                            critique_preference_on_attribute[0] = crit_value
+                            numerical_critique_dict[attr] = critique_preference_on_attribute
+                    else:
+                        print("ERROR")
+                        input()
+                if pos_or_neg == 'neg':
+                    if crit_direction == 'lower':
+                        if crit_value > critique_preference_on_attribute[0] and crit_value < critique_preference_on_attribute[1]: 
+                            critique_preference_on_attribute[0] = crit_value
+                            numerical_critique_dict[attr] = critique_preference_on_attribute
+                    elif crit_direction == 'higher':
+                        if crit_value > critique_preference_on_attribute[0] and crit_value < critique_preference_on_attribute[1]: 
+                            critique_preference_on_attribute[1] = crit_value
+                            numerical_critique_dict[attr] = critique_preference_on_attribute
+                    else:
+                        print("ERROR")
+                        input()
+            
+        
+        # categorical attributes
+        else:
+            if attr not in categorical_critique_dict.keys():
+                categorical_critique_dict[attr] = {'pos': [], 'neg':[]}
+                if pos_or_neg == 'pos':
+                    categorical_critique_dict[attr]['pos'] = [crit_direction]
+                if pos_or_neg == 'neg':
+                    categorical_critique_dict[attr]['neg'] = [crit_direction]
+
+            else:
+                critique_preference_on_attribute = categorical_critique_dict[attr]
+    
+                if pos_or_neg == 'pos':
+                    if crit_direction not in critique_preference_on_attribute['neg']:
+                        crit_direction_list = critique_preference_on_attribute[pos_or_neg]
+                        crit_direction_list.append(crit_direction)
+                        critique_preference_on_attribute[pos_or_neg] = crit_direction_list
+                    else: # use recent critique if there is inconsistency
+                        continue
+                if pos_or_neg == 'neg':
+                    if crit_direction not in critique_preference_on_attribute['pos']:
+                        crit_direction_list = critique_preference_on_attribute[pos_or_neg]
+                        crit_direction_list.append(crit_direction)
+                        critique_preference_on_attribute[pos_or_neg] = crit_direction_list
+
+
+    return categorical_critique_dict, numerical_critique_dict
+
+
 def sort_dict (value_dict):
     sorted_list = sorted(value_dict.items(), key=operator.itemgetter(1),reverse=True)
 

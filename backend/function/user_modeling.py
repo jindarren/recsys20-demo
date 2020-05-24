@@ -70,9 +70,10 @@ def initialize_user_preference_model(user_historical_record, categorical_attribu
 
 
 
-def update_user_critique_preference(updated_user_critique_preference, attr, criti_value, critique_song_info, numerical_attributes):
+def update_user_critique_preference(updated_user_critique_preference, attr, criti_value, critique_song_info, numerical_attributes, pos_or_neg='pos'):
     
     new_critique_preference = {}
+    new_critique_preference['pos_or_neg'] = pos_or_neg
     new_critique_preference['attribute'] = attr
     new_critique_preference['crit_direction'] = criti_value
     if attr in numerical_attributes:
@@ -88,7 +89,7 @@ def update_user_constraints(updated_user_critique_preference, constraint_number)
     for i in range(len(updated_user_critique_preference)):
         if len(updated_user_critique_preference) - i > 0:
             constraint = updated_user_critique_preference[len(updated_user_critique_preference)-i-1]
-            if constraint['attribute'] in top_k_constraints_attr_list:
+            if constraint['pos_or_neg'] == 'neg' or  constraint['attribute'] in top_k_constraints_attr_list:
                 continue
             else:
                 top_k_constraints.append(constraint)
@@ -143,14 +144,14 @@ def update_user_model(user_model, user_interaction_dialog, user_listened_longs, 
             #         critique_song_info = song
             
             time_helper.print_current_time()
-            print("Update User Model ---- Number of Critiques: %d." % len(critique_list))
+            print("Update User Model (%s) ---- Number of Critiques: %d." % (current_action, len(critique_list)))
 
             for crit in critique_list:
                 for attr, criti_value in crit.items():
                     # preference model: attribute frequency
                     updated_user_attribute_frequency[attr] = updated_user_attribute_frequency[attr] + 1
                     # user critique preference
-                    updated_user_critique_preference = update_user_critique_preference(updated_user_critique_preference, attr, criti_value, critique_song_info, numerical_attributes)
+                    updated_user_critique_preference = update_user_critique_preference(updated_user_critique_preference, attr, criti_value, critique_song_info, numerical_attributes, 'pos')
 
 
             # pp.pprint(updated_user_critique_preference)
@@ -165,9 +166,23 @@ def update_user_model(user_model, user_interaction_dialog, user_listened_longs, 
             # pp.pprint(updated_user_constraints)
 
 
-        
+        # Condition 2:  system suggest critiquing - No
+        # -> update (1) user critique negative
+        if current_action == 'reject_suggestion':
+            critique_list = []
+            if 'critique' in utterance_info.keys():
+                critique_list = utterance_info['critique']
+            critique_song_info = current_recommended_item
+            
+            time_helper.print_current_time()
+            print("Update User Model (%s) ---- Number of Critiques: %d." % (current_action, len(critique_list)))
 
-        # Condition 2: accept the recommendation
+            for crit in critique_list:
+                for attr, criti_value in crit.items():
+                    # user critique preference
+                    updated_user_critique_preference = update_user_critique_preference(updated_user_critique_preference, attr, criti_value, critique_song_info, numerical_attributes, 'neg')
+
+        # Condition 3: accept the recommendation
         if current_action == "accept_item":
 
             # --- Revise ---- system critique - accept -> update critique preference, attribute frequency, user constraints

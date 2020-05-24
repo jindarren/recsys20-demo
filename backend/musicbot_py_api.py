@@ -81,6 +81,7 @@ class UpdateUserModel(Resource):
         user_profile['user']['user_preference_model'] = updated_user_preference_model
         user_profile['user']['user_constraints'] = updated_user_constraints
         user_profile['user']['user_critique_preference'] = updated_user_critique_preference
+
         
         # # update the user interaction log 
         # for log in user_interaction_dialog:
@@ -179,7 +180,7 @@ class GetSysCri(Resource):
         user_profile = json_data['user_profile']
         user_preference_model = user_profile['user']['user_preference_model'] 
         user_critique_preference = user_profile['user']['user_critique_preference'] 
-        user_constraints = user_profile['user']['user_constraints'] 
+        # user_constraints = user_profile['user']['user_constraints'] 
         user_interaction_log = user_profile['logger']
         item_pool = user_profile['pool']
         cur_rec = user_profile['topRecommendedSong']
@@ -201,9 +202,9 @@ class GetSysCri(Resource):
         
         sys_crit = None
         if sys_crit_version == 'preference_oriented':
-            sys_crit = system_critiquing.generate_system_critiques_preference_oriented(user_preference_model, user_constraints,estimated_score_dict, item_pool, cur_rec, top_K, unit_or_compound, categorical_attributes, numerical_attributes)
+            sys_crit = system_critiquing.generate_system_critiques_preference_oriented(user_preference_model, user_critique_preference,estimated_score_dict, item_pool, cur_rec, top_K, unit_or_compound, categorical_attributes, numerical_attributes)
         if sys_crit_version == 'diversity_oriented':
-            sys_crit = system_critiquing.generate_system_critiques_diversity_oriented(user_preference_model, user_constraints, user_interaction_log, estimated_score_dict, item_pool, cur_rec, top_K, unit_or_compound, categorical_attributes, numerical_attributes)
+            sys_crit = system_critiquing.generate_system_critiques_diversity_oriented(user_preference_model, user_critique_preference, user_interaction_log, estimated_score_dict, item_pool, cur_rec, top_K, unit_or_compound, categorical_attributes, numerical_attributes)
         # if sys_crit_version == 'personality_adjusted':
         #     sys_crit = system_critiquing.generate_system_critiques_personality_adjusted(user_preference_model, user_interaction_log, estimated_score_dict, item_pool, cur_rec, top_K, unit_or_compound, categorical_attributes, numerical_attributes)
 

@@ -307,58 +307,44 @@ def obtain_top_k_critique_with_recommendation_list(top_K, sorted_critique_utilit
 
 
 
-def convert_constraints_to_critique(user_constraints):
-    
-    critique_dict = {}
-    for each_crit in user_constraints:
-        attr = each_crit['attribute'] 
-        crit_direction = each_crit['crit_direction'] 
-        if attr not in critique_dict.keys():
-            critique_dict[attr] = [crit_direction]
-        else:
-            critique_direction = critique_dict[attr]
-            critique_direction.append(crit_direction)
-            critique_dict[attr] = [crit_direction]
 
-    return critique_dict
 
-def check_critique_conflict_with_user_preference(critique, user_constraints_critique_dict):
+def check_critique_conflict_with_user_preference(critique, cur_rec, categorical_critique_dict, numerical_critique_dict):
 
     conflict_or_not = False
     for crit_unit in critique:
         crit_split = crit_unit.split('|')
-        if crit_split[0] in user_constraints_critique_dict.keys():
-            user_constraints_critique_direction = user_constraints_critique_dict[crit_split[0]]
-            if crit_split[1] not in user_constraints_critique_direction:
+        attr = crit_split[0]
+        direction = crit_split[1]
+        # Categorical attributes
+        if attr in categorical_critique_dict.keys():
+            user_negative_critique_on_attributes = categorical_critique_dict[attr]['neg']
+            print('user_negative_critique_on_attributes', user_negative_critique_on_attributes)
+            if direction in user_negative_critique_on_attributes:
                 conflict_or_not = True
-                # print(crit_split[0])
-                # print('user constraints: ', user_constraints_critique_direction)
-                # print('system critiques: ', crit_split[1])
-            
+
+        
+        # Numerical attributes
+        elif attr in numerical_critique_dict.keys():  
+            user_critique_on_attributes = numerical_critique_dict[attr]
+            if direction == 'lower':
+                if cur_rec[attr] < user_critique_on_attributes[0]:
+                    conflict_or_not = True
+            elif direction == 'higher':
+                if cur_rec[attr] > user_critique_on_attributes[1]:
+                    conflict_or_not = True
+            else:
+                print("ERROR")
+                input()
+
+
         else:
             continue
 
     return conflict_or_not
 
-def check_critique_conflict_for_only_numerical_attributes(critique, user_constraints_critique_dict, categorical_attributes):
 
-    conflict_or_not = False
-    for crit_unit in critique:
-        crit_split = crit_unit.split('|')
-        if crit_split[0] in user_constraints_critique_dict.keys():
-            user_constraints_critique_direction = user_constraints_critique_dict[crit_split[0]]
-            if crit_split[0] not in categorical_attributes and crit_split[1] not in user_constraints_critique_direction:
-                conflict_or_not = True
-                # print(crit_split[0])
-                # print('user constraints: ', user_constraints_critique_direction)
-                # print('system critiques: ', crit_split[1])
-            
-        else:
-            continue
-
-    return conflict_or_not
-
-def generate_system_critiques_preference_oriented(user_info, user_constraints, estimated_score_dict, item_pool, cur_rec, top_K, unit_or_compound, categorical_attributes, numerical_attributes):
+def generate_system_critiques_preference_oriented(user_info, user_critique_preference, estimated_score_dict, item_pool, cur_rec, top_K, unit_or_compound, categorical_attributes, numerical_attributes):
     
     # Step 1: Generate a critique array for each item 
     item_critique_arrays, item_critique_arrays_dict = generate_critique_array (item_pool, cur_rec, categorical_attributes, numerical_attributes)
@@ -368,12 +354,15 @@ def generate_system_critiques_preference_oriented(user_info, user_constraints, e
 
 
     # Step 3: Filter frequent critiques that have conflict with user past critiques.
-    user_constraints_critique_dict = convert_constraints_to_critique(user_constraints)
+    categorical_critique_dict, numerical_critique_dict = helper.convert_to_critique_preference_dict(user_critique_preference)
+
+    pp.pprint(categorical_critique_dict)
+    pp.pprint(numerical_critique_dict)
 
     frequent_critiques_freq_dict = {}
     for num in unit_or_compound:
         for crit, freq in num_critique_sets_dict[num].items():
-            if not check_critique_conflict_with_user_preference(crit, user_constraints_critique_dict):
+            if not check_critique_conflict_with_user_preference(crit, cur_rec, categorical_critique_dict, numerical_critique_dict):
                 frequent_critiques_freq_dict[crit] = freq
     pp.pprint(frequent_critiques_freq_dict)
 
@@ -424,7 +413,7 @@ def generate_system_critiques_preference_oriented(user_info, user_constraints, e
 
 
 
-def generate_system_critiques_diversity_oriented(user_info, user_constraints, interaction_log,  estimated_score_dict, item_pool, cur_rec, top_K, unit_or_compound, categorical_attributes, numerical_attributes):
+def generate_system_critiques_diversity_oriented(user_info, user_critique_preference, interaction_log,  estimated_score_dict, item_pool, cur_rec, top_K, unit_or_compound, categorical_attributes, numerical_attributes):
     
     # Switch Mechanism: Determine Categorical (Level 1 - Genre) or Numerical Feature (Level 2) to critique based on the tracked dialogue state
     switch_condition = {}
@@ -446,15 +435,17 @@ def generate_system_critiques_diversity_oriented(user_info, user_constraints, in
 
 
     # Step 3: Filter frequent critiques that have conflict with user past critiques.
-    user_constraints_critique_dict = convert_constraints_to_critique(user_constraints)
+    categorical_critique_dict, numerical_critique_dict = helper.convert_to_critique_preference_dict(user_critique_preference)
+
+    pp.pprint(categorical_critique_dict)
+    pp.pprint(numerical_critique_dict)
 
     frequent_critiques_freq_dict = {}
     for num in unit_or_compound:
         for crit, freq in num_critique_sets_dict[num].items():
-            if not check_critique_conflict_for_only_numerical_attributes(crit, user_constraints_critique_dict, categorical_attributes):
+            if not check_critique_conflict_with_user_preference(crit, cur_rec, categorical_critique_dict, numerical_critique_dict):
                 frequent_critiques_freq_dict[crit] = freq
     pp.pprint(frequent_critiques_freq_dict)
-
 
 
     # Step 3: Obtain the set of items that satisfy the critique
