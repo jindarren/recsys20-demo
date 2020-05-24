@@ -356,8 +356,8 @@ def generate_system_critiques_preference_oriented(user_info, user_critique_prefe
     # Step 3: Filter frequent critiques that have conflict with user past critiques.
     categorical_critique_dict, numerical_critique_dict = helper.convert_to_critique_preference_dict(user_critique_preference)
 
-    # pp.pprint(categorical_critique_dict)
-    # pp.pprint(numerical_critique_dict)
+    pp.pprint(categorical_critique_dict)
+    pp.pprint(numerical_critique_dict)
 
     frequent_critiques_freq_dict = {}
     for num in unit_or_compound:
