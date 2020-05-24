@@ -116,14 +116,14 @@ def convert_to_critique_preference_dict(user_critique_preference):
                     if crit_direction not in critique_preference_on_attribute['neg']:
                         crit_direction_list = critique_preference_on_attribute[pos_or_neg]
                         crit_direction_list.append(crit_direction)
-                        critique_preference_on_attribute[pos_or_neg] = crit_direction_list
+                        critique_preference_on_attribute[pos_or_neg] = list(set(crit_direction_list))
                     else: # use recent critique if there is inconsistency
                         continue
                 if pos_or_neg == 'neg':
                     if crit_direction not in critique_preference_on_attribute['pos']:
                         crit_direction_list = critique_preference_on_attribute[pos_or_neg]
                         crit_direction_list.append(crit_direction)
-                        critique_preference_on_attribute[pos_or_neg] = crit_direction_list
+                        critique_preference_on_attribute[pos_or_neg] =  list(set(crit_direction_list))
 
 
     return categorical_critique_dict, numerical_critique_dict
