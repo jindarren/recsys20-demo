@@ -827,7 +827,7 @@ router.post('/initiate', function(req, res) {
             for(var item in genres){
                 genreText += genres[item]+", "
             }
-            genreText = genreText.substr(0,genreText.length-1)
+            genreText = genreText.substr(0,genreText.length-2)
             getAudioFeatures(token, data).then(function(data2) {
                 for (var i = data2.length - 1; i >= 0; i--){
                     if (recResult.indexOf(data2[i])<0){

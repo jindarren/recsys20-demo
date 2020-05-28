@@ -640,14 +640,14 @@ $(document).ready(function () {
                 if (party == you) {
                     $('#message').val('');
                     style = 'you';
-                    var line = $('<div class="speak"><span class="dialog"></span></div>');
+                    var line = $('<div class="speak"><p class="dialog"></p></div>');
                     line.addClass(style)
                     line.find('.dialog').text(text);
 
                 }
                 else if (party == robot) {
                     style = 'robot';
-                    var line = $('<div class="speak"><span class="dialog"></span></div>');
+                    var line = $('<div class="speak"><p class="dialog"></p></div>');
                     line.addClass(style)
                     line.find('.dialog').text(text);
 
@@ -661,9 +661,9 @@ $(document).ready(function () {
                 }
                 else if (party == crit) {
                     style = 'robot';
-                    var line = $('<div id="round' + round + '" class="speak"><p>Do you like the song <span class="dialog" style="font-weight: bold"></span> ?</p><button type="button" id="yes" class="feedback">Yes</button><button type="button" id="no" class="feedback">No</button></div>');
+                    var line = $('<div id="round' + round + '" class="speak"><p class="dialog"><span>Do you like the song of </span><span class="emph-dialog" style="font-weight: bold"></span><span>?</span></p><button type="button" id="yes" class="feedback">Yes</button><button type="button" id="no" class="feedback">No</button></div>');
                     line.addClass(style)
-                    line.find('.dialog').text(text);
+                    line.find('.emph-dialog').text(text);
                     utterance.text = text;
                 }
                 else if (party == skip) {

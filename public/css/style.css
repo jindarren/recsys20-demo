@@ -90,18 +90,19 @@ iframe{
   flex-direction: row-reverse;
 }
 
-.you > span{
+.you > p{
   background-color: #307EFF;
   color: #EBEBEB;
   margin-top: 10px;
   margin-bottom: 10px;
 }
 
-.robot > span, .crit > span{
+.robot > p, .crit > p{
   background-color: #F8F8F8;
   color: #1F1F1F;
   margin-top: 5px;
   margin-bottom: 5px;
+  display: block;
 }
 
 .dialog{
