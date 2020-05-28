@@ -560,13 +560,82 @@ html
                     li
                         input(type='radio', value='7', name='group19')
                         label Strongly agree
-                label.statement 20. Any other comments to this music chatbot.
-                textarea#post-20(rows='5', cols='80')
+                label.statement 20. The system provided me with surprising recommendations that helped me discover new music that I wouldn’t have found elsewhere.
+                ul#post-20.likert
+                    li
+                        input(type='radio', name='group20', value='1')
+                        label Strongly disagree
+                    li
+                        input(type='radio', name='group20', value='2')
+                        label Disgree
+                    li
+                        input(type='radio', name='group20', value='3')
+                        label Somewhat disagree
+                    li
+                        input(type='radio', name='group20', value='4')
+                        label Neutral
+                    li
+                        input(type='radio', name='group20', value='5')
+                        label Somewhat agree
+                    li
+                        input(type='radio', name='group20', value='6')
+                        label Agree
+                    li
+                        input(type='radio', name='group20', value='7')
+                        label Strongly agree
+                label.statement 21. The system provided me with recommendations that I had not considered in the first place but turned out to be a positive and surprising discovery.
+                ul#post-21.likert
+                    li
+                        input(type='radio', name='group21', value='1')
+                        label Strongly disagree
+                    li
+                        input(type='radio', name='group21', value='2')
+                        label Disgree
+                    li
+                        input(type='radio', name='group21', value='3')
+                        label Somewhat disagree
+                    li
+                        input(type='radio', name='group21', value='4')
+                        label Neutral
+                    li
+                        input(type='radio', name='group21', value='5')
+                        label Somewhat agree
+                    li
+                        input(type='radio', name='group21', value='6')
+                        label Agree
+                    li
+                        input(type='radio', name='group21', value='7')
+                        label Strongly agree
+                label.statement 22. The system provided me with recommendations that were a pleasant surprise to me because I would not have discovered them somewhere else.
+                ul#post-22.likert
+                    li
+                        input(type='radio', name='group22', value='1')
+                        label Strongly disagree
+                    li
+                        input(type='radio', name='group22', value='2')
+                        label Disgree
+                    li
+                        input(type='radio', name='group22', value='3')
+                        label Somewhat disagree
+                    li
+                        input(type='radio', name='group22', value='4')
+                        label Neutral
+                    li
+                        input(type='radio', name='group22', value='5')
+                        label Somewhat agree
+                    li
+                        input(type='radio', name='group22', value='6')
+                        label Agree
+                    li
+                        input(type='radio', name='group22', value='7')
+                        label Strongly agree
+                label.statement 23. Any other comments to this music chatbot.
+                textarea#post-23(rows='5', cols='80')
                 .buttons
                     button.clear Clear
                     button.submit Submit
         script(type='text/javascript').
-            var formList = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+            var formList = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
             $("input").click(function () {
                 var statement = $(this).parent().parent().attr("id").replace(/[^0-9]/ig, "")
                 var option = $(this).attr("value")
@@ -576,7 +645,7 @@ html
             $(".clear").click(function (event) {
                 $("input").checked = false;
                 $("#post-20").empty()
-                formList = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+                formList = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
             })
             $(".submit").click(function (event) {
                 event.preventDefault()

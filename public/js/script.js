@@ -512,7 +512,7 @@ $(document).ready(function () {
 
                     for (var crt in firstThreeCrits) {
 
-                        var wording = "Based on your music preference, we think you might like the ";
+                        //var wording = "Do you like the songs of ";
                         var songType = "",
                             features = "";
                         var actionSet = {},
@@ -570,18 +570,18 @@ $(document).ready(function () {
                             }
                         }
 
+                        var emphText=""
                         if (songType && !features) {
-                            wording += songType + "music"
-                            actionSet.speech = wording + "?"
+                            emphText = songType
                         }
                         else if (!songType && features) {
-                            wording += "songs with " + features
-                            actionSet.speech = wording.substr(0, wording.length - 2) + "?"
+                            emphText = features.substr(0, features.length - 2)
                         }
                         else if (songType && features) {
-                            wording += songType + "songs with " + features
-                            actionSet.speech = wording.substr(0, wording.length - 2) + "?"
+                            emphText = songType + "and with " + features.substr(0, features.length - 2)
                         }
+
+                        actionSet.speech = emphText
 
 
                         actionSet.action = action
@@ -661,7 +661,7 @@ $(document).ready(function () {
                 }
                 else if (party == crit) {
                     style = 'robot';
-                    var line = $('<div id="round' + round + '" class="speak"><span class="dialog"></span><button type="button" id="yes" class="feedback">Yes</button><button type="button" id="no" class="feedback">No</button></div>');
+                    var line = $('<div id="round' + round + '" class="speak"><p>Do you like the song <span class="dialog" style="font-weight: bold"></span> ?</p><button type="button" id="yes" class="feedback">Yes</button><button type="button" id="no" class="feedback">No</button></div>');
                     line.addClass(style)
                     line.find('.dialog').text(text);
                     utterance.text = text;
@@ -680,7 +680,7 @@ $(document).ready(function () {
                     $("#round" + round + " .feedback").click(function () {
                         nextTimes = 0
                         $("#round" + round + " .feedback").fadeOut()
-                        updateChat(you, "I need some suggestions", "Let_bot_suggest", "btn")
+                        updateChat(you, "I need some suggestions.", "Let_bot_suggest", "btn")
                         var line = $('<div class="speak"><div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>');
                         chat.append(line);
 
@@ -867,7 +867,7 @@ $(document).ready(function () {
 
                                 nextTimes = 0
                                 $("#speak" + id + " .feedback-box").fadeOut()
-                                updateChat(you, "I need some suggestions", "Let_bot_suggest", "btn")
+                                updateChat(you, "I need some suggestions.", "Let_bot_suggest", "btn")
                                 $("#speak" + id + " div").fadeOut();
                                 var line = $('<div class="speak"><div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>');
                                 chat.append(line);

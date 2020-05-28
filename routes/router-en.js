@@ -814,14 +814,20 @@ router.post('/initiate', function(req, res) {
                     newGenres.push(genres[i])
             }
 
-            genres = newGenres.slice(0,4)
+            if(newGenres.length>5)
+                genres = newGenres.slice(0,5)
+            else
+                genres = newGenres
                             
             console.log(genres.toString())
 
             recom(token).getRecommendationByGenre(genres.toString()).then(function(data){
             var genreText = ""
 
-            genreText = genres[0]+", "+genres[1]+", "+genres[2]+", and "+genres[3]
+            for(var item in genres){
+                genreText += genres[item]+", "
+            }
+            genreText = genreText.substr(0,genreText.length-1)
             getAudioFeatures(token, data).then(function(data2) {
                 for (var i = data2.length - 1; i >= 0; i--){
                     if (recResult.indexOf(data2[i])<0){
