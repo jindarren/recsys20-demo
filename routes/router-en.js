@@ -486,9 +486,18 @@ var getAudioFeatures = function(token, data) {
         else {
             oneRecommendation.language = data[index].lan;
         }
-        oneRecommendation.popularity = data[index].popularity;
-        oneRecommendation.artist = data[index].artists[0].name;
-        oneRecommendation.link = data[index].preview_url;
+        if(data[index].popularity)
+            oneRecommendation.popularity = data[index].popularity;
+        else
+            oneRecommendation.popularity = 0;
+        if(data[index].artists[0])
+            oneRecommendation.artist = data[index].artists[0].name;
+        else
+            oneRecommendation.artist = "unknown"
+        if(data[index].preview_url)
+            oneRecommendation.link = data[index].preview_url;
+        else
+            oneRecommendation.link = "unknown"
         visData.push(oneRecommendation)
         artistIds.push(data[index].artists[0].id)
         trackIds.push(oneRecommendation.id)
