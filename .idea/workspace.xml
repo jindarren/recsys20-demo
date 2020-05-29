@@ -32,10 +32,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e570dfdc-3b19-4d1b-90a6-cefe1fb88223" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/router-en.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/router-en.js" afterDir="false" />
-    </list>
+    <list default="true" id="e570dfdc-3b19-4d1b-90a6-cefe1fb88223" name="Default" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -68,12 +65,6 @@
   </component>
   <component name="PackageJsonUpdateNotifier">
     <dismissed value="$PROJECT_DIR$/package.json" />
-  </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="18" />
-    <option name="y" value="23" />
-    <option name="width" value="1440" />
-    <option name="height" value="877" />
   </component>
   <component name="ProjectId" id="1bzIDKpSjzzzi4kI9xxRB0FuIav" />
   <component name="ProjectViewState">

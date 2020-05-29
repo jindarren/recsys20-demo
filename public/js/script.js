@@ -726,6 +726,19 @@ $(document).ready(function () {
                         console.log(critiques[critiquesIndex].critiques)
                         updateChat(crit, critiques[critiquesIndex].speech, "System_Suggest");
 
+                        //perform update model request
+                        var updateData = {}
+                        updateData.user = usermodel.user
+                        updateData.logger = {}
+                        updateData.logger.latest_dialog = [dialog]
+                        updateData.logger.listenedSongs = logger.listenedSongs
+
+                        var listenedSongsLength = logger.listenedSongs.length
+                        updateData.topRecommendedSong = logger.listenedSongs[listenedSongsLength - 1]
+
+                        console.log(updateData)
+                        updateUserModel(updateData)
+
                     } else if (critiquesIndex == critiques.length - 1) {
                         critiquesIndex = 0
                         updateChat(robot, "Sorry, I have no any other suggestions:(", "Respond_NoSuggestion");
