@@ -215,7 +215,9 @@ def switch_critique_level(interaction_log, cur_rec, categorical_attributes, nume
     previous_dialogue = interaction_log['dialog'] + interaction_log['latest_dialog']
     # print(previous_dialogue)
 
-    interaction_turn_condition = False
+    # interaction_turn_condition = False # -> change to recommendation_cycle_condition
+    recommendation_cycle_condition = False
+    
     # Hard Constraint: if "genre"-related critique occurs within 3 turns -> Level 2 ; otherwise, consider switching to Level 1
     # step1 : find the postion of latest genre-related critiques
     number_utterance = 0
@@ -231,8 +233,8 @@ def switch_critique_level(interaction_log, cur_rec, categorical_attributes, nume
                 if 'genre' in each_crit.keys():
                     pos_genre_criti = number_utterance
         number_utterance += 1
-
-    # step2 : calculate the interaction turn start from the latest genre-related critiques to the current turns
+    '''
+    # step2 : calculate the number of interaction turns start from the latest genre-related critiques to the current turns (discarded)
 
     num_sys_turns = 0
     num_user_turns = 0
@@ -253,16 +255,40 @@ def switch_critique_level(interaction_log, cur_rec, categorical_attributes, nume
 
     if num_sys_turns >= switch_condition['num_interaction_turn_condition'] and num_user_turns >= switch_condition['num_interaction_turn_condition']:
         interaction_turn_condition = True
+    '''
+    # step2 : calculate the number of recommendation cycles start from the latest genre-related critiques to the current turns
+    num_recommendation_cycle = 0
+    for utterance_info in previous_dialogue[pos_genre_criti:]:
+        if utterance_info['action'].lower() == 'recommend':
+            num_recommendation_cycle += 1 
 
+    if num_recommendation_cycle >= switch_condition['num_recommendation_cycle_condition']:
+        recommendation_cycle_condition = True
 
-    # Hard constraint is satisfied: -> satisfiy any of following condition 
+    # Hard constraint is satisfied: -> satisfiy any of following condition - related to 
+    # (1) Listened History 
     # if the total number of listened songs in the current genre is larger than 5
     # if the total number of the liked songs in the current genre is larger than 3
     # if the total number of the disliked songs in the current genre is larger than 3
-    if interaction_turn_condition:
+    # (2) Critiques
+    # if there are three consectutive rejected critiques
+    rejected_sc_condition = False
+    num_rejected_sc = 0
+    for utterance_info in previous_dialogue[pos_genre_criti:]:
+        if utterance_info['action'].lower() == 'reject_suggestion':
+            num_rejected_sc += 1 
+        if utterance_info['action'].lower() == 'accept_suggestion':
+            num_rejected_sc = 0 
+
+    if num_rejected_sc >= switch_condition['num_rejected_sc_condition']:
+        rejected_sc_condition = True
+
+
+    if recommendation_cycle_condition:
         num_satisfied_listend_songs = 0
         num_satisfied_liked_songs = 0
         num_satisfied_disliked_songs = 0
+        
         for song_info in interaction_log['listenedSongs']:
             if song_info['genre'] == cur_rec_genre:
                 num_satisfied_listend_songs += 1
@@ -270,7 +296,11 @@ def switch_critique_level(interaction_log, cur_rec, categorical_attributes, nume
                     num_satisfied_liked_songs += 1
                 if song_info['id'] in interaction_log['dislikedSongs']:
                     num_satisfied_disliked_songs += 1  
-        if num_satisfied_listend_songs >= switch_condition['num_listened_songs_condition'] or \
+
+        if rejected_sc_condition:
+            numerical_attributes = []
+
+        elif num_satisfied_listend_songs >= switch_condition['num_listened_songs_condition'] or \
             num_satisfied_liked_songs >= switch_condition['num_liked_songs_condition'] or \
                 num_satisfied_disliked_songs >= switch_condition['num_disliked_songs_condition']:
                 categorical_attributes = ['genre']
@@ -417,10 +447,12 @@ def generate_system_critiques_diversity_oriented(user_info, user_critique_prefer
     
     # Switch Mechanism: Determine Categorical (Level 1 - Genre) or Numerical Feature (Level 2) to critique based on the tracked dialogue state
     switch_condition = {}
-    switch_condition['num_interaction_turn_condition'] = 3
+    # switch_condition['num_interaction_turn_condition'] = 3
+    switch_condition['num_recommendation_cycle_condition'] = 3
+    switch_condition['num_rejected_sc_condition'] = 3
     switch_condition['num_listened_songs_condition'] = 5
     switch_condition['num_liked_songs_condition'] = 3
-    switch_condition['num_disliked_songs_condition'] = 3
+    switch_condition['num_disliked_songs_condition'] = 2
 
 
     categorical_attributes_for_critiquing, numerical_attributes_for_critiquing = switch_critique_level(interaction_log, cur_rec, categorical_attributes, numerical_attributes, switch_condition)
