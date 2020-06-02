@@ -596,7 +596,8 @@ $(document).ready(function () {
                     console.log(critiques)
 
                     $('.spinner').remove();
-                    updateChat(crit, critiques[critiquesIndex].speech, "System_Suggest", critiques[critiquesIndex].critiques);
+                    // [Wanling] - revise
+                    updateChat(crit, critiques[critiquesIndex].speech, "System_Suggest", critiques[critiquesIndex].critiques, true);
                     reRankPlaylist(critiques[critiquesIndex].recommendation)
 
                 })
@@ -604,7 +605,8 @@ $(document).ready(function () {
             }
 
             // add a new line to the chat
-            var updateChat = function (party, text, action, modality) {
+            // [Wanling] - revise
+            var updateChat = function (party, text, action, modality, crit_related = false ) {
 
                 var dialog = {}
                 dialog.agent = party
@@ -613,7 +615,7 @@ $(document).ready(function () {
                 if (party == you)
                     dialog.modality = modality
 
-                if (party == crit) {
+                if (crit_related == true) {
                     var critList = critiques[critiquesIndex].critiques
 
                     var critiqueList = []
@@ -636,6 +638,7 @@ $(document).ready(function () {
 
                 round++;
 
+                // [Wanling] ?
                 var style = 'you';
                 if (party == you) {
                     $('#message').val('');
@@ -696,9 +699,11 @@ $(document).ready(function () {
 
                 $("#round" + round + " #yes").click(function () {
                     $("#round" + round + " button").fadeOut()
-                    updateChat(you, "Yes, please!", "Accept_Suggestion", "btn")
+                    // [Wanling] - revise
                     // add critique when the user accepts a suggestion
                     dialog.critique = critiques[critiquesIndex].critique
+                    updateChat(you, "Yes, please!", "Accept_Suggestion", "btn", true)
+
                     reRankPlaylist(critiques[critiquesIndex].recommendation)
                     showMusic(playlist[songIndex].id)
 
@@ -719,12 +724,14 @@ $(document).ready(function () {
 
                 $("#round" + round + " #no").click(function () {
                     $("#round" + round + " button").fadeOut()
-                    updateChat(you, "I don't want.", "Reject_Suggestion", "btn")
+                    // [Wanling] - revise
+                    updateChat(you, "I don't want.", "Reject_Suggestion", "btn", true)
                     if (critiquesIndex < critiques.length - 1) {
                         needReply = true;
                         critiquesIndex++;
                         console.log(critiques[critiquesIndex].critiques)
-                        updateChat(crit, critiques[critiquesIndex].speech, "System_Suggest");
+                        // [Wanling] - revise
+                        updateChat(crit, critiques[critiquesIndex].speech, "System_Suggest",critiques[critiquesIndex].critiques, true);
 
                         //perform update model request
                         var updateData = {}
@@ -1282,7 +1289,7 @@ $(document).ready(function () {
                             needReply = true;
                             critiquesIndex++;
                             //TO CONFIRM
-                            updateChat(crit, critiques[critiquesIndex].speech, "System_Suggest", "text");
+                            updateChat(crit, critiques[critiquesIndex].speech, "System_Suggest", "text", true);
 
                         } else if (critiquesIndex == critiques.length - 1) {
                             critiquesIndex = 0
