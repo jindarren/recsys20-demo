@@ -606,9 +606,9 @@ $(document).ready(function () {
 
             // add a new line to the chat
             // [Wanling] - revise
+            var dialog = {} // [Wanling]
             var updateChat = function (party, text, action, modality, crit_related = false ) {
-
-                var dialog = {}
+                
                 dialog.agent = party
                 dialog.text = text
                 dialog.action = action
@@ -700,9 +700,10 @@ $(document).ready(function () {
                 $("#round" + round + " #yes").click(function () {
                     $("#round" + round + " button").fadeOut()
                     // [Wanling] - revise
+
+                    updateChat(you, "Yes, please!", "Accept_Suggestion", "btn", true)
                     // add critique when the user accepts a suggestion
                     dialog.critique = critiques[critiquesIndex].critique
-                    updateChat(you, "Yes, please!", "Accept_Suggestion", "btn", true)
 
                     reRankPlaylist(critiques[critiquesIndex].recommendation)
                     showMusic(playlist[songIndex].id)
