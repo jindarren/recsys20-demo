@@ -703,7 +703,7 @@ $(document).ready(function () {
 
                     updateChat(you, "Yes, please!", "Accept_Suggestion", "btn", true)
                     // add critique when the user accepts a suggestion
-                    dialog.critique = critiques[critiquesIndex].critique
+                    // dialog.critique = critiques[critiquesIndex].critique
 
                     reRankPlaylist(critiques[critiquesIndex].recommendation)
                     showMusic(playlist[songIndex].id)
@@ -727,6 +727,21 @@ $(document).ready(function () {
                     $("#round" + round + " button").fadeOut()
                     // [Wanling] - revise
                     updateChat(you, "I don't want.", "Reject_Suggestion", "btn", true)
+                    
+                    //perform update model request
+                    var updateData = {}
+                    updateData.user = usermodel.user
+                    updateData.logger = {}
+                    updateData.logger.latest_dialog = [dialog]
+                    updateData.logger.listenedSongs = logger.listenedSongs
+
+                    var listenedSongsLength = logger.listenedSongs.length
+                    updateData.topRecommendedSong = logger.listenedSongs[listenedSongsLength - 1]
+
+                    console.log(updateData)
+                    updateUserModel(updateData)
+
+
                     if (critiquesIndex < critiques.length - 1) {
                         needReply = true;
                         critiquesIndex++;
