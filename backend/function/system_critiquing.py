@@ -450,7 +450,7 @@ def generate_system_critiques_diversity_oriented(user_info, user_critique_prefer
     # switch_condition['num_interaction_turn_condition'] = 3
     switch_condition['num_recommendation_cycle_condition'] = 3
     switch_condition['num_rejected_sc_condition'] = 3
-    switch_condition['num_listened_songs_condition'] = 5
+    switch_condition['num_listened_songs_condition'] = 3
     switch_condition['num_liked_songs_condition'] = 3
     switch_condition['num_disliked_songs_condition'] = 2
 

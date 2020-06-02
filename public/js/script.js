@@ -506,7 +506,7 @@ $(document).ready(function () {
 
                     console.log(crits)
 
-                    var firstThreeCrits = crits.sys_crit_with_recommendation.slice(0, 5)
+                    var firstThreeCrits = crits.sys_crit_with_recommendation.slice(0, 3)
 
                     console.log(firstThreeCrits)
 
@@ -705,9 +705,6 @@ $(document).ready(function () {
                     // add critique when the user accepts a suggestion
                     // dialog.critique = critiques[critiquesIndex].critique
 
-                    reRankPlaylist(critiques[critiquesIndex].recommendation)
-                    showMusic(playlist[songIndex].id)
-
                     //perform update model request
                     var updateData = {}
                     updateData.user = usermodel.user
@@ -720,6 +717,9 @@ $(document).ready(function () {
 
                     console.log(updateData)
                     updateUserModel(updateData)
+
+                    reRankPlaylist(critiques[critiquesIndex].recommendation)
+                    showMusic(playlist[songIndex].id)
 
                 })
 
