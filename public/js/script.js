@@ -630,7 +630,8 @@ $(document).ready(function () {
                 }
 
                 dialog.timestamp = new Date().getTime()
-                logger.dialog.push(dialog)
+                var cloneDialog = JSON.parse(JSON.stringify(dialog))
+                logger.dialog.push(cloneDialog)
 
                 const utterance = new SpeechSynthesisUtterance();
                 //match chinese chars
