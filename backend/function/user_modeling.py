@@ -183,7 +183,7 @@ def update_user_model(user_model, user_interaction_dialog, user_listened_longs, 
                     updated_user_critique_preference = update_user_critique_preference(updated_user_critique_preference, attr, criti_value, critique_song_info, numerical_attributes, 'neg')
 
         # Condition 3: accept the recommendation
-        if current_action == "accept_item":
+        if current_action == "accept_song":
 
             # --- Revise ---- system critique - accept -> update critique preference, attribute frequency, user constraints
             # # if the recommended song is based on system critiques
