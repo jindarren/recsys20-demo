@@ -411,7 +411,8 @@ def generate_system_critiques_preference_oriented(user_info, user_critique_prefe
 
     # -------------------------------------------------------
 
-
+    if len(frequent_critiques_freq_dict) == 0:
+        return frequent_critiques_freq_dict
 
     # Step 3: Obtain the set of items that satisfy the critique
     frequent_critiques_satisfied_items_dict = obtain_critique_items_dict(frequent_critiques_freq_dict, item_critique_arrays_dict)
@@ -479,7 +480,9 @@ def generate_system_critiques_diversity_oriented(user_info, user_critique_prefer
                 frequent_critiques_freq_dict[crit] = freq
     pp.pprint(frequent_critiques_freq_dict)
 
-
+    if len(frequent_critiques_freq_dict) == 0:
+        return frequent_critiques_freq_dict
+        
     # Step 3: Obtain the set of items that satisfy the critique
     frequent_critiques_satisfied_items_dict = obtain_critique_items_dict(frequent_critiques_freq_dict, item_critique_arrays_dict)
     # pp.pprint(frequent_critiques_satisfied_items_dict)
