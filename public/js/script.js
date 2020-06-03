@@ -793,6 +793,14 @@ $(document).ready(function () {
                             $("#speak" + id + " #like").click(function () {
                                 updateChat(you, "I like this song.", "Accept_Song", "btn")
                                 logger.likedSongs.push(playlist[songIndex].id)
+
+                                var updateData = {}
+                                updateData.user = usermodel.user
+                                updateData.logger = logger
+                                updateData.likedSongs.push(playlist[songIndex].id)
+                                console.log(updateData)
+                                updateUserModel(updateData)
+                                
                                 setTimeout(function () {
                                     updateChat(robot, rateUtters[parseInt((rateUtters.length * Math.random()))], "Request_Rate")
                                 }, 50)
