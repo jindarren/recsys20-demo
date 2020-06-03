@@ -813,15 +813,16 @@ $(document).ready(function () {
                                 console.log(updateData)
                                 updateUserModel(updateData)
 
-                                
+
                                 setTimeout(function () {
                                     updateChat(robot, rateUtters[parseInt((rateUtters.length * Math.random()))], "Request_Rate")
                                 }, 50)
                                 nextTimes = 0
+                                numberOfLikedSongs = logger.likedSongs.length
                                 if (!isFinished) {
                                     $("#speak" + id + " .feedback-box").fadeOut()
 
-                                    if (numberOfLikedSongs < 5) {
+                                    if (numberOfLikedSongs <= 5) {
                                         if (data.user.preferenceData.track.length < 5)
                                             data.user.preferenceData.track.push(playlist[songIndex].id)
                                         else
@@ -836,7 +837,7 @@ $(document).ready(function () {
                                                 showCaption: true
                                             });
                                             $("#" + logger.listenedSongs.slice(-1)[0].id + "> .fa-close").hide()
-                                            numberOfLikedSongs++
+                                            // numberOfLikedSongs++
                                             if (numberOfLikedSongs < 5) {
                                                 updateChat(robot, nextSongUtters[parseInt((nextSongUtters.length * Math.random()))], "Coherence")
                                                 showNextSong = setTimeout(function () {
