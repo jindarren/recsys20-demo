@@ -797,10 +797,9 @@ $(document).ready(function () {
                                 var updateData = {}
                                 updateData.user = usermodel.user
                                 updateData.logger = logger
-                                updateData.likedSongs.push(playlist[songIndex].id)
                                 console.log(updateData)
                                 updateUserModel(updateData)
-                                
+
                                 setTimeout(function () {
                                     updateChat(robot, rateUtters[parseInt((rateUtters.length * Math.random()))], "Request_Rate")
                                 }, 50)
@@ -939,7 +938,7 @@ $(document).ready(function () {
                                 var updateData = {}
                                 updateData.user = usermodel.user
                                 updateData.logger = logger
-                                updateData.likedSongs.push(playlist[songIndex].id)
+                                // updateData.likedSongs.push(playlist[songIndex].id)
                                 console.log(updateData)
                                 updateUserModel(updateData)
 
