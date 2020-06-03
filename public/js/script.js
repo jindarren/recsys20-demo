@@ -795,7 +795,6 @@ $(document).ready(function () {
                                 logger.likedSongs.push(playlist[songIndex].id)
 
                                 //perform update model request
-                                logger.likedSongs.push(playlist[songIndex].id)
                                 
                                 var dialogNum = logger.dialog.length
                                 var dialog = logger.dialog[dialogNum - 1]
@@ -818,6 +817,7 @@ $(document).ready(function () {
                                     updateChat(robot, rateUtters[parseInt((rateUtters.length * Math.random()))], "Request_Rate")
                                 }, 50)
                                 nextTimes = 0
+                                
                                 numberOfLikedSongs = logger.likedSongs.length
                                 if (!isFinished) {
                                     $("#speak" + id + " .feedback-box").fadeOut()
@@ -950,7 +950,6 @@ $(document).ready(function () {
                                 
                                 
                                 //perform update model request
-                                logger.likedSongs.push(playlist[songIndex].id)
                                 
                                 var dialogNum = logger.dialog.length
                                 var dialog = logger.dialog[dialogNum - 1]
