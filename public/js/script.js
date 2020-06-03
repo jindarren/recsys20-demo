@@ -794,12 +794,26 @@ $(document).ready(function () {
                                 updateChat(you, "I like this song.", "Accept_Song", "btn")
                                 logger.likedSongs.push(playlist[songIndex].id)
 
+                                //perform update model request
+                                logger.likedSongs.push(playlist[songIndex].id)
+                                
+                                var dialogNum = logger.dialog.length
+                                var dialog = logger.dialog[dialogNum - 1]
+            
+
                                 var updateData = {}
                                 updateData.user = usermodel.user
-                                updateData.logger = logger
+                                updateData.logger = {}
+                                updateData.logger.latest_dialog = [dialog]
+                                updateData.logger.listenedSongs = logger.listenedSongs
+                                updateData.logger.likedSongs = logger.likedSongs
+                                var listenedSongsLength = logger.listenedSongs.length
+                                updateData.topRecommendedSong = logger.listenedSongs[listenedSongsLength - 1]
+
                                 console.log(updateData)
                                 updateUserModel(updateData)
 
+                                
                                 setTimeout(function () {
                                     updateChat(robot, rateUtters[parseInt((rateUtters.length * Math.random()))], "Request_Rate")
                                 }, 50)
@@ -932,13 +946,24 @@ $(document).ready(function () {
                             $("#speak" + id + " #like").click(function () {
 
                                 updateChat(you, "I like this song.", "Accept_Song", "btn")
-
+                                
+                                
+                                //perform update model request
                                 logger.likedSongs.push(playlist[songIndex].id)
+                                
+                                var dialogNum = logger.dialog.length
+                                var dialog = logger.dialog[dialogNum - 1]
+            
 
                                 var updateData = {}
                                 updateData.user = usermodel.user
-                                updateData.logger = logger
-                                // updateData.likedSongs.push(playlist[songIndex].id)
+                                updateData.logger = {}
+                                updateData.logger.latest_dialog = [dialog]
+                                updateData.logger.listenedSongs = logger.listenedSongs
+                                updateData.logger.likedSongs = logger.likedSongs
+                                var listenedSongsLength = logger.listenedSongs.length
+                                updateData.topRecommendedSong = logger.listenedSongs[listenedSongsLength - 1]
+
                                 console.log(updateData)
                                 updateUserModel(updateData)
 
@@ -1028,12 +1053,12 @@ $(document).ready(function () {
                                     updateChat(you, "Next song.", "Next", "btn")
                                     logger.dislikedSongs.push(playlist[songIndex].id)
 
-                                    var updateData = {}
-                                    updateData.user = usermodel.user
-                                    updateData.logger = logger
-                                    updateData.dislikedSongs.push(playlist[songIndex].id)
-                                    console.log(updateData)
-                                    updateUserModel(updateData)
+                                    // var updateData = {}
+                                    // updateData.user = usermodel.user
+                                    // updateData.logger = logger
+                                    // updateData.dislikedSongs.push(playlist[songIndex].id)
+                                    // console.log(updateData)
+                                    // updateUserModel(updateData)
 
                                     setTimeout(function () {
                                         $("#speak" + id + " div").fadeOut();
