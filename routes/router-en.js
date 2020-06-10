@@ -465,97 +465,106 @@ var getAudioFeatures = function(token, data) {
     var artistIds = [],
         trackIds = [],
         visData = [];
-    for (var index in data) {
-        var oneRecommendation = {};
-        oneRecommendation.id = data[index].id;
-        oneRecommendation.name = data[index].name;
-        if (!data[index].lan){
-            var lang = franc(oneRecommendation.name, {
-                whitelist: ['cmn', 'eng', 'jpn', 'kor'],
-                minLength: 1
-            })
-            if(lang == 'cmn')
-                oneRecommendation.language = "Chinese"
-            else if(lang == 'eng')
-                oneRecommendation.language = "English"
-            else if(lang == 'jpn')
-                oneRecommendation.language = "Japanese"
-            else if(lang == 'kor')
-                oneRecommendation.language = "Korean"
-        }
-        else {
-            oneRecommendation.language = data[index].lan;
-        }
-        if(data[index].popularity)
-            oneRecommendation.popularity = data[index].popularity;
-        else
-            oneRecommendation.popularity = 0;
-        if(data[index].artists[0])
-            oneRecommendation.artist = data[index].artists[0].name;
-        else
-            oneRecommendation.artist = "unknown"
-        if(data[index].preview_url)
-            oneRecommendation.link = data[index].preview_url;
-        else
-            oneRecommendation.link = "unknown"
-        visData.push(oneRecommendation)
-        artistIds.push(data[index].artists[0].id)
-        trackIds.push(oneRecommendation.id)
+    if(data.length>0){
+        for (var index in data) {
+            var oneRecommendation = {};
+            oneRecommendation.id = data[index].id;
+            oneRecommendation.name = data[index].name;
+            if (!data[index].lan){
+                var lang = franc(oneRecommendation.name, {
+                    whitelist: ['cmn', 'eng', 'jpn', 'kor'],
+                    minLength: 1
+                })
+                if(lang == 'cmn')
+                    oneRecommendation.language = "Chinese"
+                else if(lang == 'eng')
+                    oneRecommendation.language = "English"
+                else if(lang == 'jpn')
+                    oneRecommendation.language = "Japanese"
+                else if(lang == 'kor')
+                    oneRecommendation.language = "Korean"
+            }
+            else {
+                oneRecommendation.language = data[index].lan;
+            }
+            if(data[index].popularity)
+                oneRecommendation.popularity = data[index].popularity;
+            else
+                oneRecommendation.popularity = 0;
+            if(data[index].artists){
+                oneRecommendation.artist = data[index].artists[0].name;
+            }
+            else{
+                data.splice(index,1)
+                continue
+            }
 
+            if(data[index].preview_url)
+                oneRecommendation.link = data[index].preview_url;
+            else
+                oneRecommendation.link = "unknown"
+            visData.push(oneRecommendation)
+            artistIds.push(data[index].artists[0].id)
+            trackIds.push(oneRecommendation.id)
+
+        }
+
+        return recom(token).getAudioFeatures(trackIds).then(function(data) {
+            for (var index in data.audio_features) {
+                //console.log(data.audio_features[index])
+                visData[index].danceability = data.audio_features[index].danceability;
+                visData[index].energy = data.audio_features[index].energy;
+                visData[index].speechiness = data.audio_features[index].speechiness;
+                visData[index].tempo = data.audio_features[index].tempo;
+                visData[index].valence = data.audio_features[index].valence;
+            }
+
+            // return recom(token).getGenresForArtists(artistIds.slice(0,50)).then(function(data2) {
+            //     for (var index in data2.artists) {
+            //         visData[index].genre = data2.artists[index].genres[0]
+            //     }
+            //     return recom(token).getGenresForArtists(artistIds.slice(50,100)).then(function(data3) {
+            //         for (var index in data3.artists) {
+            //             visData[50+index].genre = data3.artists[index].genres[0]
+            //         }
+            //     }).then(function() {
+            //         return visData
+            //     }, function(err) {
+            //         return err;
+            //     })
+            // })
+            return recom(token).getGenresForArtists(artistIds).then(function(data2) {
+                for (var index in data2.artists) {
+
+                    var genre = data2.artists[index].genres[0]
+                    if(genre==undefined){
+                        genre = "niche"
+                    }
+
+                    if(genre.indexOf("pop")>=0)
+                        genre = "pop"
+                    else if(genre.indexOf("rock")>=0)
+                        genre = "rock"
+                    else if(genre.indexOf("hip hop")>=0)
+                        genre = "hip hop"
+                    else if(genre.indexOf("dance")>=0)
+                        genre = "dance"
+                    else if(genre.indexOf("funk")>=0)
+                        genre = "funk"
+
+                    visData[index].genre = genre
+
+                }
+            }).then(function() {
+                return visData
+            }, function(err) {
+                return err;
+            })
+        })
+    }else{
+        console.log(data)
     }
 
-    return recom(token).getAudioFeatures(trackIds).then(function(data) {
-        for (var index in data.audio_features) {
-            visData[index].danceability = data.audio_features[index].danceability;
-            visData[index].energy = data.audio_features[index].energy;
-            visData[index].speechiness = data.audio_features[index].speechiness;
-            visData[index].tempo = data.audio_features[index].tempo;
-            visData[index].valence = data.audio_features[index].valence;
-        }
-
-        // return recom(token).getGenresForArtists(artistIds.slice(0,50)).then(function(data2) {
-        //     for (var index in data2.artists) {
-        //         visData[index].genre = data2.artists[index].genres[0]
-        //     }
-        //     return recom(token).getGenresForArtists(artistIds.slice(50,100)).then(function(data3) {
-        //         for (var index in data3.artists) {
-        //             visData[50+index].genre = data3.artists[index].genres[0]
-        //         }
-        //     }).then(function() {
-        //         return visData
-        //     }, function(err) {
-        //         return err;
-        //     })
-        // })
-        return recom(token).getGenresForArtists(artistIds).then(function(data2) {
-            for (var index in data2.artists) {
-
-                var genre = data2.artists[index].genres[0]
-                if(genre==undefined){
-                    genre = "unknown"
-                }
-
-                if(genre.indexOf("pop")>=0)
-                    genre = "pop"
-                else if(genre.indexOf("rock")>=0)
-                    genre = "rock"
-                else if(genre.indexOf("hip hop")>=0)
-                    genre = "hip hop"
-                else if(genre.indexOf("dance")>=0)
-                    genre = "dance"
-                else if(genre.indexOf("funk")>=0)
-                    genre = "funk"
-
-
-                visData[index].genre = genre
-
-            }
-        }).then(function() {
-            return visData
-        }, function(err) {
-            return err;
-        })
-    })
 }
 
 var getAverageFeatures = function(token, trackIds, artistIds){
