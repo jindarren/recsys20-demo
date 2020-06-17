@@ -631,9 +631,12 @@ html
                         label Strongly agree
                 label.statement 23. Any other comments to this music chatbot.
                 textarea#post-23(rows='5', cols='80')
+                label.statement
+                    a(href="/que3") Try Bonus Questionnaire
                 .buttons
                     button.clear Clear
                     button.submit Submit
+
         script(type='text/javascript').
             var formList = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
             $("input").click(function () {
@@ -644,7 +647,7 @@ html
             })
             $(".clear").click(function (event) {
                 $("input").checked = false;
-                $("#post-20").empty()
+                $("#post-23").empty()
                 formList = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
             })
             $(".submit").click(function (event) {
@@ -660,7 +663,7 @@ html
                 }
 
 
-                var comment = $("#post-20").val()
+                var comment = $("#post-23").val()
 
                 console.log(comment)
 
@@ -700,3 +703,4 @@ html
 
                 }
             })
+

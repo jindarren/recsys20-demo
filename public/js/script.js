@@ -121,13 +121,16 @@ $(document).ready(function () {
     function reRankPlaylist(recomList) {
         var newPlayList = []
         for (var item in recomList) {
-            var songID = recomList[item]
 
-            var filtered = playlist.filter(function (el) {
-                return el.id == songID;
-            })[0];
-            newPlayList.push(filtered)
-            playlist.splice(playlist.indexOf(filtered), 1)
+            if(recomList[item]){
+                var songID = recomList[item]
+
+                var filtered = playlist.filter(function (el) {
+                    return el.id == songID;
+                })[0];
+                newPlayList.push(filtered)
+                playlist.splice(playlist.indexOf(filtered), 1)
+            }
         }
         playlist = newPlayList.concat(playlist)
     }
@@ -814,6 +817,15 @@ $(document).ready(function () {
                 })
             }
 
+            var countGenreItems = function (genreName){
+                var countNum = 0
+                for (var index in playlist){
+                    if (playlist[index].genre==genreName)
+                        countNum++
+                }
+                return countNum
+            }
+
             var showMusic = function (id) {
 
                 var dialog = {}
@@ -894,9 +906,8 @@ $(document).ready(function () {
                                                 var likedSongGenre = topRecommendedSong.genre
                                                 var likedSongArtist = topRecommendedSong.artist
 
-                                                console.log(likedSongGenre)
-                                                console.log(likedSongGenre=="niche")
-                                                if(likedSongGenre=="niche"){
+                                                if(likedSongGenre=="niche" && countGenreItems(topRecommendedSong.realgenre)<11){
+
                                                     var requestLink, explanation;
                                                     if(topRecommendedSong.realgenre!="niche"){
                                                         requestLink = '/searchPlaylist?q=' + topRecommendedSong.realgenre + "&token=" + spotifyToken;
@@ -906,6 +917,7 @@ $(document).ready(function () {
                                                         explanation = "OK, I recommend this song to you, because you like " + likedSongArtist + "'s songs."
                                                     }
                                                     playRequestLink(requestLink,explanation,false)
+
                                                 }else{
 
                                                     updateChat(robot, nextSongUtters[parseInt((nextSongUtters.length * Math.random()))], "Coherence")
@@ -1083,7 +1095,7 @@ $(document).ready(function () {
                                                 var likedSongArtist = topRecommendedSong.artist
                                                 if(likedSongGenre=="niche"){
                                                     var requestLink, explanation;
-                                                    if(topRecommendedSong.realgenre!="niche"){
+                                                    if(topRecommendedSong.realgenre!="niche" && countGenreItems(topRecommendedSong.realgenre)<11){
                                                         requestLink = '/searchPlaylist?q=' + topRecommendedSong.realgenre + "&token=" + spotifyToken;
                                                         explanation = "OK, I recommend this song to you, because you like the songs of " + topRecommendedSong.realgenre + "."
                                                     }else{
@@ -1391,7 +1403,7 @@ $(document).ready(function () {
                             else if (topRecommendedSong.seedType == "genre")
                                 explaination += "the songs of " + topRecommendedSong.seed + "."
                         }
-                        if (explaination != "")
+                        if (explaination)
                             updateChat(robot, explaination, "Explain")
 
                     }, 500)
