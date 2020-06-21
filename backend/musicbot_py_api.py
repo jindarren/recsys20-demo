@@ -5,7 +5,7 @@ from flask import jsonify, request
 from flask_restful import reqparse, Api, Resource
 # from flask_httpauth import HTTPTokenAuth
 
-from function import user_modeling, recommendation, system_critiquing
+from function import user_modeling, recommendation, system_critiquing, dialog_management
 from tool import time_helper
 import pprint
 import copy
@@ -215,9 +215,35 @@ class GetSysCri(Resource):
         time_helper.print_current_time()
         print ('Get System Critiques ---- run time : %ss ' % str(end-start))
 
-
-
         return json.dumps(sys_crit_with_rec_list), 201
+
+
+class TriggerSysCri(Resource):
+ 
+    def post(self):
+
+        start = time.process_time()
+        time_helper.print_current_time()
+        print("Determine Whether to Trigger System Critiques ---- start")
+
+        json_data = request.get_json(force=True)
+        user_profile = json_data['user_profile']
+        user_interaction_log = user_profile['logger']
+        cur_rec = user_profile['topRecommendedSong']
+
+        results_triggerSC = dialog_management.determine_trigger_sc_or_not(user_interaction_log, cur_rec, categorical_attributes, numerical_attributes)
+        
+        determination_triggerSC = {'triggerSC': results_triggerSC}
+
+        time_helper.print_current_time()
+        print ('Results of Determination of trigger SC : %s.' % determination_triggerSC['triggerSC'])
+
+        end = time.process_time()
+        time_helper.print_current_time()
+        print ('Determine Whether to Trigger System Critiques ---- run time : %ss ' % str(end-start))
+
+        return json.dumps(determination_triggerSC), 201
+
 
 
 # 设置路由，即路由地址为http://127.0.0.1:5000/xxx
@@ -225,7 +251,8 @@ api.add_resource(InitializeUserModel, "/initialize_user_model")
 api.add_resource(UpdateUserModel, "/update_user_model") 
 api.add_resource(GetRec, "/get_rec")
 api.add_resource(GetSysCri, "/get_sys_cri")
- 
+api.add_resource(TriggerSysCri, "/trigger_sys_cri")
+
 if __name__ == "__main__":
     server = '127.0.0.1'
     port =  '5000'

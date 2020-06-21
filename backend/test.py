@@ -19,6 +19,7 @@ user_id = '23'
 
 # user_profile_data = 'data/user_profile_v2.json'
 user_profile_data = 'data/user_profile_with_preference_model_updated_4.json'
+user_profile_data = 'data/user_profile_with_preference_model_updated_5_trigger_sc.json'
 # user_profile_data = 'data/user_profile_with_preference_model_updated.json'
 
 user_profile = load_data.load_json_data(user_profile_data)
@@ -30,7 +31,8 @@ user_profile = load_data.load_json_data(user_profile_data)
 # test_function = 'initialize_user_model'
 # test_function = 'update_user_model'
 # test_function = 'get_rec'
-test_function = 'get_sys_cri'
+# test_function = 'get_sys_cri'
+test_function = 'trigger_sys_cri'
 
 url = ''
 parms = ''
@@ -50,6 +52,10 @@ if test_function == 'get_rec':
 	
 if test_function == 'get_sys_cri':
 	url ="http://127.0.0.1:5000/get_sys_cri"
+
+if test_function == 'trigger_sys_cri':
+	url ="http://127.0.0.1:5000/trigger_sys_cri"
+
 
 parms = {
 	'user_profile': user_profile,
