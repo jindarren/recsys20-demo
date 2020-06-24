@@ -349,8 +349,9 @@ def check_critique_conflict_with_user_preference(critique, cur_rec, categorical_
         # Categorical attributes
         if attr in categorical_critique_dict.keys():
             user_negative_critique_on_attributes = categorical_critique_dict[attr]['neg']
+            user_positive_critique_on_attributes = categorical_critique_dict[attr]['pos']
             # print('user_negative_critique_on_attributes', user_negative_critique_on_attributes)
-            if direction in user_negative_critique_on_attributes:
+            if direction in user_negative_critique_on_attributes or direction in user_positive_critique_on_attributes:
                 conflict_or_not = True
 
         
