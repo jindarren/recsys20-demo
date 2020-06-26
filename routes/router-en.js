@@ -166,8 +166,8 @@ passport.deserializeUser(function(obj, done) {
 passport.use(new SpotifyStrategy({
         clientID: appKey,
         clientSecret: appSecret,
-        callbackURL: 'http://music-bot.top:3000/callback'
-        //callbackURL: 'http://localhost:3000/callback'
+        //callbackURL: 'http://music-bot.top:3000/callback'
+        callbackURL: 'http://localhost:3000/callback'
     },
     function(accessToken, refreshToken, profile, done) {
         // asynchronous verification, for effect...
@@ -675,6 +675,20 @@ router.post('/get_sys_cri',function (req,res) {
         res.json(body)
     })
 })
+
+
+router.post('/trigger_sys_cri',function (req,res) {
+    console.log(req.body)
+    request.post({url:'http://127.0.0.1:5000/trigger_sys_cri',
+        json: req.body}, (error, response, body) => {
+        if (error) {
+            console.error(error)
+            return
+        }
+        res.json(body)
+    })
+})
+
 
 
 router.post('/initiate', function(req, res) {
