@@ -10,6 +10,10 @@ html
                 align-items: center;
             }
 
+            a{
+                font-size: xx-large;
+            }
+
             p{
                 font-size:200%;
             }
@@ -18,16 +22,90 @@ html
                 width:100%;
             }
 
-            #code{
-                color: blue;
-                background-color: #e1e100;
-                font-weight: bold;
-                margin: 5px;
+            .box {
+                font-size: 20px;
+                color: #ff000a;
+                margin: 10px;
+                animation: changeshadow 1s ease-in infinite;
+                /* 其它浏览器兼容性前缀 */
+                -webkit-animation: changeshadow 1s linear infinite;
+                -moz-animation: changeshadow 1s linear infinite;
+                -ms-animation: changeshadow 1s linear infinite;
+                -o-animation: changeshadow 1s linear infinite;
+            }
+
+            @keyframes changeshadow {
+                0% {
+                    text-shadow: 0 0 4px #ff000a
+                }
+                50% {
+                    text-shadow: 0 0 40px #ff000a
+                }
+                100% {
+                    text-shadow: 0 0 4px #ff000a
+                }
+            }
+
+            /* 添加兼容性前缀 */
+            @-webkit-keyframes changeshadow {
+                0% {
+                    text-shadow: 0 0 4px #ff000a
+                }
+                50% {
+                    text-shadow: 0 0 40px #ff000a
+                }
+                100% {
+                    text-shadow: 0 0 4px #ff000a
+                }
+            }
+
+            @-moz-keyframes changeshadow {
+                0% {
+                    text-shadow: 0 0 4px #ff000a
+                }
+                50% {
+                    text-shadow: 0 0 40px #ff000a
+                }
+                100% {
+                    text-shadow: 0 0 4px #ff000a
+                }
+            }
+
+            @-ms-keyframes changeshadow {
+                0% {
+                    text-shadow: 0 0 4px #ff000a
+                }
+                50% {
+                    text-shadow: 0 0 40px #ff000a
+                }
+                100% {
+                    text-shadow: 0 0 4px #ff000a
+                }
+            }
+
+            @-o-keyframes changeshadow {
+                0% {
+                    text-shadow: 0 0 4px #ff000a
+                }
+                50% {
+                    text-shadow: 0 0 40px #ff000a
+                }
+                100% {
+                    text-shadow: 0 0 4px #ff000a
+                }
             }
 
     body
         p You have finished the study. Thank you~
-        div(style='width:40%;height:auto')
+
+        .box
+            a(href="/que3") Try bonus questionnaire to get double pay :)
+
+        br
+        br
+        br
+
+        div(style='width:20%;height:auto')
             img(src="https://media.giphy.com/media/osjgQPWRx3cac/giphy.gif")
         script(type = "text/javascript", src = "../jquery/dist/jquery.min.js", charset = 'utf-8')
         script.

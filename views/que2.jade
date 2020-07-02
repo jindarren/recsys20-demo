@@ -631,8 +631,6 @@ html
                         label Strongly agree
                 label.statement 23. Any other comments to this music chatbot.
                 textarea#post-23(rows='5', cols='80')
-                label.statement
-                    a(href="/que3") Try Bonus Questionnaire
                 .buttons
                     button.clear Clear
                     button.submit Submit
@@ -694,7 +692,7 @@ html
                         data: JSON.stringify(log),
                         dataType: 'json',
                         success: function () {
-                            //window.location.href = "/success"
+                            window.location.href = "/success"
                         },
                         error: function (err) {
                             console.log(err)
