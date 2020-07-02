@@ -989,54 +989,55 @@ $(document).ready(function () {
 
                             $("#speak" + id + " #next").click(function () {
                                 nextTimes++;
-                                if (nextTimes < 3) {
-                                    $("#speak" + id + " .feedback-box").fadeOut()
-                                    updateChat(you, "Next song.", "Next", "btn")
-                                    logger.dislikedSongs.push(playlist[songIndex].id)
+                                //if (nextTimes < 3) {
+                                $("#speak" + id + " .feedback-box").fadeOut()
+                                updateChat(you, "Next song.", "Next", "btn")
+                                logger.dislikedSongs.push(playlist[songIndex].id)
 
-                                    //Check if SC should be triggered
-                                    var updateData = {}
-                                    updateData.logger = logger
-                                    var listenedSongsLength = logger.listenedSongs.length
-                                    updateData.topRecommendedSong = logger.listenedSongs[listenedSongsLength - 1]
+                                //Check if SC should be triggered
+                                var updateData = {}
+                                updateData.logger = logger
+                                var listenedSongsLength = logger.listenedSongs.length
+                                updateData.topRecommendedSong = logger.listenedSongs[listenedSongsLength - 1]
 
-                                    checkSystemCritiques(updateData).then(function (returnedData) {
-                                        var enableSC = JSON.parse(returnedData).triggerSC
+                                checkSystemCritiques(updateData).then(function (returnedData) {
+                                    var enableSC = JSON.parse(returnedData).triggerSC
 
-                                        if(enableSC){
-                                            var line = $('<div class="speak"><div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>');
-                                            chat.append(line);
-                                            getSysCrit()
+                                    if(enableSC){
+                                        var line = $('<div class="speak"><div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>');
+                                        chat.append(line);
+                                        getSysCrit()
 
-                                        }else{
+                                    }else{
 
-                                            showNextSong2 = setTimeout(function () {
-                                                $("#speak" + id + " div").fadeOut();
-                                                if (listenedSongs.indexOf(playlist[songIndex]) < 0) {
-                                                    listenedSongs.push(playlist[songIndex])
+                                        showNextSong2 = setTimeout(function () {
+                                            $("#speak" + id + " div").fadeOut();
+                                            if (listenedSongs.indexOf(playlist[songIndex]) < 0) {
+                                                listenedSongs.push(playlist[songIndex])
 
-                                                    setTimeout(function () {
-                                                        showMusic(playlist[songIndex].id)
-                                                    }, 1000)
-
-                                                } else {
+                                                setTimeout(function () {
                                                     showMusic(playlist[songIndex].id)
-                                                }
-                                            }, 10)
+                                                }, 1000)
 
-                                        }
+                                            } else {
+                                                showMusic(playlist[songIndex].id)
+                                            }
+                                        }, 10)
 
-                                    })
+                                    }
 
-                                } else {
-                                    $("#speak" + id + " .feedback-box").fadeOut()
-                                    updateChat(you, "Next song.", "Next", "btn")
-                                    logger.dislikedSongs.push(playlist[songIndex].id)
-                                    setTimeout(function () {
-                                        $("#speak" + id + " div").fadeOut();
-                                        updateChat(skip, 'Since you have skipped many songs, you can click the "Let bot suggest" button to get suggestions, or you can just tell me what kind of music you want to listen to?', "Request_Critique");
-                                    }, 300)
-                                }
+                                })
+
+                                //}
+                                // else {
+                                //     $("#speak" + id + " .feedback-box").fadeOut()
+                                //     updateChat(you, "Next song.", "Next", "btn")
+                                //     logger.dislikedSongs.push(playlist[songIndex].id)
+                                //     setTimeout(function () {
+                                //         $("#speak" + id + " div").fadeOut();
+                                //         updateChat(skip, 'Since you have skipped many songs, you can click the "Let bot suggest" button to get suggestions, or you can just tell me what kind of music you want to listen to?', "Request_Critique");
+                                //     }, 300)
+                                // }
 
                             })
 
