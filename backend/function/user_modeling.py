@@ -149,7 +149,9 @@ def update_user_model(user_model, user_interaction_dialog, user_listened_longs, 
             for crit in critique_list:
                 for attr, criti_value in crit.items():
                     # preference model: attribute frequency
-                    updated_user_attribute_frequency[attr] = updated_user_attribute_frequency[attr] + 1
+                    updated_user_attribute_frequency[attr] = updated_user_attribute_frequency[attr] * 2
+                    time_helper.print_current_time()
+                    print("update attribute frequence: attribute (%s) - %f. "% (attr, updated_user_attribute_frequency[attr]))
                     # user critique preference
                     updated_user_critique_preference = update_user_critique_preference(updated_user_critique_preference, attr, criti_value, critique_song_info, numerical_attributes, 'pos')
 
@@ -179,8 +181,18 @@ def update_user_model(user_model, user_interaction_dialog, user_listened_longs, 
 
             for crit in critique_list:
                 for attr, criti_value in crit.items():
-                    # user critique preference
+                    # check if there are consective rejected critiques within the same attribute (decrease the attribute frequency)
+                    latest_user_critique_preference = updated_user_critique_preference[-1]
+                    time_helper.print_current_time()
+                    print("latest_critique: ", latest_user_critique_preference)
+                    if latest_user_critique_preference['pos_or_neg'] == 'neg' and latest_user_critique_preference['attribute'] == attr:
+                        updated_user_attribute_frequency[attr] = updated_user_attribute_frequency[attr] / 2
+                        time_helper.print_current_time()
+                        print("update attribute frequence: attribute (%s) - %f. "% (attr, updated_user_attribute_frequency[attr]))
+                    # user critique preferencef
                     updated_user_critique_preference = update_user_critique_preference(updated_user_critique_preference, attr, criti_value, critique_song_info, numerical_attributes, 'neg')
+
+                    
 
         # Condition 3: accept the recommendation
         if current_action == "accept_song":

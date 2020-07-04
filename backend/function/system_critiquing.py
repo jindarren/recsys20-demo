@@ -210,6 +210,37 @@ def compute_critique_diversity_utility(sorted_critique_utility_list, num_diversi
     
 
 
+
+def resort_critique_list (sorted_critique_utility_list, top_K_critiques, numerical_attributes):
+    #  First one : put in the compound critique with the highest utility
+    selected_critique_list = [sorted_critique_utility_list[0]] # store so far selected critiques
+    current_critique_dict = dict(sorted_critique_utility_list[1:]) # store others critiques that has not beed selected 
+    cur_attribute = list(sorted_critique_utility_list[0][0])[0].split('|')[0]
+    # print(cur_attribute)
+    while len(selected_critique_list) < top_K_critiques:
+        same_attribute_utility_dict = {}
+
+        for current_critique, current_critique_utility in current_critique_dict.items():
+
+            cur_criti_attr = list(current_critique)[0].split('|')[0]
+            # print(cur_attribute)
+            # print(cur_criti_attr)
+            if cur_criti_attr == cur_attribute:
+                same_attribute_utility_dict[current_critique] = current_critique_utility
+            # print(same_attribute_utility_dict)
+
+        if len(same_attribute_utility_dict) == 0:
+            sorted_attribute_utility_dict = helper.sort_dict(current_critique_dict)
+            cur_attribute = list(sorted_attribute_utility_dict[0][0])[0].split('|')[0]
+            selected_critique_list.append(sorted_attribute_utility_dict[0])
+        else: 
+            sorted_attribute_utility_dict = helper.sort_dict(same_attribute_utility_dict)
+            selected_critique_list.append(sorted_attribute_utility_dict[0])
+
+        current_critique_dict.pop(sorted_attribute_utility_dict[0][0])
+    
+    return selected_critique_list
+
 def switch_critique_level(interaction_log, cur_rec, categorical_attributes, numerical_attributes, switch_condition):
     cur_rec_genre = cur_rec['genre']
     previous_dialogue = interaction_log['dialog'] + interaction_log['latest_dialog']
@@ -450,7 +481,7 @@ def generate_system_critiques_diversity_oriented(user_info, user_critique_prefer
     # Switch Mechanism: Determine Categorical (Level 1 - Genre) or Numerical Feature (Level 2) to critique based on the tracked dialogue state
     switch_condition = {}
     # switch_condition['num_interaction_turn_condition'] = 3
-    switch_condition['num_recommendation_cycle_condition'] = 3
+    switch_condition['num_recommendation_cycle_condition'] = 2
     switch_condition['num_rejected_sc_condition'] = 3
     switch_condition['num_listened_songs_condition'] = 3
     switch_condition['num_liked_songs_condition'] = 3
@@ -459,9 +490,21 @@ def generate_system_critiques_diversity_oriented(user_info, user_critique_prefer
 
     categorical_attributes_for_critiquing, numerical_attributes_for_critiquing = switch_critique_level(interaction_log, cur_rec, categorical_attributes, numerical_attributes, switch_condition)
 
+    # if critique_level -> in level 2 (audio feature) -> we may stay in the current genre.
+    cur_genre_item_pool = []
+    cur_genre = cur_rec['genre']
+    # 
+    # if len(categorical_attributes_for_critiquing) == 0:
+    #     for item in item_pool:
+    #         if item['genre'] == cur_genre:
+    #             cur_genre_item_pool.append(item)
+    # else:
+    #     cur_genre_item_pool = copy.deepcopy(item_pool)
+    # print("After filtering items: %d songs left." % len(cur_genre_item_pool))
+    cur_genre_item_pool = copy.deepcopy(item_pool)
     
     # Step 1: Generate a critique array for each item 
-    item_critique_arrays, item_critique_arrays_dict = generate_critique_array (item_pool, cur_rec, categorical_attributes_for_critiquing, numerical_attributes_for_critiquing)
+    item_critique_arrays, item_critique_arrays_dict = generate_critique_array (cur_genre_item_pool, cur_rec, categorical_attributes_for_critiquing, numerical_attributes_for_critiquing)
 
     # Step 2: Find frequent critiques set (Compound & Unit)
 
@@ -504,16 +547,27 @@ def generate_system_critiques_diversity_oriented(user_info, user_critique_prefer
     time_helper.print_current_time()
     print('compute critique utility - diversity-oriented - Done.')
     
-    
+    # version 1: re-sort SC (put the critiques with same attribute but different directions together)
     top_K = min([top_K, len(sorted_critique_utility_list)])
-    sorted_critique_diveristy_utility_list = compute_critique_diversity_utility(sorted_critique_utility_list, top_K)
-    
+    sorted_critique_list = resort_critique_list (sorted_critique_utility_list, top_K, numerical_attributes)
+
     time_helper.print_current_time()
-    print('obtain critique diversified - Done.')
+    print('obtain critique resorted - Done.')
+    
+    pp.pprint(sorted_critique_list)
+ 
+    topK_critique_item_list = obtain_top_k_critique_with_recommendation_list(top_K, sorted_critique_list, frequent_critiques_satisfied_items_dict,estimated_score_dict)
+
+    # version 2: diversify SC 
+    # top_K = min([top_K, len(sorted_critique_utility_list)])
+    # sorted_critique_diveristy_utility_list = compute_critique_diversity_utility(sorted_critique_utility_list, top_K)
+    
+    # time_helper.print_current_time()
+    # print('obtain critique diversified - Done.')
     
     # pp.pprint(sorted_critique_diveristy_utility_list)
  
-    topK_critique_item_list = obtain_top_k_critique_with_recommendation_list(top_K, sorted_critique_diveristy_utility_list, frequent_critiques_satisfied_items_dict,estimated_score_dict)
+    # topK_critique_item_list = obtain_top_k_critique_with_recommendation_list(top_K, sorted_critique_diveristy_utility_list, frequent_critiques_satisfied_items_dict,estimated_score_dict)
 
     return topK_critique_item_list
 
