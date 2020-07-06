@@ -5,6 +5,7 @@ import copy
 from function import helper, recommendation, diversity_calculation 
 from efficient_apriori import apriori
 import sys
+import random
 # from analysis.data_processing_analysis import pca_analysis
 sys.path.append("..") 
 from tool import time_helper, store_data
@@ -490,21 +491,30 @@ def generate_system_critiques_diversity_oriented(user_info, user_critique_prefer
 
     categorical_attributes_for_critiquing, numerical_attributes_for_critiquing = switch_critique_level(interaction_log, cur_rec, categorical_attributes, numerical_attributes, switch_condition)
 
-    # if critique_level -> in level 2 (audio feature) -> we may stay in the current genre.
-    cur_genre_item_pool = []
+    # Case 1 / 3 : 
+    # critique_level -> in level 2 (audio feature) -> we may stay in the current genre.
+    # situation: if there are just few items in the recommendation pool (results: difficult to generate suitable SC)
+    # solution: request more songs within the current genre from Spotify 
+    threshold_genre_songs_for_SC = 10
+    processed_item_pool = []
     cur_genre = cur_rec['genre']
     # 
-    # if len(categorical_attributes_for_critiquing) == 0:
-    #     for item in item_pool:
-    #         if item['genre'] == cur_genre:
-    #             cur_genre_item_pool.append(item)
-    # else:
-    #     cur_genre_item_pool = copy.deepcopy(item_pool)
-    # print("After filtering items: %d songs left." % len(cur_genre_item_pool))
-    cur_genre_item_pool = copy.deepcopy(item_pool)
-    
+    if len(categorical_attributes_for_critiquing) == 0:
+        for item in item_pool:
+            if item['genre'] == cur_genre:
+                processed_item_pool.append(item)
+    else:
+        processed_item_pool = copy.deepcopy(item_pool)
+    print("After filtering items: %d songs left." % len(processed_item_pool))
+
+    if len(processed_item_pool) < threshold_genre_songs_for_SC:
+        return 'Get_Songs_by_Genre', cur_genre
+
+
+
+
     # Step 1: Generate a critique array for each item 
-    item_critique_arrays, item_critique_arrays_dict = generate_critique_array (cur_genre_item_pool, cur_rec, categorical_attributes_for_critiquing, numerical_attributes_for_critiquing)
+    item_critique_arrays, item_critique_arrays_dict = generate_critique_array (processed_item_pool, cur_rec, categorical_attributes_for_critiquing, numerical_attributes_for_critiquing)
 
     # Step 2: Find frequent critiques set (Compound & Unit)
 
@@ -524,8 +534,38 @@ def generate_system_critiques_diversity_oriented(user_info, user_critique_prefer
                 frequent_critiques_freq_dict[crit] = freq
     pp.pprint(frequent_critiques_freq_dict)
 
-    if len(frequent_critiques_freq_dict) == 0:
-        return frequent_critiques_freq_dict
+    # Case 2 / 3: 
+    # critique_level -> in level 1 (genre) -> we may stay in the whole recommendation pool to explore different genres.
+    # situation: if all of the genres existing in the current pool has been used for SC.
+    # solution: randomly select genres from Spotify genre list.
+
+    if len(numerical_attributes_for_critiquing) == 0 and len(frequent_critiques_freq_dict) == 0:
+        # Step 1: Get the whole genre list in the Spotify
+        whole_genre_list = ['pop', 'rock', 'classic', 'hip pop', 'guitar']
+        # Step 2: filter the whole genre list based on users' criitqing history
+        genre_list_for_explore = []  
+        num_genre_list_for_explore = 5
+        previous_occured_genres = categorical_critique_dict['pos'] + categorical_critique_dict['neg']
+        # if user accept "niche" -> first suggest genres occurs in the niche genre
+        if 'niche' in categorical_critique_dict['pos']:
+            niche_genre_list = [] # find all the niche genres in the recommendation pool
+            for item in processed_item_pool:
+                if item['genre'] == 'niche' and item['realgenre'] not in niche_genre_list:
+                    if item['realgenre'] not in previous_occured_genres:
+                        niche_genre_list.append(item['realgenre'])
+            if len(niche_genre_list) >= 5:
+                genre_list_for_explore = random.sample(niche_genre_list, num_genre_list_for_explore)
+            else:
+                genre_list_for_explore = niche_genre_list
+                other_genre_options = list(set(whole_genre_list)-set(previous_occured_genres)-set(genre_list_for_explore))
+                genre_list_for_explore.append(random.sample(other_genre_options, num_genre_list_for_explore-len(genre_list_for_explore)))
+
+        # if user reject "niche" -
+        if 'niche' in categorical_critique_dict['neg']:
+            other_genre_options = list(set(whole_genre_list)-set(previous_occured_genres))
+            genre_list_for_explore = random.sample(other_genre_options, num_genre_list_for_explore)
+            
+        return 'Random_Genres', genre_list_for_explore 
         
     # Step 3: Obtain the set of items that satisfy the critique
     frequent_critiques_satisfied_items_dict = obtain_critique_items_dict(frequent_critiques_freq_dict, item_critique_arrays_dict)
@@ -569,7 +609,7 @@ def generate_system_critiques_diversity_oriented(user_info, user_critique_prefer
  
     # topK_critique_item_list = obtain_top_k_critique_with_recommendation_list(top_K, sorted_critique_diveristy_utility_list, frequent_critiques_satisfied_items_dict,estimated_score_dict)
 
-    return topK_critique_item_list
+    return 'SC_and_Recommendation', topK_critique_item_list
 
 
 

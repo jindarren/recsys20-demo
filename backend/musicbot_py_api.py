@@ -187,9 +187,17 @@ class GetSysCri(Resource):
         top_K = 20
         unit_or_compound = [1]
         
+        new_item_pool = user_profile['new_pool']
+        item_pool_for_SC = item_pool
+        if len(new_item_pool) > 0:
+            item_pool_for_SC = new_item_pool
+        time_helper.print_current_time()
+        print("Get System Critiques ---- Item Pool: %d songs" % len(item_pool_for_SC))
+
+
         method = 'MAUT_COMPAT'
         alpha = 0.5
-        estimated_score_dict = recommendation.compute_recommendation(user_preference_model, user_critique_preference, item_pool, len(item_pool), categorical_attributes, numerical_attributes, method, alpha, sort=False)
+        estimated_score_dict = recommendation.compute_recommendation(user_preference_model, user_critique_preference, item_pool_for_SC, len(item_pool_for_SC), categorical_attributes, numerical_attributes, method, alpha, sort=False)
         time_helper.print_current_time()
         print("Get System Critiques ---- Obtain item utility score by %s method (alpha:%f) --- Done." %(method, alpha))
 
@@ -199,17 +207,39 @@ class GetSysCri(Resource):
         time_helper.print_current_time()
         print("Get System Critiques ---- System critique generation version: %s." % sys_crit_version)
 
-        
+        state = 'SC_and_Recommendation'
         sys_crit = None
         if sys_crit_version == 'preference_oriented':
-            sys_crit = system_critiquing.generate_system_critiques_preference_oriented(user_preference_model, user_critique_preference,estimated_score_dict, item_pool, cur_rec, top_K, unit_or_compound, categorical_attributes, numerical_attributes)
+            sys_crit = system_critiquing.generate_system_critiques_preference_oriented(user_preference_model, user_critique_preference,estimated_score_dict, item_pool_for_SC, cur_rec, top_K, unit_or_compound, categorical_attributes, numerical_attributes)
         if sys_crit_version == 'diversity_oriented':
-            sys_crit = system_critiquing.generate_system_critiques_diversity_oriented(user_preference_model, user_critique_preference, user_interaction_log, estimated_score_dict, item_pool, cur_rec, top_K, unit_or_compound, categorical_attributes, numerical_attributes)
+            state, sys_crit = system_critiquing.generate_system_critiques_diversity_oriented(user_preference_model, user_critique_preference, user_interaction_log, estimated_score_dict, item_pool_for_SC, cur_rec, top_K, unit_or_compound, categorical_attributes, numerical_attributes)
         # if sys_crit_version == 'personality_adjusted':
         #     sys_crit = system_critiquing.generate_system_critiques_personality_adjusted(user_preference_model, user_interaction_log, estimated_score_dict, item_pool, cur_rec, top_K, unit_or_compound, categorical_attributes, numerical_attributes)
 
+
+
+        updated_item_pool = []
+
+        if len(new_item_pool) > 0:
+            time_helper.print_current_time()
+            print("Get System Critiques ---- New Pool: %d songs." % (len(new_item_pool))) 
+            time_helper.print_current_time()
+            print("Get System Critiques ---- Original Item Pool: %d songs." % (len(item_pool))) 
+            integrated_item_pool = item_pool + new_item_pool
+            assert(len(integrated_item_pool) == len(item_pool) + len(new_item_pool))
+
+            max_item_pool_number = min([150, len(integrated_item_pool)])
+            updated_item_pool = recommendation.update_recommendation_pool(user_preference_model, user_critique_preference, integrated_item_pool, max_item_pool_number, categorical_attributes, numerical_attributes, method, alpha)
+            print("Get System Critiques ---- Updated Item Pool: %d songs." % (len(updated_item_pool))) 
+            
+            user_profile['pool'] = updated_item_pool
+            user_profile['new_pool'] = []
+        
+        time_helper.print_current_time()
+        print(state)
+        time_helper.print_current_time()
         pp.pprint(sys_crit)
-        sys_crit_with_rec_list = {'sys_crit_with_recommendation': sys_crit}
+        sys_crit_with_rec_list = {'state': state, 'result': sys_crit, 'user_profile': user_profile}
 
         end = time.process_time()
         time_helper.print_current_time()
