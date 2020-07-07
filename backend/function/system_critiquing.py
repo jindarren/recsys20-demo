@@ -533,7 +533,7 @@ def generate_system_critiques_diversity_oriented(user_info, user_critique_prefer
             if not check_critique_conflict_with_user_preference(crit, cur_rec, categorical_critique_dict, numerical_critique_dict):
                 frequent_critiques_freq_dict[crit] = freq
     pp.pprint(frequent_critiques_freq_dict)
-
+    # pp.pprint(helper.get_whole_genre_list())
     # Case 2 / 3: 
     # critique_level -> in level 1 (genre) -> we may stay in the whole recommendation pool to explore different genres.
     # situation: if all of the genres existing in the current pool has been used for SC.
@@ -541,7 +541,7 @@ def generate_system_critiques_diversity_oriented(user_info, user_critique_prefer
 
     if len(numerical_attributes_for_critiquing) == 0 and len(frequent_critiques_freq_dict) == 0:
         # Step 1: Get the whole genre list in the Spotify
-        whole_genre_list = ['pop', 'rock', 'classic', 'hip pop', 'guitar']
+        whole_genre_list = helper.get_whole_genre_list()
         # Step 2: filter the whole genre list based on users' criitqing history
         genre_list_for_explore = []  
         num_genre_list_for_explore = 5
