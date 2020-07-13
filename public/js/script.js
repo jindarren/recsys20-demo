@@ -611,7 +611,7 @@ $(document).ready(function () {
 
 
                     }
-                    else if (state=="Random_Genre"){
+                    else if (state=="Random_Genres"){
                         var genreNameList = sc_result.result
 
                         for(var index in genreNameList){
