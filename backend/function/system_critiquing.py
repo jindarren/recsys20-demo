@@ -565,7 +565,7 @@ def generate_system_critiques_diversity_oriented(user_info, user_critique_prefer
                 genre_list_for_explore.append(random.sample(other_genre_options, num_genre_list_for_explore-len(genre_list_for_explore)))
 
         # if user reject "niche" -
-        if 'niche' in categorical_critique_dict['neg']:
+        if 'neg' in categorical_critique_dict.keys() and 'niche' in categorical_critique_dict['neg']:
             other_genre_options = list(set(whole_genre_list)-set(previous_occured_genres))
             genre_list_for_explore = random.sample(other_genre_options, num_genre_list_for_explore)
             
