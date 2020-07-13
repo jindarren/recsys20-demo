@@ -551,7 +551,7 @@ def generate_system_critiques_diversity_oriented(user_info, user_critique_prefer
         if 'neg' in categorical_critique_dict.keys():
             previous_occured_genres = previous_occured_genres + categorical_critique_dict['neg']
         # if user accept "niche" -> first suggest genres occurs in the niche genre
-        if 'niche' in categorical_critique_dict['pos']:
+        if 'pos' in categorical_critique_dict.keys() and 'niche' in categorical_critique_dict['pos']:
             niche_genre_list = [] # find all the niche genres in the recommendation pool
             for item in processed_item_pool:
                 if item['genre'] == 'niche' and item['realgenre'] not in niche_genre_list:
