@@ -29,7 +29,10 @@ var usermodel = {}
 //preference_oriented
 //diversity_oriented
 //personality_adjusted
+//base
 var sysCritVersion = window.location.search.substring(1)
+
+console.log(sysCritVersion)
 
 logger.dialog = []
 logger.listenedSongs = []
@@ -237,8 +240,9 @@ $(document).ready(function () {
             success: function (result) {
                 var returned = JSON.parse(result)
                 console.log("SC推荐: ", returned)
-                reRankPlaylist(returned.recommendation_list)
-                console.log(playlist)
+
+                // reRankPlaylist(recommendation_list)
+                // console.log(playlist)
             },
             error: function (error) {
                 console.log(error)
@@ -563,11 +567,42 @@ $(document).ready(function () {
                     critiques = [];
                     critiquesIndex = 0;
 
-                    var crits = JSON.parse(rawCrits)
+                    var sc_result = JSON.parse(rawCrits)
 
-                    console.log(crits)
+                    console.log(sc_result)
 
-                    var firstThreeCrits = crits.sys_crit_with_recommendation.slice(0, 3)
+
+                    var state = sc_result.state
+                    var firstThreeCrits = []
+
+
+                    if (state=="SC_and_Recommendation"){
+                        firstThreeCrits = sc_result.result.slice(0, 3)
+                    }
+                    else if (state=="Get_Songs_by_Genre"){
+                        var genreName = sc_result.result
+                        //var requestedLink = '/searchPlaylistByCategory?genre='+genreName
+
+                        firstThreeCrits = []
+                        firstThreeCrits[0] = {}
+                        firstThreeCrits[0].critique = "genre|"+genreName
+                        firstThreeCrits[0].recommendation = []
+
+
+                    }
+                    else if (state=="Random_Genre"){
+                        var genreNameList = sc_result.result
+
+                        for(var index in genreNameList){
+
+                            firstThreeCrits = []
+                            firstThreeCrits[index] = {}
+                            firstThreeCrits[index].critique = "genre|"+genreNameList[index]
+                            firstThreeCrits[index].recommendation = []
+
+                        }
+                    }
+
 
                     console.log(firstThreeCrits)
 
@@ -659,7 +694,34 @@ $(document).ready(function () {
                     $('.spinner').remove();
                     // [Wanling] - revise
                     updateChat(crit, critiques[critiquesIndex].speech, "System_Suggest", critiques[critiquesIndex].critiques, true);
-                    reRankPlaylist(critiques[critiquesIndex].recommendation)
+
+
+                    //如果包含推荐结果
+                    if(critiques[critiquesIndex].recommendation.length>0)
+                        reRankPlaylist(critiques[critiquesIndex].recommendation)
+                    else{
+                        $.get("/searchPlaylistByCategory?genre="+critiques[critiquesIndex].critiques.split("|")[1], function (res) {
+                            //remove loading animation
+                            $('.spinner').remove();
+                            console.log(res)
+
+                            var updateData = {}
+                            updateData.user = usermodel.user
+                            updateData.pool = playlist
+                            updateData.new_pool = res.tracks
+
+                            console.log(updateData)
+
+                            getRecommendation(updateData).then(function (data) {
+                                var returnData = JSON.parse(data)
+                                console.log(returnData)
+                            })
+
+                            songIndex = 0
+                            speakandsing(robot, response, "Coherence")
+                        })
+
+                    }
 
                 })
 
@@ -727,7 +789,8 @@ $(document).ready(function () {
                     line.addClass(style)
                     line.find('.dialog').text(text);
 
-                    line.append('<div class="feedback-box"><button type="button" id="suggest" class="feedback">Let bot suggest</button></div>')
+                    if(sysCritVersion!="base")
+                        line.append('<div class="feedback-box"><button type="button" id="suggest" class="feedback">Let bot suggest</button></div>')
 
                     utterance.text = text;
                     chat.append(line);
@@ -836,7 +899,9 @@ $(document).ready(function () {
                     // if (isSystemCrit == 1) {
                         var line = $('<div id="speak' + id + '" class="speak"><iframe src="https://open.spotify.com/embed/track/' + id + '" width="100%" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe></div>')
                         showFeedback = setTimeout(function () {
-                            $("#speak" + id).append('<div class="feedback-box"><button type="button" id="like" class="feedback">Like</button><button type="button" id="next" class="feedback">Next</button><button type="button" id="suggest" class="feedback">Let bot suggest</button></div>')
+                            $("#speak" + id).append('<div class="feedback-box"><button type="button" id="like" class="feedback">Like</button><button type="button" id="next" class="feedback">Next</button></div>')
+                            if(sysCritVersion!="base")
+                                $("#speak" + id + " > .feedback-box").append('<button type="button" id="suggest" class="feedback">Let bot suggest</button>')
 
                             $("#speak" + id + " #like").click(function () {
 
@@ -920,10 +985,13 @@ $(document).ready(function () {
                                                     var listenedSongsLength = logger.listenedSongs.length
                                                     updateData2.topRecommendedSong = logger.listenedSongs[listenedSongsLength - 1]
 
+
+                                                    //for base line setting
+
                                                     checkSystemCritiques(updateData2).then(function (returnedData) {
                                                         var enableSC = JSON.parse(returnedData).triggerSC
 
-                                                        if(enableSC){
+                                                        if(enableSC && sysCritVersion!="base"){
                                                             var line = $('<div class="speak"><div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>');
                                                             chat.append(line);
                                                             getSysCrit()
@@ -946,6 +1014,7 @@ $(document).ready(function () {
                                                             }, 10)
                                                         }
                                                     })
+
                                                 }
                                             }
 
@@ -1003,12 +1072,12 @@ $(document).ready(function () {
                                 checkSystemCritiques(updateData).then(function (returnedData) {
                                     var enableSC = JSON.parse(returnedData).triggerSC
 
-                                    if(enableSC){
+                                    if (enableSC && sysCritVersion!="base") {
                                         var line = $('<div class="speak"><div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>');
                                         chat.append(line);
                                         getSysCrit()
 
-                                    }else{
+                                    } else {
 
                                         showNextSong2 = setTimeout(function () {
                                             $("#speak" + id + " div").fadeOut();
@@ -1466,10 +1535,11 @@ $(document).ready(function () {
                 var listenedSongsLength = logger.listenedSongs.length
                 updateData.topRecommendedSong = logger.listenedSongs[listenedSongsLength - 1]
 
+
                 checkSystemCritiques(updateData).then(function (returnedData) {
                     var enableSC = JSON.parse(returnedData).triggerSC
 
-                    if(enableSC){
+                    if(enableSC && sysCritVersion!="base"){
                         var line = $('<div class="speak"><div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>');
                         chat.append(line);
                         getSysCrit()
@@ -1672,7 +1742,10 @@ $(document).ready(function () {
 
                 })
 
+
             }
+
+
 
             socket.on('bot reply', function (data) {
                 synthVoice(data)

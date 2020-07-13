@@ -121,7 +121,7 @@ html
         .wrap
             h1.likert-header This is an additional post-study survey
             form(action='')
-                label.statement 1. The recommender explains why the songs are recommended to me.
+                label.statement 1. The music recommender explains why the songs are recommended to me.
                 ul#post-1.likert
                     li
                         input(type='radio', value='1', name='group1')
@@ -144,7 +144,7 @@ html
                     li
                         input(type='radio', value='7', name='group1')
                         label Strongly agree
-                label.statement 2. The information provided for the recommended items is sufficient for me to make a purchase/download decision.
+                label.statement 2. The information provided for the recommended songs is sufficient for me to make a purchase/download decision.
                 ul#post-2.likert
                     li
                         input(type='radio', value='1', name='group2')
@@ -167,7 +167,7 @@ html
                     li
                         input(type='radio', value='7', name='group2')
                         label Strongly agree
-                label.statement 3. The recommender allows me to tell what I like/dislike.
+                label.statement 3. The music recommender allows me to tell what I like/dislike.
                 ul#post-3.likert
                     li
                         input(type='radio', value='1', name='group3')
@@ -190,7 +190,7 @@ html
                     li
                         input(type='radio', value='7', name='group3')
                         label Strongly agree
-                label.statement 4. I found it easy to tell the system what I like/dislike. (It is easy to tell the chatbot what I want.)
+                label.statement 4. I found it easy to tell the music recommender what I like/dislike. (It is easy to tell the chatbot what I want.)
                 ul#post-4.likert
                     li
                         input(type='radio', value='1', name='group4')
@@ -214,7 +214,7 @@ html
                         input(type='radio', value='7', name='group4')
                         label Strongly agree
                 label.statement
-                    | 5. I became familiar with the recommender system very quickly.
+                    | 5. I became familiar with the music recommender system very quickly.
                 ul#post-5.likert
                     li
                         input(type='radio', value='1', name='group5')
@@ -238,7 +238,7 @@ html
                         input(type='radio', value='7', name='group5')
                         label Strongly agree
 
-                label.statement 6. The recommender allows me to modify my taste profile.
+                label.statement 6. The music recommender allows me to modify my taste profile.
                 ul#post-6.likert
                     li
                         input(type='radio', value='1', name='group6')
@@ -262,7 +262,7 @@ html
                         input(type='radio', value='7', name='group6')
                         label Strongly agree
                 label.statement
-                    | 7. I found it easy to modify my taste profile in the recommender.
+                    | 7. I found it easy to modify my taste profile in the music recommender.
                 ul#post-7.likert
                     li
                         input(type='radio', value='1', name='group7')
@@ -285,7 +285,7 @@ html
                     li
                         input(type='radio', value='7', name='group7')
                         label Strongly agree
-                label.statement 8. The recommender helped me find the ideal item.
+                label.statement 8. The music recommender helped me find the ideal song.
                 ul#post-8.likert
                     li
                         input(type='radio', value='1', name='group8')
@@ -308,7 +308,7 @@ html
                     li
                         input(type='radio', value='7', name='group8')
                         label Strongly agree
-                label.statement 9. Using the recommender to find what I like is easy.
+                label.statement 9. Using the music recommender to find what I like is easy.
                 ul#post-9.likert
                     li
                         input(type='radio', value='1', name='group9')
@@ -331,7 +331,7 @@ html
                     li
                         input(type='radio', value='7', name='group9')
                         label Strongly agree
-                label.statement 10. I am convinced of the items recommended to me.
+                label.statement 10. I am convinced of the songs recommended to me.
                 ul#post-10.likert
                     li
                         input(type='radio', value='1', name='group10')
@@ -354,7 +354,7 @@ html
                     li
                         input(type='radio', value='7', name='group10')
                         label Strongly agree
-                label.statement 11. I am confident I will like the items recommended to me.
+                label.statement 11. I am confident I will like the songs recommended to me.
                 ul#post-11.likert
                     li
                         input(type='radio', value='1', name='group11')
@@ -400,7 +400,7 @@ html
                     li
                         input(type='radio', value='7', name='group12')
                         label Strawberry
-                label.statement 13. The recommender made me more confident about my selection/decision.
+                label.statement 13. The music recommender made me more confident about my selection/decision.
                 ul#post-13.likert
                     li
                         input(type='radio', value='1', name='group13')
@@ -423,7 +423,7 @@ html
                     li
                         input(type='radio', value='7', name='group13')
                         label Strongly agree
-                label.statement 14. I will use this recommender frequently.
+                label.statement 14. I will use this music recommender frequently.
                 ul#post-14.likert
                     li
                         input(type='radio', value='1', name='group14')
@@ -446,7 +446,7 @@ html
                     li
                         input(type='radio', value='7', name='group14')
                         label Strongly agree
-                label.statement 15. I will tell my friends about this recommender.
+                label.statement 15. I will tell my friends about this music recommender.
                 ul#post-15.likert
                     li
                         input(type='radio', value='1', name='group15')
@@ -1129,29 +1129,21 @@ html
                     alert("Please finished the missing statement(s) marked in yellow.")
                 } else {
 
-                    window.localStorage.setItem("que2",formList.toString())
 
-                    var que1List = window.localStorage.getItem("que1").split(",")
-                    var que2List = window.localStorage.getItem("que2").split(",")
-                    var que3List = formList
-
-                    var log = JSON.parse(window.localStorage.getItem("log"))
-
-                    log.que1 = que1List
-                    log.que2 = que2List
-                    log.que3 = que3List
-                    log.timestamp =  new Date()
+                    var log = {}
+                    log.que3 = formList
+                    log.id = JSON.parse(window.localStorage.getItem("log")).id
 
                     console.log(log)
 
                     $.ajax({
-                        url: '/addRecord',
+                        url: '/updateRecord',
                         type: 'POST',
                         contentType: 'application/json',
                         data: JSON.stringify(log),
                         dataType: 'json',
                         success: function () {
-                            //window.location.href = "/success"
+                            window.location.href = "/success2"
                         },
                         error: function (err) {
                             console.log(err)

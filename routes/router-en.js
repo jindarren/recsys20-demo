@@ -192,8 +192,9 @@ router.post("/addRecord", function(req, res) {
     //save a new user
     user.save(function(err) {
         if (err)
-            console.log(err)
-        res.send("user profile is added")
+            res.send(err)
+        else
+            res.json({status:"success"})
     })
 
 });
@@ -207,6 +208,18 @@ router.get("/findRecord", function(req, res) {
 });
 
 
+router.post("/updateRecord", function(req, res) {
+    var updatedID = req.body.id
+    var que3List = req.body.que3
+    var updatedTimestamp = new Date()
+    User.updateOne({"id":updatedID},{$set:{que3:que3List,timestamp:updatedTimestamp}},function(err){
+        if (err)
+            res.send(err)
+        else
+            res.json({status:"success"})
+    })
+
+});
 
 
 router.get("/getRecord", function(req, res) {
@@ -252,6 +265,10 @@ router.get('/intro-en', function(req, res) {
 
 router.get('/success', function(req, res) {
     res.render("success")
+});
+
+router.get('/success2', function(req, res) {
+    res.render("success2")
 });
 
 router.get('/tip', function(req, res) {

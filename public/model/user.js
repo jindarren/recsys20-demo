@@ -13,6 +13,7 @@ var userSchema = new mongoose.Schema({
 	pool:[],
     que1:[],
     que2:[],
+    que3:[],
     timestamp: Date,
     topRecommendedSong:{},
     user:{},

@@ -560,7 +560,7 @@ html
                     li
                         input(type='radio', value='7', name='group19')
                         label Strongly agree
-                label.statement 20. The system provided me with surprising recommendations that helped me discover new music that I wouldn’t have found elsewhere.
+                label.statement 20. The music chatbot provided me with surprising recommendations that helped me discover new music that I wouldn’t have found elsewhere.
                 ul#post-20.likert
                     li
                         input(type='radio', name='group20', value='1')
@@ -583,7 +583,7 @@ html
                     li
                         input(type='radio', name='group20', value='7')
                         label Strongly agree
-                label.statement 21. The system provided me with recommendations that I had not considered in the first place but turned out to be a positive and surprising discovery.
+                label.statement 21. The music chatbot provided me with recommendations that I had not considered in the first place but turned out to be a positive and surprising discovery.
                 ul#post-21.likert
                     li
                         input(type='radio', name='group21', value='1')
@@ -606,7 +606,7 @@ html
                     li
                         input(type='radio', name='group21', value='7')
                         label Strongly agree
-                label.statement 22. The system provided me with recommendations that were a pleasant surprise to me because I would not have discovered them somewhere else.
+                label.statement 22. The music chatbot provided me with recommendations that were a pleasant surprise to me because I would not have discovered them somewhere else.
                 ul#post-22.likert
                     li
                         input(type='radio', name='group22', value='1')
@@ -668,22 +668,28 @@ html
                 if(comment){
                     formList.push(comment)
                 }
+
+                console.log("length",uncheckedList.length)
                 if (uncheckedList.length > 0) {
                     alert("Please finished the missing statement(s) marked in yellow.")
                 } else {
 
                     window.localStorage.setItem("que2",formList.toString())
 
-                    var que1List = window.localStorage.getItem("que1").split(",")
+                    var que1List = []
+                    //var que1List = window.localStorage.getItem("que1").split(",")
                     var que2List = formList
 
                     var log = JSON.parse(window.localStorage.getItem("log"))
 
                     log.que1 = que1List
                     log.que2 = que2List
+                    log.que3 = []
                     log.timestamp =  new Date()
 
                     console.log(log)
+
+                    //window.location.href = "/success"
 
                     $.ajax({
                         url: '/addRecord',
@@ -691,7 +697,8 @@ html
                         contentType: 'application/json',
                         data: JSON.stringify(log),
                         dataType: 'json',
-                        success: function () {
+                        success: function (data) {
+                            console.log(data)
                             window.location.href = "/success"
                         },
                         error: function (err) {
