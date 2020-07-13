@@ -524,6 +524,7 @@ def generate_system_critiques_diversity_oriented(user_info, user_critique_prefer
     # Step 3: Filter frequent critiques that have conflict with user past critiques.
     categorical_critique_dict, numerical_critique_dict = helper.convert_to_critique_preference_dict(user_critique_preference)
 
+
     pp.pprint(categorical_critique_dict)
     pp.pprint(numerical_critique_dict)
 
@@ -565,7 +566,8 @@ def generate_system_critiques_diversity_oriented(user_info, user_critique_prefer
                 genre_list_for_explore.append(random.sample(other_genre_options, num_genre_list_for_explore-len(genre_list_for_explore)))
 
         # if user reject "niche" -
-        if 'neg' in categorical_critique_dict.keys() and 'niche' in categorical_critique_dict['neg']:
+        # elif 'neg' in categorical_critique_dict.keys() and 'niche' in categorical_critique_dict['neg']:
+        else:
             other_genre_options = list(set(whole_genre_list)-set(previous_occured_genres))
             genre_list_for_explore = random.sample(other_genre_options, num_genre_list_for_explore)
             
