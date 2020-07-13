@@ -581,12 +581,33 @@ $(document).ready(function () {
                     }
                     else if (state=="Get_Songs_by_Genre"){
                         var genreName = sc_result.result
-                        //var requestedLink = '/searchPlaylistByCategory?genre='+genreName
+                        var requestedLink = '/searchPlaylistByCategory?genre='+genreName
 
-                        firstThreeCrits = []
-                        firstThreeCrits[0] = {}
-                        firstThreeCrits[0].critique = "genre|"+genreName
-                        firstThreeCrits[0].recommendation = []
+                        $.get(requestedLink,function (res) {
+
+                            updateData.new_pool = res.tracks
+
+                            //再次请求systemCritiques
+
+                            systemCritiques(updateData).then(function (rawCrits) {
+                                critiques = [];
+                                critiquesIndex = 0;
+
+                                var sc_result = JSON.parse(rawCrits)
+
+                                console.log(sc_result)
+
+                                var state = sc_result.state
+
+                                //未做其他条件判断？
+
+                                if (state=="SC_and_Recommendation"){
+                                    firstThreeCrits = sc_result.result.slice(0, 3)
+                                }
+
+                            })
+
+                        })
 
 
                     }
