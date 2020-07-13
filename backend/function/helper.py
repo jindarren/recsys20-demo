@@ -124,7 +124,7 @@ def convert_to_critique_preference_dict(user_critique_preference):
                         crit_direction_list = critique_preference_on_attribute[pos_or_neg]
                         crit_direction_list.append(crit_direction)
                         critique_preference_on_attribute[pos_or_neg] =  list(set(crit_direction_list))
-
+                categorical_critique_dict[attr] = critique_preference_on_attribute
 
     return categorical_critique_dict, numerical_critique_dict
 
