@@ -167,7 +167,7 @@ passport.use(new SpotifyStrategy({
         clientID: appKey,
         clientSecret: appSecret,
         callbackURL: 'http://music-bot.top:3000/callback'
-        //callbackURL: 'http://localhost:3000/callback'
+        // callbackURL: 'http://localhost:3000/callback'
     },
     function(accessToken, refreshToken, profile, done) {
         // asynchronous verification, for effect...

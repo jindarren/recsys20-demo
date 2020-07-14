@@ -613,14 +613,12 @@ $(document).ready(function () {
                     }
                     else if (state=="Random_Genres"){
                         var genreNameList = sc_result.result
-
+                        firstThreeCrits = []
+                      
                         for(var index in genreNameList){
-
-                            firstThreeCrits = []
                             firstThreeCrits[index] = {}
-                            firstThreeCrits[index].critique = "genre|"+genreNameList[index]
+                            firstThreeCrits[index].critique = ["genre|"+genreNameList[index]]
                             firstThreeCrits[index].recommendation = []
-
                         }
                     }
 

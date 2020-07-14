@@ -615,6 +615,7 @@ def generate_system_critiques_diversity_oriented(user_info, user_critique_prefer
  
     # topK_critique_item_list = obtain_top_k_critique_with_recommendation_list(top_K, sorted_critique_diveristy_utility_list, frequent_critiques_satisfied_items_dict,estimated_score_dict)
 
+
     return 'SC_and_Recommendation', topK_critique_item_list
 
 
