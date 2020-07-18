@@ -545,7 +545,7 @@ def generate_system_critiques_diversity_oriented(user_info, user_critique_prefer
         whole_genre_list = helper.get_whole_genre_list()
         # Step 2: filter the whole genre list based on users' criitqing history
         genre_list_for_explore = []  
-        num_genre_list_for_explore = 5
+        num_genre_list_for_explore = 3
         previous_occured_genres = []
         if 'pos' in categorical_critique_dict.keys():
             previous_occured_genres = previous_occured_genres + categorical_critique_dict['pos']

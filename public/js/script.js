@@ -76,7 +76,9 @@ $(document).ready(function () {
     var userID = ""
     // JSON.parse(storage.profile).id
 
-
+    // By Wanling
+    // Right Panel 
+    // Log users' browse behavior on explanation on audio features 
     $(".exp").on("mouseenter", function () {
         var feature = $(this).text()
         if (feature == "Energy:")
@@ -90,8 +92,8 @@ $(document).ready(function () {
         else if (feature == "Valence:")
             logger.exp_valence.push(new Date().getTime())
     })
-
-
+    // By Wanling
+    // Log users' click behavior on explanation on three categories: features; categories; artists   
     $("h3").on("click", function () {
         var title = $(this).text()
         if (title == "Explanation of features")
@@ -103,6 +105,7 @@ $(document).ready(function () {
         else if (title == "Explanation of artists")
             logger.exp_artist.push(new Date().getTime())
     })
+
 
     var windowHeight = $("#container").height() * 0.90;
     $(".iphone-x").height(windowHeight)
@@ -121,6 +124,8 @@ $(document).ready(function () {
         //refresh the token
     var userid = $.cookie('user-id')
 
+    // By Wanling
+    // reRankPlaylist: put the obtained recommendation list in the front and put the left songs in the back of the list 
     function reRankPlaylist(recomList) {
         var newPlayList = []
         for (var item in recomList) {
@@ -305,6 +310,7 @@ $(document).ready(function () {
             }
 
             var mapGenres = allGenres.reduce((m, x) => m.set(x, (m.get(x) || 0) + 1), new Map())
+
             // 所有次数
             genreTimes = Array.from(mapGenres.values())
             //去重后的值
@@ -715,32 +721,34 @@ $(document).ready(function () {
                     updateChat(crit, critiques[critiquesIndex].speech, "System_Suggest", critiques[critiquesIndex].critiques, true);
 
 
-                    //如果包含推荐结果
-                    if(critiques[critiquesIndex].recommendation.length>0)
-                        reRankPlaylist(critiques[critiquesIndex].recommendation)
-                    else{
-                        $.get("/searchPlaylistByCategory?genre="+critiques[critiquesIndex].critiques.split("|")[1], function (res) {
-                            //remove loading animation
-                            $('.spinner').remove();
-                            console.log(res)
+                    // //如果包含推荐结果
+                    // if(critiques[critiquesIndex].recommendation.length>0)
+                        
+                    //     reRankPlaylist(critiques[critiquesIndex].recommendation)
+                    // else{
+                    //     $.get("/searchPlaylistByCategory?genre="+critiques[critiquesIndex].critiques[0].split("|")[1], function (res) {
+                    //         //remove loading animation
+                    //         $('.spinner').remove();
+                    //         console.log(res)
 
-                            var updateData = {}
-                            updateData.user = usermodel.user
-                            updateData.pool = playlist
-                            updateData.new_pool = res.tracks
+                    //         var updateData = {}
+                    //         updateData.user = usermodel.user
+                    //         updateData.pool = playlist
+                    //         updateData.new_pool = res.tracks
 
-                            console.log(updateData)
+                    //         console.log(updateData)
 
-                            getRecommendation(updateData).then(function (data) {
-                                var returnData = JSON.parse(data)
-                                console.log(returnData)
-                            })
+                    //         getRecommendation(updateData).then(function (data) {
+                    //             var returnData = JSON.parse(data)
+                    //             console.log(returnData)
 
-                            songIndex = 0
-                            speakandsing(robot, response, "Coherence")
-                        })
+                    //         })
 
-                    }
+                    //         songIndex = 0
+                    //         speakandsing(robot, response, "Coherence")
+                    //     })
+
+                    // }
 
                 })
 
@@ -852,7 +860,46 @@ $(document).ready(function () {
                     console.log(updateData)
                     updateUserModel(updateData)
 
-                    reRankPlaylist(critiques[critiquesIndex].recommendation)
+                    // debug!
+                    console.log(critiques[critiquesIndex].critiques)
+                    console.log(critiques[critiquesIndex].recommendation)
+
+                    
+                    //如果包含推荐结果
+                    if(critiques[critiquesIndex].recommendation.length>0)
+                    {
+                        reRankPlaylist(critiques[critiquesIndex].recommendation)
+                        // console.log(critiques[critiquesIndex].recommendation)
+                    }    
+
+                    //如果是random genres 没有推荐结果 -
+                    else{
+                        // console.log(critiques[critiquesIndex].critiques)
+                        
+                        $.get("/searchPlaylistByCategory?genre="+critiques[critiquesIndex].critiques[0].split("|")[1], function (res) {
+                            //remove loading animation
+                            $('.spinner').remove();
+                            console.log(res)
+
+                            var updateData = {}
+                            updateData.user = usermodel.user
+                            updateData.pool = playlist
+                            updateData.new_pool = res.tracks
+
+                            console.log(updateData)
+
+                            getRecommendation(updateData).then(function (data) {
+                                var returnData = JSON.parse(data)
+                                console.log(returnData)
+
+                            })
+
+                            songIndex = 0
+                            speakandsing(robot, response, "Coherence")
+                        })
+                    }
+
+                    // reRankPlaylist(critiques[critiquesIndex].recommendation)
                     showMusic(playlist[songIndex].id)
 
                 })
@@ -912,6 +959,7 @@ $(document).ready(function () {
                 logger.listenedSongs.push(playlist[songIndex])
 
                 showCurrentSong = setTimeout(function () {
+
                     console.log(numberOfLikedSongs)
 
 
@@ -996,7 +1044,8 @@ $(document).ready(function () {
                                                     }
                                                     playRequestLink(requestLink,explanation,false)
 
-                                                }else{
+                                                }
+                                                else{
 
                                                     //Check if SC should be triggered
                                                     var updateData2 = {}
@@ -1015,7 +1064,8 @@ $(document).ready(function () {
                                                             chat.append(line);
                                                             getSysCrit()
 
-                                                        }else{
+                                                        }
+                                                        else{
 
                                                             updateChat(robot, nextSongUtters[parseInt((nextSongUtters.length * Math.random()))], "Coherence")
 
@@ -1406,6 +1456,7 @@ $(document).ready(function () {
                 return new Promise(function (resolve, reject) {
 
                     var dialogNum = logger.dialog.length
+
                     var dialog = logger.dialog[dialogNum - 1]
 
                     dialog.critique = critique
