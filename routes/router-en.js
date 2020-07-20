@@ -9,11 +9,11 @@ var User = require('../public/model/user');
 const fs = require('fs');
 var franc = require('franc-min') //for language detection
 var pinyin = require("pinyin");
-var genreData = require('genre-data');
+var genreData = require('../public/js/genre-data');
 
+var avaGenres = genreData
 
-
-var avaGenres = genreData.list
+console.log(avaGenres)
 
 
 var appKey = 'a1d9f15f6ba54ef5aea0c5c4e19c0d2c',
@@ -739,7 +739,9 @@ router.post('/initiate', function(req, res) {
             var newGenres = []
 
             for (var i = genres.length; i >= 0; i--) {
-                if(avaGenres.indexOf(genres[i])>0)
+                // if(avaGenres.indexOf(genres[i])>0)
+                //     newGenres.push(genres[i])
+                if(avaGenres[genres[i]])
                     newGenres.push(genres[i])
             }
 

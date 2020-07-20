@@ -2,6 +2,7 @@ const socket = io();
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 const recognition = new SpeechRecognition();
+const genreData = genreMapList
 
 var spotifyToken = $.cookie('spotify-token')
 var refreshToken = $.cookie('refresh-token')
@@ -1007,7 +1008,7 @@ $(document).ready(function () {
                                                     var requestLink, explanation;
                                                     if(topRecommendedSong.realgenre!="niche"){
                                                         requestLink = '/searchPlaylist?q=' + topRecommendedSong.realgenre + "&token=" + spotifyToken;
-                                                        explanation = "OK, I recommend this song to you, because you like the songs of " + topRecommendedSong.realgenre + "."
+                                                        explanation = "OK, I recommend this song to you, because you like the songs of " + genreData[topRecommendedSong.realgenre] + "."
                                                     }else{
                                                         requestLink = '/searchArtist?q=' + likedSongArtist + '&token=' + spotifyToken;
                                                         explanation = "OK, I recommend this song to you, because you like " + likedSongArtist + "'s songs."
@@ -1443,7 +1444,7 @@ $(document).ready(function () {
 
                                         } else if (genre) {
                                             requestLink = '/searchPlaylist?q=' + genre + "&token=" + spotifyToken;
-                                            explaination = "OK, I recommend this song to you, because you like the songs of " + genre + "."
+                                            explaination = "OK, I recommend this song to you, because you like the songs of " + genreMapList[genre] + "."
                                         } else
                                             requestLink = ''
 
