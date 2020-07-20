@@ -1,104 +1,410 @@
-{
-    "acoustic": "acoustic music",
-    "afrobeat": "afrobeat",
-    "alternative": "alternative",
-    "ambient": "ambient music",
-    "anime": "anime",
-    "black-metal": "black metal",
-    "bluegrass": "bluegrass",
-    "blues": "blues",
-    "bossanova": "bossa nova",
-    "brazil": "brazil",
-    "breakbeat": "breakbeat",
-    "british": "british",
-    "chicago-house": "house music in chicago",
-    "children": "children",
-    "chill": "chillout music",
-    "classical": "classical music",
-    "club": "club music",
-    "comedy": "comedy music",
-    "country": "country music",
-    "dance": "dance music",
-    "dancehall": "dancehall",
-    "death-metal": "death metal",
-    "deep-house": "deep house music",
-    "disco": "disco music",
-    "disney": "disney",
-    "drum-and-bass": "drum and bass",
-    "dub": "dub music",
-    "dubstep": "dubstep music",
-    "edm": "electronic dance music",
-    "electronic": "electronic music",
-    "emo": "emotional hardcore",
-    "folk": "folk",
-    "forro": "forro music",
-    "french": "French music",
-    "funk": "funk music",
-    "garage": "garage music",
-    "german": "German music",
-    "gospel": "gospel music",
-    "goth": "goth music",
-    "grindcore": "grindcore music",
-    "groove": "groove music",
-    "grunge": "grunge music", 
-    "guitar": "guitar music",
-    "happy": "happy",
-    "hardcore": "hardcore",
-    "hardstyle": "hardstyle",
-    "heavy-metal": "heavy-metal",
-    "hip-hop": "hip-hop",
-    "holidays": "holidays",
-    "honky-tonk": "honky-tonk",
-    "house": "house music",
-    "idm": "intelligent dance music",
-    "indian": "Indian music",
-    "indie": "indie music",
-    "industrial": "industrial music",
-    "iranian": "Iranian music",
-    "j-dance": "Japanese dance music",
-    "jazz": "jazz",
-    "kids": "kids",
-    "latin": "Latin music",
-    "malay": "malay music",
-    "metal": "metal music",
-    "metal-misc": "metal-misc music",
-    "metalcore": "metalcore music",
-    "movies": "movie music",
-    "new-age": "new-age music",
-    "new-release": "new-release music",
-    "opera": "opera music",
-    "party": "party",
-    "philippines-opm": "music of the Philippines",
-    "piano": "piano music",
-    "pop": "pop music",
-    "pop-film": "popular film music",
-    "power-pop": "power-pop music",
-    "progressive-house": "progressive-house music",
-    "punk": "punk music",
-    "r-n-b": "R&B",
-    "rainy-day": "rainy-day music",
-    "reggae": "reggae music",
-    "road-trip": "road-trip music",
-    "rock": "rock music",
-    "romance": "romance music",
-    "sad": "sad music",
-    "salsa": "salsa music",
-    "samba": "samba music",
-    "show-tunes": "show-tunes",
-    "singer-songwriter": "singer-songwriter",
-    "sleep": "sleep music",
-    "songwriter": "songwriter music",
-    "soul": "soul music",
-    "soundtracks": "soundtracks",
-    "spanish": "Spanish music",
-    "study": "study music",
-    "summer": "summer music",
-    "swedish": "Swedish music",
-    "tango": "tango music",
-    "techno": "techno music",
-    "trance": "trance music",
-    "trip-hop": "trip-hop music",
-    "turkish": "Turkish music",
-    "work-out": "work-out music",
-    "world-music": "world music"
-}
+[
+    {
+        "id": "acoustic",
+        "name": "acoustic music"
+    },
+    {
+        "id": "afrobeat",
+        "name": "afrobeat"
+    },
+    {
+        "id": "alternative",
+        "name": "alternative"
+    },
+    {
+        "id": "ambient",
+        "name": "ambient music"
+    },
+    {
+        "id": "anime",
+        "name": "anime"
+    },
+    {
+        "id": "black-metal",
+        "name": "black metal"
+    },
+    {
+        "id": "bluegrass",
+        "name": "bluegrass"
+    },
+    {
+        "id": "blues",
+        "name": "blues"
+    },
+    {
+        "id": "bossanova",
+        "name": "bossa nova"
+    },
+    {
+        "id": "brazil",
+        "name": "brazil"
+    },
+    {
+        "id": "breakbeat",
+        "name": "breakbeat"
+    },
+    {
+        "id": "british",
+        "name": "british"
+    },
+    {
+        "id": "chicago-house",
+        "name": "house music in chicago"
+    },
+    {
+        "id": "children",
+        "name": "children"
+    },
+    {
+        "id": "chill",
+        "name": "chillout music"
+    },
+    {
+        "id": "classical",
+        "name": "classical music"
+    },
+    {
+        "id": "club",
+        "name": "club music"
+    },
+    {
+        "id": "comedy",
+        "name": "comedy music"
+    },
+    {
+        "id": "country",
+        "name": "country music"
+    },
+    {
+        "id": "dance",
+        "name": "dance music"
+    },
+    {
+        "id": "dancehall",
+        "name": "dancehall"
+    },
+    {
+        "id": "death-metal",
+        "name": "death metal"
+    },
+    {
+        "id": "deep-house",
+        "name": "deep house music"
+    },
+    {
+        "id": "disco",
+        "name": "disco music"
+    },
+    {
+        "id": "disney",
+        "name": "disney"
+    },
+    {
+        "id": "drum-and-bass",
+        "name": "drum and bass"
+    },
+    {
+        "id": "dub",
+        "name": "dub music"
+    },
+    {
+        "id": "dubstep",
+        "name": "dubstep music"
+    },
+    {
+        "id": "edm",
+        "name": "electronic dance music"
+    },
+    {
+        "id": "electronic",
+        "name": "electronic music"
+    },
+    {
+        "id": "emo",
+        "name": "emotional hardcore"
+    },
+    {
+        "id": "folk",
+        "name": "folk"
+    },
+    {
+        "id": "forro",
+        "name": "forro music"
+    },
+    {
+        "id": "french",
+        "name": "French music"
+    },
+    {
+        "id": "funk",
+        "name": "funk music"
+    },
+    {
+        "id": "garage",
+        "name": "garage music"
+    },
+    {
+        "id": "german",
+        "name": "German music"
+    },
+    {
+        "id": "gospel",
+        "name": "gospel music"
+    },
+    {
+        "id": "goth",
+        "name": "goth music"
+    },
+    {
+        "id": "grindcore",
+        "name": "grindcore music"
+    },
+    {
+        "id": "groove",
+        "name": "groove music"
+    },
+    {
+        "id": "grunge",
+        "name": "grunge music"
+    },
+    {
+        "id": "guitar",
+        "name": "guitar music"
+    },
+    {
+        "id": "happy",
+        "name": "happy"
+    },
+    {
+        "id": "hardcore",
+        "name": "hardcore"
+    },
+    {
+        "id": "hardstyle",
+        "name": "hardstyle"
+    },
+    {
+        "id": "heavy-metal",
+        "name": "heavy-metal"
+    },
+    {
+        "id": "hip-hop",
+        "name": "hip-hop"
+    },
+    {
+        "id": "holidays",
+        "name": "holidays"
+    },
+    {
+        "id": "honky-tonk",
+        "name": "honky-tonk"
+    },
+    {
+        "id": "house",
+        "name": "house music"
+    },
+    {
+        "id": "idm",
+        "name": "intelligent dance music"
+    },
+    {
+        "id": "indian",
+        "name": "Indian music"
+    },
+    {
+        "id": "indie",
+        "name": "indie music"
+    },
+    {
+        "id": "industrial",
+        "name": "industrial music"
+    },
+    {
+        "id": "iranian",
+        "name": "Iranian music"
+    },
+    {
+        "id": "j-dance",
+        "name": "Japanese dance music"
+    },
+    {
+        "id": "jazz",
+        "name": "jazz"
+    },
+    {
+        "id": "kids",
+        "name": "kids"
+    },
+    {
+        "id": "latin",
+        "name": "Latin music"
+    },
+    {
+        "id": "malay",
+        "name": "malay music"
+    },
+    {
+        "id": "metal",
+        "name": "metal music"
+    },
+    {
+        "id": "metal-misc",
+        "name": "metal-misc music"
+    },
+    {
+        "id": "metalcore",
+        "name": "metalcore music"
+    },
+    {
+        "id": "movies",
+        "name": "movie music"
+    },
+    {
+        "id": "new-age",
+        "name": "new-age music"
+    },
+    {
+        "id": "new-release",
+        "name": "new-release music"
+    },
+    {
+        "id": "opera",
+        "name": "opera music"
+    },
+    {
+        "id": "party",
+        "name": "party"
+    },
+    {
+        "id": "philippines-opm",
+        "name": "music of the Philippines"
+    },
+    {
+        "id": "piano",
+        "name": "piano music"
+    },
+    {
+        "id": "pop",
+        "name": "pop music"
+    },
+    {
+        "id": "pop-film",
+        "name": "popular film music"
+    },
+    {
+        "id": "power-pop",
+        "name": "power-pop music"
+    },
+    {
+        "id": "progressive-house",
+        "name": "progressive-house music"
+    },
+    {
+        "id": "punk",
+        "name": "punk music"
+    },
+    {
+        "id": "r-n-b",
+        "name": "R&B"
+    },
+    {
+        "id": "rainy-day",
+        "name": "rainy-day music"
+    },
+    {
+        "id": "reggae",
+        "name": "reggae music"
+    },
+    {
+        "id": "road-trip",
+        "name": "road-trip music"
+    },
+    {
+        "id": "rock",
+        "name": "rock music"
+    },
+    {
+        "id": "romance",
+        "name": "romance music"
+    },
+    {
+        "id": "sad",
+        "name": "sad music"
+    },
+    {
+        "id": "salsa",
+        "name": "salsa music"
+    },
+    {
+        "id": "samba",
+        "name": "samba music"
+    },
+    {
+        "id": "show-tunes",
+        "name": "show-tunes"
+    },
+    {
+        "id": "singer-songwriter",
+        "name": "singer-songwriter"
+    },
+    {
+        "id": "sleep",
+        "name": "sleep music"
+    },
+    {
+        "id": "songwriter",
+        "name": "songwriter music"
+    },
+    {
+        "id": "soul",
+        "name": "soul music"
+    },
+    {
+        "id": "soundtracks",
+        "name": "soundtracks"
+    },
+    {
+        "id": "spanish",
+        "name": "Spanish music"
+    },
+    {
+        "id": "study",
+        "name": "study music"
+    },
+    {
+        "id": "summer",
+        "name": "summer music"
+    },
+    {
+        "id": "swedish",
+        "name": "Swedish music"
+    },
+    {
+        "id": "tango",
+        "name": "tango music"
+    },
+    {
+        "id": "techno",
+        "name": "techno music"
+    },
+    {
+        "id": "trance",
+        "name": "trance music"
+    },
+    {
+        "id": "trip-hop",
+        "name": "trip-hop music"
+    },
+    {
+        "id": "turkish",
+        "name": "Turkish music"
+    },
+    {
+        "id": "work-out",
+        "name": "work-out music"
+    },
+    {
+        "id": "world-music",
+        "name": "world music"
+    }
+]
