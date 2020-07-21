@@ -60,8 +60,8 @@ def convert_to_critique_preference_dict(user_critique_preference):
                         critique_preference_on_attribute = [crit_value, max_number]
                         numerical_critique_dict[attr] = critique_preference_on_attribute
                     else:
-                        print("ERROR")
-                        input()
+                        print("Crit_direction - - ERROR -- " + crit_direction)
+                        # input()
                 if pos_or_neg == 'neg':
                     if crit_direction == 'lower':
                         critique_preference_on_attribute = [crit_value, max_number]
@@ -70,8 +70,8 @@ def convert_to_critique_preference_dict(user_critique_preference):
                         critique_preference_on_attribute = [min_number, crit_value]
                         numerical_critique_dict[attr] = critique_preference_on_attribute
                     else:
-                        print("ERROR")
-                        input()
+                        print("Crit_direction - - ERROR -- " + crit_direction)
+                        # input()
             else:
                 critique_preference_on_attribute = numerical_critique_dict[attr]
                 if pos_or_neg == 'pos':
@@ -84,8 +84,8 @@ def convert_to_critique_preference_dict(user_critique_preference):
                             critique_preference_on_attribute[0] = crit_value
                             numerical_critique_dict[attr] = critique_preference_on_attribute
                     else:
-                        print("ERROR")
-                        input()
+                        print("Crit_direction - - ERROR -- " + crit_direction)
+                        # input()
                 if pos_or_neg == 'neg':
                     if crit_direction == 'lower':
                         if crit_value > critique_preference_on_attribute[0] and crit_value < critique_preference_on_attribute[1]: 
@@ -96,8 +96,8 @@ def convert_to_critique_preference_dict(user_critique_preference):
                             critique_preference_on_attribute[1] = crit_value
                             numerical_critique_dict[attr] = critique_preference_on_attribute
                     else:
-                        print("ERROR")
-                        input()
+                        print("Crit_direction - - ERROR -- " + crit_direction)
+                        # input()
             
         
         # categorical attributes

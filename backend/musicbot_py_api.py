@@ -147,17 +147,18 @@ class GetRec(Resource):
             print("Get Recommendation ---- New Pool: %d songs." % (len(new_item_pool))) 
             time_helper.print_current_time()
             print("Get Recommendation ---- Original Item Pool: %d songs." % (len(item_pool))) 
-            integrated_item_pool = item_pool + new_item_pool
+            integrated_item_pool = new_item_pool + item_pool 
             assert(len(integrated_item_pool) == len(item_pool) + len(new_item_pool))
 
             max_item_pool_number = min([150, len(integrated_item_pool)])
-            updated_item_pool = recommendation.update_recommendation_pool(user_preference_model, user_critique_preference, integrated_item_pool, max_item_pool_number, categorical_attributes, numerical_attributes, method, alpha)
+            updated_item_pool = recommendation.update_recommendation_pool(user_preference_model, user_critique_preference, new_item_pool, integrated_item_pool, max_item_pool_number, categorical_attributes, numerical_attributes, method, alpha)
             print("Get Recommendation ---- Updated Item Pool: %d songs." % (len(updated_item_pool))) 
             
             user_profile['pool'] = updated_item_pool
             user_profile['new_pool'] = []
 
         
+        # print(len(user_profile['pool']))
         recommendation_and_user_profile = {'recommendation_list': topK_recommendation_list, 'user_profile': user_profile}
         
         end = time.process_time()
@@ -189,8 +190,12 @@ class GetSysCri(Resource):
         
         new_item_pool = user_profile['new_pool']
         item_pool_for_SC = item_pool
+        new_item_pool_state = False
+
         if len(new_item_pool) > 0:
+            new_item_pool_state = True
             item_pool_for_SC = new_item_pool
+
         time_helper.print_current_time()
         print("Get System Critiques ---- Item Pool: %d songs" % len(item_pool_for_SC))
 
@@ -212,7 +217,7 @@ class GetSysCri(Resource):
         if sys_crit_version == 'preference_oriented':
             sys_crit = system_critiquing.generate_system_critiques_preference_oriented(user_preference_model, user_critique_preference,estimated_score_dict, item_pool_for_SC, cur_rec, top_K, unit_or_compound, categorical_attributes, numerical_attributes)
         if sys_crit_version == 'diversity_oriented':
-            state, sys_crit = system_critiquing.generate_system_critiques_diversity_oriented(user_preference_model, user_critique_preference, user_interaction_log, estimated_score_dict, item_pool_for_SC, cur_rec, top_K, unit_or_compound, categorical_attributes, numerical_attributes)
+            state, sys_crit = system_critiquing.generate_system_critiques_diversity_oriented(user_preference_model, user_critique_preference, user_interaction_log, estimated_score_dict, item_pool_for_SC, cur_rec, top_K, unit_or_compound, categorical_attributes, numerical_attributes, new_item_pool_state)
         # if sys_crit_version == 'personality_adjusted':
         #     sys_crit = system_critiquing.generate_system_critiques_personality_adjusted(user_preference_model, user_interaction_log, estimated_score_dict, item_pool, cur_rec, top_K, unit_or_compound, categorical_attributes, numerical_attributes)
 
@@ -225,11 +230,11 @@ class GetSysCri(Resource):
             print("Get System Critiques ---- New Pool: %d songs." % (len(new_item_pool))) 
             time_helper.print_current_time()
             print("Get System Critiques ---- Original Item Pool: %d songs." % (len(item_pool))) 
-            integrated_item_pool = item_pool + new_item_pool
+            integrated_item_pool = new_item_pool + item_pool 
             assert(len(integrated_item_pool) == len(item_pool) + len(new_item_pool))
 
             max_item_pool_number = min([150, len(integrated_item_pool)])
-            updated_item_pool = recommendation.update_recommendation_pool(user_preference_model, user_critique_preference, integrated_item_pool, max_item_pool_number, categorical_attributes, numerical_attributes, method, alpha)
+            updated_item_pool = recommendation.update_recommendation_pool(user_preference_model, user_critique_preference, new_item_pool, integrated_item_pool, max_item_pool_number, categorical_attributes, numerical_attributes, method, alpha)
             print("Get System Critiques ---- Updated Item Pool: %d songs." % (len(updated_item_pool))) 
             
             user_profile['pool'] = updated_item_pool

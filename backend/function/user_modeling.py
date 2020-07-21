@@ -186,7 +186,7 @@ def update_user_model(user_model, user_interaction_dialog, user_listened_longs, 
                         latest_user_critique_preference = updated_user_critique_preference[-1]
                         time_helper.print_current_time()
                         print("latest_critique: ", latest_user_critique_preference)
-                        if latest_user_critique_preference['pos_or_neg'] == 'neg' and latest_user_critique_preference['attribute'] == attr:
+                        if attr in numerical_attributes and latest_user_critique_preference['pos_or_neg'] == 'neg' and latest_user_critique_preference['attribute'] == attr:
                             updated_user_attribute_frequency[attr] = updated_user_attribute_frequency[attr] / 2
                             time_helper.print_current_time()
                             print("update attribute frequence: attribute (%s) - %f. "% (attr, updated_user_attribute_frequency[attr]))

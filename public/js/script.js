@@ -212,6 +212,7 @@ $(document).ready(function () {
             dataType: "json",
             success: function (result) {
                 var returned = JSON.parse(result)
+                // console.log("update pool: ", returned.user_profile.pool)
                 playlist = returned.user_profile.pool
                 console.log("UC推荐: ", returned)
                 if (returned.recommendation_list.length > 0)
@@ -303,7 +304,8 @@ $(document).ready(function () {
                 playlist.push(data.pool[index])
             }
 
-
+            // ------------------------------------------
+            // Process genre -> label niche genres
             var allGenres = []
 
             for(var index in playlist){
@@ -333,6 +335,7 @@ $(document).ready(function () {
                     }
                 }
             }
+            // ------------------------------------------
 
 
             var copyPlaylist = data.pool.concat()
@@ -511,6 +514,39 @@ $(document).ready(function () {
                             playlist.push(data2.pool[index])
                         }
 
+                        // ------------------------------------------
+                        // Process genre -> label niche genres
+                        var allGenres2 = []
+
+                        for(var index in playlist){
+                            allGenres2.push(playlist[index].genre)
+                        }
+
+                        var mapGenres2 = allGenres2.reduce((m, x) => m.set(x, (m.get(x) || 0) + 1), new Map())
+
+                        // 所有次数
+                        genreTimes2 = Array.from(mapGenres2.values())
+                        //去重后的值
+                        distinctGenres2 = Array.from(mapGenres2.keys())
+
+                        //小众的genres的数量，已经小众的genres列表
+                        var fewGenres2=[]
+                        for(var index in genreTimes2){
+                            if(genreTimes2[index]<11){
+                                fewGenres2.push(distinctGenres2[index])
+                            }
+                        }
+                        //
+                        for(var index in playlist) {
+                            for (var index2 in fewGenres2) {
+                                if (playlist[index].genre == fewGenres2[index2]) {
+                                    playlist[index].realgenre = fewGenres2[index2]
+                                    playlist[index].genre = "niche"
+                                }
+                            }
+                        }
+                        // ------------------------------------------
+
                         copyPlaylist = data2.pool.concat()
 
 
@@ -552,6 +588,99 @@ $(document).ready(function () {
             var critiques = [];
             var critiquesIndex = 0;
 
+            var constructCritiques = function(firstThreeCrits){
+                var critiques2 = [];
+                for (var crt in firstThreeCrits) {
+
+                    //var wording = "Do you like the songs of ";
+                    var songType = "",
+                        features = "";
+                    var actionSet = {},
+                        action = [];
+
+                    var returnedCritiques = firstThreeCrits[crt].critique
+
+                    for (var index in returnedCritiques) {
+
+                        if (returnedCritiques[index].split("|")[0] == "language") {
+                            var actionItem = {}
+                            actionItem.prop = "language"
+                            actionItem.val = returnedCritiques[index].split("|")[1]
+                            actionItem.type = "equal"
+                            action.push(actionItem)
+                            songType += actionItem.val + " "
+
+                        } else if (returnedCritiques[index].split("|")[0] == "genre") {
+                            var actionItem = {}
+                            actionItem.prop = "genre"
+                            var genreName = returnedCritiques[index].split("|")[1]
+                            if (genreName in genreData)
+                                actionItem.val = genreData[genreName]
+                            else 
+                                actionItem.val = genreName
+                            actionItem.type = "equal"
+                            action.push(actionItem)
+                            songType += actionItem.val + " "
+
+                        } else if (returnedCritiques[index].split("|")[0] == "artist") {
+                            var actionItem = {}
+                            actionItem.prop = "artist"
+                            actionItem.val = returnedCritiques[index].split("|")[1]
+                            actionItem.type = "equal"
+                            action.push(actionItem)
+                            songType += action.artist + " "
+
+                        } else if (returnedCritiques[index].split("|")[1] == "lower") {
+                            var actionItem = {}
+                            actionItem.prop = returnedCritiques[index].split("|")[0]
+                            // actionItem.val = -0.1
+                            actionItem.type = "lower"
+                            action.push(actionItem)
+                            features += "lower " + returnedCritiques[index].split("|")[0] + ", "
+
+                        } else if (returnedCritiques[index].split("|")[1] == "higher") {
+                            var actionItem = {}
+                            actionItem.prop = returnedCritiques[index].split("|")[0]
+                            // actionItem.val = 0.1
+                            actionItem.type = "higher"
+                            action.push(actionItem)
+                            features += "higher " + returnedCritiques[index].split("|")[0] + ", "
+                        } else if (returnedCritiques[index].split("|")[1] == "similar") {
+                            var actionItem = {}
+                            actionItem.prop = returnedCritiques[index].split("|")[0]
+                            // actionItem.val = 0.1
+                            actionItem.type = "similar"
+                            action.push(actionItem)
+                            features += "similar " + returnedCritiques[index].split("|")[0] + ", "
+                        }
+                    }
+
+                    var emphText=""
+                    if (songType && !features) {
+                        emphText = songType
+                    }
+                    else if (!songType && features) {
+                        emphText = features.substr(0, features.length - 2)
+                    }
+                    else if (songType && features) {
+                        emphText = songType + "and with " + features.substr(0, features.length - 2)
+                    }
+
+                    actionSet.speech = emphText
+
+
+                    actionSet.action = action
+                    actionSet.recommendation = firstThreeCrits[crt].recommendation
+                    actionSet.critiques = returnedCritiques
+                    console.log(actionSet)
+
+                    critiques2.push(actionSet)
+
+                }
+
+                return critiques2
+            }
+
             function getSysCrit() {
                 var dialogNum = logger.dialog.length
                 var dialog = logger.dialog[dialogNum - 1]
@@ -585,15 +714,33 @@ $(document).ready(function () {
 
                     if (state=="SC_and_Recommendation"){
                         firstThreeCrits = sc_result.result.slice(0, 3)
+                        critiques = constructCritiques(firstThreeCrits)
+                        console.log(critiques)
+                        $('.spinner').remove();
+                        updateChat(crit, critiques[critiquesIndex].speech, "System_Suggest", critiques[critiquesIndex].critiques, true);
+
+
                     }
                     else if (state=="Get_Songs_by_Genre"){
                         var genreName = sc_result.result
-                        var requestedLink = "/getRecom?token="+spotifyToken+"&genreSeeds="+genreName
+                        var genreNane_hphen = genreName.replace(" ", "-")
+                        var genreNane_none = genreName.replace(" ", "")
+                  
+                        var requestedLink = ""
+                        if (genreName in genreData)
+                            requestedLink = "/getRecom?token="+spotifyToken+"&genreSeeds="+genreName
+                        else if (genreNane_hphen in genreData)
+                            requestedLink = "/getRecom?token="+spotifyToken+"&genreSeeds="+genreName
+                        else if (genreNane_none in genreData)
+                            requestedLink = "/getRecom?token="+spotifyToken+"&genreSeeds="+genreName
+                        else
+                            requestedLink = '/searchPlaylist?q=' + genreName + "&token=" + spotifyToken;
 
                         $.get(requestedLink,function (res) {
 
                             updateData.new_pool = res.tracks
-
+                            console.log(updateData.new_pool)
+                       
                             //再次请求systemCritiques
 
                             systemCritiques(updateData).then(function (rawCrits) {
@@ -610,7 +757,13 @@ $(document).ready(function () {
 
                                 if (state=="SC_and_Recommendation"){
                                     firstThreeCrits = sc_result.result.slice(0, 3)
+                                    
                                 }
+                                critiques = constructCritiques(firstThreeCrits)
+                                console.log(critiques)
+                                $('.spinner').remove();
+                                updateChat(crit, critiques[critiquesIndex].speech, "System_Suggest", critiques[critiquesIndex].critiques, true);
+            
 
                             })
 
@@ -627,99 +780,17 @@ $(document).ready(function () {
                             firstThreeCrits[index].critique = ["genre|"+genreNameList[index]]
                             firstThreeCrits[index].recommendation = []
                         }
+                        critiques = constructCritiques(firstThreeCrits)
+                        console.log(critiques)
+
+                        $('.spinner').remove();
+                        updateChat(crit, critiques[critiquesIndex].speech, "System_Suggest", critiques[critiquesIndex].critiques, true);
                     }
 
 
-                    console.log(firstThreeCrits)
+                  
 
-                    for (var crt in firstThreeCrits) {
-
-                        //var wording = "Do you like the songs of ";
-                        var songType = "",
-                            features = "";
-                        var actionSet = {},
-                            action = [];
-
-                        var returnedCritiques = firstThreeCrits[crt].critique
-
-                        for (var index in returnedCritiques) {
-
-                            if (returnedCritiques[index].split("|")[0] == "language") {
-                                var actionItem = {}
-                                actionItem.prop = "language"
-                                actionItem.val = returnedCritiques[index].split("|")[1]
-                                actionItem.type = "equal"
-                                action.push(actionItem)
-                                songType += actionItem.val + " "
-
-                            } else if (returnedCritiques[index].split("|")[0] == "genre") {
-                                var actionItem = {}
-                                actionItem.prop = "genre"
-                                actionItem.val = returnedCritiques[index].split("|")[1]
-                                actionItem.type = "equal"
-                                action.push(actionItem)
-                                songType += actionItem.val + " "
-
-                            } else if (returnedCritiques[index].split("|")[0] == "artist") {
-                                var actionItem = {}
-                                actionItem.prop = "artist"
-                                actionItem.val = returnedCritiques[index].split("|")[1]
-                                actionItem.type = "equal"
-                                action.push(actionItem)
-                                songType += action.artist + " "
-
-                            } else if (returnedCritiques[index].split("|")[1] == "lower") {
-                                var actionItem = {}
-                                actionItem.prop = returnedCritiques[index].split("|")[0]
-                                // actionItem.val = -0.1
-                                actionItem.type = "lower"
-                                action.push(actionItem)
-                                features += "lower " + returnedCritiques[index].split("|")[0] + ", "
-                            } else if (returnedCritiques[index].split("|")[1] == "higher") {
-                                var actionItem = {}
-                                actionItem.prop = returnedCritiques[index].split("|")[0]
-                                // actionItem.val = 0.1
-                                actionItem.type = "higher"
-                                action.push(actionItem)
-                                features += "higher " + returnedCritiques[index].split("|")[0] + ", "
-                            } else if (returnedCritiques[index].split("|")[1] == "similar") {
-                                var actionItem = {}
-                                actionItem.prop = returnedCritiques[index].split("|")[0]
-                                // actionItem.val = 0.1
-                                actionItem.type = "similar"
-                                action.push(actionItem)
-                                features += "similar " + returnedCritiques[index].split("|")[0] + ", "
-                            }
-                        }
-
-                        var emphText=""
-                        if (songType && !features) {
-                            emphText = songType
-                        }
-                        else if (!songType && features) {
-                            emphText = features.substr(0, features.length - 2)
-                        }
-                        else if (songType && features) {
-                            emphText = songType + "and with " + features.substr(0, features.length - 2)
-                        }
-
-                        actionSet.speech = emphText
-
-
-                        actionSet.action = action
-                        actionSet.recommendation = firstThreeCrits[crt].recommendation
-                        actionSet.critiques = returnedCritiques
-                        console.log(actionSet)
-
-                        critiques.push(actionSet)
-
-                    }
-
-                    console.log(critiques)
-
-                    $('.spinner').remove();
-                    // [Wanling] - revise
-                    updateChat(crit, critiques[critiquesIndex].speech, "System_Suggest", critiques[critiquesIndex].critiques, true);
+                    
 
                 })
 
@@ -833,7 +904,7 @@ $(document).ready(function () {
 
                     // debug!
                     console.log(critiques[critiquesIndex].critiques)
-                    console.log(critiques[critiquesIndex].recommendation)
+                    // console.log(critiques[critiquesIndex].recommendation)
 
                     
                     //如果包含推荐结果
@@ -841,6 +912,8 @@ $(document).ready(function () {
                     {
                         reRankPlaylist(critiques[critiquesIndex].recommendation)
                         // console.log(critiques[critiquesIndex].recommendation)
+                        showMusic(playlist[songIndex].id)
+
                     }    
 
                     //如果是random genres 没有推荐结果 -
@@ -862,16 +935,17 @@ $(document).ready(function () {
                             getRecommendation(updateData).then(function (data) {
                                 var returnData = JSON.parse(data)
                                 console.log(returnData)
+                                songIndex = 0
+                                showMusic(playlist[songIndex].id)
 
                             })
 
-                            songIndex = 0
-                            speakandsing(robot, response, "Coherence")
+
+                            // speakandsing(robot, response, "Coherence")
                         })
                     }
 
                     // reRankPlaylist(critiques[critiquesIndex].recommendation)
-                    showMusic(playlist[songIndex].id)
 
                 })
 
@@ -1339,6 +1413,8 @@ $(document).ready(function () {
             function speakandsing(agent, text, action) {
 
                 updateChat(agent, text, action, "text");
+
+
                 if (listenedSongs.indexOf(topRecommendedSong) < 0) {
                     listenedSongs.push(topRecommendedSong)
                     setTimeout(function () {
@@ -1365,7 +1441,8 @@ $(document).ready(function () {
                         showMusic(playlist[songIndex].id)
                     }, 3000)
 
-                } else {
+                } 
+                else {
                     showMusic(playlist[songIndex].id)
                 }
             }
@@ -1387,7 +1464,9 @@ $(document).ready(function () {
                  */
 
                 var intent = text.action;
-                var response = text.fulfillment.speech;
+                var response_speech = text.fulfillment.speech;
+
+                console.log(text)
 
                 var artist, song, genre, valence, tempo, action, feature;
                 var explaination = ""
@@ -1410,11 +1489,11 @@ $(document).ready(function () {
                         chat.append(line);
                         getSysCrit()
 
-                    }else{
-
+                    }
+                    else{
                         //search by artist
                         if (intent.indexOf("smalltalk")>-1){
-                            updateChat(robot, response, "Small_talk", "text");
+                            updateChat(robot, response_speech, "Small_talk", "text");
                         }
                         else if (intent == "music_player_control.skip_forward") {
                             skipTimes++;
@@ -1449,9 +1528,97 @@ $(document).ready(function () {
                                             requestLink = ''
 
                                         playRequestLink(requestLink,explaination,false)
-                                    } else {
+                                    } 
+                                    else {
                                         songIndex = 0
-                                        speakandsing(robot, response, "Coherence")
+                                        speakandsing(robot, response_speech, "Coherence")
+                                    }
+                                })
+                            }
+
+                        }
+                        else if (intent == "music_player_control.features") {
+                            valence = text.parameters["music-valence"]
+                            tempo = text.parameters["music-tempo"]
+                            action = text.parameters["feature-actions"]
+                            feature = text.parameters["music-features"]
+
+                            if (tempo == "fast")
+                                critique.push({"tempo": "higher"})
+                            else if (tempo == "normal")
+                                critique.push({"tempo": "normal"})
+                            else if (tempo == "slow")
+                                critique.push({"tempo": "lower"})
+
+                            if (valence == "happy")
+                                critique.push({"valence": "higher"})
+                            else if (valence == "neutral")
+                                critique.push({"valence": "normal"})
+                            else if (valence == "sad")
+                                critique.push({"valence": "lower"})
+
+                            if (feature) {
+                                var item = {}
+                                if (!action)
+                                    action = "higher"
+
+                                if (feature == 'speech')
+                                    feature = "speechiness"
+                                
+                                item[feature] = action
+                                console.log(item)
+                                critique.push(item)
+                            }
+
+                            if (critique.length > 0) {
+                                updateAndGetRec(critique).then(function (data) {
+                                    var num = parseInt(data)
+                                    if (num == 0) {
+                                        console.log("没有找到匹配的歌曲")
+                                        if (valence) {
+                                            if (valence == "happy") {
+                                                requestLink = '/getRecom?artistSeeds=' + seed_artists + '&seed_tracks=' + seed_tracks + '&genreSeeds=' + seed_genres + '&target_valence=' + data.user.preferenceData.valence + '&token=' + spotifyToken;
+                                            }
+                                            else if (valence == "neutral") {
+                                                requestLink = '/getRecom?artistSeeds=' + seed_artists + '&seed_tracks=' + seed_tracks + '&genreSeeds=' + seed_genres + '&target_valence=' + data.user.preferenceData.valence + '&token=' + spotifyToken;
+                                            }
+                                            else if (valence == "sad") {
+                                                requestLink = '/getRecom?artistSeeds=' + seed_artists + '&seed_tracks=' + seed_tracks + '&genreSeeds=' + seed_genres + '&target_valence=' + data.user.preferenceData.valence + '&token=' + spotifyToken;
+                                            }
+                                            explaination = "OK, I recommend this song to you, because you like the " + valence + " songs"
+                                        } else if (tempo) {
+                                            if (tempo == "fast") {
+                                                requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&target_tempo=' + data.user.preferenceData.tempo + '&token=' + spotifyToken;
+                                            }
+                                            else if (tempo == "normal") {
+                                                requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&target_tempo=' + data.user.preferenceData.tempo + '&token=' + spotifyToken;
+                                            } else if (tempo == "slow") {
+                                                requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&target_tempo=' + data.user.preferenceData.tempo + '&token=' + spotifyToken;
+                                            }
+                                            explaination = "OK, I recommend this song to you, because you like the " + tempo + " songs"
+                                        } else if (feature) {
+                                            if (feature == "speech")
+                                                feature = "speechiness"
+                                            if (action == "higher") {
+                                                requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&target_'+feature+'=' + topRecommendedSong[feature] + "&token=" + spotifyToken;
+                                                explaination = "OK, I recommend this song to you, because you like the songs of higher"+ feature+"."
+                                            }
+                                            else if (action == "lower") {
+                                                requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&target_'+feature+'=' + topRecommendedSong[feature] + "&token=" + spotifyToken;
+                                                explaination = "OK, I recommend this song to you, because you like the songs of lower"+ feature+"."
+                                            }
+                                            else if (action == "") {
+                                                requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + 'target_'+feature+'=' + topRecommendedSong[feature] + "&token=" + spotifyToken;
+                                                explaination = "OK, I recommend this song to you, because you like the songs of higher"+ feature+"."
+                                            }
+
+                                        }
+                                        playRequestLink(requestLink,explaination,false)
+
+                                    } 
+                                    else {
+                                        songIndex = 0
+                                        speakandsing(robot, response_speech, "Coherence")
                                     }
                                 })
                             }
@@ -1521,88 +1688,10 @@ $(document).ready(function () {
                                 }
                             }
                         }
-                        else if (intent == "music_player_control.features") {
-                            valence = text.parameters["music-valence"]
-                            tempo = text.parameters["music-tempo"]
-                            action = text.parameters["feature-actions"]
-                            feature = text.parameters["music-features"]
 
-                            if (tempo == "fast")
-                                critique.push({"tempo": "higher"})
-                            else if (tempo == "normal")
-                                critique.push({"tempo": "normal"})
-                            else if (tempo == "slow")
-                                critique.push({"tempo": "lower"})
-
-                            if (valence == "happy")
-                                critique.push({"valence": "higher"})
-                            else if (valence == "neutral")
-                                critique.push({"valence": "normal"})
-                            else if (valence == "sad")
-                                critique.push({"valence": "lower"})
-
-                            if (feature) {
-                                var item = {}
-                                item[feature] = action
-                                console.log(item)
-                                critique.push(item)
-                            }
-
-                            if (critique.length > 0) {
-                                updateAndGetRec(critique).then(function (data) {
-                                    var num = parseInt(data)
-                                    if (num == 0) {
-                                        console.log("没有找到匹配的歌曲")
-                                        if (valence) {
-                                            if (valence == "happy") {
-                                                requestLink = '/getRecom?artistSeeds=' + seed_artists + '&seed_tracks=' + seed_tracks + '&genreSeeds=' + seed_genres + '&target_valence=' + data.user.preferenceData.valence + '&token=' + spotifyToken;
-                                            }
-                                            else if (valence == "neutral") {
-                                                requestLink = '/getRecom?artistSeeds=' + seed_artists + '&seed_tracks=' + seed_tracks + '&genreSeeds=' + seed_genres + '&target_valence=' + data.user.preferenceData.valence + '&token=' + spotifyToken;
-                                            }
-                                            else if (valence == "sad") {
-                                                requestLink = '/getRecom?artistSeeds=' + seed_artists + '&seed_tracks=' + seed_tracks + '&genreSeeds=' + seed_genres + '&target_valence=' + data.user.preferenceData.valence + '&token=' + spotifyToken;
-                                            }
-                                            explaination = "OK, I recommend this song to you, because you like the " + valence + " songs"
-                                        } else if (tempo) {
-                                            if (tempo == "fast") {
-                                                requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&target_tempo=' + data.user.preferenceData.tempo + '&token=' + spotifyToken;
-                                            }
-                                            else if (tempo == "normal") {
-                                                requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&target_tempo=' + data.user.preferenceData.tempo + '&token=' + spotifyToken;
-                                            } else if (tempo == "slow") {
-                                                requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&target_tempo=' + data.user.preferenceData.tempo + '&token=' + spotifyToken;
-                                            }
-                                            explaination = "OK, I recommend this song to you, because you like the " + tempo + " songs"
-                                        } else if (feature) {
-
-                                            if (action == "higher") {
-                                                requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&target_'+feature+'=' + data.user.preferenceData.energy + "&token=" + spotifyToken;
-                                                explaination = "OK, I recommend this song to you, because you like the songs of higher"+ feature+"."
-                                            }
-                                            else if (action == "lower") {
-                                                requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&target_'+feature+'=' + data.user.preferenceData.energy + "&token=" + spotifyToken;
-                                                explaination = "OK, I recommend this song to you, because you like the songs of lower"+ feature+"."
-                                            }
-                                            else if (action == "") {
-                                                requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + 'target_'+feature+'=' + data.user.preferenceData.energy + "&token=" + spotifyToken;
-                                                explaination = "OK, I recommend this song to you, because you like the songs of higher"+ feature+"."
-                                            }
-
-                                        }
-                                        playRequestLink(requestLink,explaination,false)
-
-                                    } else {
-                                        songIndex = 0
-                                        speakandsing(robot, response, "Coherence")
-                                    }
-                                })
-                            }
-
-                        }
                         else if (!intent) {
                             requestLink = ''
-                            playRequestLink(requestLink,response,true)
+                            playRequestLink(requestLink,response_speech,true)
                         }
 
                     }

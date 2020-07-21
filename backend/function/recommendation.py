@@ -52,6 +52,7 @@ def filter_items_by_user_constraints(user_constraints, item_pool, minimal_thresh
     # revise
 
     filtered_item_pool = copy.deepcopy(item_pool)
+    filter_by_top_critique = False
 
     for critique_unit_dict in user_constraints:
         filtered_id_list = []
@@ -60,9 +61,6 @@ def filter_items_by_user_constraints(user_constraints, item_pool, minimal_thresh
         crit_value = ''
         if attr in numerical_attributes:
             crit_value = critique_unit_dict['value']
-
-        if len(filtered_item_pool) < minimal_threshold:
-            break
         
         if attr in categorical_attributes:
             for item in filtered_item_pool:
@@ -117,7 +115,16 @@ def filter_items_by_user_constraints(user_constraints, item_pool, minimal_thresh
         for item in filtered_item_pool:
             if item['id'] not in filtered_id_list:
                 updated_filtered_item_pool.append(item)
-        filtered_item_pool = copy.deepcopy(updated_filtered_item_pool)
+
+        print(len(filtered_item_pool))
+        print(len(updated_filtered_item_pool))
+
+        if filter_by_top_critique and len(updated_filtered_item_pool) < minimal_threshold:
+            return filtered_item_pool
+
+        else:
+            filtered_item_pool = copy.deepcopy(updated_filtered_item_pool)
+            filter_by_top_critique = True
     
 
     return filtered_item_pool
@@ -333,7 +340,7 @@ def compute_recommendation(user_preference_model, user_critique_preference, item
 
     if method == 'MAUT_COMPAT':
         item_maut_score_dict = compute_recommendation_by_MAUT(user_preference_model, item_pool, len(item_pool), categorical_attributes, numerical_attributes, sort=False )
-        item_compatibility_score_dict = compute_recommendation_compatibility_score(user_critique_preference, item_pool, top_K, categorical_attributes, numerical_attributes, sort=False )
+        item_compatibility_score_dict = compute_recommendation_compatibility_score(user_critique_preference, item_pool, len(item_pool), categorical_attributes, numerical_attributes, sort=False )
 
         integrated_score_dict = {}
         for item, maut_score in item_maut_score_dict.items():
@@ -346,21 +353,46 @@ def compute_recommendation(user_preference_model, user_critique_preference, item
         else:
             return integrated_score_dict
 
-def update_recommendation_pool(user_preference_model, user_critique_preference, integrated_item_pool, max_item_pool_number, categorical_attributes, numerical_attributes, method, alpha):
+def update_recommendation_pool(user_preference_model, user_critique_preference, new_item_pool, integrated_item_pool, max_item_pool_number, categorical_attributes, numerical_attributes, method, alpha):
 
-    sorted_estimated_score_dict = compute_recommendation(user_preference_model, user_critique_preference, integrated_item_pool, max_item_pool_number, categorical_attributes, numerical_attributes, method, alpha)
+    sorted_estimated_score_dict = compute_recommendation(user_preference_model, user_critique_preference, integrated_item_pool, len(integrated_item_pool), categorical_attributes, numerical_attributes, method, alpha)
     
+    integrated_item_pool_dict = {}
+    new_item_pool_dict = {}
+
+    for item in integrated_item_pool:
+        integrated_item_pool_dict[item['id']] = item
+    for item in new_item_pool:
+        new_item_pool_dict[item['id']] = item
+
     max_item_pool_list = []
     for rec in sorted_estimated_score_dict:
         max_item_pool_list.append(rec[0])
 
-    updated_item_pool = []
-    updated_item_pool_id = []
-    for item in integrated_item_pool:
-        if item['id'] in max_item_pool_list and item['id'] not in updated_item_pool_id:
-            updated_item_pool_id.append(item['id'])
-            updated_item_pool.append(item)
+    new_sorted_max_item_pool_list = [] ## make sure new item in the top list
+    item_not_in_new_item_pool_list = []
+    for item_id in max_item_pool_list:
+        if item_id in new_item_pool_dict:
+            new_sorted_max_item_pool_list.append(new_item_pool_dict[item_id])
+        else:
+            item_not_in_new_item_pool_list.append(integrated_item_pool_dict[item_id])
     
+
+
+    for item in item_not_in_new_item_pool_list:
+        new_sorted_max_item_pool_list.append(item)
+        if len(new_sorted_max_item_pool_list) == max_item_pool_number:
+            break
+
+    # print(len(new_sorted_max_item_pool_list))
+    
+    updated_item_pool = new_sorted_max_item_pool_list
+    # updated_item_pool_id = []
+    # for item_id in new_sorted_max_item_pool_list:
+    #     updated_item_pool_id.append(item_id)
+    #     updated_item_pool.append(integrated_item_pool_dict[item_id])
+
+    # print(updated_item_pool)
    
     return copy.deepcopy(updated_item_pool)
 

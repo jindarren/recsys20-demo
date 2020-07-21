@@ -358,10 +358,11 @@ def obtain_top_k_critique_with_recommendation_list(top_K, sorted_critique_utilit
             satisfied_item_score_dict[item] = estimated_score_dict[item]
         sorted_satisfied_item_score_list = helper.sort_dict(satisfied_item_score_dict)
         sorted_satisfied_item_list = []
+        
         for item in sorted_satisfied_item_score_list:
             sorted_satisfied_item_list.append(item[0])
-            if len(sorted_satisfied_item_list) >= top_K:
-                break
+            # if len(sorted_satisfied_item_list) >= top_K:
+            #     break
 
         topK_critique_item_list.append({'critique': critique, 'recommendation' : sorted_satisfied_item_list})
     return topK_critique_item_list
@@ -458,11 +459,16 @@ def generate_system_critiques_preference_oriented(user_info, user_critique_prefe
     
     time_helper.print_current_time()
     print('compute critique utility - preference-oriented - Done.')
-    
-    
+
+    # version 1: re-sort SC (put the critiques with same attribute but different directions together)
     top_K = min([top_K, len(sorted_critique_utility_list)])
-    sorted_critique_diveristy_utility_list = compute_critique_diversity_utility(sorted_critique_utility_list, top_K)
+    sorted_critique_list = resort_critique_list (sorted_critique_utility_list, top_K, numerical_attributes)
+
     
+    # top_K = min([top_K, len(sorted_critique_utility_list)])
+    # sorted_critique_diveristy_utility_list = compute_critique_diversity_utility(sorted_critique_utility_list, top_K)
+    
+
     time_helper.print_current_time()
     print('obtain critique diversified - Done.')
 
@@ -470,14 +476,14 @@ def generate_system_critiques_preference_oriented(user_info, user_critique_prefe
     # pp.pprint(sorted_critique_diveristy_utility_list)
 
     # pp.pprint(sorted_critique_diveristy_utility_list)
-    topK_critique_item_list = obtain_top_k_critique_with_recommendation_list(top_K, sorted_critique_diveristy_utility_list, frequent_critiques_satisfied_items_dict,estimated_score_dict)
+    topK_critique_item_list = obtain_top_k_critique_with_recommendation_list(top_K, sorted_critique_list, frequent_critiques_satisfied_items_dict,estimated_score_dict)
 
 
     return topK_critique_item_list
 
 
 
-def generate_system_critiques_diversity_oriented(user_info, user_critique_preference, interaction_log,  estimated_score_dict, item_pool, cur_rec, top_K, unit_or_compound, categorical_attributes, numerical_attributes):
+def generate_system_critiques_diversity_oriented(user_info, user_critique_preference, interaction_log,  estimated_score_dict, item_pool, cur_rec, top_K, unit_or_compound, categorical_attributes, numerical_attributes, new_item_pool_state):
     
     # Switch Mechanism: Determine Categorical (Level 1 - Genre) or Numerical Feature (Level 2) to critique based on the tracked dialogue state
     switch_condition = {}
@@ -499,7 +505,7 @@ def generate_system_critiques_diversity_oriented(user_info, user_critique_prefer
     processed_item_pool = []
     cur_genre = cur_rec['genre']
     # 
-    if len(categorical_attributes_for_critiquing) == 0:
+    if len(categorical_attributes_for_critiquing) == 0 and new_item_pool_state == False:
         for item in item_pool:
             if item['genre'] == cur_genre:
                 processed_item_pool.append(item)
@@ -556,7 +562,7 @@ def generate_system_critiques_diversity_oriented(user_info, user_critique_prefer
             niche_genre_list = [] # find all the niche genres in the recommendation pool
             for item in processed_item_pool:
                 if item['genre'] == 'niche' and item['realgenre'] not in niche_genre_list:
-                    if item['realgenre'] not in previous_occured_genres:
+                    if item['realgenre'] not in previous_occured_genres and item['realgenre'] in whole_genre_list:
                         niche_genre_list.append(item['realgenre'])
             if len(niche_genre_list) >= 5:
                 genre_list_for_explore = random.sample(niche_genre_list, num_genre_list_for_explore)
