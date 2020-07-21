@@ -403,8 +403,18 @@ $(document).ready(function () {
             $(".loading").hide()
             $(".window, #message").show()
 
-            var seed_artists = data.user.preferenceData.artist.toString()
-            var seed_tracks = data.user.preferenceData.track.slice(0,5).toString()
+            var seed_artists = ""
+            for (var index in data.user.preferenceData.artist){
+                seed_artists += data.user.preferenceData.artist[index].id+","
+            }
+            seed_artists = seed_artists.substr(0,seed_artists.length-1)
+
+            var seed_tracks = ""
+            for (var index in data.user.preferenceData.track){
+                seed_tracks += data.user.preferenceData.track[index].id+","
+            }
+            seed_tracks = seed_tracks.substr(0,seed_tracks.length-1)
+
             var seed_genres = data.user.preferenceData.genre[0].toString()
 
             recognition.lang = 'en-US';
@@ -1086,6 +1096,7 @@ $(document).ready(function () {
                                                         requestLink = '/searchArtist?q=' + likedSongArtist + '&token=' + spotifyToken;
                                                         explanation = "OK, I recommend this song to you, because you like " + likedSongArtist + "'s songs."
                                                     }
+                                                    requestLink = encodeURI(requestLink)
                                                     playRequestLink(requestLink,explanation,false)
 
                                                 }
@@ -1526,6 +1537,8 @@ $(document).ready(function () {
                                         } else
                                             requestLink = ''
 
+                                        requestLink = encodeURI(requestLink)
+
                                         playRequestLink(requestLink,explaination,false)
                                     } 
                                     else {
@@ -1612,8 +1625,8 @@ $(document).ready(function () {
                                             }
 
                                         }
+                                        requestLink = encodeURI(requestLink)
                                         playRequestLink(requestLink,explaination,false)
-
                                     } 
                                     else {
                                         songIndex = 0

@@ -108,7 +108,6 @@ var recommender = function (token) {
             })
         },
 
-
         getRecommendation: function (artistSeeds, trackSeeds, genreSeeds, 
             min_valence, max_valence,target_valence, 
             min_tempo, target_tempo, max_tempo, 
