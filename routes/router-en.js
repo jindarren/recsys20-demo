@@ -3,18 +3,13 @@ var router = express.Router();
 var recom = require('./recommender');
 var passport = require('passport');
 var SpotifyStrategy = require('../node_modules/passport-spotify/lib/passport-spotify/index').Strategy;
-var path = require('path');
 var request = require('request');
 var User = require('../public/model/user');
-const fs = require('fs');
 var franc = require('franc-min') //for language detection
 var pinyin = require("pinyin");
 var genreData = require('../public/js/genre-data');
 
 var avaGenres = genreData
-
-console.log(avaGenres)
-
 
 var appKey = 'a1d9f15f6ba54ef5aea0c5c4e19c0d2c',
 appSecret = 'b368bdb3003747ec861e62d3bf381ba0';
@@ -42,8 +37,8 @@ passport.deserializeUser(function(obj, done) {
 passport.use(new SpotifyStrategy({
         clientID: appKey,
         clientSecret: appSecret,
-        // callbackURL: 'http://music-bot.top:3000/callback'
-        callbackURL: 'http://localhost:3000/callback'
+        callbackURL: 'http://music-bot.top:3000/callback'
+        //callbackURL: 'http://localhost:3000/callback'
     },
     function(accessToken, refreshToken, profile, done) {
         // asynchronous verification, for effect...
@@ -739,8 +734,6 @@ router.post('/initiate', function(req, res) {
             var newGenres = []
 
             for (var i = genres.length; i >= 0; i--) {
-                // if(avaGenres.indexOf(genres[i])>0)
-                //     newGenres.push(genres[i])
                 if(avaGenres[genres[i]])
                     newGenres.push(genres[i])
             }
