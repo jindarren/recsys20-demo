@@ -1417,10 +1417,11 @@ $(document).ready(function () {
                         getRecommendation(updateData).then(function (data) {
                             var returnData = JSON.parse(data)
                             console.log(returnData)
+                            songIndex = 0
+                            speakandsing(robot, response, "Coherence")
                         })
 
-                        songIndex = 0
-                        speakandsing(robot, response, "Coherence")
+                        
                     })
                 } else if (!requestLink && isMissed) {
                     if (numberOfMiss < 2) {
