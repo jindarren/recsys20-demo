@@ -16,7 +16,7 @@ def determine_trigger_sc_or_not(interaction_log, cur_rec, categorical_attributes
 
     results_trigger_sc = False
     # Constratints
-    num_recommendation_cycle_constraints = 2
+    num_recommendation_cycle_constraints = 3
 
     # Conditions
     num_disliked_songs_condition = 3 # If the user clicks the “Next” button for n consecutive times.

@@ -1509,22 +1509,23 @@ $(document).ready(function () {
                 var critique = []
 
                 //Check if SC should be triggered
-                var updateData = {}
-                updateData.logger = logger
-                var listenedSongsLength = logger.listenedSongs.length
-                updateData.topRecommendedSong = logger.listenedSongs[listenedSongsLength - 1]
+                // var updateData = {}
+                // updateData.logger = logger
+                // var listenedSongsLength = logger.listenedSongs.length
+                // updateData.topRecommendedSong = logger.listenedSongs[listenedSongsLength - 1]
 
 
-                checkSystemCritiques(updateData).then(function (returnedData) {
-                    var enableSC = JSON.parse(returnedData).triggerSC
+                // checkSystemCritiques(updateData).then(function (returnedData) {
+                //     var enableSC = JSON.parse(returnedData).triggerSC
 
-                    if(enableSC && sysCritVersion!="base"){
-                        var line = $('<div class="speak"><div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>');
-                        chat.append(line);
-                        getSysCrit()
 
-                    }
-                    else{
+                //     if(enableSC && sysCritVersion!="base"){
+                //         var line = $('<div class="speak"><div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>');
+                //         chat.append(line);
+                //         getSysCrit()
+
+                //     }
+                //     else{
                         //search by artist
                         if (intent.indexOf("smalltalk")>-1){
                             updateChat(robot, response_speech, "Small_talk", "text");
@@ -1688,7 +1689,7 @@ $(document).ready(function () {
                             }
 
                         }
-                        else if (intent == "critique.response") {
+                        else if (intent == "music_player_control.features" ) {
                             needReply = false;
                             var response = text.parameters["RESPONSE"]
                             if (response == "yes") {
@@ -1758,9 +1759,9 @@ $(document).ready(function () {
                             playRequestLink(requestLink,response_speech,true)
                         }
 
-                    }
+                //     }
 
-                })
+                // })
 
 
             }
