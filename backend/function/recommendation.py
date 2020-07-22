@@ -61,7 +61,8 @@ def filter_items_by_user_constraints(user_constraints, item_pool, minimal_thresh
         crit_value = ''
         if attr in numerical_attributes:
             crit_value = critique_unit_dict['value']
-        
+        time_helper.print_current_time()
+        print(critique_unit_dict)
         if attr in categorical_attributes:
             for item in filtered_item_pool:
                 if type(crit_direction) == str:
@@ -78,6 +79,7 @@ def filter_items_by_user_constraints(user_constraints, item_pool, minimal_thresh
 
             cur_interval_find = list(intervals.contains(crit_value))
             cur_index = cur_interval_find.index(True)
+            # print(cur_index)
 
             for item in filtered_item_pool:
                 
@@ -93,6 +95,7 @@ def filter_items_by_user_constraints(user_constraints, item_pool, minimal_thresh
                 # case 1: current critiqued item value has been already the lowest range - allows to return items within same range
                 if cur_index == 0:
                     if item_index <= cur_index and crit_direction == 'lower':
+                        # print(item_index)
                         satisfied_flag = True
 
                 # case 2: current critiqued item value has been already the highest range - allows to return items within same range
@@ -103,6 +106,7 @@ def filter_items_by_user_constraints(user_constraints, item_pool, minimal_thresh
                 else:
                     if item_index < cur_index and crit_direction == 'lower':
                         satisfied_flag = True
+                        # print(item_index)
                     if item_index > cur_index and crit_direction == 'higher':
                         satisfied_flag = True
 

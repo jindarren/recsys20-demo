@@ -617,7 +617,7 @@ $(document).ready(function () {
                             actionItem.val = returnedCritiques[index].split("|")[1]
                             actionItem.type = "equal"
                             action.push(actionItem)
-                            songType += actionItem.val + " "
+                            songType += actionItem.val + ""
 
                         } else if (returnedCritiques[index].split("|")[0] == "genre") {
                             var actionItem = {}
@@ -629,7 +629,7 @@ $(document).ready(function () {
                                 actionItem.val = genreName
                             actionItem.type = "equal"
                             action.push(actionItem)
-                            songType += actionItem.val + " "
+                            songType += actionItem.val + ""
 
                         } else if (returnedCritiques[index].split("|")[0] == "artist") {
                             var actionItem = {}
@@ -637,7 +637,7 @@ $(document).ready(function () {
                             actionItem.val = returnedCritiques[index].split("|")[1]
                             actionItem.type = "equal"
                             action.push(actionItem)
-                            songType += action.artist + " "
+                            songType += action.artist + ""
 
                         } else if (returnedCritiques[index].split("|")[1] == "lower") {
                             var actionItem = {}
@@ -1382,12 +1382,35 @@ $(document).ready(function () {
                     $.get(requestLink, function (res) {
                         //remove loading animation
                         $('.spinner').remove();
-                        console.log(res)
+                        console.log(res.tracks)
+                        // filter songs that have been listened by user
+                        filtered_tracks = []
+                        for (var item in res.tracks){
+                            filtered_tracks.push(res.tracks[item])
+                        }
+                        if (logger.listenedSongs.length >0){
+                            for (var item in logger.listenedSongs) {
+                                
+                                var songID = logger.listenedSongs[item].id
+
+                                var filtered = filtered_tracks.filter(function (el) {
+                                    // console.log(el.id == songID)
+                                    return el.id == songID;
+                                });
+                                if (filtered.length>0)
+                                    filtered_tracks.splice(filtered_tracks.indexOf(filtered[0]), 1)
+                                
+                            }
+                        }
+                        console.log('After filtering: ')
+                        console.log(filtered_tracks)
+                        
+
 
                         var updateData = {}
                         updateData.user = usermodel.user
                         updateData.pool = playlist
-                        updateData.new_pool = res.tracks
+                        updateData.new_pool = filtered_tracks
 
                         console.log(updateData)
 
@@ -1587,44 +1610,72 @@ $(document).ready(function () {
                                     var num = parseInt(number)
                                     if (num == 0) {
                                         console.log("没有找到匹配的歌曲")
+                                        var seed_artist = topRecommendedSong['artist']
+                                        var seed_track= topRecommendedSong['id']
+                                        var seed_genre = topRecommendedSong['genre']
+                                        var seed_description = '&seed_tracks=' + seed_track //'&artistSeeds=' + seed_artist + '&seed_tracks=' + seed_track
+                                        if (seed_genre in genreData)
+                                            seed_description = seed_description + '&genreSeeds=' + seed_genre
+                                        console.log(seed_description)
+                                        
+                                        requestLink = '/getRecom?token=' + spotifyToken + seed_description;
+
+
                                         if (valence) {
                                             if (valence == "happy") {
-                                                requestLink = '/getRecom?artistSeeds=' + seed_artists + '&seed_tracks=' + seed_tracks + '&genreSeeds=' + seed_genres + '&min_valence=' + topRecommendedSong["valence"] + '&token=' + spotifyToken;
+                                                var tartget_value = 1.05 * topRecommendedSong["valence"]
+                                                requestLink = requestLink + '&target_valence=' + tartget_value;
                                             }
                                             else if (valence == "neutral") {
-                                                requestLink = '/getRecom?artistSeeds=' + seed_artists + '&seed_tracks=' + seed_tracks + '&genreSeeds=' + seed_genres + '&target_valence=' + topRecommendedSong["valence"] + '&token=' + spotifyToken;
+                                                requestLink = requestLink + '&target_valence=' + topRecommendedSong["valence"];
+                                            
                                             }
                                             else if (valence == "sad") {
-                                                requestLink = '/getRecom?artistSeeds=' + seed_artists + '&seed_tracks=' + seed_tracks + '&genreSeeds=' + seed_genres + '&max_valence=' + topRecommendedSong["valence"] + '&token=' + spotifyToken;
+                                                var tartget_value = 0.95 * topRecommendedSong["valence"]
+                                                requestLink = requestLink + '&target_valence=' + tartget_value;
                                             }
                                             explaination = "OK, I recommend this song to you, because you like the songs for "+valence+ " mood."
                                         } else if (tempo) {
                                             if (tempo == "fast") {
-                                                requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&min_tempo=' + topRecommendedSong["tempo"] + '&token=' + spotifyToken;
+                                                var tartget_value = 1.05 * topRecommendedSong["tempo"]
+                                                requestLink = requestLink + '&target_tempo=' + tartget_value;
+                                                
                                             }
                                             else if (tempo == "normal") {
-                                                requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&target_tempo=' + topRecommendedSong["tempo"] + '&token=' + spotifyToken;
+                                                requestLink = requestLink + '&target_tempo=' + topRecommendedSong["tempo"];
+                                                
                                             } else if (tempo == "slow") {
-                                                requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&max_tempo=' + topRecommendedSong["tempo"] + '&token=' + spotifyToken;
+                                                var tartget_value = 0.95 * topRecommendedSong["tempo"]
+                                                requestLink = requestLink + '&target_tempo=' + tartget_value;
+                                            
                                             }
                                             explaination = "OK, I recommend this song to you, because you like the songs having " +tempo+ " tempo."
                                         } else if (feature) {
                                             if (feature == "speech")
                                                 feature = "speechiness"
                                             if (action == "higher") {
-                                                requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&min_'+feature+'=' + topRecommendedSong[feature] + "&token=" + spotifyToken;
+                                                var tartget_value = 1.05 * topRecommendedSong[feature]
+
+                                                requestLink = requestLink + '&target_'+feature+'=' + tartget_value;
+                                                
                                                 explaination = "OK, I recommend this song to you, because you like the songs of higher"+ feature+"."
                                             }
                                             else if (action == "lower") {
-                                                requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + '&max_'+feature+'=' + topRecommendedSong[feature] + "&token=" + spotifyToken;
+                                                var tartget_value = 0.95 * topRecommendedSong[feature]
+
+                                                requestLink = requestLink + '&target_'+feature+'=' + tartget_value;
+                                                
                                                 explaination = "OK, I recommend this song to you, because you like the songs of lower"+ feature+"."
                                             }
                                             else if (action == "") {
-                                                requestLink = '/getRecom?artistSeeds=' + seed_artists + '&trackSeeds=' + seed_tracks + '&genreSeeds=' + seed_genres + 'target_'+feature+'=' + topRecommendedSong[feature] + "&token=" + spotifyToken;
+                                                
+                                                requestLink = requestLink + '&target_'+feature+'=' + topRecommendedSong[feature];
+                                                
                                                 explaination = "OK, I recommend this song to you, because you like the last played songs in terms of its "+ feature+"."
                                             }
 
                                         }
+                                        console.log(requestLink)
                                         requestLink = encodeURI(requestLink)
                                         playRequestLink(requestLink,explaination,false)
                                     } 

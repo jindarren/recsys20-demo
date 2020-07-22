@@ -148,6 +148,8 @@ def update_user_model(user_model, user_interaction_dialog, user_listened_longs, 
 
             for crit in critique_list:
                 for attr, criti_value in crit.items():
+                    if attr not in numerical_attributes and attr not in categorical_attributes:
+                        continue
                     # preference model: attribute frequency
                     updated_user_attribute_frequency[attr] = updated_user_attribute_frequency[attr] * 2
                     time_helper.print_current_time()
