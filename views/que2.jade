@@ -629,14 +629,21 @@ html
                     li
                         input(type='radio', name='group22', value='7')
                         label Strongly agree
-                label.statement 23. Any other comments to this music chatbot.
-                textarea#post-23(rows='5', cols='80')
+                label.statement 23. When do you, or would you want to discover new songs when listening to music?
+                textarea#post-23(rows='3', cols='100')                
+                label.statement 24. Why do you want to look for new songs or why not?
+                textarea#post-24(rows='3', cols='100')                
+                label.statement 25. Do you think this music chatbot could help you discover new and diverse songs that are of your interest? (If yes, please explain how it helps your exploration; if no, please provide any suggestions for our music chatbot)
+                textarea#post-25(rows='3', cols='100')                
+                label.statement 26. Any other comments to this music chatbot.
+                textarea#post-26(rows='3', cols='100')
                 .buttons
                     button.clear Clear
                     button.submit Submit
 
         script(type='text/javascript').
             var formList = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+            var openQuestionList = [null, null, null]
             $("input").click(function () {
                 var statement = $(this).parent().parent().attr("id").replace(/[^0-9]/ig, "")
                 var option = $(this).attr("value")
@@ -646,10 +653,27 @@ html
             $(".clear").click(function (event) {
                 $("input").checked = false;
                 $("#post-23").empty()
+                $("#post-24").empty()
+                $("#post-25").empty()
+                $("#post-26").empty()
                 formList = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+                openQuestionList = [null, null, null]
             })
             $(".submit").click(function (event) {
                 event.preventDefault()
+
+                var openQ1 = $.trim($("#post-23").val())
+                if(openQ1)
+                    openQuestionList[0] = openQ1
+                
+                var openQ2 = $.trim($("#post-24").val())
+                if(openQ2)
+                    openQuestionList[1] = openQ2
+
+                var openQ3 = $.trim($("#post-25").val())
+                if(openQ3)
+                    openQuestionList[2] = openQ3
+
                 var uncheckedList = []
                 $(".statement").css("background-color", "white")
                 for (var index in formList) {
@@ -659,26 +683,35 @@ html
                         $(".statement:eq(" + index + ")").css("background-color", "yellow")
                     }
                 }
+                for (var index in openQuestionList) {
+                    if (openQuestionList[index] == null) {
+                        openQindex = parseInt(index)+formList.length
+                        uncheckedList.push(String(openQindex))
+                        console.log($(".statement:eq(" + openQindex + ")"))
+                        $(".statement:eq(" + openQindex + ")").css("background-color", "yellow")
+                    }
+                }
 
 
-                var comment = $("#post-23").val()
 
+                var comment = $.trim($("#post-26").val())
                 console.log(comment)
-
                 if(comment){
-                    formList.push(comment)
+                    openQuestionList[3] = comment
                 }
 
                 console.log("length",uncheckedList.length)
                 if (uncheckedList.length > 0) {
                     alert("Please finished the missing statement(s) marked in yellow.")
-                } else {
+                } 
+                else {
 
                     window.localStorage.setItem("que2",formList.toString())
 
                     var que1List = []
                     //var que1List = window.localStorage.getItem("que1").split(",")
-                    var que2List = formList
+                    var que2List = formList.concat(openQuestionList)
+                    console.log(que2List)
 
                     var log = JSON.parse(window.localStorage.getItem("log"))
 
