@@ -279,7 +279,6 @@ class TriggerSysCri(Resource):
 
 
 
-# 设置路由，即路由地址为http://127.0.0.1:5000/xxx
 api.add_resource(InitializeUserModel, "/initialize_user_model") 
 api.add_resource(UpdateUserModel, "/update_user_model") 
 api.add_resource(GetRec, "/get_rec")
