@@ -22,8 +22,6 @@ categorical_attributes = ['artist','genre']
 numerical_attributes = ['popularity', 'danceability', 'energy',  'speechiness', 'tempo', 'valence']
 # numerical_attributes = ['popularity', 'danceability', 'energy', 'speechiness', 'acousticness', 'instrumentalness', 'liveness', 'valence']
 
-
-# 操作（post / get）资源列表
 class InitializeUserModel(Resource):
     def post(self):
         start = time.process_time()
