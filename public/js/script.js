@@ -1091,7 +1091,7 @@ $(document).ready(function () {
                                                     var requestLink, explanation;
                                                     if(topRecommendedSong.realgenre!="niche"){
                                                         requestLink = '/searchPlaylist?q=' + topRecommendedSong.realgenre + "&token=" + spotifyToken;
-                                                        explanation = "OK, I recommend this song to you, because you like the songs of " + genreData[topRecommendedSong.realgenre] + "."
+                                                        explanation = "OK, I recommend this song to you, because you like the songs of " + topRecommendedSong.realgenre + "."
                                                     }else{
                                                         requestLink = '/searchArtist?q=' + likedSongArtist + '&token=' + spotifyToken;
                                                         explanation = "OK, I recommend this song to you, because you like " + likedSongArtist + "'s songs."
@@ -1558,7 +1558,7 @@ $(document).ready(function () {
 
                                         } else if (genre) {
                                             requestLink = '/searchPlaylist?q=' + genre + "&token=" + spotifyToken;
-                                            explaination = "OK, I recommend this song to you, because you like the songs of " + genreMapList[genre] + "."
+                                            explaination = "OK, I recommend this song to you, because you like the songs of " + genre + "."
                                         } else
                                             requestLink = ''
 
