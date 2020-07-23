@@ -694,6 +694,7 @@ html
 
 
 
+
                 var comment = $.trim($("#post-26").val())
                 console.log(comment)
                 if(comment){
@@ -711,10 +712,13 @@ html
                     //- var que1List = []
                     var que1List = window.localStorage.getItem("que1").split(",")
                     var que2List = formList.concat(openQuestionList)
+                    var systemSetting = window.localStorage.getItem("setting").split("?")[1]
+                    
+                    console.log(que2List)
                     console.log(que2List)
 
                     var log = JSON.parse(window.localStorage.getItem("log"))
-
+                    log.systemSetting = systemSetting
                     log.que1 = que1List
                     log.que2 = que2List
                     log.que3 = []
