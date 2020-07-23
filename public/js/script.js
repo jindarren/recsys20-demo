@@ -97,13 +97,13 @@ $(document).ready(function () {
     // Log users' click behavior on explanation on three categories: features; categories; artists   
     $("h3").on("click", function () {
         var title = $(this).text()
-        if (title == "Explanation of features")
+        if (title == "Tips for tuning the recommendations by audio features")
             logger.exp_feature.push(new Date().getTime())
-        else if (title == "Explanation of music categories")
+        else if (title == "Tips for tuning the recommendations by music categories")
             logger.exp_category.push(new Date().getTime())
-        else if (title == "Explanation of music language")
+        else if (title == "Tips for tuning the recommendations by language")
             logger.exp_lang.push(new Date().getTime())
-        else if (title == "Explanation of artists")
+        else if (title == "Tips for tuning the recommendations by artists")
             logger.exp_artist.push(new Date().getTime())
     })
 
@@ -1051,7 +1051,14 @@ $(document).ready(function () {
                                         $("#" + logger.listenedSongs.slice(-1)[0].id + " .rating").rating({min: 1, max: 5, step: 1});
                                         $("#" + logger.listenedSongs.slice(-1)[0].id + " .rating").on('rating:change', function (event, value, caption) {
 
-                                            logger.likedSongs.push(playlist[songIndex].id)
+
+                                            logger.likedSongs.push(logger.listenedSongs.slice(-1)[0].id)
+                                            $("#" + logger.listenedSongs.slice(-1)[0].id + " .rating").rating('refresh', {
+                                                disabled: true,
+                                                showClear: false,
+                                                showCaption: true
+                                            });
+                                            $("#" + logger.listenedSongs.slice(-1)[0].id + "> .fa-close").hide()
 
                                             //perform update model request
 
@@ -1069,104 +1076,109 @@ $(document).ready(function () {
                                             updateData.topRecommendedSong = logger.listenedSongs[listenedSongsLength - 1]
 
                                             console.log(updateData)
-                                            updateUserModel(updateData)
+                                            updateUserModel(updateData).done(function (){
 
-                                            $("#" + logger.listenedSongs.slice(-1)[0].id + " .rating").rating('refresh', {
-                                                disabled: true,
-                                                showClear: false,
-                                                showCaption: true
-                                            });
-                                            $("#" + logger.listenedSongs.slice(-1)[0].id + "> .fa-close").hide()
-                                            if (numberOfLikedSongs < 5) {
-                                                $("input#message").attr("disabled", false)
-                                                $("input#message").attr("placeholder", "")
-                                                numberOfLikedSongs++
+                                                
 
-                                                //Exploration for niche genre music
-                                                var likedSongGenre = topRecommendedSong.genre
-                                                var likedSongArtist = topRecommendedSong.artist
 
-                                                if(likedSongGenre=="niche" && countGenreItems(topRecommendedSong.realgenre)<11){
+                                                if (numberOfLikedSongs < 5) {
+                                                    $("input#message").attr("disabled", false)
+                                                    $("input#message").attr("placeholder", "")
+                                                    numberOfLikedSongs++
 
-                                                    var requestLink, explanation;
-                                                    if(topRecommendedSong.realgenre!="niche"){
-                                                        requestLink = '/searchPlaylist?q=' + topRecommendedSong.realgenre + "&token=" + spotifyToken;
-                                                        explanation = "OK, I recommend this song to you, because you like the songs of " + topRecommendedSong.realgenre + "."
-                                                    }else{
-                                                        requestLink = '/searchArtist?q=' + likedSongArtist + '&token=' + spotifyToken;
-                                                        explanation = "OK, I recommend this song to you, because you like " + likedSongArtist + "'s songs."
+                                                    //Exploration for niche genre music
+                                                    var likedSongGenre = topRecommendedSong.genre
+                                                    var likedSongArtist = topRecommendedSong.artist
+
+                                                    if(likedSongGenre=="niche" && countGenreItems(topRecommendedSong.realgenre)<11){
+
+                                                        var requestLink, explanation;
+                                                        if(topRecommendedSong.realgenre!="niche"){
+                                                            requestLink = '/searchPlaylist?q=' + topRecommendedSong.realgenre + "&token=" + spotifyToken;
+                                                            explanation = "OK, I recommend this song to you, because you like the songs of " + topRecommendedSong.realgenre + "."
+                                                        }else{
+                                                            requestLink = '/searchArtist?q=' + likedSongArtist + '&token=' + spotifyToken;
+                                                            explanation = "OK, I recommend this song to you, because you like " + likedSongArtist + "'s songs."
+                                                        }
+                                                        requestLink = encodeURI(requestLink)
+                                                        playRequestLink(requestLink,explanation,false)
+
                                                     }
-                                                    requestLink = encodeURI(requestLink)
-                                                    playRequestLink(requestLink,explanation,false)
+                                                    else
+                                                    {
 
-                                                }
-                                                else{
-
-                                                    //Check if SC should be triggered
-                                                    var updateData2 = {}
-                                                    updateData2.logger = logger
-                                                    var listenedSongsLength = logger.listenedSongs.length
-                                                    updateData2.topRecommendedSong = logger.listenedSongs[listenedSongsLength - 1]
+                                                        //Check if SC should be triggered
+                                                        var updateData2 = {}
+                                                        updateData2.logger = logger
+                                                        var listenedSongsLength = logger.listenedSongs.length
+                                                        updateData2.topRecommendedSong = logger.listenedSongs[listenedSongsLength - 1]
 
 
-                                                    //for base line setting
+                                                        //for base line setting
 
-                                                    checkSystemCritiques(updateData2).then(function (returnedData) {
-                                                        var enableSC = JSON.parse(returnedData).triggerSC
+                                                        checkSystemCritiques(updateData2).then(function (returnedData) {
+                                                            var enableSC = JSON.parse(returnedData).triggerSC
 
-                                                        if(enableSC && sysCritVersion!="base"){
-                                                            var line = $('<div class="speak"><div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>');
-                                                            chat.append(line);
-                                                            getSysCrit()
+                                                            if(enableSC && sysCritVersion!="base"){
+                                                                var line = $('<div class="speak"><div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>');
+                                                                chat.append(line);
+                                                                getSysCrit()
 
-                                                        }
-                                                        else{
+                                                            }
+                                                            else{
 
-                                                            updateChat(robot, nextSongUtters[parseInt((nextSongUtters.length * Math.random()))], "Coherence")
+                                                                updateChat(robot, nextSongUtters[parseInt((nextSongUtters.length * Math.random()))], "Coherence")
 
-                                                            showNextSong = setTimeout(function () {
-                                                                $("#speak" + id + " div").fadeOut();
-                                                                if (listenedSongs.indexOf(playlist[songIndex]) < 0) {
-                                                                    listenedSongs.push(playlist[songIndex])
-                                                                    showNextSong3 = setTimeout(function () {
+                                                                showNextSong = setTimeout(function () {
+                                                                    $("#speak" + id + " div").fadeOut();
+                                                                    if (listenedSongs.indexOf(playlist[songIndex]) < 0) {
+                                                                        listenedSongs.push(playlist[songIndex])
+                                                                        showNextSong3 = setTimeout(function () {
+                                                                            showMusic(playlist[songIndex].id)
+                                                                        }, 1000)
+
+                                                                    } else {
                                                                         showMusic(playlist[songIndex].id)
-                                                                    }, 1000)
+                                                                    }
+                                                                }, 10)
+                                                            }
+                                                        })
 
-                                                                } else {
-                                                                    showMusic(playlist[songIndex].id)
-                                                                }
-                                                            }, 10)
-                                                        }
+                                                    }
+                                                }
+
+                                                if (numberOfLikedSongs == 5 && !isPreStudy) {
+                                                    isFinished = true
+
+                                                    logger.duration = new Date().getTime() - logger.task1
+                                                    // logger.listenedSongs = listenedSongs.concat()
+                                                    logger.rating = []
+                                                    $("li.list-group-item").each(function (i) {
+                                                        var rating = {}
+                                                        rating.id = $(this).attr("id")
+                                                        rating.value = $(this).find(".rating-stars").attr("title")
+                                                        logger.rating.push(rating)
                                                     })
 
+                                                    data.logger = logger
+                                                    data.pool = playlist
+                                                    data.user = usermodel.user
+                                                    data.topRecommendedSong = topRecommendedSong
+
+                                                    console.log("上传日志: ", data)
+                                                    window.localStorage.setItem("log",JSON.stringify(data))
+
+
+                                                    window.location.href = "/que2"
+
+                                                } 
+                                                else if (numberOfLikedSongs == 5 && isPreStudy) {
+                                                    updateChat(robot, "Now, you should be familiar with the system. You can click the 'start study' button to start.", "Initialize")
+                                                    $("input#message").attr("disabled", true)
+                                                    $("input#message").attr("placeholder", "Please click the 'start study' button to start!")
                                                 }
-                                            }
 
-                                            if (numberOfLikedSongs == 5 && !isPreStudy) {
-                                                isFinished = true
-
-                                                logger.task1 = new Date().getTime() - logger.task1
-                                                logger.listenedSongs = listenedSongs.concat()
-                                                logger.rating = []
-                                                $("li.list-group-item").each(function (i) {
-                                                    var rating = {}
-                                                    rating.id = $(this).attr("id")
-                                                    rating.value = $(this).find(".rating-stars").attr("title")
-                                                    logger.rating.push(rating)
-                                                })
-
-                                                data.logger = logger
-                                                console.log("上传日志: ", data)
-                                                window.localStorage.setItem("log",JSON.stringify(data))
-
-
-                                                window.location.href = "/que2"
-
-                                            } else if (numberOfLikedSongs == 5 && isPreStudy) {
-                                                updateChat(robot, "Now, you should be familiar with the system. You can click the 'start study' button to start.", "Initialize")
-                                                $("input#message").attr("disabled", true)
-                                                $("input#message").attr("placeholder", "Please click the 'start study' button to start!")
-                                            }
+                                            })
                                         });
 
                                         // remove a liked song
@@ -1185,7 +1197,7 @@ $(document).ready(function () {
                                 //if (nextTimes < 3) {
                                 $("#speak" + id + " .feedback-box").fadeOut()
                                 updateChat(you, "Next song.", "Next", "btn")
-                                logger.dislikedSongs.push(playlist[songIndex].id)
+                                logger.dislikedSongs.push(logger.listenedSongs.slice(-1)[0].id)
 
                                 //Check if SC should be triggered
                                 var updateData = {}
