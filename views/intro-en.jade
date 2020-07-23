@@ -63,7 +63,7 @@ html
                     li Try&nbsp
                         b textual input&nbsp
                         | to tell bot what kind of music you are looking for (Some examples of tuning recommendations are shown on the right side panel).
-                    li Try to accept bot’s suggestions for searching for music, which aims to help you find good music.
+                    li#sc_des Try to consider bot’s suggestions for searching for music, which aims to help you find good music.
             p Step 3: After clicking on the button “Start study”, you will be asked to try to find&nbsp
                 b 5 good songs&nbsp
                 | that fit your taste using the music bot. You can give feedback on recommended music by clicking “(like, next)” when you like/dislike the songs.
@@ -103,6 +103,24 @@ html
         script(src = "../bootstrap/dist/js/bootstrap.min.js")
         script(src = "js/preference-en.js")
         script.
+
+            var randomSetting = Math.floor(Math.random()*3)
+            var videoUrl
+            //if it is baseline setting
+            if (randomSetting==0){
+                //UC video url
+                videoUrl = "NFkwlJ8VjcA"
+                window.localStorage.setItem("setting","/index?base")
+                $("#sc_des").hide()
+            }else if(randomSetting==1){
+                //SC video url
+                videoUrl = "tN1P5X4TECQ"
+                window.localStorage.setItem("setting","/index?preference_oriented")
+            } else if (randomSetting == 2) {
+                //SC video url
+                videoUrl = "tN1P5X4TECQ"
+                window.localStorage.setItem("setting", "/index?diversity_oriented")
+            }
             var tag = document.createElement('script');
             tag.src = "https://www.youtube.com/iframe_api";
             var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -113,6 +131,6 @@ html
                 player = new YT.Player('player', {
                     height: '270',
                     width: '480',
-                    videoId: 'G_nK8MUqU_Y',
+                    videoId: videoUrl,
                 });
             }

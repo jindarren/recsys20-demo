@@ -950,9 +950,7 @@ html
                     alert("Please finished the missing statement(s) marked in yellow.")
                 } else {
                     window.localStorage.setItem("que1",formList.toString())
-
-                    redirectedLinks = ["/index?diversity_oriented","/index?preference_oriented","/index?base"]
-
-                    window.location.href = redirectedLinks[Math.floor((Math.random()*redirectedLinks.length))]
+                    var redirectedLink = window.localStorage.getItem("setting")
+                    window.location.href = redirectedLink
                 }
             })
