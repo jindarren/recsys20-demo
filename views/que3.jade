@@ -1100,8 +1100,6 @@ html
                     li
                         input(type='radio', name='group42', value='7')
                         label Strongly agree
-                label.statement *** Please input your Worker ID (for awarding bonuses)
-                textarea#post-43(rows='2', cols='100')
                 .buttons
                     button.clear Clear
                     button.submit Submit
@@ -1129,14 +1127,14 @@ html
                     }
                 }
 
-                var workerID = $.trim($("#post-43").val())
-                if(!workerID)
-                {
-                    var workerIndex = String(formList.length)
-                    uncheckedList.push("workerID")
-                    console.log($(".statement:eq(" + workerIndex + ")"))
-                        $(".statement:eq(" + workerIndex + ")").css("background-color", "yellow")
-                }
+                //- var workerID = $.trim($("#post-43").val())
+                //- if(!workerID)
+                //- {
+                //-     var workerIndex = String(formList.length)
+                //-     uncheckedList.push("workerID")
+                //-     console.log($(".statement:eq(" + workerIndex + ")"))
+                //-         $(".statement:eq(" + workerIndex + ")").css("background-color", "yellow")
+                //- }
 
 
                 if (uncheckedList.length > 0) {
@@ -1146,7 +1144,7 @@ html
 
 
                     var log = {}
-                    log.que3 = formList.push(workerID)
+                    log.que3 = formList
                     log.id = JSON.parse(window.localStorage.getItem("log")).id
 
                     console.log(log)

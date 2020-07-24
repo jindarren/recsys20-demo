@@ -122,6 +122,9 @@ html
         .wrap
             h1.likert-header This is a pre-study survey
             form(action='')
+                // Worker ID
+                label.statement Participant / Worker ID:
+                input#workerID.normal-input(type='text', name='workerID')
                 // Age
                 label.statement Age:
                 select#age.normal-input
@@ -915,29 +918,32 @@ html
         script(type='text/javascript').
             var userID = $.cookie('user-id')
 
-            var formList = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+            var formList = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
             $("li > input").click(function () {
                 var statement = parseInt($(this).parent().parent().attr("id").replace(/[^0-9]/ig, ""))
                 var option = parseInt($(this).attr("value"))
                 console.log(option)
-                formList[statement + 2] = option
+                formList[statement + 3] = option
                 console.log(formList)
             })
             $(".clear").click(function (event) {
                 $("input").checked = false;
-                formList = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+                formList = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
             })
             $(".submit").click(function (event) {
                 event.preventDefault()
+                var workerId = $("#workerID").val();
+                if (workerId != "")
+                    formList[0] = workerId
                 var age = $("#age option:selected").text();
                 if (age != "")
-                    formList[0] = age
+                    formList[1] = age
                 var gender = $("#gender option:selected").text();
                 if (gender != "")
-                    formList[1] = gender
+                    formList[2] = gender
                 var nationality = $("#nationality").val()
                 if (nationality != "")
-                    formList[2] = nationality
+                    formList[3] = nationality
                 console.log(formList)
                 var uncheckedList = []
                 $(".statement").css("background-color", "white")
@@ -947,6 +953,9 @@ html
                         $(".statement:eq(" + index + ")").css("background-color", "yellow")
                     }
                 }
+
+
+
                 console.log(uncheckedList)
                 if (uncheckedList.length > 0) {
                     alert("Please finished the missing statement(s) marked in yellow.")
