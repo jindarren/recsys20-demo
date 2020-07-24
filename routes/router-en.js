@@ -77,7 +77,7 @@ router.get("/findRecord", function(req, res) {
 
     User.find({id: id},function (err, data) {
         res.json(data)
-
+    })
     
 
 });
