@@ -105,10 +105,11 @@ html
 
             var userid = $.cookie('user-id')
             //check if the user participated the study before
-
+            var test_id_list = ["zogxvf222xk1geyxpl21b3a1f", "zcm6se5ml2rhoi6oun8qmj1od"]
             $.get("/findRecord?id="+userid,function (data) {
-                if(data.length==0){
-
+                
+                if(data.length==0 ||  test_id_list.indexOf(userid)>=0){
+                    
                     //check if the user is qualified in terms of his/er profile
                     var spotifyToken = $.cookie('spotify-token')
 

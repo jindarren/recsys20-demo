@@ -72,16 +72,13 @@ router.post("/addRecord", function(req, res) {
 
 router.get("/findRecord", function(req, res) {
 
-    var test_id_list = ["zogxvf222xk1geyxpl21b3a1f","zcm6se5ml2rhoi6oun8qmj1od"]
+    
     var id = req.query.id
-    if (id in test_id_list){
-        res.json([])
-    }
-    else{
-        User.find({id: id},function (err, data) {
-            res.json(data)
-        })
-    }
+
+    User.find({id: id},function (err, data) {
+        res.json(data)
+
+    
 
 });
 
