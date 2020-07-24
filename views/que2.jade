@@ -642,7 +642,8 @@ html
                 .buttons
                     button.clear Clear
                     button.submit Submit
-
+        script(type = "text/javascript", src = "../jquery/dist/jquery.min.js", charset = 'utf-8')
+        script(type = "text/javascript", src = "../jquery.cookie/jquery.cookie.js", charset = 'utf-8')
         script(type='text/javascript').
             var formList = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
             var openQuestionList = [null, null, null]
@@ -694,9 +695,6 @@ html
                     }
                 }
 
-
-
-
                 var comment = $.trim($("#post-26").val())
                 console.log(comment)
                 if(comment){
@@ -714,13 +712,14 @@ html
                     //- var que1List = []
                     var que1List = window.localStorage.getItem("que1").split(",")
                     var que2List = formList.concat(openQuestionList)
-                    var systemSetting = window.localStorage.getItem("setting").split("?")[1]
+                    var expSetting = window.localStorage.getItem("setting").split("?")[1]
                     
                     console.log(que2List)
                     console.log(que2List)
 
                     var log = JSON.parse(window.localStorage.getItem("log"))
-                    log.systemSetting = systemSetting
+                    log.setting = expSetting
+                    log.platform = $.cookie('platform')
                     log.que1 = que1List
                     log.que2 = que2List
                     log.que3 = []

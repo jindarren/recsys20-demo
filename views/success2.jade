@@ -12,6 +12,11 @@ html
                 font-weight: lighter;
             }
 
+            #completionCode {
+                text-align: center;
+                background-color: #dcd1b2;
+            }
+
             a{
                 font-size: xx-large;
             }
@@ -100,7 +105,45 @@ html
     body
         p You have finished the study. Thank you~
 
+        .row.justify-content-center
+            button.btn-primary Get My Completion Code
+
+        #code-box(style="display:none;")
+            p Your completion code
+            p#completionCode
+
+        br
+        br
+        br
 
         div(style='width:20%;height:auto')
             img(src="img/thanks.gif")
-        script(type = "text/javascript", src = "../jquery/dist/jquery.min.js", charset = 'utf-8')
+        link(href='../bootstrap/dist/css/bootstrap.min.css', rel='stylesheet')
+        script(src = "../jquery/dist/jquery.min.js", charset = 'utf-8')
+        script(src = "../bootstrap/dist/js/bootstrap.min.js")
+        script(type='text/javascript').
+
+            $(".btn-primary").on("click", function () {
+                var completionCode = Math.random().toString(36).slice(-10)
+                $("#completionCode").text(completionCode)
+                $("#code-box").show()
+                $("#bonus-link, .btn-primary").hide()
+
+                var log = {}
+                log.completionCode = completionCode
+                log.id = JSON.parse(window.localStorage.getItem("log")).id
+
+                $.ajax({
+                    url: '/updateCode',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(log),
+                    dataType: 'json',
+                    success: function (data) {
+                        console.log(data)
+                    },
+                    error: function (err) {
+                        console.log(err)
+                    }
+                });
+            })

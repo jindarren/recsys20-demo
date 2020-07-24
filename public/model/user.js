@@ -8,6 +8,8 @@ var mongoose = require('mongoose');
 
 var userSchema = new mongoose.Schema({
 	id: String,
+    platform: String,
+    setting:String,
     logger:{},
     new_pool:[],
 	pool:[],
@@ -17,7 +19,7 @@ var userSchema = new mongoose.Schema({
     timestamp: Date,
     topRecommendedSong:{},
     user:{},
-
+    completionCode:String
 });
 
 var User = mongoose.model('User', userSchema);

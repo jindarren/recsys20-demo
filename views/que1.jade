@@ -123,7 +123,7 @@ html
             h1.likert-header This is a pre-study survey
             form(action='')
                 // Worker ID
-                label.statement Participant / Worker ID:
+                label.statement#idDescription
                 input#workerID.normal-input(type='text', name='workerID')
                 // Age
                 label.statement Age:
@@ -146,7 +146,7 @@ html
                 // Nationality
                 label.statement Nationality:
                 input#nationality.normal-input(type='text', name='nationality')
-                label.statement 1. I am familiar with chatbot technologies..
+                label.statement 1. I am familiar with chatbot technologies.
                 ul#post-1.likert
                     li
                         input(type='radio', value='1', name='group1')
@@ -916,7 +916,12 @@ html
         script(type = "text/javascript", src = "../jquery/dist/jquery.min.js", charset = 'utf-8')
         script(type = "text/javascript", src = "../jquery.cookie/jquery.cookie.js", charset = 'utf-8')
         script(type='text/javascript').
-            var userID = $.cookie('user-id')
+            var platform = $.cookie('platform')
+            if(platform=="turk"){
+                $("#idDescription").text("MTurk Worker ID:")
+            }else if(platform=="prolific"){
+                $("#idDescription").text("Prolific ID:")
+            }
 
             var formList = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
             $("li > input").click(function () {

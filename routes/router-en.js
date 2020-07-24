@@ -38,7 +38,7 @@ passport.use(new SpotifyStrategy({
         clientID: appKey,
         clientSecret: appSecret,
         callbackURL: 'http://music-bot.top:3000/callback'
-        // callbackURL: 'http://localhost:3000/callback'
+        //callbackURL: 'http://localhost:3000/callback'
     },
     function(accessToken, refreshToken, profile, done) {
         // asynchronous verification, for effect...
@@ -93,7 +93,18 @@ router.post("/updateRecord", function(req, res) {
         else
             res.json({status:"success"})
     })
+});
 
+router.post("/updateCode", function(req, res) {
+    var updatedID = req.body.id
+    var completionCode = req.body.completionCode
+    var updatedTimestamp = new Date()
+    User.updateOne({id:updatedID},{$set:{completionCode:completionCode,timestamp:updatedTimestamp}},function(err){
+        if (err)
+            res.send(err)
+        else
+            res.json({status:"success"})
+    })
 });
 
 
@@ -844,6 +855,22 @@ router.get('/',
         // function will not be called.
     });
 
+router.get('/turk',function (req,res) {
+    res.cookie('platform', "turk", {
+        maxAge: 7200000
+    });
+    res.redirect("/")
+    res.end()
+})
+
+router.get('/prolific',function (req,res) {
+    res.cookie('platform', "prolific", {
+        maxAge: 7200000
+    });
+    res.redirect("/")
+    res.end()
+})
+
 // GET /auth/spotify/callback
 //   Use passport.authenticate() as route middleware to authenticate the
 //   request. If authentication fails, the user will be redirected back to the
@@ -856,15 +883,15 @@ router.get('/callback',
     function(req, res) {
 
         res.cookie('spotify-token', req.authInfo.accessToken, {
-            maxAge: 3600000
+            maxAge: 7200000
         });
 
         res.cookie('refresh-token', req.authInfo.refreshToken, {
-            maxAge: 3600000
+            maxAge: 7200000
         });
 
         res.cookie('user-id', req.user.id, {
-            maxAge: 3600000
+            maxAge: 7200000
         });
 
         res.redirect('/intro-en');
