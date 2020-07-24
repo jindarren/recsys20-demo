@@ -98,34 +98,12 @@ html
             }
 
     body
-        p You have finished the study. Thank you~
-
-        .box
-            a(href="/que3") Try bonus questionnaire to get double pay :)
-        p (only need 5 minutes)
-
-        br
-        br
-        br
+        p It seems that you are not a regular Spotify user.
+        p Thus our system cannot get sufficient data to generate recommendations.:(
+        p Sorry~ Thank you for your understanding.
 
         div(style='width:20%;height:auto')
             img(src="img/thanks.gif")
         script(type = "text/javascript", src = "../jquery/dist/jquery.min.js", charset = 'utf-8')
-        //- script.
-        //-     $.getJSON("/data/user_profile_with_preference_model_updated.json",function (data) {
-        //-         var profile = {}
-        //-         console.log(typeof(data))
-        //-         profile["user_profile"] = data
-        //-         console.log(profile)
-        //-         $.ajax({
-        //-             type: "POST",
-        //-             url: "/initialize_user_model",
-        //-             data: JSON.stringify(profile),
-        //-             success: function (result) {
-        //-                 console.log(JSON.parse(result))
-        //-             },
-        //-             contentType:"application/json;charset=utf-8",
-        //-             dataType: "json"
-        //-         });
-        //-     })
+
 
