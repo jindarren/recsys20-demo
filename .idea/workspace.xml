@@ -33,6 +33,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e570dfdc-3b19-4d1b-90a6-cefe1fb88223" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/recommender-en.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/recommender-en.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/router-en.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/router-en.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/views/intro-en.jade" beforeDir="false" afterPath="$PROJECT_DIR$/views/intro-en.jade" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -157,7 +160,7 @@
       <workItem from="1595499337215" duration="577000" />
       <workItem from="1595560287556" duration="4087000" />
       <workItem from="1595603273374" duration="5416000" />
-      <workItem from="1595686586875" duration="677000" />
+      <workItem from="1595686586875" duration="1355000" />
     </task>
     <task id="LOCAL-00001" summary="test for python API">
       <created>1587472273064</created>

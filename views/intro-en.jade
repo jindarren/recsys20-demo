@@ -101,6 +101,39 @@ html
         script(src = "js/popper.min.js", charset = 'utf-8')
         script(src = "../bootstrap/dist/js/bootstrap.min.js")
         script.
+            //if the user has sufficient artists and tracks
+            var randomSetting = Math.floor(Math.random() * 3)
+            var videoUrl
+            //if it is baseline setting
+            if (randomSetting == 0) {
+                //UC video url
+                videoUrl = "xrMTv7uaDFI"
+                window.localStorage.setItem("setting", "/index?base")
+                $("#sc_des").hide()
+            } else if (randomSetting == 1) {
+                //SC video url
+                videoUrl = "JIuYoyyrknE"
+                window.localStorage.setItem("setting", "/index?preference_oriented")
+            } else if (randomSetting == 2) {
+                //SC video url
+                videoUrl = "JIuYoyyrknE"
+                window.localStorage.setItem("setting", "/index?diversity_oriented")
+            }
+            var tag = document.createElement('script');
+            tag.src = "https://www.youtube.com/iframe_api";
+            var firstScriptTag = document.getElementsByTagName('script')[0];
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+            var player;
+
+            function onYouTubeIframeAPIReady() {
+                player = new YT.Player('player', {
+                    height: '270',
+                    width: '480',
+                    videoId: videoUrl,
+                });
+            }
+
             var userid = $.cookie('user-id')
             //check if the user participated the study before
             var test_id_list = ["zogxvf222xk1geyxpl21b3a1f", "zcm6se5ml2rhoi6oun8qmj1od"]
@@ -123,39 +156,6 @@ html
                                 $(".btn-primary").on("click", function () {
                                     window.location.href = '/que1';
                                 })
-                                //if the user has sufficient artists and tracks
-                                var randomSetting = Math.floor(Math.random() * 3)
-                                var videoUrl
-                                //if it is baseline setting
-                                if (randomSetting == 0) {
-                                    //UC video url
-                                    videoUrl = "xrMTv7uaDFI"
-                                    window.localStorage.setItem("setting", "/index?base")
-                                    $("#sc_des").hide()
-                                } else if (randomSetting == 1) {
-                                    //SC video url
-                                    videoUrl = "JIuYoyyrknE"
-                                    window.localStorage.setItem("setting", "/index?preference_oriented")
-                                } else if (randomSetting == 2) {
-                                    //SC video url
-                                    videoUrl = "JIuYoyyrknE"
-                                    window.localStorage.setItem("setting", "/index?diversity_oriented")
-                                }
-                                var tag = document.createElement('script');
-                                tag.src = "https://www.youtube.com/iframe_api";
-                                var firstScriptTag = document.getElementsByTagName('script')[0];
-                                firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-                                var player;
-
-                                function onYouTubeIframeAPIReady() {
-                                    player = new YT.Player('player', {
-                                        height: '270',
-                                        width: '480',
-                                        videoId: videoUrl,
-                                    });
-                                }
-
                             } else {
                                 window.location.href = "/failure2"
                             }
