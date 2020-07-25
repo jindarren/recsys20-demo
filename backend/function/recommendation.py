@@ -65,6 +65,8 @@ def filter_items_by_user_constraints(user_constraints, item_pool, minimal_thresh
         print(critique_unit_dict)
         if attr in categorical_attributes:
             for item in filtered_item_pool:
+                if item == None:
+                    continue                  
                 if type(crit_direction) == str:
                     if item[attr].lower() != crit_direction.lower():
                         filtered_id_list.append(item['id'])
@@ -82,7 +84,8 @@ def filter_items_by_user_constraints(user_constraints, item_pool, minimal_thresh
             # print(cur_index)
 
             for item in filtered_item_pool:
-                
+                if item == None:
+                    continue  
                 item_interval_find = list(intervals.contains(item[attr]))
                 item_index = item_interval_find.index(True)
                 satisfied_flag = False
@@ -117,6 +120,8 @@ def filter_items_by_user_constraints(user_constraints, item_pool, minimal_thresh
 
         updated_filtered_item_pool = []
         for item in filtered_item_pool:
+            if item == None:
+                continue  
             if item['id'] not in filtered_id_list:
                 updated_filtered_item_pool.append(item)
 

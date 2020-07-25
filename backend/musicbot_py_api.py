@@ -240,8 +240,8 @@ class GetSysCri(Resource):
         
         time_helper.print_current_time()
         print(state)
-        time_helper.print_current_time()
-        pp.pprint(sys_crit)
+        # time_helper.print_current_time()
+        # pp.pprint(sys_crit)
         sys_crit_with_rec_list = {'state': state, 'result': sys_crit, 'user_profile': user_profile}
 
         end = time.process_time()
@@ -288,4 +288,4 @@ api.add_resource(TriggerSysCri, "/trigger_sys_cri")
 if __name__ == "__main__":
     server = '127.0.0.1'
     port =  '5000'
-    app.run(debug=True, host= server, port=port)
+    app.run(debug=True, host= server, port=port, threaded=True)
