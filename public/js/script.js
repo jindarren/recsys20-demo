@@ -464,14 +464,14 @@ $(document).ready(function () {
                 logger.duration = ""
 
 
-                logger.exp_energy = []
-                logger.exp_danceability = []
-                logger.exp_speechiness = []
-                logger.exp_tempo = []
-                logger.exp_valence = []
-                logger.exp_artist = []
-                logger.exp_category = []
-                logger.exp_feature = []
+                // logger.exp_energy = []
+                // logger.exp_danceability = []
+                // logger.exp_speechiness = []
+                // logger.exp_tempo = []
+                // logger.exp_valence = []
+                // logger.exp_artist = []
+                // logger.exp_category = []
+                // logger.exp_feature = []
 
                 playlist = []
                 songIndex = 0
