@@ -1391,9 +1391,11 @@ $(document).ready(function () {
                     //show loading animation
                     var line = $('<div class="speak"><div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>');
                     chat.append(line);
+                    var playSuccess = false
                     $.get(requestLink, function (res) {
                         //remove loading animation
                         $('.spinner').remove();
+                        playSuccess = true
                         console.log(res.tracks)
                         // filter songs that have been listened by user
                         filtered_tracks = []
@@ -1426,6 +1428,12 @@ $(document).ready(function () {
 
                         console.log(updateData)
 
+                        if (filtered_tracks.length == 0)
+                        {
+                            response = "It seems no more suitable songs. But you can try this song :)";
+                        }
+                            
+
                         getRecommendation(updateData).then(function (data) {
                             var returnData = JSON.parse(data)
                             console.log(returnData)
@@ -1435,6 +1443,20 @@ $(document).ready(function () {
 
                         
                     })
+
+                    var autoPlaySong = setTimeout(function(){
+                        console.log(playSuccess)
+                        if (!playSuccess)
+                        {
+                            $('.spinner').remove();
+                            playSuccess = true
+                            speakandsing(robot, "It seems no more suitable songs. But you can try this song :)", "Coherence")
+                        }
+
+                    },6000)
+
+
+                    
                 } else if (!requestLink && isMissed) {
                     if (numberOfMiss < 2) {
                         numberOfMiss++;
