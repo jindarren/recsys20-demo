@@ -149,6 +149,14 @@ router.get('/intro-en', function(req, res) {
     res.render("intro-en")
 });
 
+router.get('/consent', function(req, res) {
+    res.render("consent")
+});
+
+router.get('/quit', function(req, res) {
+    res.render("quit")
+});
+
 router.get('/success', function(req, res) {
     res.render("success")
 });
@@ -855,21 +863,21 @@ router.get('/',
         // function will not be called.
     });
 
-router.get('/turk',function (req,res) {
-    res.cookie('platform', "turk", {
-        maxAge: 7200000
-    });
-    res.redirect("/")
-    res.end()
-})
-
-router.get('/prolific',function (req,res) {
-    res.cookie('platform', "prolific", {
-        maxAge: 7200000
-    });
-    res.redirect("/")
-    res.end()
-})
+// router.get('/turk',function (req,res) {
+//     res.cookie('platform', "turk", {
+//         maxAge: 7200000
+//     });
+//     res.redirect("/")
+//     res.end()
+// })
+//
+// router.get('/prolific',function (req,res) {
+//     res.cookie('platform', "prolific", {
+//         maxAge: 7200000
+//     });
+//     res.redirect("/")
+//     res.end()
+// })
 
 // GET /auth/spotify/callback
 //   Use passport.authenticate() as route middleware to authenticate the

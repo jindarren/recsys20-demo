@@ -33,9 +33,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e570dfdc-3b19-4d1b-90a6-cefe1fb88223" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/views/consent.jade" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/views/quit.jade" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/recommender-en.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/recommender-en.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/router-en.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/router-en.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/que1.jade" beforeDir="false" afterPath="$PROJECT_DIR$/views/que1.jade" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/que2.jade" beforeDir="false" afterPath="$PROJECT_DIR$/views/que2.jade" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/success.jade" beforeDir="false" afterPath="$PROJECT_DIR$/views/success.jade" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/success2.jade" beforeDir="false" afterPath="$PROJECT_DIR$/views/success2.jade" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,12 +95,12 @@
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Font" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/public/img" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/views" />
       <recent name="$PROJECT_DIR$/public/js" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/public/img" />
     </key>
   </component>
   <component name="RunManager">
@@ -159,7 +165,8 @@
       <workItem from="1595499337215" duration="577000" />
       <workItem from="1595560287556" duration="4087000" />
       <workItem from="1595603273374" duration="5416000" />
-      <workItem from="1595686586875" duration="1489000" />
+      <workItem from="1595686586875" duration="1700000" />
+      <workItem from="1595819954372" duration="2564000" />
     </task>
     <task id="LOCAL-00001" summary="test for python API">
       <created>1587472273064</created>

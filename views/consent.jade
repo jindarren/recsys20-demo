@@ -1,0 +1,94 @@
+doctype html
+html
+    head
+        title Study Introduction
+        meta(http-equiv='Content-Type', content='text/html; charset=utf-8')
+        link(href='../fontawesome/css/fontawesome.css', rel='stylesheet')
+        link(href='../fontawesome/css/brands.css', rel='stylesheet')
+        link(href='../fontawesome/css/solid.css', rel='stylesheet')
+
+        style.
+            body {
+                padding: 20px;
+                font-family: Lato;
+                font-weight: lighter;
+            }
+
+            .btn {
+                margin-left: 10px;
+                margin-right: 10px;
+            }
+
+            p {
+                text-align: left;
+            }
+
+
+    body
+        #part1.container
+            h4(style="text-align:center") Online Study Consent Form
+            p Dear participants,
+            p Thank you very much for taking part in this experiment, which aims at studying how users communicate with a music chatbot for exploring diverse songs.
+
+            h5 Tasks:
+            p Please use the provided chatbot to find&nbsp
+                b 5 pieces of songs&nbsp
+                | that suit your preferences. The initial recommendations may not fit your taste, you need to tune recommendations by chatting with the bot. All music information used in this experiment was from Spotify.
+
+            h5 Duration:
+            p Approximately 20 minutes (including time for filling out two questionnaires).
+
+            h5 Task steps:
+            p Four steps:
+            p Step 1: You will then fill out your personal background (including a personality test);
+            p Step 2: You can get familiar with the music bot by trying two ways of tuning recommendations before starting the study;
+                ul
+                    li Try&nbsp
+                        b textual input&nbsp
+                        | to tell bot what kind of music you are looking for (Some examples of tuning recommendations are shown on the right side panel).
+                    li#sc_des Try to consider bot’s suggestions for searching for music, which aims to help you find good music.
+            p Step 3: After clicking on the button “Start study”, you will be asked to try to find&nbsp
+                b 5 good songs&nbsp
+                | that fit your taste using the music bot. You can give feedback on recommended music by clicking “(like, next)” when you like/dislike the songs.
+
+            p Step 4: You will give us your overall preference over the used music chatbot. (Lastly, you can also try bonus questionnaire to get additional rewards!)
+
+            h5 Video tutorial:
+            p Please watch the following tutorial before the task.
+            div#player
+
+            h5 Tips:
+            ul
+                li
+                    b You should use Chrome browser (version > 33.0) on your PC.
+                li You can send text by pressing "Enter".
+                li Remember to submit the questionnaire by clicking the "Submit" button at the end of the page.
+                //- li Do not change User ID prefilled in the questionnaire.
+
+            p All of your data will be kept confidentially and be only used for our research analysis.
+            p We greatly appreciate your efforts and time in advance.
+
+            hr
+            .row.justify-content-center
+                button#decline.btn.btn-default Decline
+                button#accept.btn.btn-success Accept
+
+        link(href='../bootstrap/dist/css/bootstrap.min.css', rel='stylesheet')
+        script(src = "../jquery/dist/jquery.min.js", charset = 'utf-8')
+        script(src = "../bootstrap/dist/js/bootstrap.min.js")
+        script.
+
+            var platform = window.location.search.substring(1)
+            window.localStorage.setItem("platform",platform)
+
+            $("#decline").click(function () {
+                window.location.href = "/quit"
+            })
+
+            $("#accept").click(function () {
+                window.location.href = "/"
+            })
+
+
+
+

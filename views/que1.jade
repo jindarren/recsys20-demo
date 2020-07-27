@@ -914,9 +914,8 @@ html
                     button.clear Clear
                     button.submit Submit
         script(type = "text/javascript", src = "../jquery/dist/jquery.min.js", charset = 'utf-8')
-        script(type = "text/javascript", src = "../jquery.cookie/jquery.cookie.js", charset = 'utf-8')
         script(type='text/javascript').
-            var platform = $.cookie('platform')
+            var platform = window.localStorage.getItem("platform")
             if(platform=="turk"){
                 $("#idDescription").text("MTurk Worker ID:")
             }else if(platform=="prolific"){

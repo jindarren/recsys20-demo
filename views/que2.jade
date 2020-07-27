@@ -643,7 +643,6 @@ html
                     button.clear Clear
                     button.submit Submit
         script(type = "text/javascript", src = "../jquery/dist/jquery.min.js", charset = 'utf-8')
-        script(type = "text/javascript", src = "../jquery.cookie/jquery.cookie.js", charset = 'utf-8')
         script(type='text/javascript').
             var formList = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
             var openQuestionList = [null, null, null]
@@ -719,7 +718,7 @@ html
 
                     var log = JSON.parse(window.localStorage.getItem("log"))
                     log.setting = expSetting
-                    log.platform = $.cookie('platform')
+                    log.platform = window.localStorage.getItem("platform")
                     log.que1 = que1List
                     log.que2 = que2List
                     log.que3 = []
