@@ -38,7 +38,7 @@ passport.use(new SpotifyStrategy({
         clientID: appKey,
         clientSecret: appSecret,
         callbackURL: 'http://music-bot.top:3000/callback'
-        //callbackURL: 'http://localhost:3000/callback'
+        // callbackURL: 'http://localhost:3000/callback'
     },
     function(accessToken, refreshToken, profile, done) {
         // asynchronous verification, for effect...
@@ -87,7 +87,7 @@ router.post("/updateRecord", function(req, res) {
     var updatedID = req.body.id
     var que3List = req.body.que3
     var updatedTimestamp = new Date()
-    User.updateOne({id:updatedID},{$set:{que3:que3List,timestamp:updatedTimestamp}},function(err){
+    User.updateOne({id:updatedID},{$set:{que3:que3List,bonusTimestamp:updatedTimestamp}},function(err){
         if (err)
             res.send(err)
         else
@@ -99,7 +99,7 @@ router.post("/updateCode", function(req, res) {
     var updatedID = req.body.id
     var completionCode = req.body.completionCode
     var updatedTimestamp = new Date()
-    User.updateOne({id:updatedID},{$set:{completionCode:completionCode,timestamp:updatedTimestamp}},function(err){
+    User.updateOne({id:updatedID},{$set:{completionCode:completionCode,endTimestamp:updatedTimestamp}},function(err){
         if (err)
             res.send(err)
         else

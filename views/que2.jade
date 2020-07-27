@@ -713,16 +713,19 @@ html
                     var que2List = formList.concat(openQuestionList)
                     var expSetting = window.localStorage.getItem("setting").split("?")[1]
                     
-                    console.log(que2List)
+                    console.log(que1List)
                     console.log(que2List)
 
                     var log = JSON.parse(window.localStorage.getItem("log"))
+                    var start_time = Date.parse(window.localStorage.getItem("start_timestamp"))
+                    console.log(start_time)
+                    log.startTimestamp = start_time
                     log.setting = expSetting
                     log.platform = window.localStorage.getItem("platform")
                     log.que1 = que1List
                     log.que2 = que2List
                     log.que3 = []
-                    log.timestamp =  new Date()
+                    log.endTimestamp =  new Date()
 
                     console.log(log)
 

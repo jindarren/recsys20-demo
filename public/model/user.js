@@ -16,7 +16,9 @@ var userSchema = new mongoose.Schema({
     que1:[],
     que2:[],
     que3:[],
-    timestamp: Date,
+    startTimestamp: Date,
+    endTimestamp: Date,
+    bonusTimestamp: Date,
     topRecommendedSong:{},
     user:{},
     completionCode:String

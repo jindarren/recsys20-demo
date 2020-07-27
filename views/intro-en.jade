@@ -154,6 +154,8 @@ html
                                 $("#next1").removeClass("disabled")
                                 $("#next1").addClass("btn-primary")
                                 $(".btn-primary").on("click", function () {
+                                    var start_timestamp = new Date()
+                                    window.localStorage.setItem("start_timestamp",start_timestamp.toString())
                                     window.location.href = '/que1';
                                 })
                             } else {

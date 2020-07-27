@@ -26,47 +26,47 @@ html
 
     body
         #part1.container
+            //- h4(style="text-align:center") HONG KONG BAPTIST UNIVERSITY
             h4(style="text-align:center") Online Study Consent Form
-            p Dear participants,
-            p Thank you very much for taking part in this experiment, which aims at studying how users communicate with a music chatbot for exploring diverse songs.
+            h4(style="text-align:center") MusicBot Evaluation
 
-            h5 Tasks:
-            p Please use the provided chatbot to find&nbsp
-                b 5 pieces of songs&nbsp
-                | that suit your preferences. The initial recommendations may not fit your taste, you need to tune recommendations by chatting with the bot. All music information used in this experiment was from Spotify.
+            h6 <u> PURPOSE OF RESEARCH STUDY:</u>
+            p The purpose of this study is to investigate how users communicate with a music chatbot for exploring diverse songs. 
+            
+            h6 <u> PROCEDURES:</u>
+            p Your task is to interact with the provided music chatbot to find 5 pieces of songs that suit your preferences and provide your evaluation feedback by completing online questionnaires. Note that only regular Spotify users can participate in this study. 
 
-            h5 Duration:
-            p Approximately 20 minutes (including time for filling out two questionnaires).
+            h6 <u> DURATION: </u>
+            p This study will take you approximately 20 minutes to complete (including time for filling out two questionnaires). We also have a bonus questionnaire that may take you approximately 6 minutes to complete.
+            
+            h6 <u> BENEFITS: </u>
+            P Although it may not directly benefit you, this study may benefit society by improving how dialogue systems assist humans to find satisfying items (e.g., music, movie and hotel). This could lead to better conversational user interfaces for computers and mobile devices.
+            
+            h6 <u>RISKS/DISCOMFORTS:</u>
+            p There are no risks for participating in this study beyond those associated with normal computer use.
 
-            h5 Task steps:
-            p Four steps:
-            p Step 1: You will then fill out your personal background (including a personality test);
-            p Step 2: You can get familiar with the music bot by trying two ways of tuning recommendations before starting the study;
-                ul
-                    li Try&nbsp
-                        b textual input&nbsp
-                        | to tell bot what kind of music you are looking for (Some examples of tuning recommendations are shown on the right side panel).
-                    li#sc_des Try to consider bot’s suggestions for searching for music, which aims to help you find good music.
-            p Step 3: After clicking on the button “Start study”, you will be asked to try to find&nbsp
-                b 5 good songs&nbsp
-                | that fit your taste using the music bot. You can give feedback on recommended music by clicking “(like, next)” when you like/dislike the songs.
+            h6 <u> VOLUNTARY PARTICIPATION AND RIGHT TO WITHDRAW: </u>
+            p Your participation in this study is voluntary; you may decline to participate without penalty. If you decide to participate, you may withdraw from the study at any time without penalty and without loss of benefits to which you are otherwise entitled. If you withdraw from the study before data collection is completed your data will be destroyed.
 
-            p Step 4: You will give us your overall preference over the used music chatbot. (Lastly, you can also try bonus questionnaire to get additional rewards!)
+            h6 <u> CIRCUMSTANCES THAT COULD LEAD US TO END YOUR PARTICIPATION: </u>
+            p We may decide to end your participation if we identify that you are not a regular Spotify user, or that you are not following the instructions closely enough.
 
-            h5 Video tutorial:
-            p Please watch the following tutorial before the task.
-            div#player
+            h6 <u> CONFIDENTIALITY: </u>    
+            p This study does not have any commercial usage delegated by Spotify. Your operations on our system will not affect your listening profile in Spotify. 
+            p#turk_info1 The identifying information based on your participation in this study (i.e., Amazon Mechanical Turk serial numbers, worker ID) will not be shared with anyone outside the research team and will only be used by Amazon to handle financial transactions. 
+            p#prolific_info1 The identifying information based on your participation in this study (i.e., Prolific ID) will not be shared with anyone outside the research team and will only be used by Prolific to handle financial transactions. 
+            p All of your data will be kept confidentially and be only used for our research analysis. 
 
-            h5 Tips:
-            ul
-                li
-                    b You should use Chrome browser (version > 33.0) on your PC.
-                li You can send text by pressing "Enter".
-                li Remember to submit the questionnaire by clicking the "Submit" button at the end of the page.
-                //- li Do not change User ID prefilled in the questionnaire.
+            h6 <u> COMPENSATION: </u>
+            p#turk_info2 If you satisfactorily complete the study, you will receive $2.0 to compensate you for your participation. If you satisfactorily complete our bonus questionnaire, you will receive $0.8 as additional reward. Payments are made via Amazon’s payment system.
+            p#prolific_info2 If you satisfactorily complete the study, you will receive  €2.2 to compensate you for your participation. If you satisfactorily complete our bonus questionnaire, you will receive €0.8 as additional reward. Payments are made via Prolific payment system.
 
-            p All of your data will be kept confidentially and be only used for our research analysis.
-            p We greatly appreciate your efforts and time in advance.
+            h6 <u> CONTACT INFORMATION: </u>
+            p If you have any questions about this research, you may contact: Wanling Cai at <a href="mailto:cswlcai@comp.hkbu.edu.hk">cswlcai@comp.hkbu.edu.hk</a>, Yucheng Jin at <a href="mailto:jinyc2@lenovo.com">jinyc2@lenovo.com</a>, or Li Chen at <a href="mailto:lichen@comp.hkbu.edu.hk">lichen@comp.hkbu.edu.hk</a>.  
+            p If you feel that you have not been treated according to the descriptions in this form, or your rights as a participant in this research have been violated during the course of this study, you may contact the Research Ethics Committee by email at <a href="mailto:hkbu_rec@hkbu.edu.hk">hkbu_rec@hkbu.edu.hk</a> or by mail to Graduate School, Hong Kong Baptist University, Kowloon Tong, Hong Kong.
+ 
+            h6 <u> CLICKING ACCEPT: </u>
+            p By clicking on the “Accept” button, you indicate that you are 18 years of age or older, that you voluntarily agree to participate in this study and that you understand the information in this consent form. 
 
             hr
             .row.justify-content-center
@@ -80,6 +80,16 @@ html
 
             var platform = window.location.search.substring(1)
             window.localStorage.setItem("platform",platform)
+
+            if(platform=="turk"){
+                $("#prolific_info1").hide()
+                $("#prolific_info2").hide()
+
+            }
+            else if(platform=="prolific"){
+                $("#turk_info1").hide()
+                $("#turk_info2").hide()
+            }
 
             $("#decline").click(function () {
                 window.location.href = "/quit"
