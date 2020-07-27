@@ -86,7 +86,7 @@ router.get("/findRecord", function(req, res) {
 router.post("/updateRecord", function(req, res) {
     var updatedID = req.body.id
     var que3List = req.body.que3
-    var updatedTimestamp = new Date()
+    var updatedTimestamp = req.body.timestamp
     User.updateOne({id:updatedID},{$set:{que3:que3List,bonusTimestamp:updatedTimestamp}},function(err){
         if (err)
             res.send(err)
@@ -98,7 +98,7 @@ router.post("/updateRecord", function(req, res) {
 router.post("/updateCode", function(req, res) {
     var updatedID = req.body.id
     var completionCode = req.body.completionCode
-    var updatedTimestamp = new Date()
+    var updatedTimestamp = req.body.timestamp
     User.updateOne({id:updatedID},{$set:{completionCode:completionCode,endTimestamp:updatedTimestamp}},function(err){
         if (err)
             res.send(err)
