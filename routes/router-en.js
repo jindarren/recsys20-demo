@@ -98,8 +98,9 @@ router.post("/updateRecord", function(req, res) {
 router.post("/updateCode", function(req, res) {
     var updatedID = req.body.id
     var completionCode = req.body.completionCode
-    var updatedTimestamp = req.body.timestamp
-    User.updateOne({id:updatedID},{$set:{completionCode:completionCode,endTimestamp:updatedTimestamp}},function(err){
+    // var updatedTimestamp = req.body.timestamp
+    // User.updateOne({id:updatedID},{$set:{completionCode:completionCode,endTimestamp:updatedTimestamp}},function(err){
+    User.updateOne({id:updatedID},{$set:{completionCode:completionCode}},function(err){
         if (err)
             res.send(err)
         else
