@@ -66,7 +66,7 @@ def determine_trigger_sc_or_not(interaction_log, cur_rec, categorical_attributes
 
         for utterance_info in previous_dialogue[pos_sys_crit:]:
             if utterance_info['agent']=='you':
-                if utterance_info['action'].lower() == 'next':
+                if utterance_info['action'].lower() == 'next' or 'next' in utterance_info['text'].lower():
                     num_consectively_disliked_songs += 1
                 if utterance_info['action'].lower() == 'accept_song':
                     num_consectively_disliked_songs = 0 
