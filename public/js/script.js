@@ -190,7 +190,7 @@ $(document).ready(function () {
                 console.log("更新: ", returned)
             },
             error: function (error) {
-                console.log("error")
+                console.log(error)
             },
         });
     }
@@ -1535,7 +1535,7 @@ $(document).ready(function () {
 
                 console.log(text)
 
-                var artist, song, genre, valence, tempo, action, feature;
+                var artist, genre, valence, tempo, action, feature;
                 var explaination = ""
 
                 var requestLink;
