@@ -1303,29 +1303,6 @@ $(document).ready(function () {
                         socket.emit('chat message', text);
                         updateChat(you, text, "User_Critique", "typing");
 
-                        if (text.toLowerCase().indexOf("next") > -1) {
-                            logger.dislikedSongs.push(logger.listenedSongs.slice(-1)[0].id)
-                            //Check if SC should be triggered
-                            var updateData = {}
-                            updateData.logger = logger
-                            var listenedSongsLength = logger.listenedSongs.length
-                            updateData.topRecommendedSong = logger.listenedSongs[listenedSongsLength - 1]
-
-                            checkSystemCritiques(updateData).then(function (returnedData) {
-                                var enableSC = JSON.parse(returnedData).triggerSC
-
-                                if (enableSC && sysCritVersion!="base") {
-                                    var line = $('<div class="speak"><div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>');
-                                    chat.append(line);
-                                    getSysCrit()
-
-                                } else {
-                                    showMusic(playlist[songIndex].id)
-                                }
-
-                            })
-                            
-                        }
                     }
                 }
             })
@@ -1414,6 +1391,7 @@ $(document).ready(function () {
                     chat.append(line);
                     var playSuccess = false
                     $.get(requestLink, function (res) {
+                        console.log(playSuccess)
                         if (!playSuccess)
                         {
                             playSuccess = true
@@ -1591,7 +1569,26 @@ $(document).ready(function () {
                         }
                         else if (intent == "music_player_control.skip_forward") {
                             skipTimes++;
+                            logger.dislikedSongs.push(logger.listenedSongs.slice(-1)[0].id)
+                            //Check if SC should be triggered
+                            var updateData = {}
+                            updateData.logger = logger
+                            var listenedSongsLength = logger.listenedSongs.length
+                            updateData.topRecommendedSong = logger.listenedSongs[listenedSongsLength - 1]
 
+                            checkSystemCritiques(updateData).then(function (returnedData) {
+                                var enableSC = JSON.parse(returnedData).triggerSC
+
+                                if (enableSC && sysCritVersion!="base") {
+                                    var line = $('<div class="speak"><div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>');
+                                    chat.append(line);
+                                    getSysCrit()
+
+                                } else {
+                                    showMusic(playlist[songIndex].id)
+                                }
+
+                            })
                         }
                         else if (intent == "music.search") {
 
