@@ -808,7 +808,9 @@ $(document).ready(function () {
             // [Wanling] - revise
             var dialog = {} // [Wanling]
             var updateChat = function (party, text, action, modality, crit_related = false ) {
-                
+
+                $('.spinner').remove();
+
                 dialog.agent = party
                 dialog.text = text
                 dialog.action = action
@@ -1393,7 +1395,6 @@ $(document).ready(function () {
                     var playSuccess = false
                     $.get(requestLink, function (res) {
                         //remove loading animation
-                        $('.spinner').remove();
                         playSuccess = true
                         console.log(res.tracks)
                         // filter songs that have been listened by user
@@ -1480,7 +1481,6 @@ $(document).ready(function () {
             function speakandsing(agent, text, action) {
 
                 updateChat(agent, text, action, "text");
-
 
                 if (listenedSongs.indexOf(topRecommendedSong) < 0) {
                     listenedSongs.push(topRecommendedSong)
