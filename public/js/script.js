@@ -1303,9 +1303,6 @@ $(document).ready(function () {
                         socket.emit('chat message', text);
                         updateChat(you, text, "User_Critique", "typing");
 
-                        if (text.indexOf("next") > -1) {
-                            showMusic(playlist[songIndex].id)
-                        }
                     }
                 }
             })
@@ -1394,6 +1391,7 @@ $(document).ready(function () {
                     chat.append(line);
                     var playSuccess = false
                     $.get(requestLink, function (res) {
+                        console.log(playSuccess)
                         if (!playSuccess)
                         {
                             playSuccess = true
@@ -1575,7 +1573,6 @@ $(document).ready(function () {
                         else if (intent == "music_player_control.skip_forward") {
                             skipTimes++;
                             logger.dislikedSongs.push(logger.listenedSongs.slice(-1)[0].id)
-
                             //Check if SC should be triggered
                             var updateData = {}
                             updateData.logger = logger
@@ -1591,8 +1588,12 @@ $(document).ready(function () {
                                     getSysCrit()
 
                                 } else {
+<<<<<<< HEAD
                                     speakandsing(robot, "OK, Here is another song.", "Coherence")
 
+=======
+                                    showMusic(playlist[songIndex].id)
+>>>>>>> 38f2d690670cb8cf13c9a8ae664c04157b2f5484
                                 }
 
                             })

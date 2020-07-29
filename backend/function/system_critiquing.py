@@ -399,7 +399,7 @@ def check_critique_conflict_with_user_preference(critique, cur_rec, categorical_
                     conflict_or_not = True
             else:
                 print("ERROR")
-                input()
+                # input()
 
 
         else:
