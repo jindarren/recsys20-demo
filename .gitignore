@@ -5,3 +5,4 @@ backend/function/__pycache__/system_critiquing.cpython-37.pyc
 backend/function/__pycache__/recommendation.cpython-37.pyc
 backend/function/__pycache__/diversity_calculation.cpython-37.pyc
 backend/function/__pycache__/dialog_management.cpython-37.pyc
+*.pyc
