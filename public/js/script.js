@@ -1608,7 +1608,6 @@ $(document).ready(function () {
 
                                 } else {
                                     speakandsing(robot, "OK, Here is another song.", "Coherence")
-
                                 }
 
                             })
