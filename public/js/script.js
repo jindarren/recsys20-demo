@@ -1588,12 +1588,8 @@ $(document).ready(function () {
                                     getSysCrit()
 
                                 } else {
-<<<<<<< HEAD
                                     speakandsing(robot, "OK, Here is another song.", "Coherence")
-
-=======
                                     showMusic(playlist[songIndex].id)
->>>>>>> 38f2d690670cb8cf13c9a8ae664c04157b2f5484
                                 }
 
                             })
