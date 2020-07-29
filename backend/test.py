@@ -67,9 +67,9 @@ for i in range(1):
 	print(i)
 
  
-text = res.text
-text_json = json.loads(json.loads(text))
-pp.pprint(text_json)
+	text = res.text
+	text_json = json.loads(json.loads(text))
+	pp.pprint(text_json)
 # pp.pprint(text_json['recommendation_list'])
 # user_profile = text_json['user_profile']
 # print(len(user_profile['pool']))
