@@ -805,12 +805,10 @@ $(document).ready(function () {
             }
 
             // add a new line to the chat
-            // [Wanling] - revise
-            var dialog = {} // [Wanling]
             var updateChat = function (party, text, action, modality, crit_related = false ) {
 
                 $('.spinner').remove();
-
+                var dialog = {}
                 dialog.agent = party
                 dialog.text = text
                 dialog.action = action
@@ -827,8 +825,10 @@ $(document).ready(function () {
                         critiqueList.push(critiqueContent)
                     }
                     dialog.critique = critiqueList
-                    dialog.critiqued_song = playlist[songIndex].id
+                    dialog.critiqued_song = topRecommendedSong.id
                 }
+                
+
 
                 dialog.timestamp = new Date().getTime()
                 var cloneDialog = JSON.parse(JSON.stringify(dialog))
@@ -899,6 +899,9 @@ $(document).ready(function () {
                     // add critique when the user accepts a suggestion
                     // dialog.critique = critiques[critiquesIndex].critique
 
+                    var dialogNum = logger.dialog.length
+                    var dialog = logger.dialog[dialogNum - 1]
+
                     //perform update model request
                     var updateData = {}
                     updateData.user = usermodel.user
@@ -965,6 +968,10 @@ $(document).ready(function () {
                     updateChat(you, "I don't want.", "Reject_Suggestion", "btn", true)
 
                     //perform update model request
+
+                    var dialogNum = logger.dialog.length
+                    var dialog = logger.dialog[dialogNum - 1]
+
                     var updateData = {}
                     updateData.user = usermodel.user
                     updateData.logger = {}
@@ -1044,15 +1051,15 @@ $(document).ready(function () {
 
                                     if (numberOfLikedSongs <= 5) {
                                         if (data.user.preferenceData.track.length < 5)
-                                            data.user.preferenceData.track.push(playlist[songIndex].id)
+                                            data.user.preferenceData.track.push(logger.listenedSongs.slice(-1)[0].id)
                                         else
-                                            data.user.preferenceData.track[5] = playlist[songIndex].id
+                                            data.user.preferenceData.track[5] = logger.listenedSongs.slice(-1)[0].id
 
                                         $(".list-group").append("<li class='list-group-item' id='" + logger.listenedSongs.slice(-1)[0].id + "'>" + logger.listenedSongs.slice(-1)[0].name + "&nbsp;&nbsp;<i class='fa fa-close'></i><input type='number' class='rating' data-size='xs'></li>")
                                         $("#" + logger.listenedSongs.slice(-1)[0].id + " .rating").rating({min: 1, max: 5, step: 1});
                                         $("#" + logger.listenedSongs.slice(-1)[0].id + " .rating").on('rating:change', function (event, value, caption) {
 
-
+                                            numberOfLikedSongs++
                                             logger.likedSongs.push(logger.listenedSongs.slice(-1)[0].id)
                                             $("#" + logger.listenedSongs.slice(-1)[0].id + " .rating").rating('refresh', {
                                                 disabled: true,
@@ -1078,14 +1085,43 @@ $(document).ready(function () {
 
                                             console.log(updateData)
                                             updateUserModel(updateData).done(function (){
+                                                if (numberOfLikedSongs == 5 && isPreStudy) {
+                                                    updateChat(robot, "Now, you should be familiar with the system. You can click the 'start study' button to start.", "Initialize")
+                                                    $("input#message").attr("disabled", true)
+                                                    $("input#message").attr("placeholder", "Please click the 'start study' button to start!")
+                                                }   
 
-                                                
+                                                if (numberOfLikedSongs == 5 && !isPreStudy) {
+                                                    isFinished = true
+
+                                                    logger.duration = new Date().getTime() - logger.task1
+                                                    // logger.listenedSongs = listenedSongs.concat()
+                                                    logger.rating = []
+                                                    $("li.list-group-item").each(function (i) {
+                                                        var rating = {}
+                                                        rating.id = $(this).attr("id")
+                                                        rating.value = $(this).find(".rating-stars").attr("title")
+                                                        logger.rating.push(rating)
+                                                    })
+
+                                                    data.logger = logger
+                                                    data.pool = playlist
+                                                    data.user = usermodel.user
+                                                    data.topRecommendedSong = topRecommendedSong
+
+                                                    console.log("上传日志: ", data)
+                                                    window.localStorage.setItem("log",JSON.stringify(data))
+
+
+                                                    window.location.href = "/que2"
+
+                                                }  
 
 
                                                 if (numberOfLikedSongs < 5) {
                                                     $("input#message").attr("disabled", false)
                                                     $("input#message").attr("placeholder", "")
-                                                    numberOfLikedSongs++
+                                                   
 
                                                     //Exploration for niche genre music
                                                     var likedSongGenre = topRecommendedSong.genre
@@ -1148,36 +1184,7 @@ $(document).ready(function () {
                                                     }
                                                 }
 
-                                                if (numberOfLikedSongs == 5 && !isPreStudy) {
-                                                    isFinished = true
-
-                                                    logger.duration = new Date().getTime() - logger.task1
-                                                    // logger.listenedSongs = listenedSongs.concat()
-                                                    logger.rating = []
-                                                    $("li.list-group-item").each(function (i) {
-                                                        var rating = {}
-                                                        rating.id = $(this).attr("id")
-                                                        rating.value = $(this).find(".rating-stars").attr("title")
-                                                        logger.rating.push(rating)
-                                                    })
-
-                                                    data.logger = logger
-                                                    data.pool = playlist
-                                                    data.user = usermodel.user
-                                                    data.topRecommendedSong = topRecommendedSong
-
-                                                    console.log("上传日志: ", data)
-                                                    window.localStorage.setItem("log",JSON.stringify(data))
-
-
-                                                    window.location.href = "/que2"
-
-                                                } 
-                                                else if (numberOfLikedSongs == 5 && isPreStudy) {
-                                                    updateChat(robot, "Now, you should be familiar with the system. You can click the 'start study' button to start.", "Initialize")
-                                                    $("input#message").attr("disabled", true)
-                                                    $("input#message").attr("placeholder", "Please click the 'start study' button to start!")
-                                                }
+ 
 
                                             })
                                         });
@@ -1448,7 +1455,7 @@ $(document).ready(function () {
                         if (!playSuccess)
                         {
                             playSuccess = true
-                            speakandsing(robot, "Em..., I have no more songs for you, but you can try this song again :)", "Coherence")
+                            speakandsing(robot, "Em..., I have no more songs for you, but you can try this song :)", "Coherence")
                         }
 
                     },6000)
@@ -1565,13 +1572,25 @@ $(document).ready(function () {
                 //     else{
                         //search by artist
                         if (intent.indexOf("smalltalk")>-1){
-                            updateChat(robot, response_speech, "Small_talk", "text");
+                            var dialogNum = logger.dialog.length
+                            var dialog = logger.dialog[dialogNum - 1]
+                            dialog.action = "User_Smalltalk"
+
+                            updateChat(robot, response_speech, "Bot_Smalltalk", "text");
                             setTimeout(function () {
                                 speakandsing(robot, "Ok, let's continue to enjoy music.", "Coherence")
                             },2000)
                         }
                         else if (intent == "music_player_control.skip_forward") {
-                            skipTimes++;
+
+                            var dialogNum = logger.dialog.length
+                            var dialog = logger.dialog[dialogNum - 1]
+
+                            dialog.action = "Next"
+
+                            nextTimes++;
+                            var songID = topRecommendedSong.id
+                            $("#speak" + songID + " .feedback-box").fadeOut()
                             logger.dislikedSongs.push(logger.listenedSongs.slice(-1)[0].id)
                             //Check if SC should be triggered
                             var updateData = {}
@@ -1588,12 +1607,8 @@ $(document).ready(function () {
                                     getSysCrit()
 
                                 } else {
-<<<<<<< HEAD
                                     speakandsing(robot, "OK, Here is another song.", "Coherence")
 
-=======
-                                    showMusic(playlist[songIndex].id)
->>>>>>> 38f2d690670cb8cf13c9a8ae664c04157b2f5484
                                 }
 
                             })
@@ -1766,12 +1781,54 @@ $(document).ready(function () {
                         else if (intent == "critique.response" ) {
                             needReply = false;
                             var response = text.parameters["RESPONSE"]
+
+                            var dialogNum = logger.dialog.length
+                            var dialog_context = logger.dialog[dialogNum - 2]
+                            // console.log(dialog_context)
+                            if (dialog_context.action == 'Recommend'){
+                                if (response == 'yes') {
+                                    response = 'like'
+                                }
+                                if (response == 'no') {
+                                    response = 'dislike'
+                                }
+
+                            }else if(dialog_context.action == 'System_Suggest'){
+                                if (response == 'like') {
+                                    response = 'yes'
+                                }
+                                if (response == 'dislike') {
+                                    response = 'no'
+                                }
+                            }else
+                            {
+                                response = 'continue'
+                            }
+                            
                             if (response == "yes") {
                                 
                                 // add critique when the user accepts a suggestion
                                 // dialog.critique = critiques[critiquesIndex].critique
             
                                 //perform update model request
+
+                                var dialogNum = logger.dialog.length
+                                var dialog = logger.dialog[dialogNum - 1]
+
+                                dialog.action = "Accept_Suggestion"
+
+                                // add critique info
+                                var critList = critiques[critiquesIndex].critiques
+                                var critiqueList = []
+            
+                                for (var index in critList) {
+                                    var critiqueContent = {}
+                                    critiqueContent[critList[index].split("|")[0]] = critList[index].split("|")[1]
+                                    critiqueList.push(critiqueContent)
+                                }
+                                dialog.critique = critiqueList
+                                dialog.critiqued_song = topRecommendedSong.id
+
                                 var updateData = {}
                                 updateData.user = usermodel.user
                                 updateData.logger = {}
@@ -1794,6 +1851,8 @@ $(document).ready(function () {
                                 {
                                     reRankPlaylist(critiques[critiquesIndex].recommendation)
                                     // console.log(critiques[critiquesIndex].recommendation)
+                                    console.log(songIndex)
+                                    console.log(playlist)
                                     showMusic(playlist[songIndex].id)
             
                                 }    
@@ -1828,6 +1887,24 @@ $(document).ready(function () {
                             else if (response == "no") {
 
                                 //perform update model request
+                                var dialogNum = logger.dialog.length
+                                var dialog = logger.dialog[dialogNum - 1]
+
+                                dialog.action = "Reject_Suggestion"
+
+                                // add critique info
+                                var critList = critiques[critiquesIndex].critiques
+                                var critiqueList = []
+            
+                                for (var index in critList) {
+                                    var critiqueContent = {}
+                                    critiqueContent[critList[index].split("|")[0]] = critList[index].split("|")[1]
+                                    critiqueList.push(critiqueContent)
+                                }
+                                dialog.critique = critiqueList
+                                dialog.critiqued_song = topRecommendedSong.id
+
+
                                 var updateData = {}
                                 updateData.user = usermodel.user
                                 updateData.logger = {}
@@ -1856,7 +1933,14 @@ $(document).ready(function () {
                             
 
                             }
-                            else if (response == "like"){
+                            else if (response == "like")
+                            {
+
+                                var dialogNum = logger.dialog.length
+                                var dialog = logger.dialog[dialogNum - 1]
+                                
+                                dialog.action = "Accept_Song"
+
 
                                 $("input#message").attr("disabled", true)
                                 $("input#message").attr("placeholder", "Please rate your liked song.")
@@ -1869,14 +1953,14 @@ $(document).ready(function () {
 
                                 // numberOfLikedSongs = logger.likedSongs.length
                                 if (!isFinished) {
-                                    var songID = data.topRecommendedSong.id
+                                    var songID = topRecommendedSong.id
                                     $("#speak" + songID + " .feedback-box").fadeOut()
 
                                     if (numberOfLikedSongs <= 5) {
                                         if (data.user.preferenceData.track.length < 5)
-                                            data.user.preferenceData.track.push(playlist[songIndex].id)
+                                            data.user.preferenceData.track.push(logger.listenedSongs.slice(-1)[0].id)
                                         else
-                                            data.user.preferenceData.track[5] = playlist[songIndex].id
+                                            data.user.preferenceData.track[5] = logger.listenedSongs.slice(-1)[0].id
 
                                         $(".list-group").append("<li class='list-group-item' id='" + logger.listenedSongs.slice(-1)[0].id + "'>" + logger.listenedSongs.slice(-1)[0].name + "&nbsp;&nbsp;<i class='fa fa-close'></i><input type='number' class='rating' data-size='xs'></li>")
                                         $("#" + logger.listenedSongs.slice(-1)[0].id + " .rating").rating({min: 1, max: 5, step: 1});
@@ -1884,6 +1968,7 @@ $(document).ready(function () {
 
 
                                             logger.likedSongs.push(logger.listenedSongs.slice(-1)[0].id)
+                                            numberOfLikedSongs++
                                             $("#" + logger.listenedSongs.slice(-1)[0].id + " .rating").rating('refresh', {
                                                 disabled: true,
                                                 showClear: false,
@@ -1895,7 +1980,7 @@ $(document).ready(function () {
 
                                             var dialogNum = logger.dialog.length
                                             var dialog = logger.dialog[dialogNum - 1]
-
+                                            
 
                                             var updateData = {}
                                             updateData.user = usermodel.user
@@ -1908,11 +1993,39 @@ $(document).ready(function () {
 
                                             console.log(updateData)
                                             updateUserModel(updateData).done(function (){
+                                                if (numberOfLikedSongs == 5 && isPreStudy) {
+                                                    updateChat(robot, "Now, you should be familiar with the system. You can click the 'start study' button to start.", "Initialize")
+                                                    $("input#message").attr("disabled", true)
+                                                    $("input#message").attr("placeholder", "Please click the 'start study' button to start!")
+                                                }
+                                                if (numberOfLikedSongs == 5 && !isPreStudy) {
+                                                    isFinished = true
 
+                                                    logger.duration = new Date().getTime() - logger.task1
+                                                    // logger.listenedSongs = listenedSongs.concat()
+                                                    logger.rating = []
+                                                    $("li.list-group-item").each(function (i) {
+                                                        var rating = {}
+                                                        rating.id = $(this).attr("id")
+                                                        rating.value = $(this).find(".rating-stars").attr("title")
+                                                        logger.rating.push(rating)
+                                                    })
+
+                                                    data.logger = logger
+                                                    data.pool = playlist
+                                                    data.user = usermodel.user
+                                                    data.topRecommendedSong = topRecommendedSong
+
+                                                    console.log("上传日志: ", data)
+                                                    window.localStorage.setItem("log",JSON.stringify(data))
+
+
+                                                    window.location.href = "/que2"
+
+                                                }
                                                 if (numberOfLikedSongs < 5) {
                                                     $("input#message").attr("disabled", false)
                                                     $("input#message").attr("placeholder", "")
-                                                    numberOfLikedSongs++
 
                                                     //Exploration for niche genre music
                                                     var likedSongGenre = topRecommendedSong.genre
@@ -1958,7 +2071,7 @@ $(document).ready(function () {
                                                                 updateChat(robot, nextSongUtters[parseInt((nextSongUtters.length * Math.random()))], "Coherence")
 
                                                                 showNextSong = setTimeout(function () {
-                                                                    $("#speak" + id + " div").fadeOut();
+                                                                    $("#speak" + songID + " div").fadeOut();
                                                                     if (listenedSongs.indexOf(playlist[songIndex]) < 0) {
                                                                         listenedSongs.push(playlist[songIndex])
                                                                         showNextSong3 = setTimeout(function () {
@@ -1975,37 +2088,6 @@ $(document).ready(function () {
                                                     }
                                                 }
 
-                                                if (numberOfLikedSongs == 5 && !isPreStudy) {
-                                                    isFinished = true
-
-                                                    logger.duration = new Date().getTime() - logger.task1
-                                                    // logger.listenedSongs = listenedSongs.concat()
-                                                    logger.rating = []
-                                                    $("li.list-group-item").each(function (i) {
-                                                        var rating = {}
-                                                        rating.id = $(this).attr("id")
-                                                        rating.value = $(this).find(".rating-stars").attr("title")
-                                                        logger.rating.push(rating)
-                                                    })
-
-                                                    data.logger = logger
-                                                    data.pool = playlist
-                                                    data.user = usermodel.user
-                                                    data.topRecommendedSong = topRecommendedSong
-
-                                                    console.log("上传日志: ", data)
-                                                    window.localStorage.setItem("log",JSON.stringify(data))
-
-
-                                                    window.location.href = "/que2"
-
-                                                }
-                                                else if (numberOfLikedSongs == 5 && isPreStudy) {
-                                                    updateChat(robot, "Now, you should be familiar with the system. You can click the 'start study' button to start.", "Initialize")
-                                                    $("input#message").attr("disabled", true)
-                                                    $("input#message").attr("placeholder", "Please click the 'start study' button to start!")
-                                                }
-
                                             })
                                         });
 
@@ -2019,12 +2101,20 @@ $(document).ready(function () {
                                     }
                                 }
 
-                            }else if(response == "dislike"){
+                            }
+                            else if(response == "dislike")
+                            {
                                 nextTimes++;
-                                var songID = data.topRecommendedSong.id
+                                var songID = topRecommendedSong.id
                                 $("#speak" + songID + " .feedback-box").fadeOut()
-                                updateChat(you, "Next song.", "Next", "btn")
+                                // updateChat(you, "Next song.", "Next", "btn")
                                 logger.dislikedSongs.push(logger.listenedSongs.slice(-1)[0].id)
+
+
+                                var dialogNum = logger.dialog.length
+                                var dialog = logger.dialog[dialogNum - 1]
+                                dialog.action = "Next"
+
 
                                 //Check if SC should be triggered
                                 var updateData = {}
@@ -2043,7 +2133,7 @@ $(document).ready(function () {
                                     } else {
 
                                         showNextSong2 = setTimeout(function () {
-                                            $("#speak" + id + " div").fadeOut();
+                                            $("#speak" + songID + " div").fadeOut();
                                             if (listenedSongs.indexOf(playlist[songIndex]) < 0) {
                                                 listenedSongs.push(playlist[songIndex])
 
@@ -2051,7 +2141,8 @@ $(document).ready(function () {
                                                     showMusic(playlist[songIndex].id)
                                                 }, 1000)
 
-                                            } else {
+                                            } 
+                                            else {
                                                 showMusic(playlist[songIndex].id)
                                             }
                                         }, 10)
@@ -2061,8 +2152,11 @@ $(document).ready(function () {
                                 })
 
                             }else if(response == "continue"){
-                                speakandsing(robot, "OK, Here is another song.", "Coherence")
+                                var dialogNum = logger.dialog.length
+                                var dialog = logger.dialog[dialogNum - 1]
+                                dialog.action = "Continue"
 
+                                speakandsing(robot, "OK, you may try this song.", "Coherence")
                             }
                         }
 

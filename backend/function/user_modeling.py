@@ -137,55 +137,51 @@ def update_user_model(user_model, user_interaction_dialog, user_listened_longs, 
         print("Update User Model ---- User Action: %s." % (current_action))
 
         if current_action == "user_critique" or current_action == "accept_suggestion":
-            if 'text' in utterance_info.keys() and utterance_info['text'].lower() == 'no':
-                current_action = "reject_suggestion"
-                time_helper.print_current_time()
-                print("Update User Model ---- User Action: %s." % (current_action))
-            else:
-                critique_list = []
-                if 'critique' in utterance_info.keys():
-                    critique_list = utterance_info['critique']
-                critique_song_info = current_recommended_item
-                # [Revised 2020-05-07: Actually, the critiqued item is just the current recommended item.]
-                # critique_song_id = utterance_info['critiqued_song']
-                # critique_song_info = {}
-                # for song in user_listened_longs:
-                #     if song['id'] == critique_song_id:
-                #         critique_song_info = song
-                
-                time_helper.print_current_time()
-                print("Update User Model (%s) ---- Number of Critiques: %d." % (current_action, len(critique_list)))
 
-                for crit in critique_list:
-                    for attr, criti_value in crit.items():
-                        if attr not in numerical_attributes and attr not in categorical_attributes:
-                            time_helper.print_current_time()
-                            print("Unrecognized attributes: %s." % attr)
-                            continue
-                        
-                        if attr in numerical_attributes and criti_value not in numerical_crit_direction_limit:
-                            time_helper.print_current_time()
-                            print("Unrecognized critique direction: %s." % criti_value)
-                            continue
+            critique_list = []
+            if 'critique' in utterance_info.keys():
+                critique_list = utterance_info['critique']
+            critique_song_info = current_recommended_item
+            # [Revised 2020-05-07: Actually, the critiqued item is just the current recommended item.]
+            # critique_song_id = utterance_info['critiqued_song']
+            # critique_song_info = {}
+            # for song in user_listened_longs:
+            #     if song['id'] == critique_song_id:
+            #         critique_song_info = song
+            
+            time_helper.print_current_time()
+            print("Update User Model (%s) ---- Number of Critiques: %d." % (current_action, len(critique_list)))
 
-                        # preference model: attribute frequency
-                        updated_user_attribute_frequency[attr] = updated_user_attribute_frequency[attr] * 2
+            for crit in critique_list:
+                for attr, criti_value in crit.items():
+                    if attr not in numerical_attributes and attr not in categorical_attributes:
                         time_helper.print_current_time()
-                        print("update attribute frequence: attribute (%s) - %f. "% (attr, updated_user_attribute_frequency[attr]))
-                        # user critique preference
-                        updated_user_critique_preference = update_user_critique_preference(updated_user_critique_preference, attr, criti_value, critique_song_info, numerical_attributes, 'pos')
+                        print("Unrecognized attributes: %s." % attr)
+                        continue
+                    
+                    if attr in numerical_attributes and criti_value not in numerical_crit_direction_limit:
+                        time_helper.print_current_time()
+                        print("Unrecognized critique direction: %s." % criti_value)
+                        continue
+
+                    # preference model: attribute frequency
+                    updated_user_attribute_frequency[attr] = updated_user_attribute_frequency[attr] * 2
+                    time_helper.print_current_time()
+                    print("update attribute frequence: attribute (%s) - %f. "% (attr, updated_user_attribute_frequency[attr]))
+                    # user critique preference
+                    updated_user_critique_preference = update_user_critique_preference(updated_user_critique_preference, attr, criti_value, critique_song_info, numerical_attributes, 'pos')
 
 
-                # pp.pprint(updated_user_critique_preference)
+            # pp.pprint(updated_user_critique_preference)
 
-                # user constraint
-                constraint_number = 5
-                updated_user_constraints = update_user_constraints(updated_user_critique_preference, constraint_number)
+            # user constraint
+            constraint_number = 5
+            updated_user_constraints = update_user_constraints(updated_user_critique_preference, constraint_number)
 
-                time_helper.print_current_time()
-                print("Update User Model ---- Number of Current User Constraints: %d." % len(updated_user_constraints))
+            time_helper.print_current_time()
+            print("Update User Model ---- Number of Current User Constraints: %d." % len(updated_user_constraints))
 
-                # pp.pprint(updated_user_constraints)
+            # pp.pprint(updated_user_constraints)
 
 
         # Condition 2:  system suggest critiquing - No
