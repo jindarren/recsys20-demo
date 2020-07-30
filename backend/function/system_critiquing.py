@@ -420,15 +420,17 @@ def generate_system_critiques_preference_oriented(user_info, user_critique_prefe
     # Step 3: Filter frequent critiques that have conflict with user past critiques.
     categorical_critique_dict, numerical_critique_dict = helper.convert_to_critique_preference_dict(user_critique_preference)
 
-    pp.pprint(categorical_critique_dict)
-    pp.pprint(numerical_critique_dict)
+    # pp.pprint(categorical_critique_dict)
+    # pp.pprint(numerical_critique_dict)
 
+    all_critiques_freq_dict = {}
     frequent_critiques_freq_dict = {}
     for num in unit_or_compound:
         for crit, freq in num_critique_sets_dict[num].items():
+            all_critiques_freq_dict[crit] = freq
             if not check_critique_conflict_with_user_preference(crit, cur_rec, categorical_critique_dict, numerical_critique_dict):
                 frequent_critiques_freq_dict[crit] = freq
-    pp.pprint(frequent_critiques_freq_dict)
+    # pp.pprint(frequent_critiques_freq_dict)
 
     # -------------------------------------------------------
     # --------------------  Apropri   -----------------------
@@ -446,8 +448,13 @@ def generate_system_critiques_preference_oriented(user_info, user_critique_prefe
     # -------------------------------------------------------
 
     if len(frequent_critiques_freq_dict) == 0:
-        return frequent_critiques_freq_dict
-
+        frequent_critiques_freq_dict = all_critiques_freq_dict
+        time_helper.print_current_time()
+        print("Generate critiques that may conflict with users' preferences.")
+    else:
+        time_helper.print_current_time()
+        print("Find some critiques that suit users' taste.")
+        
     # Step 3: Obtain the set of items that satisfy the critique
     frequent_critiques_satisfied_items_dict = obtain_critique_items_dict(frequent_critiques_freq_dict, item_critique_arrays_dict)
     # pp.pprint(frequent_critiques_satisfied_items_dict)
@@ -457,8 +464,8 @@ def generate_system_critiques_preference_oriented(user_info, user_critique_prefe
     user_attribute_frequency = user_info['attribute_frequency']
     sorted_critique_utility_list = compute_critique_utility_preference_oriented(user_attribute_frequency, frequent_critiques_freq_dict,min_support, frequent_critiques_satisfied_items_dict, estimated_score_dict)
     
-    time_helper.print_current_time()
-    print('compute critique utility - preference-oriented - Done.')
+    # time_helper.print_current_time()
+    # print('compute critique utility - preference-oriented - Done.')
 
     # version 1: re-sort SC (put the critiques with same attribute but different directions together)
     top_K = min([top_K, len(sorted_critique_utility_list)])
@@ -469,8 +476,8 @@ def generate_system_critiques_preference_oriented(user_info, user_critique_prefe
     # sorted_critique_diveristy_utility_list = compute_critique_diversity_utility(sorted_critique_utility_list, top_K)
     
 
-    time_helper.print_current_time()
-    print('obtain critique diversified - Done.')
+    # time_helper.print_current_time()
+    # print('obtain critique diversified - Done.')
 
 
     # pp.pprint(sorted_critique_diveristy_utility_list)
@@ -511,6 +518,7 @@ def generate_system_critiques_diversity_oriented(user_info, user_critique_prefer
                 processed_item_pool.append(item)
     else:
         processed_item_pool = copy.deepcopy(item_pool)
+    time_helper.print_current_time()
     print("After filtering items: %d songs left." % len(processed_item_pool))
 
     if len(processed_item_pool) < threshold_genre_songs_for_SC:
@@ -531,15 +539,17 @@ def generate_system_critiques_diversity_oriented(user_info, user_critique_prefer
     categorical_critique_dict, numerical_critique_dict = helper.convert_to_critique_preference_dict(user_critique_preference)
 
 
-    pp.pprint(categorical_critique_dict)
-    pp.pprint(numerical_critique_dict)
+    # pp.pprint(categorical_critique_dict)
+    # pp.pprint(numerical_critique_dict)
 
     frequent_critiques_freq_dict = {}
+    all_critiques_freq_dict = {}
     for num in unit_or_compound:
         for crit, freq in num_critique_sets_dict[num].items():
+            all_critiques_freq_dict[crit] = freq
             if not check_critique_conflict_with_user_preference(crit, cur_rec, categorical_critique_dict, numerical_critique_dict):
                 frequent_critiques_freq_dict[crit] = freq
-    pp.pprint(frequent_critiques_freq_dict)
+    # pp.pprint(frequent_critiques_freq_dict)
     # pp.pprint(helper.get_whole_genre_list())
     # Case 2 / 3: 
     # critique_level -> in level 1 (genre) -> we may stay in the whole recommendation pool to explore different genres.
@@ -558,8 +568,8 @@ def generate_system_critiques_diversity_oriented(user_info, user_critique_prefer
         if 'neg' in categorical_critique_dict['genre'].keys():
             previous_occured_genres = previous_occured_genres + categorical_critique_dict['genre']['neg']
         # if user accept "niche" -> first suggest genres occurs in the niche genre
-        print("previous_occured_genres:")
-        print(previous_occured_genres)
+        # print("previous_occured_genres:")
+        # print(previous_occured_genres)
         if 'pos' in categorical_critique_dict['genre'].keys() and 'niche' in categorical_critique_dict['genre']['pos']:
             niche_genre_list = [] # find all the niche genres in the recommendation pool
             for item in processed_item_pool:
@@ -580,7 +590,15 @@ def generate_system_critiques_diversity_oriented(user_info, user_critique_prefer
             genre_list_for_explore = random.sample(other_genre_options, num_genre_list_for_explore)
             
         return 'Random_Genres', genre_list_for_explore 
-        
+
+
+    if len(categorical_attributes_for_critiquing) == 0 and len(frequent_critiques_freq_dict) == 0:
+        frequent_critiques_freq_dict = all_critiques_freq_dict
+        time_helper.print_current_time()
+        print("Generate critiques that may conflict with users' preferences.")
+    else:
+        time_helper.print_current_time()
+        print("Find some critiques that suit users' taste.")
     # Step 3: Obtain the set of items that satisfy the critique
     frequent_critiques_satisfied_items_dict = obtain_critique_items_dict(frequent_critiques_freq_dict, item_critique_arrays_dict)
     # pp.pprint(frequent_critiques_satisfied_items_dict)
@@ -598,17 +616,17 @@ def generate_system_critiques_diversity_oriented(user_info, user_critique_prefer
     sorted_critique_utility_list = compute_critique_utility_diversity_oriented(diversity_calculation_method, \
         user_listened_songs, item_pool, frequent_critiques_satisfied_items_dict , categorical_attributes, numerical_attributes)
     
-    time_helper.print_current_time()
-    print('compute critique utility - diversity-oriented - Done.')
+    # time_helper.print_current_time()
+    # print('compute critique utility - diversity-oriented - Done.')
     
     # version 1: re-sort SC (put the critiques with same attribute but different directions together)
     top_K = min([top_K, len(sorted_critique_utility_list)])
     sorted_critique_list = resort_critique_list (sorted_critique_utility_list, top_K, numerical_attributes)
 
-    time_helper.print_current_time()
-    print('obtain critique resorted - Done.')
+    # time_helper.print_current_time()
+    # print('obtain critique resorted - Done.')
     
-    pp.pprint(sorted_critique_list)
+    # pp.pprint(sorted_critique_list)
  
     topK_critique_item_list = obtain_top_k_critique_with_recommendation_list(top_K, sorted_critique_list, frequent_critiques_satisfied_items_dict,estimated_score_dict)
 
