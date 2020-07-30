@@ -1,7 +1,7 @@
 const socket = io();
 
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-const recognition = new SpeechRecognition();
+// const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+// const recognition = new SpeechRecognition();
 const genreData = genreMapList
 
 var spotifyToken = $.cookie('spotify-token')
@@ -33,7 +33,7 @@ var usermodel = {}
 //base
 var sysCritVersion = window.location.search.substring(1)
 
-console.log(sysCritVersion)
+//console.log(sysCritVersion)
 
 logger.dialog = []
 logger.listenedSongs = []
@@ -53,7 +53,7 @@ logger.exp_category = []
 logger.exp_feature = []
 
 var nextSongUtters = ["Great, here is another song.", "OK, maybe you also like this song.", "Good, please try the next song."],
-    rateUtters = ["Please rate your liked song in terms of pleasant surprise.", "Don't forget to rate the song in terms of pleasant surprise.", "You also need to rate the song in terms of pleasant surprise."]
+    rateUtters = ["Please rate your liked song in terms of pleasant surprise in the left panel.", "Don't forget to rate the song in terms of pleasant surprise in the left panel.", "You also need to rate the song in terms of pleasant surprise in the left panel."]
 
 
 var systemLang = storage.language
@@ -160,7 +160,7 @@ $(document).ready(function () {
                 var returned = JSON.parse(result)
                 user = returned.user
                 usermodel.user = returned.user
-                console.log("初始: ", returned)
+                // console.log("初始: ", returned)
 
             },
             error: function (error) {
@@ -187,7 +187,7 @@ $(document).ready(function () {
             success: function (result) {
                 var returned = JSON.parse(result)
                 usermodel.user = returned.user
-                console.log("更新: ", returned)
+                // console.log("更新: ", returned)
             },
             error: function (error) {
                 console.log(error)
@@ -214,7 +214,7 @@ $(document).ready(function () {
                 var returned = JSON.parse(result)
                 // console.log("update pool: ", returned.user_profile.pool)
                 playlist = returned.user_profile.pool
-                console.log("UC推荐: ", returned)
+                // console.log("UC推荐: ", returned)
                 if (returned.recommendation_list.length > 0)
                     reRankPlaylist(returned.recommendation_list)
             },
@@ -236,7 +236,7 @@ $(document).ready(function () {
         profile_py["user_profile"]["logger"] = data.logger
         profile_py["sys_crit_version"] = data.sys_crit_version
 
-        console.log(profile_py)
+        //console.log(profile_py)
 
         return $.ajax({
             type: "POST",
@@ -246,7 +246,7 @@ $(document).ready(function () {
             dataType: "json",
             success: function (result) {
                 var returned = JSON.parse(result)
-                console.log("SC推荐: ", returned)
+                //console.log("SC推荐: ", returned)
 
                 // reRankPlaylist(recommendation_list)
                 // console.log(playlist)
@@ -265,7 +265,7 @@ $(document).ready(function () {
         profile_py["user_profile"]["topRecommendedSong"] = data.topRecommendedSong
         profile_py["user_profile"]["logger"] = data.logger
 
-        console.log(profile_py)
+        //console.log(profile_py)
 
         return $.ajax({
             type: "POST",
@@ -275,7 +275,7 @@ $(document).ready(function () {
             dataType: "json",
             success: function (result) {
                 var returned = JSON.parse(result)
-                console.log("SC推荐判断: ", returned)
+                //console.log("SC推荐判断: ", returned)
 
             },
             error: function (error) {
@@ -284,7 +284,7 @@ $(document).ready(function () {
         });
     }
 
-    console.log(spotifyToken)
+    //console.log(spotifyToken)
     $.ajax({
         url: "/initiate?token=" + spotifyToken + "&id=" + userid,
         type: "POST",
@@ -293,7 +293,7 @@ $(document).ready(function () {
         success: function (data) {
 
             usermodel = data
-            console.log(usermodel)
+            // console.log(usermodel)
             topRecommendedSong = usermodel.pool[0];
             usermodel.topRecommendedSong = topRecommendedSong
 
@@ -417,9 +417,9 @@ $(document).ready(function () {
 
             var seed_genres = data.user.preferenceData.genre[0].toString()
 
-            recognition.lang = 'en-US';
-            recognition.interimResults = false;
-            recognition.maxAlternatives = 1;
+            // recognition.lang = 'en-US';
+            // recognition.interimResults = false;
+            // recognition.maxAlternatives = 1;
 
             var songIndex = 0;
             var timeoutResumeInfinity;
@@ -445,6 +445,8 @@ $(document).ready(function () {
                 // synth.cancel()
                 $("input#message").attr("disabled", true)
                 $("input#message").attr("placeholder", "Please wait for a moment :)")
+
+                $("#task-description").text("Task: create a playlist that contains 5 good songs.")
 
                 clearTimeout(showTry)
                 clearTimeout(showFeedback)
@@ -511,7 +513,7 @@ $(document).ready(function () {
                     success: function (data2) {
 
                         usermodel = data2
-                        console.log(usermodel)
+                        //console.log(usermodel)
                         topRecommendedSong = usermodel.pool[0];
                         usermodel.topRecommendedSong = topRecommendedSong
 
@@ -680,7 +682,7 @@ $(document).ready(function () {
                     actionSet.action = action
                     actionSet.recommendation = firstThreeCrits[crt].recommendation
                     actionSet.critiques = returnedCritiques
-                    console.log(actionSet)
+                    //console.log(actionSet)
 
                     critiques2.push(actionSet)
 
@@ -690,6 +692,9 @@ $(document).ready(function () {
             }
 
             function getSysCrit() {
+                $("input#message").attr("disabled", true)
+                $("input#message").attr("placeholder", "Please wait for a moment :)")
+
                 var dialogNum = logger.dialog.length
                 var dialog = logger.dialog[dialogNum - 1]
 
@@ -705,7 +710,7 @@ $(document).ready(function () {
                 var listenedSongsLength = logger.listenedSongs.length
                 updateData.topRecommendedSong = logger.listenedSongs[listenedSongsLength - 1]
 
-                console.log(updateData)
+                //console.log(updateData)
 
                 systemCritiques(updateData).then(function (rawCrits) {
                     critiques = [];
@@ -713,7 +718,7 @@ $(document).ready(function () {
 
                     var sc_result = JSON.parse(rawCrits)
 
-                    console.log(sc_result)
+                    //console.log(sc_result)
 
 
                     var state = sc_result.state
@@ -723,7 +728,7 @@ $(document).ready(function () {
                     if (state=="SC_and_Recommendation"){
                         firstThreeCrits = sc_result.result.slice(0, 3)
                         critiques = constructCritiques(firstThreeCrits)
-                        console.log(critiques)
+                        //console.log(critiques)
                         $('.spinner').remove();
                         updateChat(crit, critiques[critiquesIndex].speech, "System_Suggest", "text", true);
 
@@ -747,7 +752,7 @@ $(document).ready(function () {
                         $.get(requestedLink,function (res) {
 
                             updateData.new_pool = res.tracks
-                            console.log(updateData.new_pool)
+                            //console.log(updateData.new_pool)
                        
                             //再次请求systemCritiques
 
@@ -757,7 +762,7 @@ $(document).ready(function () {
 
                                 var sc_result = JSON.parse(rawCrits)
 
-                                console.log(sc_result)
+                                //console.log(sc_result)
 
                                 var state = sc_result.state
 
@@ -768,7 +773,7 @@ $(document).ready(function () {
                                     
                                 }
                                 critiques = constructCritiques(firstThreeCrits)
-                                console.log(critiques)
+                                //console.log(critiques)
                                 // $('.spinner').remove();
                                 updateChat(crit, critiques[critiquesIndex].speech, "System_Suggest", "text", true);
             
@@ -789,17 +794,14 @@ $(document).ready(function () {
                             firstThreeCrits[index].recommendation = []
                         }
                         critiques = constructCritiques(firstThreeCrits)
-                        console.log(critiques)
+                        //console.log(critiques)
 
                         // $('.spinner').remove();
                         updateChat(crit, critiques[critiquesIndex].speech, "System_Suggest", "text", true);
                     }
 
-
-                  
-
-                    
-
+                    $("input#message").attr("disabled", false)
+                    $("input#message").attr("placeholder", "")
                 })
 
             }
@@ -912,11 +914,11 @@ $(document).ready(function () {
                     var listenedSongsLength = logger.listenedSongs.length
                     updateData.topRecommendedSong = logger.listenedSongs[listenedSongsLength - 1]
 
-                    console.log(updateData)
+                    //console.log(updateData)
                     updateUserModel(updateData)
 
                     // debug!
-                    console.log(critiques[critiquesIndex].critiques)
+                    // console.log(critiques[critiquesIndex].critiques)
                     // console.log(critiques[critiquesIndex].recommendation)
 
                     
@@ -936,18 +938,18 @@ $(document).ready(function () {
                         $.get("/getRecom?token="+spotifyToken+"&genreSeeds="+critiques[critiquesIndex].critiques[0].split("|")[1], function (res) {
                             //remove loading animation
                             $('.spinner').remove();
-                            console.log(res)
+                            //console.log(res)
 
                             var updateData = {}
                             updateData.user = usermodel.user
                             updateData.pool = playlist
                             updateData.new_pool = res.tracks
 
-                            console.log(updateData)
+                            //console.log(updateData)
 
                             getRecommendation(updateData).then(function (data) {
                                 var returnData = JSON.parse(data)
-                                console.log(returnData)
+                                //console.log(returnData)
                                 songIndex = 0
                                 showMusic(playlist[songIndex].id)
 
@@ -981,14 +983,14 @@ $(document).ready(function () {
                     var listenedSongsLength = logger.listenedSongs.length
                     updateData.topRecommendedSong = logger.listenedSongs[listenedSongsLength - 1]
 
-                    console.log(updateData)
+                    //console.log(updateData)
                     updateUserModel(updateData)
 
 
                     if (critiquesIndex < critiques.length - 1) {
                         needReply = true;
                         critiquesIndex++;
-                        console.log(critiques[critiquesIndex].critiques)
+                        //console.log(critiques[critiquesIndex].critiques)
                         // [Wanling] - revise
                         updateChat(crit, critiques[critiquesIndex].speech, "System_Suggest","text", true);
 
@@ -1022,7 +1024,7 @@ $(document).ready(function () {
 
                 showCurrentSong = setTimeout(function () {
 
-                    console.log(numberOfLikedSongs)
+                    // console.log(numberOfLikedSongs)
 
 
                     // if (isSystemCrit == 1) {
@@ -1083,7 +1085,7 @@ $(document).ready(function () {
                                             var listenedSongsLength = logger.listenedSongs.length
                                             updateData.topRecommendedSong = logger.listenedSongs[listenedSongsLength - 1]
 
-                                            console.log(updateData)
+                                            //console.log(updateData)
                                             updateUserModel(updateData).done(function (){
                                                 if (numberOfLikedSongs == 5 && isPreStudy) {
                                                     updateChat(robot, "Now, you should be familiar with the system. You can click the 'start study' button to start.", "Initialize")
@@ -1109,7 +1111,7 @@ $(document).ready(function () {
                                                     data.user = usermodel.user
                                                     data.topRecommendedSong = topRecommendedSong
 
-                                                    console.log("上传日志: ", data)
+                                                    //console.log("上传日志: ", data)
                                                     window.localStorage.setItem("log",JSON.stringify(data))
 
 
@@ -1157,6 +1159,7 @@ $(document).ready(function () {
                                                             var enableSC = JSON.parse(returnedData).triggerSC
 
                                                             if(enableSC && sysCritVersion!="base"){
+
                                                                 var line = $('<div class="speak"><div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>');
                                                                 chat.append(line);
                                                                 getSysCrit()
@@ -1314,40 +1317,40 @@ $(document).ready(function () {
                 }
             })
 
-            recognition.addEventListener('speechstart', () => {
-                console.log('Speech has been detected.');
-            });
-
-            recognition.addEventListener('result', (e) => {
-                console.log('Result has been detected.');
-                let last = e.results.length - 1;
-                let text = e.results[last][0].transcript;
-
-                if (text != "") {
-                    //synth.cancel()
-                    $(".feedback").remove()
-                    clearTimeout(showFeedback)
-                    clearTimeout(showNextSong)
-                    clearTimeout(showCurrentSong)
-                    clearTimeout(showCurrentSong2)
-                    clearTimeout(showNextSong2)
-                    clearTimeout(showNextSong3)
-                    nextTimes = 0
-                    //updateChat(you, text, "voice", "Respond_Unknown", [], {});
-                    console.log('Confidence: ' + e.results[0][0].confidence);
-                    socket.emit('chat message', text);
-                }
-            });
-
-            recognition.addEventListener('speechend', () => {
-                recognition.stop();
-                $('.fa-microphone').show()
-                $('.boxContainer').hide()
-            });
-
-            recognition.addEventListener('error', (e) => {
-                //updateChat(robot, 'Sorry, we find an error during voice recognition.', "text", "Respond_Unknown", [], {});
-            });
+            // recognition.addEventListener('speechstart', () => {
+            //     //console.log('Speech has been detected.');
+            // });
+            //
+            // recognition.addEventListener('result', (e) => {
+            //     console.log('Result has been detected.');
+            //     let last = e.results.length - 1;
+            //     let text = e.results[last][0].transcript;
+            //
+            //     if (text != "") {
+            //         //synth.cancel()
+            //         $(".feedback").remove()
+            //         clearTimeout(showFeedback)
+            //         clearTimeout(showNextSong)
+            //         clearTimeout(showCurrentSong)
+            //         clearTimeout(showCurrentSong2)
+            //         clearTimeout(showNextSong2)
+            //         clearTimeout(showNextSong3)
+            //         nextTimes = 0
+            //         //updateChat(you, text, "voice", "Respond_Unknown", [], {});
+            //         console.log('Confidence: ' + e.results[0][0].confidence);
+            //         socket.emit('chat message', text);
+            //     }
+            // });
+            //
+            // recognition.addEventListener('speechend', () => {
+            //     recognition.stop();
+            //     $('.fa-microphone').show()
+            //     $('.boxContainer').hide()
+            // });
+            //
+            // recognition.addEventListener('error', (e) => {
+            //     //updateChat(robot, 'Sorry, we find an error during voice recognition.', "text", "Respond_Unknown", [], {});
+            // });
 
             function updateAndGetRec(critique) {
                 return new Promise(function (resolve, reject) {
@@ -1369,7 +1372,7 @@ $(document).ready(function () {
                     var listenedSongsLength = logger.listenedSongs.length
                     updateData.topRecommendedSong = logger.listenedSongs[listenedSongsLength - 1]
 
-                    console.log(updateData)
+                    // console.log(updateData)
 
                     updateUserModel(updateData).done(function () {
                         //Get recommendation
@@ -1380,7 +1383,7 @@ $(document).ready(function () {
 
                         getRecommendation(updateData2).then(function (data) {
                             var returnData = JSON.parse(data)
-                            console.log(returnData)
+                            // console.log(returnData)
                             reRankPlaylist(returnData.recommendation_list)
                             resolve(returnData.recommendation_list.length)
                         })
@@ -1394,15 +1397,18 @@ $(document).ready(function () {
             function playRequestLink(requestLink,response,isMissed) {
                 if (requestLink) {
                     //show loading animation
+                    $("input#message").attr("disabled", true)
+                    $("input#message").attr("placeholder", "Please wait for a moment :)")
+
                     var line = $('<div class="speak"><div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>');
                     chat.append(line);
                     var playSuccess = false
                     $.get(requestLink, function (res) {
-                        console.log(playSuccess)
+                        // console.log(playSuccess)
                         if (!playSuccess)
                         {
                             playSuccess = true
-                            console.log(res.tracks)
+                            // console.log(res.tracks)
                             // filter songs that have been listened by user
                             filtered_tracks = []
                             for (var item in res.tracks){
@@ -1422,17 +1428,15 @@ $(document).ready(function () {
                                     
                                 }
                             }
-                            console.log('After filtering: ')
-                            console.log(filtered_tracks)
-                            
-
+                            // console.log('After filtering: ')
+                            // console.log(filtered_tracks)
 
                             var updateData = {}
                             updateData.user = usermodel.user
                             updateData.pool = playlist
                             updateData.new_pool = filtered_tracks
 
-                            console.log(updateData)
+                            // console.log(updateData)
 
                             if (filtered_tracks.length == 0)
                             {
@@ -1442,16 +1446,19 @@ $(document).ready(function () {
 
                             getRecommendation(updateData).then(function (data) {
                                 var returnData = JSON.parse(data)
-                                console.log(returnData)
+                                //console.log(returnData)
                                 songIndex = 0
                                 speakandsing(robot, response, "Coherence")
+
+                                $("input#message").attr("disabled", false)
+                                $("input#message").attr("placeholder", "")
                             })
 
                         }
                     })
 
                     var autoPlaySong = setTimeout(function(){
-                        console.log(playSuccess)
+                        // console.log(playSuccess)
                         if (!playSuccess)
                         {
                             playSuccess = true
@@ -1515,7 +1522,7 @@ $(document).ready(function () {
                     }, 500)
 
                     showCurrentSong2 = setTimeout(function () {
-                        console.log(playlist)
+                        // console.log(playlist)
                         showMusic(playlist[songIndex].id)
                     }, 3000)
 
@@ -1544,7 +1551,7 @@ $(document).ready(function () {
                 var intent = text.action;
                 var response_speech = text.fulfillment.speech;
 
-                console.log(text)
+                // console.log(text)
 
                 var artist, genre, valence, tempo, action, feature;
                 var explaination = ""
@@ -1622,12 +1629,12 @@ $(document).ready(function () {
                             if (genre != "")
                                 critique.push({"genre": genre})
 
-                            console.log(critique)
+                            // console.log(critique)
 
                             if (critique.length > 0) {
 
                                 updateAndGetRec(critique).then(function (data) {
-                                    console.log(data)
+                                    // console.log(data)
                                     var num = parseInt(data)
 
                                     if (num < 10) {
@@ -1690,18 +1697,18 @@ $(document).ready(function () {
                             }
 
                             if (critique.length > 0) {
-                                console.log(critique)
+                                //console.log(critique)
                                 updateAndGetRec(critique).then(function (number) {
                                     var num = parseInt(number)
                                     if (num == 0) {
-                                        console.log("没有找到匹配的歌曲")
+                                        //console.log("没有找到匹配的歌曲")
                                         var seed_artist = topRecommendedSong['artist']
                                         var seed_track= topRecommendedSong['id']
                                         var seed_genre = topRecommendedSong['genre']
                                         var seed_description = '&seed_tracks=' + seed_track //'&artistSeeds=' + seed_artist + '&seed_tracks=' + seed_track
                                         if (seed_genre in genreData)
                                             seed_description = seed_description + '&genreSeeds=' + seed_genre
-                                        console.log(seed_description)
+                                        //console.log(seed_description)
                                         
                                         requestLink = '/getRecom?token=' + spotifyToken + seed_description;
 
@@ -1760,7 +1767,7 @@ $(document).ready(function () {
                                             }
 
                                         }
-                                        console.log(requestLink)
+                                        //console.log(requestLink)
                                         requestLink = encodeURI(requestLink)
                                         playRequestLink(requestLink,explaination,false)
                                     } 
@@ -1837,11 +1844,11 @@ $(document).ready(function () {
                                 var listenedSongsLength = logger.listenedSongs.length
                                 updateData.topRecommendedSong = logger.listenedSongs[listenedSongsLength - 1]
             
-                                console.log(updateData)
+                                //console.log(updateData)
                                 updateUserModel(updateData)
             
                                 // debug!
-                                console.log(critiques[critiquesIndex].critiques)
+                                //console.log(critiques[critiquesIndex].critiques)
                                 // console.log(critiques[critiquesIndex].recommendation)
             
                                 
@@ -1850,8 +1857,8 @@ $(document).ready(function () {
                                 {
                                     reRankPlaylist(critiques[critiquesIndex].recommendation)
                                     // console.log(critiques[critiquesIndex].recommendation)
-                                    console.log(songIndex)
-                                    console.log(playlist)
+                                    //console.log(songIndex)
+                                    //console.log(playlist)
                                     showMusic(playlist[songIndex].id)
             
                                 }    
@@ -1863,18 +1870,18 @@ $(document).ready(function () {
                                     $.get("/getRecom?token="+spotifyToken+"&genreSeeds="+critiques[critiquesIndex].critiques[0].split("|")[1], function (res) {
                                         //remove loading animation
                                         $('.spinner').remove();
-                                        console.log(res)
+                                        //console.log(res)
             
                                         var updateData = {}
                                         updateData.user = usermodel.user
                                         updateData.pool = playlist
                                         updateData.new_pool = res.tracks
             
-                                        console.log(updateData)
+                                        //console.log(updateData)
             
                                         getRecommendation(updateData).then(function (data) {
                                             var returnData = JSON.parse(data)
-                                            console.log(returnData)
+                                            //console.log(returnData)
                                             songIndex = 0
                                             showMusic(playlist[songIndex].id)
             
@@ -1913,14 +1920,14 @@ $(document).ready(function () {
                                 var listenedSongsLength = logger.listenedSongs.length
                                 updateData.topRecommendedSong = logger.listenedSongs[listenedSongsLength - 1]
             
-                                console.log(updateData)
+                                //console.log(updateData)
                                 updateUserModel(updateData)
             
             
                                 if (critiquesIndex < critiques.length - 1) {
                                     needReply = true;
                                     critiquesIndex++;
-                                    console.log(critiques[critiquesIndex].critiques)
+                                    //console.log(critiques[critiquesIndex].critiques)
                                     
                                     updateChat(crit, critiques[critiquesIndex].speech, "System_Suggest","text", true);
             
@@ -1942,7 +1949,7 @@ $(document).ready(function () {
 
 
                                 $("input#message").attr("disabled", true)
-                                $("input#message").attr("placeholder", "Please rate your liked song.")
+                                $("input#message").attr("placeholder", "Please rate your liked song in the left panel.")
 
                                 var rateWording = rateUtters[parseInt((rateUtters.length * Math.random()))]
                                 setTimeout(function () {
@@ -1990,7 +1997,7 @@ $(document).ready(function () {
                                             var listenedSongsLength = logger.listenedSongs.length
                                             updateData.topRecommendedSong = logger.listenedSongs[listenedSongsLength - 1]
 
-                                            console.log(updateData)
+                                            //console.log(updateData)
                                             updateUserModel(updateData).done(function (){
                                                 if (numberOfLikedSongs == 5 && isPreStudy) {
                                                     updateChat(robot, "Now, you should be familiar with the system. You can click the 'start study' button to start.", "Initialize")
@@ -2015,7 +2022,7 @@ $(document).ready(function () {
                                                     data.user = usermodel.user
                                                     data.topRecommendedSong = topRecommendedSong
 
-                                                    console.log("上传日志: ", data)
+                                                    //console.log("上传日志: ", data)
                                                     window.localStorage.setItem("log",JSON.stringify(data))
 
 
@@ -2177,7 +2184,7 @@ $(document).ready(function () {
 
         },
         error: function (jqXHR, err) {
-            console.log(err);
+            //console.log(err);
             if (err === "timeout") {
                 $.ajax(this)
             }

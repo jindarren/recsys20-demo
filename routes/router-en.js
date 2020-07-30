@@ -38,7 +38,7 @@ passport.use(new SpotifyStrategy({
         clientID: appKey,
         clientSecret: appSecret,
         callbackURL: 'http://music-bot.top:3000/callback'
-        // callbackURL: 'http://localhost:3000/callback'
+        //callbackURL: 'http://localhost:3000/callback'
     },
     function(accessToken, refreshToken, profile, done) {
         // asynchronous verification, for effect...
@@ -549,7 +549,7 @@ function uniqueArr(arr1, arr2){
 }
 
 router.post('/initialize_user_model',function (req,res) {
-    console.log(req.body)
+    //console.log(req.body)
     request.post({url:'http://127.0.0.1:5000/initialize_user_model',
         json: req.body}, (error, response, body) => {
         if (error) {
@@ -561,7 +561,7 @@ router.post('/initialize_user_model',function (req,res) {
 })
 
 router.post('/update_user_model',function (req,res) {
-    console.log(req.body)
+    //console.log(req.body)
     request.post({url:'http://127.0.0.1:5000/update_user_model',
         json: req.body}, (error, response, body) => {
         if (error) {
@@ -573,7 +573,7 @@ router.post('/update_user_model',function (req,res) {
 })
 
 router.post('/get_rec',function (req,res) {
-    console.log(req.body)
+    //console.log(req.body)
     request.post({url:'http://127.0.0.1:5000/get_rec',
         json: req.body}, (error, response, body) => {
         if (error) {
@@ -585,7 +585,7 @@ router.post('/get_rec',function (req,res) {
 })
 
 router.post('/get_sys_cri',function (req,res) {
-    console.log(req.body)
+    //console.log(req.body)
     request.post({url:'http://127.0.0.1:5000/get_sys_cri',
         json: req.body}, (error, response, body) => {
         if (error) {
@@ -598,7 +598,7 @@ router.post('/get_sys_cri',function (req,res) {
 
 
 router.post('/trigger_sys_cri',function (req,res) {
-    console.log(req.body)
+    //console.log(req.body)
     request.post({url:'http://127.0.0.1:5000/trigger_sys_cri',
         json: req.body}, (error, response, body) => {
         if (error) {
@@ -615,7 +615,7 @@ router.post('/initiate', function(req, res) {
     //pass token to the webAPI used by recommender
     var token = req.query.token;
     var userID = req.query.id;
-    console.log(req.query.id)
+    //console.log(req.query.id)
     // var artists = profile.selectedArtists.split(",");
     // var tracks = profile.selectedTracks.split(",");
     // var genres = profile.selectedGenres.split(",");
@@ -834,8 +834,8 @@ router.post('/initiate', function(req, res) {
             logger:{},
         });
 
-        console.log(user.id)
-        console.log(user.user)
+        // console.log(user.id)
+        // console.log(user.user)
         res.json(user)
 
         //save a new user

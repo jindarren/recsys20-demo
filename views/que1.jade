@@ -7,14 +7,18 @@ html
                 padding: 0;
                 margin: 0;
                 font-family: Lato;
-                font-weight: lighter;
             }
 
-            .wrap, select, .normal-input {
-                font: 1rem Arial, san-serif;
+            .clear, .submit {
+                margin-left: 10px;
+                margin-right: 10px;
             }
 
-            h1.likert-header {
+            .wrap, select {
+                font-size: 16px;
+            }
+
+            h5.likert-header {
                 text-align: center;
                 margin: 20px 0 0;
             }
@@ -24,14 +28,17 @@ html
                 margin-left: 15%;
             }
 
+            p#description {
+                margin: 10px 15% 0;
+            }
+
             form .normal-input {
                 margin-left: 8%;
             }
 
             form .statement {
                 display: block;
-                font-size: 1rem;
-                font-weight: bold;
+                font-size: 18px;
                 padding: 30px 0 0 4.25%;
                 margin-bottom: 10px;
             }
@@ -65,6 +72,7 @@ html
                 width: 13%;
                 text-align: center;
                 vertical-align: top;
+                font-weight: lighter;
             }
 
             form .likert li input[type=radio] {
@@ -80,53 +88,40 @@ html
             }
 
             form .buttons {
-                margin: 100px 30px;
-                padding: 0 4.25%;
+                margin: 100px;
                 text-align: center;
-            }
-
-            form .buttons button {
-                padding: 5px 10px;
-                background-color: #67ab49;
-                border: 0;
-                border-radius: 3px;
-                font-size: 2rem;
-                margin-left: 30px;
-            }
-
-            form .buttons .clear {
-                background-color: #e9e9e9;
-            }
-
-            form .buttons .submit {
-                background-color: #67ab49;
-            }
-
-            form .buttons .clear:hover {
-                background-color: #ccc;
-            }
-
-            form .buttons .submit:hover {
-                background-color: #14892c;
             }
 
             textarea {
                 margin-left: 2%;
-                font-size: 1.5rem;
+            font-size: 16px;
+                width: 90%;
             }
 
             li > input {
                 zoom: 3;
             }
+
+            .required {
+                color: #f51616;
+                font-weight: bold;
+            }
     body
         .wrap
-            h1.likert-header This is a pre-study survey
+            h5.likert-header This is a pre-study survey
+            p#description Please carefully respond to the following question items. Questions marked with
+                span.required &nbsp*&nbsp;
+                | are required fields.
             form(action='')
                 // Worker ID
-                label.statement#idDescription Your ID of the crowdsourcing platform:
+                label.statement#idDescription
+                    span.required *
+                    | Your ID of the crowdsourcing platform:
                 input#workerID.normal-input(type='text', name='workerID')
                 // Age
-                label.statement Age:
+                label.statement
+                    span.required *
+                    | Age:
                 select#age.normal-input
                     option(value='')
                     option(value='19-25') 19-25
@@ -137,14 +132,18 @@ html
                     option(value='51-60') 51-60
                     option(value='60') >60
                 // Gender
-                label.statement Gender:
+                label.statement
+                    span.required *
+                    | Gender:
                 select#gender.normal-input
                     option(value='')
                     option(value='male') Male
                     option(value='female') Female
                     option(value='other') Other
                 // Nationality
-                label.statement Nationality:
+                label.statement
+                    span.required *
+                    | Nationality:
                 select#nationality.normal-input(name='nationality')
                     option(value='')
                     option(value='Afganistan') Afghanistan
@@ -394,7 +393,9 @@ html
                     option(value='Zambia') Zambia
                     option(value='Zimbabwe') Zimbabwe
 
-                label.statement 1. I am familiar with chatbot technologies.
+                label.statement
+                    span.required *
+                    | 1. I am familiar with chatbot technologies.
                 ul#post-1.likert
                     li
                         input(type='radio', value='1', name='group1')
@@ -417,7 +418,9 @@ html
                     li
                         input(type='radio', value='7', name='group1')
                         label Strongly agree
-                label.statement 2. I use chatbots frequently.
+                label.statement
+                    span.required *
+                    | 2. I use chatbots frequently.
                 ul#post-2.likert
                     li
                         input(type='radio', value='1', name='group2')
@@ -440,7 +443,9 @@ html
                     li
                         input(type='radio', value='7', name='group2')
                         label Strongly agree
-                label.statement 3. I am familiar with recommender technologies.
+                label.statement
+                    span.required *
+                    | 3. I am familiar with recommender technologies.
                 ul#post-3.likert
                     li
                         input(type='radio', value='1', name='group3')
@@ -464,7 +469,9 @@ html
                         input(type='radio', value='7', name='group3')
                         label Strongly agree
 
-                label.statement 4. I use recommender systems frequently.
+                label.statement
+                    span.required *
+                    | 4. I use recommender systems frequently.
                 ul#post-4.likert
                     li
                         input(type='radio', value='1', name='group4')
@@ -488,7 +495,9 @@ html
                         input(type='radio', value='7', name='group4')
                         label Strongly agree
 
-                label.statement 5. I consider myself an advanced technology user.
+                label.statement
+                    span.required *
+                    | 5. I consider myself an advanced technology user.
                 ul#post-5.likert
                     li
                         input(type='radio', value='1', name='group5')
@@ -511,7 +520,9 @@ html
                     li
                         input(type='radio', value='7', name='group5')
                         label Strongly agree
-                label.statement 6. I am eager to try new technologies.
+                label.statement
+                    span.required *
+                    | 6. I am eager to try new technologies.
                 ul#post-6.likert
                     li
                         input(type='radio', value='1', name='group6')
@@ -535,7 +546,9 @@ html
                         input(type='radio', value='7', name='group6')
                         label Strongly agree
 
-                label.statement 7. I like chatting casually with a chatbot.
+                label.statement
+                    span.required *
+                    | 7. I like chatting casually with a chatbot.
                 ul#post-7.likert
                     li
                         input(type='radio', value='1', name='group7')
@@ -559,7 +572,9 @@ html
                         input(type='radio', value='7', name='group7')
                         label Strongly agree
 
-                label.statement 8. I think ‘small talk’ with a chatbot is enjoyable.
+                label.statement
+                    span.required *
+                    | 8. I think ‘small talk’ with a chatbot is enjoyable.
                 ul#post-8.likert
                     li
                         input(type='radio', value='1', name='group8')
@@ -583,7 +598,9 @@ html
                         input(type='radio', value='7', name='group8')
                         label Strongly agree
 
-                label.statement 9. Efficient customer service is important to me.
+                label.statement
+                    span.required *
+                    | 9. Efficient customer service is important to me.
                 ul#post-9.likert
                     li
                         input(type='radio', value='1', name='group9')
@@ -607,7 +624,9 @@ html
                         input(type='radio', value='7', name='group9')
                         label Strongly agree
 
-                label.statement 10. I found it frustrating when a customer service representative could not immediately give me the information I need.
+                label.statement
+                    span.required *
+                    | 10. I found it frustrating when a customer service representative could not immediately give me the information I need.
                 ul#post-10.likert
                     li
                         input(type='radio', value='1', name='group10')
@@ -631,7 +650,9 @@ html
                         input(type='radio', value='7', name='group10')
                         label Strongly agree
 
-                label.statement 11. I spend a lot of my free time doing music-related activities.
+                label.statement
+                    span.required *
+                    | 11. I spend a lot of my free time doing music-related activities.
                 ul#post-11.likert
                     li
                         input(type='radio', value='1', name='group11')
@@ -654,7 +675,9 @@ html
                     li
                         input(type='radio', value='7', name='group11')
                         label Strongly agree
-                label.statement 12. I enjoy writing about music, for example on blogs and forums.
+                label.statement
+                    span.required *
+                    | 12. I enjoy writing about music, for example on blogs and forums.
                 ul#post-12.likert
                     li
                         input(type='radio', value='1', name='group12')
@@ -678,7 +701,9 @@ html
                         input(type='radio', value='7', name='group12')
                         label Strongly agree
 
-                label.statement 13. I'm intrigued by musical styles I'm not familiar with and want to find out more.
+                label.statement
+                    span.required *
+                    | 13. I'm intrigued by musical styles I'm not familiar with and want to find out more.
                 ul#post-13.likert
                     li
                         input(type='radio', value='1', name='group13')
@@ -702,7 +727,9 @@ html
                         input(type='radio', value='7', name='group13')
                         label Strongly agree
 
-                label.statement 14. I often read or search the internet for things related to music.
+                label.statement
+                    span.required *
+                    | 14. I often read or search the internet for things related to music.
                 ul#post-14.likert
                     li
                         input(type='radio', value='1', name='group14')
@@ -726,7 +753,9 @@ html
                         input(type='radio', value='7', name='group14')
                         label Strongly agree
 
-                label.statement 15. I don't spend much of my disposable income on music.
+                label.statement
+                    span.required *
+                    | 15. I don't spend much of my disposable income on music.
                 ul#post-15.likert
                     li
                         input(type='radio', value='1', name='group15')
@@ -750,7 +779,9 @@ html
                         input(type='radio', value='7', name='group15')
                         label Strongly agree
 
-                label.statement 16. Music is kind of an addiction for me - I couldn't live without it.
+                label.statement
+                    span.required *
+                    | 16. Music is kind of an addiction for me - I couldn't live without it.
                 ul#post-16.likert
                     li
                         input(type='radio', value='1', name='group16')
@@ -774,7 +805,9 @@ html
                         input(type='radio', value='7', name='group16')
                         label Strongly agree
 
-                label.statement 17. I keep track of new of music that I come across (e.g. new artists or recordings).
+                label.statement
+                    span.required *
+                    | 17. I keep track of new of music that I come across (e.g. new artists or recordings).
                 ul#post-17.likert
                     li
                         input(type='radio', value='1', name='group17')
@@ -798,7 +831,9 @@ html
                         input(type='radio', value='7', name='group17')
                         label Strongly agree
 
-                label.statement 18. I have attended (__) live music events as an audience member in the past twelve months.
+                label.statement
+                    span.required *
+                    | 18. I have attended (__) live music events as an audience member in the past twelve months.
                 ul#post-18.likert
                     li
                         input(type='radio', name='group18', value='1')
@@ -822,7 +857,9 @@ html
                         input(type='radio', name='group18', value='7')
                         label >11
 
-                label.statement 19. I listen attentively to music for (__) per day.
+                label.statement
+                    span.required *
+                    | 19. I listen attentively to music for (__) per day.
                 ul#post-19.likert
                     li
                         input(type='radio', name='group19', value='1')
@@ -846,7 +883,9 @@ html
                         input(type='radio', name='group19', value='7')
                         label >4hrs
 
-                label.statement 20. Which of the following numbers is larger than 10?
+                label.statement
+                    span.required *
+                    | 20. Which of the following numbers is larger than 10?
                 ul#post-20.likert
                     li
                         input(type='radio', name='group20', value='1')
@@ -870,7 +909,9 @@ html
                         input(type='radio', name='group20', value='7')
                         label 7
 
-                label.statement 21. I see myself as extroverted, enthusiastic.
+                label.statement
+                    span.required *
+                    | 21. I see myself as extroverted, enthusiastic.
                 ul#post-21.likert
                     li
                         input(type='radio', name='group21', value='1')
@@ -894,7 +935,9 @@ html
                         input(type='radio', name='group21', value='7')
                         label Strongly agree
 
-                label.statement 22. I see myself as critical, quarrelsome.
+                label.statement
+                    span.required *
+                    | 22. I see myself as critical, quarrelsome.
                 ul#post-22.likert
                     li
                         input(type='radio', name='group22', value='1')
@@ -918,7 +961,9 @@ html
                         input(type='radio', name='group22', value='7')
                         label Strongly agree
 
-                label.statement 23. I see myself as dependable, self-disciplined.
+                label.statement
+                    span.required *
+                    | 23. I see myself as dependable, self-disciplined.
                 ul#post-23.likert
                     li
                         input(type='radio', name='group23', value='1')
@@ -942,7 +987,9 @@ html
                         input(type='radio', name='group23', value='7')
                         label Strongly agree
 
-                label.statement 24. I see myself as anxious, easily upset.
+                label.statement
+                    span.required *
+                    | 24. I see myself as anxious, easily upset.
                 ul#post-24.likert
                     li
                         input(type='radio', name='group24', value='1')
@@ -966,7 +1013,9 @@ html
                         input(type='radio', name='group24', value='7')
                         label Strongly agree
 
-                label.statement 25. I see myself as open to new experiences, complex.
+                label.statement
+                    span.required *
+                    | 25. I see myself as open to new experiences, complex.
                 ul#post-25.likert
                     li
                         input(type='radio', name='group25', value='1')
@@ -990,7 +1039,9 @@ html
                         input(type='radio', name='group25', value='7')
                         label Strongly agree
 
-                label.statement 26. I see myself as reserved, quiet.
+                label.statement
+                    span.required *
+                    | 26. I see myself as reserved, quiet.
                 ul#post-26.likert
                     li
                         input(type='radio', name='group26', value='1')
@@ -1014,7 +1065,9 @@ html
                         input(type='radio', name='group26', value='7')
                         label Strongly agree
 
-                label.statement 27. I see myself as sympathetic, warm.
+                label.statement
+                    span.required *
+                    | 27. I see myself as sympathetic, warm.
                 ul#post-27.likert
                     li
                         input(type='radio', name='group27', value='1')
@@ -1038,7 +1091,9 @@ html
                         input(type='radio', name='group27', value='7')
                         label Strongly agree
 
-                label.statement 28. I see myself as disorganized, careless.
+                label.statement
+                    span.required *
+                    | 28. I see myself as disorganized, careless.
                 ul#post-28.likert
                     li
                         input(type='radio', name='group28', value='1')
@@ -1062,7 +1117,9 @@ html
                         input(type='radio', name='group28', value='7')
                         label Strongly agree
 
-                label.statement 29. I see myself as calm, emotionally stable.
+                label.statement
+                    span.required *
+                    | 29. I see myself as calm, emotionally stable.
                 ul#post-29.likert
                     li
                         input(type='radio', name='group29', value='1')
@@ -1086,7 +1143,9 @@ html
                         input(type='radio', name='group29', value='7')
                         label Strongly agree
 
-                label.statement 30. I see myself as conventional, uncreative.
+                label.statement
+                    span.required *
+                    | 30. I see myself as conventional, uncreative.
                 ul#post-30.likert
                     li
                         input(type='radio', name='group30', value='1')
@@ -1110,7 +1169,9 @@ html
                         input(type='radio', name='group30', value='7')
                         label Strongly agree
 
-                label.statement 31. I tend to trust the recommender, even though having little knowledge of it.
+                label.statement
+                    span.required *
+                    | 31. I tend to trust the recommender, even though having little knowledge of it.
                 ul#post-31.likert
                     li
                         input(type='radio', name='group31', value='1')
@@ -1134,7 +1195,9 @@ html
                         input(type='radio', name='group31', value='7')
                         label Strongly agree
 
-                label.statement 32. Trusting someone or something is difficult.
+                label.statement
+                    span.required *
+                    | 32. Trusting someone or something is difficult.
                 ul#post-32.likert
                     li
                         input(type='radio', name='group32', value='1')
@@ -1159,9 +1222,11 @@ html
                         label Strongly agree
 
                 .buttons
-                    button.clear Clear
-                    button.submit Submit
-        script(type = "text/javascript", src = "../jquery/dist/jquery.min.js", charset = 'utf-8')
+                    button.clear.btn.btn-default Clear
+                    button.submit.btn.btn-success Submit
+        link(href='../bootstrap/dist/css/bootstrap.min.css', rel='stylesheet')
+        script(src = "../jquery/dist/jquery.min.js", charset = 'utf-8')
+        script(src = "../bootstrap/dist/js/bootstrap.min.js")
         script(type='text/javascript').
             var platform = window.localStorage.getItem("platform")
             if(platform=="turk"){

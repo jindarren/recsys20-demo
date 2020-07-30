@@ -8,16 +8,24 @@ html
                 padding: 0;
                 margin: 0;
                 font-family: Lato;
-                font-weight: lighter;
             }
 
-            .wrap, select, .normal-input {
-                font: 1rem Arial, san-serif;
+            .clear, .submit{
+                margin-left: 10px;
+                margin-right: 10px;
             }
 
-            h1.likert-header {
+            .wrap, select {
+                font-size: 16px;
+            }
+
+            h5.likert-header {
                 text-align: center;
                 margin: 20px 0 0;
+            }
+
+            p#description{
+                margin: 10px 15% 0;
             }
 
             form {
@@ -31,8 +39,7 @@ html
 
             form .statement {
                 display: block;
-                font-size: 1.5rem;
-                font-weight: bold;
+                font-size: 18px;
                 padding: 30px 0 0 4.25%;
                 margin-bottom: 10px;
             }
@@ -66,6 +73,7 @@ html
                 width: 13%;
                 text-align: center;
                 vertical-align: top;
+                font-weight: lighter;
             }
 
             form .likert li input[type=radio] {
@@ -81,49 +89,34 @@ html
             }
 
             form .buttons {
-                margin: 100px 30px;
-                padding: 0 4.25%;
+                margin: 100px;
                 text-align: center;
-            }
-
-            form .buttons button {
-                padding: 5px 10px;
-                background-color: #67ab49;
-                border: 0;
-                border-radius: 3px;
-                font-size: 2rem;
-                margin-left: 30px;
-            }
-
-            form .buttons .clear {
-                background-color: #e9e9e9;
-            }
-
-            form .buttons .submit {
-                background-color: #67ab49;
-            }
-
-            form .buttons .clear:hover {
-                background-color: #ccc;
-            }
-
-            form .buttons .submit:hover {
-                background-color: #14892c;
             }
 
             textarea {
                 margin-left: 2%;
-                font-size: 1.5rem;
+                font-size: 16px;
+                width: 90%;
             }
 
             input {
                 zoom: 3;
             }
+
+            .required {
+                color: #f51616;
+                font-weight: bold;
+            }
     body
         .wrap
-            h1.likert-header This is a post-study survey
+            h5.likert-header This is a post-study survey
+            p#description Please carefully respond to the following question items based on your experience of using the bot for exploring good music. Questions marked with
+                span.required &nbsp*&nbsp;
+                | are required fields.
             form(action='')
-                label.statement 1. The songs recommended to me matched my interests.
+                label.statement
+                    span.required *
+                    | 1. The songs recommended to me matched my interests.
                 ul#post-1.likert
                     li
                         input(type='radio', value='1', name='group1')
@@ -146,7 +139,9 @@ html
                     li
                         input(type='radio', value='7', name='group1')
                         label Strongly agree
-                label.statement 2. The songs recommended to me are novel.
+                label.statement
+                    span.required *
+                    | 2. The songs recommended to me are novel.
                 ul#post-2.likert
                     li
                         input(type='radio', value='1', name='group2')
@@ -169,7 +164,9 @@ html
                     li
                         input(type='radio', value='7', name='group2')
                         label Strongly agree
-                label.statement 3. The music chatbot helped me discover new songs.
+                label.statement
+                    span.required *
+                    | 3. The music chatbot helped me discover new songs.
                 ul#post-3.likert
                     li
                         input(type='radio', value='1', name='group3')
@@ -192,7 +189,9 @@ html
                     li
                         input(type='radio', value='7', name='group3')
                         label Strongly agree
-                label.statement 4. The songs recommended to me are diverse.
+                label.statement
+                    span.required *
+                    | 4. The songs recommended to me are diverse.
                 ul#post-4.likert
                     li
                         input(type='radio', value='1', name='group4')
@@ -216,6 +215,7 @@ html
                         input(type='radio', value='7', name='group4')
                         label Strongly agree
                 label.statement
+                    span.required *
                     | 5. I found it easy to inform the music chatbot if I dislike/like the recommended song.
                 ul#post-5.likert
                     li
@@ -239,7 +239,9 @@ html
                     li
                         input(type='radio', value='7', name='group5')
                         label Strongly agree
-                label.statement 6. I found the music chatbot easy to understand in this conversation.
+                label.statement
+                    span.required *
+                    | 6. I found the music chatbot easy to understand in this conversation.
                 ul#post-6.likert
                     li
                         input(type='radio', value='1', name='group6')
@@ -263,6 +265,7 @@ html
                         input(type='radio', value='7', name='group6')
                         label Strongly agree
                 label.statement
+                    span.required *
                     | 7. In this conversation, I knew what I could say or do at each point of the dialog.
                 ul#post-7.likert
                     li
@@ -286,7 +289,9 @@ html
                     li
                         input(type='radio', value='7', name='group7')
                         label Strongly agree
-                label.statement 8. The music chatbot worked the way I expected it to in this conversation.
+                label.statement
+                    span.required *
+                    | 8. The music chatbot worked the way I expected it to in this conversation.
                 ul#post-8.likert
                     li
                         input(type='radio', value='1', name='group8')
@@ -309,7 +314,9 @@ html
                     li
                         input(type='radio', value='7', name='group8')
                         label Strongly agree
-                label.statement 9. I easily found the songs I was looking for.
+                label.statement
+                    span.required *
+                    | 9. I easily found the songs I was looking for.
                 ul#post-9.likert
                     li
                         input(type='radio', value='1', name='group9')
@@ -332,7 +339,9 @@ html
                     li
                         input(type='radio', value='7', name='group9')
                         label Strongly agree
-                label.statement 10. Looking for a song using this interface required too much effort.
+                label.statement
+                    span.required *
+                    | 10. Looking for a song using this interface required too much effort.
                 ul#post-10.likert
                     li
                         input(type='radio', value='1', name='group10')
@@ -355,7 +364,9 @@ html
                     li
                         input(type='radio', value='7', name='group10')
                         label Strongly agree
-                label.statement 11. I understood why the songs were recommended to me.
+                label.statement
+                    span.required *
+                    | 11. I understood why the songs were recommended to me.
                 ul#post-11.likert
                     li
                         input(type='radio', value='1', name='group11')
@@ -378,7 +389,9 @@ html
                     li
                         input(type='radio', value='7', name='group11')
                         label Strongly agree
-                label.statement 12. Which of the following item is not fruit?
+                label.statement
+                    span.required *
+                    | 12. Which of the following item is not fruit?
                 ul#post-12.likert
                     li
                         input(type='radio', value='1', name='group12')
@@ -401,7 +414,9 @@ html
                     li
                         input(type='radio', value='7', name='group12')
                         label Strawberry
-                label.statement 13. The music chatbot gave me good suggestions.
+                label.statement
+                    span.required *
+                    | 13. The music chatbot gave me good suggestions.
                 ul#post-13.likert
                     li
                         input(type='radio', value='1', name='group13')
@@ -424,7 +439,9 @@ html
                     li
                         input(type='radio', value='7', name='group13')
                         label Strongly agree
-                label.statement 14. This music chatbot can be trusted.
+                label.statement
+                    span.required *
+                    | 14. This music chatbot can be trusted.
                 ul#post-14.likert
                     li
                         input(type='radio', value='1', name='group14')
@@ -447,7 +464,9 @@ html
                     li
                         input(type='radio', value='7', name='group14')
                         label Strongly agree
-                label.statement 15. I will use this music chatbot again.
+                label.statement
+                    span.required *
+                    | 15. I will use this music chatbot again.
                 ul#post-15.likert
                     li
                         input(type='radio', value='1', name='group15')
@@ -470,7 +489,9 @@ html
                     li
                         input(type='radio', value='7', name='group15')
                         label Strongly agree
-                label.statement 16. Overall, I am satisfied with this music chatbot.
+                label.statement
+                    span.required *
+                    | 16. Overall, I am satisfied with this music chatbot.
                 ul#post-16.likert
                     li
                         input(type='radio', value='1', name='group16')
@@ -493,7 +514,9 @@ html
                     li
                         input(type='radio', value='7', name='group16')
                         label Strongly agree
-                label.statement 17. I feel in control of modifying my taste using this music chatbot.
+                label.statement
+                    span.required *
+                    | 17. I feel in control of modifying my taste using this music chatbot.
                 ul#post-17.likert
                     li
                         input(type='radio', value='1', name='group17')
@@ -516,7 +539,9 @@ html
                     li
                         input(type='radio', value='7', name='group17')
                         label Strongly agree
-                label.statement 18. I am confident I will like the songs recommended to me.
+                label.statement
+                    span.required *
+                    | 18. I am confident I will like the songs recommended to me.
                 ul#post-18.likert
                     li
                         input(type='radio', value='1', name='group18')
@@ -539,7 +564,9 @@ html
                     li
                         input(type='radio', value='7', name='group18')
                         label Strongly agree
-                label.statement 19. I like to give feedback on the music I am listening.
+                label.statement
+                    span.required *
+                    | 19. I like to give feedback on the music I am listening.
                 ul#post-19.likert
                     li
                         input(type='radio', value='1', name='group19')
@@ -562,7 +589,9 @@ html
                     li
                         input(type='radio', value='7', name='group19')
                         label Strongly agree
-                label.statement 20. The music chatbot provided me with surprising recommendations that helped me discover new music that I wouldn’t have found elsewhere.
+                label.statement
+                    span.required *
+                    | 20. The music chatbot provided me with surprising recommendations that helped me discover new music that I wouldn’t have found elsewhere.
                 ul#post-20.likert
                     li
                         input(type='radio', name='group20', value='1')
@@ -585,7 +614,9 @@ html
                     li
                         input(type='radio', name='group20', value='7')
                         label Strongly agree
-                label.statement 21. The music chatbot provided me with recommendations that I had not considered in the first place but turned out to be a positive and surprising discovery.
+                label.statement
+                    span.required *
+                    | 21. The music chatbot provided me with recommendations that I had not considered in the first place but turned out to be a positive and surprising discovery.
                 ul#post-21.likert
                     li
                         input(type='radio', name='group21', value='1')
@@ -608,7 +639,9 @@ html
                     li
                         input(type='radio', name='group21', value='7')
                         label Strongly agree
-                label.statement 22. The music chatbot provided me with recommendations that were a pleasant surprise to me because I would not have discovered them somewhere else.
+                label.statement
+                    span.required *
+                    | 22. The music chatbot provided me with recommendations that were a pleasant surprise to me because I would not have discovered them somewhere else.
                 ul#post-22.likert
                     li
                         input(type='radio', name='group22', value='1')
@@ -631,18 +664,27 @@ html
                     li
                         input(type='radio', name='group22', value='7')
                         label Strongly agree
-                label.statement 23. When do you, or would you want to discover new songs when listening to music?
+                label.statement
+                    span.required *
+                    | 23. When do you, or would you want to discover new songs when listening to music?
                 textarea#post-23(rows='3', cols='100')
-                label.statement 24. Why do you want to look for new songs or why not?
+                label.statement
+                    span.required *
+                    | 24. Why do you want to look for new songs or why not?
                 textarea#post-24(rows='3', cols='100')
-                label.statement 25. Do you think this music chatbot could help you discover new and diverse songs that are of your interest? (If yes, please explain how it helps your exploration; if no, please provide any suggestions for our music chatbot)
+                label.statement
+                    span.required *
+                    | 25. Do you think this music chatbot could help you discover new and diverse songs that are of your interest? (If yes, please explain how it helps your exploration; if no, please provide any suggestions for our music chatbot)
                 textarea#post-25(rows='3', cols='100')
                 label.statement 26. Any other comments to this music chatbot.
                 textarea#post-26(rows='3', cols='100')
                 .buttons
-                    button.clear Clear
-                    button.submit Submit
-        script(type = "text/javascript", src = "../jquery/dist/jquery.min.js", charset = 'utf-8')
+                    button.clear.btn.btn-default Clear
+                    button.submit.btn.btn-success Submit
+
+        link(href='../bootstrap/dist/css/bootstrap.min.css', rel='stylesheet')
+        script(src = "../jquery/dist/jquery.min.js", charset = 'utf-8')
+        script(src = "../bootstrap/dist/js/bootstrap.min.js")
         script(type='text/javascript').
             var formList = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
             var openQuestionList = [null, null, null]
