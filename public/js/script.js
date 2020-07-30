@@ -1129,9 +1129,10 @@ $(document).ready(function () {
                                                     var likedSongGenre = topRecommendedSong.genre
                                                     var likedSongArtist = topRecommendedSong.artist
 
-                                                    if(likedSongGenre=="niche" && countGenreItems(topRecommendedSong.realgenre)<11){
+                                                    if(likedSongGenre=="niche" && Object.keys(topRecommendedSong).indexOf('realgenre') >= 0 && countGenreItems(topRecommendedSong.realgenre)<11){
 
                                                         var requestLink, explanation;
+
                                                         if(topRecommendedSong.realgenre!="niche"){
                                                             requestLink = '/searchPlaylist?q=' + topRecommendedSong.realgenre + "&token=" + spotifyToken;
                                                             explanation = "OK, I recommend this song to you, because you like the songs of " + topRecommendedSong.realgenre + "."
@@ -2037,9 +2038,11 @@ $(document).ready(function () {
                                                     var likedSongGenre = topRecommendedSong.genre
                                                     var likedSongArtist = topRecommendedSong.artist
 
-                                                    if(likedSongGenre=="niche" && countGenreItems(topRecommendedSong.realgenre)<11){
+
+                                                    if(likedSongGenre=="niche" && Object.keys(topRecommendedSong).indexOf('realgenre') >= 0 && countGenreItems(topRecommendedSong.realgenre)<11){
 
                                                         var requestLink, explanation;
+
                                                         if(topRecommendedSong.realgenre!="niche"){
                                                             requestLink = '/searchPlaylist?q=' + topRecommendedSong.realgenre + "&token=" + spotifyToken;
                                                             explanation = "OK, I recommend this song to you, because you like the songs of " + topRecommendedSong.realgenre + "."
