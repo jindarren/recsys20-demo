@@ -200,8 +200,8 @@ def update_user_model(user_model, user_interaction_dialog, user_listened_longs, 
                     # check if there are consective rejected critiques within the same attribute (decrease the attribute frequency)
                     if len(updated_user_critique_preference) > 0:
                         latest_user_critique_preference = updated_user_critique_preference[-1]
-                        time_helper.print_current_time()
-                        print("latest_critique: ", latest_user_critique_preference)
+                        # time_helper.print_current_time()
+                        # print("latest_critique: ", latest_user_critique_preference)
                         if attr in numerical_attributes and latest_user_critique_preference['pos_or_neg'] == 'neg' and latest_user_critique_preference['attribute'] == attr:
                             updated_user_attribute_frequency[attr] = updated_user_attribute_frequency[attr] / 2
                             time_helper.print_current_time()
