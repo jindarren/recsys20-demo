@@ -116,7 +116,7 @@ html
                 // Worker ID
                 label.statement#idDescription
                     span.required *
-                    | Your ID of the crowdsourcing platform:
+                    span#user-id Your ID of the crowdsourcing platform:
                 input#workerID.normal-input(type='text', name='workerID')
                 // Age
                 label.statement
@@ -1230,9 +1230,9 @@ html
         script(type='text/javascript').
             var platform = window.localStorage.getItem("platform")
             if(platform=="turk"){
-                $("#idDescription").text("MTurk Worker ID:")
+                $("#user-id").text("MTurk Worker ID:")
             }else if(platform=="prolific"){
-                $("#idDescription").text("Prolific ID:")
+                $("#user-id").text("Prolific ID:")
             }
 
             var formList = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
