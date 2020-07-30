@@ -77,6 +77,12 @@ html
         script.
 
             var platform = window.location.search.substring(1)
+            if (platform.startsWith('prolific')){
+                platform = 'prolific'
+            }
+            else if (platform.startsWith('turk')){
+                platform = 'turk'
+            }
             window.localStorage.setItem("platform",platform)
 
             if(platform=="turk"){
