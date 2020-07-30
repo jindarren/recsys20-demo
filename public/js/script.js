@@ -580,16 +580,16 @@ $(document).ready(function () {
 
                                     if (explaination != "")
                                         updateChat(robot, explaination, "Explain")
-                                }, 1000)
+                                }, 500)
 
                                 setTimeout(function () {
                                     showMusic(playlist[songIndex].id)
-                                }, 3000)
+                                }, 1000)
 
                             } else {
                                 showMusic(playlist[songIndex].id)
                             }
-                        }, 5000)
+                        }, 3000)
                     }
                 })
 
@@ -1316,41 +1316,6 @@ $(document).ready(function () {
                     }
                 }
             })
-
-            // recognition.addEventListener('speechstart', () => {
-            //     //console.log('Speech has been detected.');
-            // });
-            //
-            // recognition.addEventListener('result', (e) => {
-            //     console.log('Result has been detected.');
-            //     let last = e.results.length - 1;
-            //     let text = e.results[last][0].transcript;
-            //
-            //     if (text != "") {
-            //         //synth.cancel()
-            //         $(".feedback").remove()
-            //         clearTimeout(showFeedback)
-            //         clearTimeout(showNextSong)
-            //         clearTimeout(showCurrentSong)
-            //         clearTimeout(showCurrentSong2)
-            //         clearTimeout(showNextSong2)
-            //         clearTimeout(showNextSong3)
-            //         nextTimes = 0
-            //         //updateChat(you, text, "voice", "Respond_Unknown", [], {});
-            //         console.log('Confidence: ' + e.results[0][0].confidence);
-            //         socket.emit('chat message', text);
-            //     }
-            // });
-            //
-            // recognition.addEventListener('speechend', () => {
-            //     recognition.stop();
-            //     $('.fa-microphone').show()
-            //     $('.boxContainer').hide()
-            // });
-            //
-            // recognition.addEventListener('error', (e) => {
-            //     //updateChat(robot, 'Sorry, we find an error during voice recognition.', "text", "Respond_Unknown", [], {});
-            // });
 
             function updateAndGetRec(critique) {
                 return new Promise(function (resolve, reject) {
