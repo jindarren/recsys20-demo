@@ -1378,22 +1378,30 @@ $(document).ready(function () {
                             // filter songs that have been listened by user
                             filtered_tracks = []
                             for (var item in res.tracks){
-                                filtered_tracks.push(res.tracks[item])
+                                // console.log(res.tracks[item])
+                                if (res.tracks[item] != null)
+                                    filtered_tracks.push(res.tracks[item])
                             }
-                            if (logger.listenedSongs.length >0){
-                                for (var item in logger.listenedSongs) {
-                                    
-                                    var songID = logger.listenedSongs[item].id
+                            // console.log(filtered_tracks)
 
-                                    var filtered = filtered_tracks.filter(function (el) {
-                                        // console.log(el.id == songID)
-                                        return el.id == songID;
-                                    });
-                                    if (filtered.length>0)
-                                        filtered_tracks.splice(filtered_tracks.indexOf(filtered[0]), 1)
-                                    
+                            if (filtered_tracks.length > 0)
+                            {
+                                if (logger.listenedSongs.length >0){
+                                    for (var item in logger.listenedSongs) {
+                                        
+                                        var songID = logger.listenedSongs[item].id
+    
+                                        var filtered = filtered_tracks.filter(function (el) {
+                                            // console.log(el.id == songID)
+                                            return el.id == songID;
+                                        });
+                                        if (filtered.length>0)
+                                            filtered_tracks.splice(filtered_tracks.indexOf(filtered[0]), 1)
+                                        
+                                    }
                                 }
-                            }
+                            }                            
+
                             // console.log('After filtering: ')
                             // console.log(filtered_tracks)
 
