@@ -758,8 +758,8 @@ router.post('/initiate', function(req, res) {
 
     var genreReq = new Promise((resolve, reject) => {
 
-        recom(token).getTopArtists(5).then(function(artistData){
-            for (var i = 0; i<5; i++){
+        recom(token).getTopArtists().then(function(artistData){
+            for (var i = 0; i<artistData.length; i++){
                 genres = uniqueArr(genres, artistData[i].genres)
             }
 
@@ -890,7 +890,6 @@ router.get('/callback',
         failureRedirect: '/'
     }),
     function(req, res) {
-
         res.cookie('spotify-token', req.authInfo.accessToken, {
             maxAge: 7200000
         });

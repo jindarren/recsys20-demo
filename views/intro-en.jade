@@ -148,8 +148,18 @@ html
                         return data
                     }).then(function (d) {
                         $.get("/getTrack?token=" + spotifyToken, function (data2) {
-                            console.log(d, data2)
-                            if (d.items.length >= 5 && data2.items.length >= 20) {
+
+                            // check genres
+                            var genres_exist = false;
+                            for (var i = 0; i<d.items.length; i++){
+                                if (d.items[i].genres.length > 0)
+                                {
+                                    genres_exist = true;
+                                    break;
+                                }
+                            }
+
+                            if (genres_exist && d.items.length >= 5 && data2.items.length >= 20) {
                                 $("#success").show()
                                 $("#next1").removeClass("disabled")
                                 $("#next1").addClass("btn-primary")
