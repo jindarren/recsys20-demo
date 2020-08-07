@@ -421,6 +421,23 @@ router.get('/getAccount', function(req, res) {
     })
 })
 
+var genre_processing = function(genre){
+    if(genre.indexOf("pop")>=0)
+        genre = "pop"
+    else if(genre.indexOf("rock")>=0)
+        genre = "rock"
+    else if(genre.indexOf("hip hop")>=0)
+        genre = "hip-hop"
+    else if(genre.indexOf("dance")>=0)
+        genre = "dance"
+    else if(genre.indexOf("funk")>=0)
+        genre = "funk"
+    else if(genre.indexOf("classical")>=0)
+        genre = "classical"
+    else if (genre.indexOf("new age")>=0)
+        genre = "new-age"
+    return genre
+}
 
 var getAudioFeatures = function(token, data) {
     var artistIds = [],
@@ -502,18 +519,18 @@ var getAudioFeatures = function(token, data) {
                         genre = "niche"
                     }
 
-                    if(genre.indexOf("pop")>=0)
-                        genre = "pop"
-                    else if(genre.indexOf("rock")>=0)
-                        genre = "rock"
-                    else if(genre.indexOf("hip hop")>=0)
-                        genre = "hip-hop"
-                    else if(genre.indexOf("dance")>=0)
-                        genre = "dance"
-                    else if(genre.indexOf("funk")>=0)
-                        genre = "funk"
+                    // if(genre.indexOf("pop")>=0)
+                    //     genre = "pop"
+                    // else if(genre.indexOf("rock")>=0)
+                    //     genre = "rock"
+                    // else if(genre.indexOf("hip hop")>=0)
+                    //     genre = "hip-hop"
+                    // else if(genre.indexOf("dance")>=0)
+                    //     genre = "dance"
+                    // else if(genre.indexOf("funk")>=0)
+                    //     genre = "funk"
 
-                    visData[index].genre = genre
+                    visData[index].genre = genre_processing(genre)
 
                 }
             }).then(function() {
@@ -747,8 +764,9 @@ router.get('/initiate', function(req, res) {
             var newGenres = []
 
             for (var i = 0; i < genres.length; i++) {
-                if(avaGenres[genres[i]])
-                    newGenres.push(genres[i])
+                processed_genre = genre_processing(genres[i])
+                if(avaGenres[processed_genre] && newGenres.indexOf(processed_genre) === -1)
+                    newGenres.push(processed_genre)
             }
 
             if(newGenres.length>3)
