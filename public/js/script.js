@@ -742,9 +742,9 @@ $(document).ready(function () {
                         if (genreName in genreData)
                             requestedLink = "/getRecom?token="+spotifyToken+"&genreSeeds="+genreName
                         else if (genreNane_hphen in genreData)
-                            requestedLink = "/getRecom?token="+spotifyToken+"&genreSeeds="+genreName
+                            requestedLink = "/getRecom?token="+spotifyToken+"&genreSeeds="+genreNane_hphen
                         else if (genreNane_none in genreData)
-                            requestedLink = "/getRecom?token="+spotifyToken+"&genreSeeds="+genreName
+                            requestedLink = "/getRecom?token="+spotifyToken+"&genreSeeds="+genreNane_none
                         else
                             requestedLink = '/searchPlaylist?q=' + genreName + "&token=" + spotifyToken;
 
@@ -764,11 +764,12 @@ $(document).ready(function () {
                                 //console.log(sc_result)
 
                                 var state = sc_result.state
-
                                 //未做其他条件判断？
 
                                 if (state=="SC_and_Recommendation"){
                                     firstThreeCrits = sc_result.result.slice(0, 3)
+                                    playlist = sc_result.user_profile.pool
+
                                     
                                 }
                                 critiques = constructCritiques(firstThreeCrits)
@@ -926,6 +927,7 @@ $(document).ready(function () {
                     {
                         reRankPlaylist(critiques[critiquesIndex].recommendation)
                         // console.log(critiques[critiquesIndex].recommendation)
+                        // console.log(playlist)
                         showMusic(playlist[songIndex].id)
 
                     }    

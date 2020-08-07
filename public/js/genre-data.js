@@ -28,6 +28,7 @@ var genreMapList = {
     "dub": "dub music",
     "dubstep": "dubstep music",
     "edm": "electronic dance music",
+    "electro": "electro music",
     "electronic": "electronic music",
     "emo": "emotional hardcore",
     "folk": "folk",
@@ -59,6 +60,7 @@ var genreMapList = {
     "jazz": "jazz",
     "kids": "kids",
     "latin": "Latin music",
+    "latino": "latino music",
     "malay": "malay music",
     "metal": "metal music",
     "metal-misc": "metal-misc music",
@@ -78,6 +80,7 @@ var genreMapList = {
     "r-n-b": "R&B",
     "rainy-day": "rainy-day music",
     "reggae": "reggae music",
+    "reggaeton": "reggaeton music",
     "road-trip": "road-trip music",
     "rock": "rock music",
     "romance": "romance music",
@@ -102,5 +105,6 @@ var genreMapList = {
     "work-out": "work-out music",
     "world-music": "world music"
 }
+
 
 module.exports = genreMapList

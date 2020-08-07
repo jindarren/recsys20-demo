@@ -244,6 +244,10 @@ router.get('/logout', function(req, res) {
     res.redirect("/")
 });
 
+router.get('/getAvaGenres', function(req, res) {
+    res.json(avaGenres)
+})
+
 /*
  route for web API
  */
@@ -503,7 +507,7 @@ var getAudioFeatures = function(token, data) {
                     else if(genre.indexOf("rock")>=0)
                         genre = "rock"
                     else if(genre.indexOf("hip hop")>=0)
-                        genre = "hip hop"
+                        genre = "hip-hop"
                     else if(genre.indexOf("dance")>=0)
                         genre = "dance"
                     else if(genre.indexOf("funk")>=0)
@@ -742,7 +746,7 @@ router.get('/initiate', function(req, res) {
 
             var newGenres = []
 
-            for (var i = genres.length; i >= 0; i--) {
+            for (var i = 0; i < genres.length; i++) {
                 if(avaGenres[genres[i]])
                     newGenres.push(genres[i])
             }

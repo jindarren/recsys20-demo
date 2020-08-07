@@ -140,8 +140,10 @@ html
                     videoId: videoUrl,
                 });
             }
+
             //check if the user participated the study before
             var test_id_list = ["zogxvf222xk1geyxpl21b3a1f", "zcm6se5ml2rhoi6oun8qmj1od"]
+
             $.get("/findRecord?id="+userid,function (data) {
 
                 if(data.length==0 ||  test_id_list.indexOf(userid)>=0){
@@ -152,65 +154,74 @@ html
                         return data
                     }).then(function (d) {
                         $.get("/getTrack?token=" + spotifyToken, function (data2) {
-
-                            // check genres
-                            var genres_exist = false;
-                            for (var i = 0; i<d.items.length; i++){
-                                if (d.items[i].genres.length > 0)
-                                {
-                                    genres_exist = true;
-                                    break;
-                                }
-                            }
-
-                            if (genres_exist && d.items.length >= 5 && data2.items.length >= 20) {
-                                $("#success").show()
-                                $("#next1").removeClass("disabled")
-                                $("#next1").addClass("btn-primary")
-                                $(".btn-primary").on("click", function () {
-                                    // var start_timestamp = new Date()
-                                    // window.localStorage.setItem("start_timestamp",start_timestamp.toString())
-
-                                    var log = {
-                                        id: userid,
-                                        platform: window.localStorage.getItem("platform"),
-                                        setting: window.localStorage.getItem("setting"),
-                                        startTimestamp: new Date()
-                                        // logger: {},
-                                        // pool: [],
-                                        // que1: [],
-                                        // que2: [],
-                                        // que3: [],
-                                        // topRecommendedSong: {},
-                                        // user: {},
-                                        // completionCode: "",
-                                        // que1Timestamp: null,
-                                        // taskStartTimestamp:null,
-                                        // taskEndTimestamp:null,
-                                        // endTimestamp: null,
-                                        // codeTimestamp: null,
-                                        // bonusTimestamp: null,
-                                    }
-
-                                    $.ajax({
-                                        url: '/addRecord',
-                                        type: 'POST',
-                                        contentType: 'application/json',
-                                        data: JSON.stringify(log),
-                                        dataType: 'json',
-                                        success: function (data) {
-                                            console.log(data)
-                                            window.location.href = '/que1';
-                                        },
-                                        error: function (err) {
-                                            console.log(err)
+                            $.get("/getAvaGenres", function (avaGenreData) {
+                                var avaGenres = avaGenreData
+                                // check genres
+                                var genres_exist = false;
+                                for (var i = 0; i<d.items.length; i++){
+    
+                                    for (var j = 0; j<d.items[i].genres.length; j++){ 
+                                        if (d.items[i].genres[j] in avaGenres)
+                                        {
+                                            genres_exist = true;
                                         }
-                                    });
+                                        if(genres_exist)
+                                        {
+                                            break;
+                                        }
+                                    }
+                                }
 
-                                })
-                            } else {
-                                window.location.href = "/failure2"
-                            }
+                                if (genres_exist && d.items.length >= 5 && data2.items.length >= 20) {
+                                    $("#success").show()
+                                    $("#next1").removeClass("disabled")
+                                    $("#next1").addClass("btn-primary")
+                                    $(".btn-primary").on("click", function () {
+                                        // var start_timestamp = new Date()
+                                        // window.localStorage.setItem("start_timestamp",start_timestamp.toString())
+
+                                        var log = {
+                                            id: userid,
+                                            platform: window.localStorage.getItem("platform"),
+                                            setting: window.localStorage.getItem("setting"),
+                                            startTimestamp: new Date()
+                                            // logger: {},
+                                            // pool: [],
+                                            // que1: [],
+                                            // que2: [],
+                                            // que3: [],
+                                            // topRecommendedSong: {},
+                                            // user: {},
+                                            // completionCode: "",
+                                            // que1Timestamp: null,
+                                            // taskStartTimestamp:null,
+                                            // taskEndTimestamp:null,
+                                            // endTimestamp: null,
+                                            // codeTimestamp: null,
+                                            // bonusTimestamp: null,
+                                        }
+
+                                        $.ajax({
+                                            url: '/addRecord',
+                                            type: 'POST',
+                                            contentType: 'application/json',
+                                            data: JSON.stringify(log),
+                                            dataType: 'json',
+                                            success: function (data) {
+                                                console.log(data)
+                                                window.location.href = '/que1';
+                                            },
+                                            error: function (err) {
+                                                console.log(err)
+                                            }
+                                        });
+
+                                    })
+                                } 
+                                else {
+                                    window.location.href = "/failure2"
+                                }
+                            })
                         })
                     })
 
