@@ -11,6 +11,15 @@ html
                 font-family: Lato;
             }
 
+            button[disabled], fieldset[disabled] {
+                pointer-events: none;
+                cursor: not-allowed;
+                opacity: .65;
+                filter: alpha(opacity=65);
+                -webkit-box-shadow: none;
+                box-shadow: none;
+            }
+
             #completionCode{
                 text-align: center;
                 background-color: #dcd1b2;
@@ -122,33 +131,40 @@ html
         script(src = "../jquery/dist/jquery.min.js", charset = 'utf-8')
         script(src = "../bootstrap/dist/js/bootstrap.min.js")
         script(type='text/javascript').
-            $(".btn-primary").on("click", function () {
-                var completionCode = Math.random().toString(36).slice(-10)
-                $("#completionCode").text(completionCode)
-                $("#code-box").show()
-                $("#bonus-link, .btn-primary, #requiredTime").hide()
+            if(!window.localStorage.getItem("getcode")) {
+                $(".btn-primary").on("click", function () {
+                    var completionCode = Math.random().toString(36).slice(-10)
+                    window.localStorage.setItem("completioncode",completionCode)
+                    $("#completionCode").text(completionCode)
+                    $("#code-box").show()
+                    $("#bonus-link, .btn-primary, #requiredTime").hide()
 
-                var log = {}
-                log.completionCode = completionCode
-                log.timestamp = new Date()
-
-                log.id = JSON.parse(window.localStorage.getItem("log")).id
-
-                $.ajax({
-                    url: '/updateCode',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify(log),
-                    dataType: 'json',
-                    success: function (data) {
-                        console.log(data)
-                    },
-                    error: function (err) {
-                        console.log(err)
+                    var log = {
+                        id: window.localStorage.getItem("userid"),
+                        completionCode: completionCode,
+                        codeTimestamp: new Date()
                     }
-                });
 
-            })
+                    $.ajax({
+                        url: '/updateRecord',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(log),
+                        dataType: 'json',
+                        success: function (data) {
+                            console.log(data)
+                        },
+                        error: function (err) {
+                            console.log(err)
+                        }
+                    });
+                    window.localStorage.setItem("getcode", "yes")
+                })
+            } else{
+                $("#bonus-link, .btn-primary, #requiredTime").hide()
+                $("#completionCode").text(window.localStorage.getItem("completioncode"))
+                $("#code-box").show()
+            }
 
 
 

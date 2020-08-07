@@ -11,17 +11,20 @@ var userSchema = new mongoose.Schema({
     platform: String,
     setting:String,
     logger:{},
-    new_pool:[],
 	pool:[],
     que1:[],
     que2:[],
     que3:[],
-    startTimestamp: Date,
-    endTimestamp: Date,
-    bonusTimestamp: Date,
     topRecommendedSong:{},
     user:{},
-    completionCode:String
+    completionCode:String,
+    startTimestamp: Date,
+    que1Timestamp: Date,
+    taskStartTimestamp: Date,
+    taskEndTimestamp: Date,
+    endTimestamp: Date,
+    codeTimestamp: Date,
+    bonusTimestamp: Date,
 });
 
 var User = mongoose.model('User', userSchema);

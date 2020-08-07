@@ -97,10 +97,17 @@ html
         link(href='../bootstrap/dist/css/bootstrap.min.css', rel='stylesheet')
         link(href='../jquery-ui/themes/base/jquery-ui.min.css', rel='stylesheet')
         script(src = "../jquery/dist/jquery.min.js", charset = 'utf-8')
-        script(type = "text/javascript", src = "../jquery.cookie/jquery.cookie.js", charset = 'utf-8')
+        //script(type = "text/javascript", src = "../jquery.cookie/jquery.cookie.js", charset = 'utf-8')
         script(src = "js/popper.min.js", charset = 'utf-8')
         script(src = "../bootstrap/dist/js/bootstrap.min.js")
         script.
+            var spotifyToken = "#{token}"
+            var refreshToken = "#{refreshToken}"
+            var userid = "#{userID}"
+            window.localStorage.setItem("spotifyToken", spotifyToken)
+            window.localStorage.setItem("refreshToken", refreshToken)
+            window.localStorage.setItem("userid", userid)
+
             //if the user has sufficient artists and tracks
             var randomSetting = Math.floor(Math.random() * 3)
             var videoUrl
@@ -133,16 +140,13 @@ html
                     videoId: videoUrl,
                 });
             }
-
-            var userid = $.cookie('user-id')
             //check if the user participated the study before
             var test_id_list = ["zogxvf222xk1geyxpl21b3a1f", "zcm6se5ml2rhoi6oun8qmj1od"]
             $.get("/findRecord?id="+userid,function (data) {
-                
+
                 if(data.length==0 ||  test_id_list.indexOf(userid)>=0){
-                    
+
                     //check if the user is qualified in terms of his/er profile
-                    var spotifyToken = $.cookie('spotify-token')
 
                     $.get("/getArtist?token=" + spotifyToken, function (data) {
                         return data
@@ -164,9 +168,45 @@ html
                                 $("#next1").removeClass("disabled")
                                 $("#next1").addClass("btn-primary")
                                 $(".btn-primary").on("click", function () {
-                                    var start_timestamp = new Date()
-                                    window.localStorage.setItem("start_timestamp",start_timestamp.toString())
-                                    window.location.href = '/que1';
+                                    // var start_timestamp = new Date()
+                                    // window.localStorage.setItem("start_timestamp",start_timestamp.toString())
+
+                                    var log = {
+                                        id: userid,
+                                        platform: window.localStorage.getItem("platform"),
+                                        setting: window.localStorage.getItem("setting"),
+                                        startTimestamp: new Date()
+                                        // logger: {},
+                                        // pool: [],
+                                        // que1: [],
+                                        // que2: [],
+                                        // que3: [],
+                                        // topRecommendedSong: {},
+                                        // user: {},
+                                        // completionCode: "",
+                                        // que1Timestamp: null,
+                                        // taskStartTimestamp:null,
+                                        // taskEndTimestamp:null,
+                                        // endTimestamp: null,
+                                        // codeTimestamp: null,
+                                        // bonusTimestamp: null,
+                                    }
+
+                                    $.ajax({
+                                        url: '/addRecord',
+                                        type: 'POST',
+                                        contentType: 'application/json',
+                                        data: JSON.stringify(log),
+                                        dataType: 'json',
+                                        success: function (data) {
+                                            console.log(data)
+                                            window.location.href = '/que1';
+                                        },
+                                        error: function (err) {
+                                            console.log(err)
+                                        }
+                                    });
+
                                 })
                             } else {
                                 window.location.href = "/failure2"

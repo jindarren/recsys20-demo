@@ -75,7 +75,6 @@ html
         script(src = "../jquery/dist/jquery.min.js", charset = 'utf-8')
         script(src = "../bootstrap/dist/js/bootstrap.min.js")
         script.
-
             var platform = window.location.search.substring(1)
             if (platform.startsWith('prolific')){
                 platform = 'prolific'
@@ -84,6 +83,10 @@ html
                 platform = 'turk'
             }
             window.localStorage.setItem("platform",platform)
+
+            if(platform!=window.localStorage.getItem("platform")){
+                window.location.href='/failure3'
+            }
 
             if(platform=="turk"){
                 $("#prolific_info1").hide()
@@ -102,7 +105,3 @@ html
             $("#accept").click(function () {
                 window.location.href = "/"
             })
-
-
-
-

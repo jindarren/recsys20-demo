@@ -4,11 +4,9 @@ const socket = io();
 // const recognition = new SpeechRecognition();
 const genreData = genreMapList
 
-var spotifyToken = $.cookie('spotify-token')
-var refreshToken = $.cookie('refresh-token')
-
-
-var storage = window.localStorage;
+var spotifyToken = window.localStorage.getItem("spotifyToken")
+var refreshToken = window.localStorage.getItem("refreshToken")
+var userid = window.localStorage.getItem("userid")
 
 var skipTimes = 0;
 
@@ -25,6 +23,8 @@ var showNextSong, showCurrentSong, showNextSong2, showNextSong3, showCurrentSong
 var logger = {};
 
 var usermodel = {}
+
+var taskStartTimestamp;
 
 
 //preference_oriented
@@ -56,26 +56,25 @@ var nextSongUtters = ["Great, here is another song.", "OK, maybe you also like t
     rateUtters = ["Please rate your liked song in terms of pleasant surprise in the left panel.", "Don't forget to rate the song in terms of pleasant surprise in the left panel.", "You also need to rate the song in terms of pleasant surprise in the left panel."]
 
 
-var systemLang = storage.language
-
 // if (systemLang == "zh")
 //     $("#user-id").show()
 
 $(window).off('beforeunload');
 
+var expire=3600;
 $(document).ready(function () {
     setInterval(function () {
         $.ajax("/refresh-token?refresh_token=" + refreshToken, function (data, err) {
             if (err)
                 console.log(err)
             else {
+                console.log(data)
                 spotifyToken = data.access_token
+                refreshToken = data.refresh_token
+                expire = data.expires_in
             }
         })
-    }, 3600 * 1000)
-
-    var userID = ""
-    // JSON.parse(storage.profile).id
+    }, expire * 1000)
 
     // By Wanling
     // Right Panel 
@@ -123,7 +122,6 @@ $(document).ready(function () {
 
         //alert("Please make sure you have submitted the pre-study questionnaire!")
         //refresh the token
-    var userid = $.cookie('user-id')
 
     // By Wanling
     // reRankPlaylist: put the obtained recommendation list in the front and put the left songs in the back of the list 
@@ -286,14 +284,14 @@ $(document).ready(function () {
 
     //console.log(spotifyToken)
     $.ajax({
-        url: "/initiate?token=" + spotifyToken + "&id=" + userid,
-        type: "POST",
+        url: "/initiate?token=" + spotifyToken+ "&id=" + userid,
+        type: "GET",
         contentType: "application/json;charset=utf-8",
         dataType: "json",
         success: function (data) {
 
             usermodel = data
-            // console.log(usermodel)
+            console.log(usermodel)
             topRecommendedSong = usermodel.pool[0];
             usermodel.topRecommendedSong = topRecommendedSong
 
@@ -443,6 +441,7 @@ $(document).ready(function () {
 
             $("#start-task").on("click", function () {
                 // synth.cancel()
+                taskStartTimestamp = new Date()
                 $("input#message").attr("disabled", true)
                 $("input#message").attr("placeholder", "Please wait for a moment :)")
 
@@ -506,8 +505,8 @@ $(document).ready(function () {
                 }, 2000)
 
                 $.ajax({
-                    url: "/initiate?token=" + spotifyToken + "&id=" + userid,
-                    type: "POST",
+                    url: "/initiate?token=" + spotifyToken+ "&id=" + userid,
+                    type: "GET",
                     contentType: "application/json;charset=utf-8",
                     dataType: "json",
                     success: function (data2) {
@@ -1115,7 +1114,30 @@ $(document).ready(function () {
                                                     window.localStorage.setItem("log",JSON.stringify(data))
 
 
-                                                    window.location.href = "/que2"
+                                                    var log = {
+                                                        id: window.localStorage.getItem("userid"),
+                                                        logger : logger,
+                                                        pool : playlist,
+                                                        user : usermodel.user,
+                                                        topRecommendedSong : topRecommendedSong,
+                                                        taskStartTimestamp : taskStartTimestamp,
+                                                        taskEndTimestamp : new Date()
+                                                    }
+
+                                                    $.ajax({
+                                                        url: '/updateRecord',
+                                                        type: 'POST',
+                                                        contentType: 'application/json',
+                                                        data: JSON.stringify(log),
+                                                        dataType: 'json',
+                                                        success: function (data) {
+                                                            console.log(data)
+                                                            window.location.href = "/que2"
+                                                        },
+                                                        error: function (err) {
+                                                            console.log(err)
+                                                        }
+                                                    });
 
                                                 }  
 
@@ -1999,8 +2021,31 @@ $(document).ready(function () {
                                                     //console.log("上传日志: ", data)
                                                     window.localStorage.setItem("log",JSON.stringify(data))
 
+                                                    var log = {
+                                                        id: window.localStorage.getItem("userid"),
+                                                        logger : logger,
+                                                        pool : playlist,
+                                                        user : usermodel.user,
+                                                        topRecommendedSong : topRecommendedSong,
+                                                        taskStartTimestamp : taskStartTimestamp,
+                                                        taskEndTimestamp : new Date()
+                                                    }
 
-                                                    window.location.href = "/que2"
+                                                    $.ajax({
+                                                        url: '/updateRecord',
+                                                        type: 'POST',
+                                                        contentType: 'application/json',
+                                                        data: JSON.stringify(log),
+                                                        dataType: 'json',
+                                                        success: function (data) {
+                                                            console.log(data)
+                                                            window.location.href = "/que2"
+                                                        },
+                                                        error: function (err) {
+                                                            console.log(err)
+                                                        }
+                                                    });
+
 
                                                 }
                                                 if (numberOfLikedSongs < 5) {

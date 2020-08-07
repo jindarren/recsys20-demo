@@ -60,7 +60,7 @@ html
             form .likert:before {
                 content: '';
                 position: relative;
-                top: 30px;
+                top: 22px;
                 display: block;
                 background-color: #efefef;
                 height: 4px;
@@ -1271,14 +1271,32 @@ html
                     }
                 }
 
-
-
                 console.log(uncheckedList)
                 if (uncheckedList.length > 0) {
                     alert("Please finished the missing statement(s) marked in yellow.")
                 } else {
                     window.localStorage.setItem("que1",formList.toString())
-                    var redirectedLink = window.localStorage.getItem("setting")
-                    window.location.href = redirectedLink
+
+                    var log = {
+                        id: window.localStorage.getItem("userid"),
+                        que1: formList,
+                        que1Timestamp: new Date()
+                    }
+
+                    $.ajax({
+                        url: '/updateRecord',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(log),
+                        dataType: 'json',
+                        success: function (data) {
+                            console.log(data)
+                            var redirectedLink = window.localStorage.getItem("setting")
+                            window.location.href = redirectedLink
+                        },
+                        error: function (err) {
+                            console.log(err)
+                        }
+                    });
                 }
             })

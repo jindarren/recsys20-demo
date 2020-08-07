@@ -38,7 +38,7 @@ passport.use(new SpotifyStrategy({
         clientID: appKey,
         clientSecret: appSecret,
         callbackURL: 'http://music-bot.top:3000/callback'
-        // callbackURL: 'http://localhost:3000/callback'
+        //callbackURL: 'http://localhost:3000/callback'
     },
     function(accessToken, refreshToken, profile, done) {
         // asynchronous verification, for effect...
@@ -82,25 +82,57 @@ router.get("/findRecord", function(req, res) {
 
 });
 
-
 router.post("/updateRecord", function(req, res) {
+    var updatedData = {}
     var updatedID = req.body.id
+    var que1List = req.body.que1
+    var que2List = req.body.que2
     var que3List = req.body.que3
-    var updatedTimestamp = req.body.bonustimestamp
-    User.updateOne({id:updatedID},{$set:{que3:que3List,bonusTimestamp:updatedTimestamp}},function(err){
-        if (err)
-            res.send(err)
-        else
-            res.json({status:"success"})
-    })
-});
-
-router.post("/updateCode", function(req, res) {
-    var updatedID = req.body.id
+    var que1Timestamp = req.body.que1Timestamp
+    var taskStartTimestamp = req.body.taskStartTimestamp
+    var taskEndTimestamp = req.body.taskEndTimestamp
+    var endTimestamp = req.body.endTimestamp
+    var codeTimestamp = req.body.codeTimestamp
+    var bonusTimestamp = req.body.bonustimestamp
+    var logger = req.body.logger
+    var new_pool = req.body.new_pool
+    var pool = req.body.pool
+    var topRecommendedSong = req.body.topRecommendedSong
+    var user = req.body.user
     var completionCode = req.body.completionCode
-    // var updatedTimestamp = req.body.timestamp
-    // User.updateOne({id:updatedID},{$set:{completionCode:completionCode,endTimestamp:updatedTimestamp}},function(err){
-    User.updateOne({id:updatedID},{$set:{completionCode:completionCode}},function(err){
+
+    if(que1List)
+        updatedData.que1 = que1List
+    if(que2List)
+        updatedData.que2 = que2List
+    if(que3List)
+        updatedData.que3 = que3List
+    if(que1Timestamp)
+        updatedData.que1Timestamp = que1Timestamp
+    if(taskStartTimestamp)
+        updatedData.taskStartTimestamp = taskStartTimestamp
+    if(taskEndTimestamp)
+        updatedData.taskEndTimestamp = taskEndTimestamp
+    if(endTimestamp)
+        updatedData.endTimestamp = endTimestamp
+    if(codeTimestamp)
+        updatedData.codeTimestamp = codeTimestamp
+    if(bonusTimestamp)
+        updatedData.bonusTimestamp = bonusTimestamp
+    if(logger)
+        updatedData.logger = logger
+    if(new_pool)
+        updatedData.new_pool = new_pool
+    if(pool)
+        updatedData.pool = pool
+    if(topRecommendedSong)
+        updatedData.topRecommendedSong = topRecommendedSong
+    if(user)
+        updatedData.user = user
+    if(completionCode)
+        updatedData.completionCode = completionCode
+
+    User.updateOne({id:updatedID},{$set:updatedData},function(err){
         if (err)
             res.send(err)
         else
@@ -121,9 +153,7 @@ router.get("/getRecord", function(req, res) {
 
 
 router.get('/index', function(req, res) {
-    res.render('index', {
-        data: req.user
-    })
+    res.render('index')
 })
 
 router.get('/preference-1', function(req, res) {
@@ -147,7 +177,11 @@ router.get('/intro', function(req, res) {
 });
 
 router.get('/intro-en', function(req, res) {
-    res.render("intro-en")
+    res.render("intro-en",{
+        token:req.query.token,
+        refreshToken:req.query.refreshToken,
+        userID:req.query.userID
+    })
 });
 
 router.get('/consent', function(req, res) {
@@ -174,15 +208,14 @@ router.get('/failure2', function(req, res) {
     res.render("failure2")
 });
 
+router.get('/failure3', function(req, res) {
+    res.render("failure3")
+});
+
 router.get('/tip', function(req, res) {
     res.render("tip10")
 });
 
-router.get('/index-base', function(req, res) {
-    res.render('index-base', {
-        data: req.user
-    })
-})
 
 router.get('/que1', function(req, res) {
     res.render("que1")
@@ -611,17 +644,11 @@ router.post('/trigger_sys_cri',function (req,res) {
 
 
 
-router.post('/initiate', function(req, res) {
+router.get('/initiate', function(req, res) {
     //pass token to the webAPI used by recommender
     var token = req.query.token;
-    var userID = req.query.id;
-    //console.log(req.query.id)
-    // var artists = profile.selectedArtists.split(",");
-    // var tracks = profile.selectedTracks.split(",");
-    // var genres = profile.selectedGenres.split(",");
-    // var artistNames = profile.selectedArtistNames.split(",");
-    // var trackNames = profile.selectedTrackNames.split(",");
-    // var feature = JSON.parse(profile.selectedFeatures)
+    var userid = req.query.id;
+
     var recResult = [];
 
     var artistNames = [];
@@ -640,50 +667,9 @@ router.post('/initiate', function(req, res) {
                 // genres = uniqueArr(genres, artistData[i].genres)
             }
 
-            // genres = genres.slice(0,5)
-            // console.log(genres)
-
-            // recom(token).getRecommendationByGenre(genres.toString()).then(function(data){
-            // var genreText = ""
-            // console.log(data)
-            // // if(genres.length==1)
-            // //     genreText = genres[0]
-            // // else if(genres.length==2)
-            // //     genreText = genres[0]+" and "+genres[1]
-            // // else if(genres.length==3)
-            // //     genreText = genres[0]+","+genres[1]+", and "+genres[2]
-            // // else if(genres.length==4)
-            // //     genreText = genres[0]+","+genres[1]+","+genres[2]+", and "+genres[3]
-            // // else if(genres.length==5)
-            // genreText = genres[0]+","+genres[1]+","+genres[2]+","+genres[3]+", and "+genres[4]
-            // getAudioFeatures(token, data).then(function(data2) {
-            //     for (var i = data2.length - 1; i >= 0; i--){
-            //         if (recResult.indexOf(data2[i])<0){
-            //             data2[i].seed = genreText
-            //             data2[i].seedType = "genre"
-            //             recResult.push(data2[i])
-            //         }
-            //     }
-            //     resolve(data2)
-            //     }).catch(function (error) {//加上catch 
-            //       console.log(error);
-            //     })
-            // }).catch(function (error) {//加上catch 
-            //   console.log(error);
-            // })
-
-
             recom(token).getRecommendationByArtist(requestedArtists.toString()).then(function(data3) {
             var artistText = ""
-            // if(artists.length==1)
-            //     artistText = artistNames[0]
-            // else if(artists.length==2)
-            //     artistText = artistNames[0]+" and "+artistNames[1]
-            // else if(artists.length==3)
-            //     artistText = artistNames[0]+","+artistNames[1]+", and "+artistNames[2]
-            // else if(artists.length==4)
-            //     artistText = artistNames[0]+","+artistNames[1]+","+artistNames[2]+", and "+artistNames[3]
-            // else if(artists.length==5)
+
             artistText = artistNames[0]+", "+artistNames[1]+", "+artistNames[2]+", "+artistNames[3]+", and "+artistNames[4]
 
             getAudioFeatures(token, data3).then(function(data4) {
@@ -724,15 +710,7 @@ router.post('/initiate', function(req, res) {
 
             recom(token).getRecommendationByTrack(requestedTracks.toString()).then(function(data) {
             var trackText = ""
-            // if(tracks.length==1)
-            //     trackText = trackNames[0]
-            // else if(tracks.length==2)
-            //     trackText = trackNames[0]+" and "+trackNames[1]
-            // else if(tracks.length==3)
-            //     trackText = trackNames[0]+","+trackNames[1]+", and "+trackNames[2]
-            // else if(tracks.length==4)
-            //     trackText = trackNames[0]+","+trackNames[1]+","+trackNames[2]+", and "+trackNames[3]
-            // else if(tracks.length==5)
+
             trackText = trackNames[0]+", "+trackNames[1]+", "+trackNames[2]+", "+trackNames[3]+", and "+trackNames[4]
 
             getAudioFeatures(token, data).then(function(data2) {
@@ -757,7 +735,6 @@ router.post('/initiate', function(req, res) {
 
 
     var genreReq = new Promise((resolve, reject) => {
-
         recom(token).getTopArtists().then(function(artistData){
             for (var i = 0; i<artistData.length; i++){
                 genres = uniqueArr(genres, artistData[i].genres)
@@ -770,41 +747,40 @@ router.post('/initiate', function(req, res) {
                     newGenres.push(genres[i])
             }
 
-            if(newGenres.length>5)
-                genres = newGenres.slice(0,5)
+            if(newGenres.length>3)
+                genres = newGenres.slice(0,3)
             else
                 genres = newGenres
-                            
             console.log(genres.toString())
-
             recom(token).getRecommendationByGenre(genres.toString()).then(function(data){
-            var genreText = ""
+                var genreText = ""
 
-            for(var item in genres){
-                genreText += genres[item]+", "
-            }
-            genreText = genreText.substr(0,genreText.length-2)
-            getAudioFeatures(token, data).then(function(data2) {
-                for (var i = data2.length - 1; i >= 0; i--){
-                    if (recResult.indexOf(data2[i])<0){
-                        data2[i].seed = genreText
-                        data2[i].seedType = "genre"
-                        recResult.push(data2[i])
-                    }
+                for(var item in genres){
+                    genreText += genres[item]+", "
                 }
-                    resolve(data2)
-                }).catch(function (error) {//加上catch 
-                  console.log(error);
-                })
-            }).catch(function (error) {//加上catch 
+                genreText = genreText.substr(0,genreText.length-2)
+
+                getAudioFeatures(token, data).then(function(data2) {
+                    for (var i = data2.length - 1; i >= 0; i--){
+                        if (recResult.indexOf(data2[i])<0){
+                            data2[i].seed = genreText
+                            data2[i].seedType = "genre"
+                            recResult.push(data2[i])
+                        }
+                    }
+                        resolve(data2)
+                    }).catch(function (error) {//加上catch
+                      console.log(error);
+                    })
+            }).catch(function (error) {//加上catch
               console.log(error);
             })
-        }).catch(function (error) {//加上catch 
+        }).catch(function (error) {//加上catch
           console.log(error);
         })
     })
 
-    Promise.all([artistReq, trackReq, genreReq]).then(function(dataList) {
+    Promise.all([artistReq, trackReq,genreReq]).then(function(dataList) {
         // console.log(dataList)
         for(var data in dataList ){
             for( var item in dataList[data]){
@@ -813,12 +789,14 @@ router.post('/initiate', function(req, res) {
             }
         }
 
+        // console.log(user.id)
+        // console.log(user.user)
         var user = new User({
-            id: userID,
+            id: userid,
             pool:recResult,
             new_pool:[],
             user: {
-                id:userID,
+                id:userid,
                 preferenceData: {
                     artist: artists,
                     track: tracks,
@@ -834,8 +812,6 @@ router.post('/initiate', function(req, res) {
             logger:{},
         });
 
-        // console.log(user.id)
-        // console.log(user.user)
         res.json(user)
 
         //save a new user
@@ -864,21 +840,6 @@ router.get('/',
         // function will not be called.
     });
 
-// router.get('/turk',function (req,res) {
-//     res.cookie('platform', "turk", {
-//         maxAge: 7200000
-//     });
-//     res.redirect("/")
-//     res.end()
-// })
-//
-// router.get('/prolific',function (req,res) {
-//     res.cookie('platform', "prolific", {
-//         maxAge: 7200000
-//     });
-//     res.redirect("/")
-//     res.end()
-// })
 
 // GET /auth/spotify/callback
 //   Use passport.authenticate() as route middleware to authenticate the
@@ -890,19 +851,23 @@ router.get('/callback',
         failureRedirect: '/'
     }),
     function(req, res) {
-        res.cookie('spotify-token', req.authInfo.accessToken, {
-            maxAge: 7200000
-        });
+        // res.cookie('spotify-token', req.authInfo.accessToken, {
+        //     maxAge: 7200000
+        // });
+        //
+        // res.cookie('refresh-token', req.authInfo.refreshToken, {
+        //     maxAge: 7200000
+        // });
+        //
+        // res.cookie('user-id', req.user.id, {
+        //     maxAge: 7200000
+        // });
+        var accessToken = req.authInfo.accessToken
+        var refreshToken = req.authInfo.refreshToken
+        var userID = req.user.id
 
-        res.cookie('refresh-token', req.authInfo.refreshToken, {
-            maxAge: 7200000
-        });
 
-        res.cookie('user-id', req.user.id, {
-            maxAge: 7200000
-        });
-
-        res.redirect('/intro-en');
+        res.redirect('/intro-en?token='+accessToken+"&refreshToken="+refreshToken+"&userID="+userID);
 
     });
 
@@ -924,189 +889,18 @@ router.get('/refresh-token', function(req, res) {
         if (error) {
             console.log("error: ",error)
         }
+        console.log(body)
         var access_token = body.access_token;
-        res.json({"access_token":access_token})
+        var refresh_token = body.refresh_token;
+        var expires_in = body.expires_in
+        res.json({
+            "access_token":access_token,
+            "refresh_token":refresh_token,
+            "expires_in":expires_in
+        })
         
     });
 });
 
-// setInterval(function(){
-//     // requesting access token from refresh token
-//     var refresh_token = req.query.refresh_token;
-//     var authOptions = {
-//         url: 'https://accounts.spotify.com/api/token',
-//         headers: { 'Authorization': 'Basic ' + (new Buffer(appKey + ':' + appSecret).toString('base64')) },
-//         form: {
-//             grant_type: 'refresh_token',
-//             refresh_token: refresh_token
-//         },
-//         json: true
-//     };
-
-//     request.post(authOptions, function(error, response, body) {
-//         if (error) {
-//             console.log("error: ",error)
-//         }else{
-//             console.log("token: ",body)
-//             var access_token = body.access_token;
-//             console.log({
-//                 'access_token': access_token,
-//             })
-//         }
-//     });
-// },3600*10)
-
-
-//-------------------------------system critiquing--------------------------------//
-
-// const fs = require('fs');
-// const csv = require('csv-parser');
-const sysCritique = require('./systemProposedCritiques.js');
-const _ = require('lodash');
-
-class UserData {
-    constructor(id, preferenceData, preferenceData_max, preferenceData_min, attributeWeight, preferenceData_variance) {
-        this.id = id;
-        this.preferenceData = preferenceData;
-        this.preferenceData_max = preferenceData_max; // for audio features
-        this.preferenceData_min = preferenceData_min; // for audio features
-        this.attributeWeight = attributeWeight;
-        this.preferenceData_variance = preferenceData_variance;
-    }
-};
-
-// Item attributes 
-let numericalAttributes = ['popularity', 'danceability', 'energy', 'speechiness', 'tempo', 'valence'];
-let nominalAttributes = ['artist', 'genre', 'language'];
-// let attributes = numericalAttributes.concat(nominalAttributes);
-
-
-// User Data
-// Get user id and corresponding data, including preference data and attribute weight for each attribute of item
-// if user is new user, we set default preference / weight for he/her.
-
-// let userId = '5';
-// let defaultWeight = 1 / (numericalAttributes.length + nominalAttributes.length);
-
-// let default_varience = 0.1;
-
-
-// let preferenceData_variance = {
-//     'popularity': 3,
-//     'danceability': default_varience,
-//     'energy': default_varience,
-//     'speechiness': default_varience,
-//     'tempo': default_varience,
-//     'liveness': default_varience,
-//     'valence': default_varience
-// };
-
-var generateCritiquing = function(data) {
-    var user = data.user
-    var playlist = data.playlist
-
-    let preferenceData = {
-        'artist': user.preferenceData.artist,
-        'genre': user.preferenceData.genre,
-        'language': user.preferenceData.language,
-        'popularity': user.preferenceData.popularity,
-        'danceability': user.preferenceData.danceability,
-        'energy': user.preferenceData.energy,
-        'speechiness': user.preferenceData.speechiness,
-        'tempo': user.preferenceData.tempo,
-        'valence':  user.preferenceData.valence
-    };
-
-    var totalWeight = user.attributeWeight.artistWeight+user.attributeWeight.genreWeight+user.attributeWeight.languageWeight+
-    user.attributeWeight.popularityWeight+user.attributeWeight.danceabilityWeight+user.attributeWeight.energyWeight+user.attributeWeight.speechinessWeight+
-    user.attributeWeight.tempoWeight+user.attributeWeight.valenceWeight;
-    if(totalWeight==0)
-        totalWeight=1
-    let attributeWeight = {
-        'artist': user.attributeWeight.artistWeight/totalWeight,
-        'genre': user.attributeWeight.genreWeight/totalWeight,
-        'language': user.attributeWeight.languageWeight/totalWeight,
-        'popularity': user.attributeWeight.popularityWeight/totalWeight,
-        'danceability': user.attributeWeight.danceabilityWeight/totalWeight,
-        'energy': user.attributeWeight.energyWeight/totalWeight,
-        'speechiness': user.attributeWeight.speechinessWeight/totalWeight,
-        'tempo': user.attributeWeight.tempoWeight/totalWeight,
-        'valence': user.attributeWeight.valenceWeight/totalWeight
-    };
-
-    let preferenceData_max = { 'popularity': 100, 'danceability': user.preferenceData.danceabilityRange[1], 'energy':user.preferenceData.energyRange[1], 'speechiness':user.preferenceData.speechinessRange[1], 
-'tempo':user.preferenceData.tempoRange[1], 'valence':user.preferenceData.valenceRange[1]};
-    let preferenceData_min = { 'popularity': 0, 'danceability': user.preferenceData.danceabilityRange[0], 'energy':user.preferenceData.energyRange[0], 'speechiness':user.preferenceData.speechinessRange[0], 
-'tempo':user.preferenceData.tempoRange[0], 'valence':user.preferenceData.valenceRange[0]};
-
-//     let preferenceData_max = { 'popularity': 100, 'danceability': user.preferenceData.danceability+user.preferenceData_variance.danceability, 'energy':user.preferenceData.energy+user.preferenceData_variance.energy, 'speechiness':user.preferenceData.speechiness+user.preferenceData_variance.speechiness, 
-// 'tempo':user.preferenceData.tempo+user.preferenceData_variance.tempo, 'valence':user.preferenceData_variance.valence+user.preferenceData_variance.valence};
-//     let preferenceData_min = { 'popularity': 0, 'danceability': user.preferenceData.danceability-user.preferenceData_variance.danceability, 'energy':user.preferenceData.energy-user.preferenceData_variance.energy, 'speechiness':user.preferenceData.speechiness-user.preferenceData_variance.speechiness, 
-// 'tempo':user.preferenceData.tempo-user.preferenceData_variance.tempo, 'valence':user.preferenceData_variance.valence-user.preferenceData_variance.valence};
-    let userdata = new UserData(user.id, preferenceData, preferenceData_max, preferenceData_min, attributeWeight, user.preferenceData_variance);
-
-    console.log("------------------------------------------------");
-    console.log("Total Item Data: " + playlist.length + " records");
-    console.log("Read Music Data Finished!");
-    console.log("------------------------------------------------");
-
-    // Step 1: Find a top recommended item using Spotify API
-    // Suppose top recommended item 
-    let topRecItem = data.topRecommendedSong
-
-
-    // Step 2: Produce critiques using Apriori algorithm and select the most favorite critique with higher tradeoff utility
-
-    start = new Date().getTime();
-    // control parameter
-    let numfCompoundCritiques = [2, 3];
-    let supportValue = 0.1;
-    // let numOfUtilityCritiques = 3;
-    let numOfDiversifiedCritiques = 10; // the number of items that satisfy favorite critique and that will be presented
-    // let numOfReturnCritiques = 10;
-    // user.preferenceData_variance = preferenceData_variance
-    // get favor critique and diversified critique 
-    let systemCritiquing = sysCritique(userdata, playlist, topRecItem, nominalAttributes, numericalAttributes, numfCompoundCritiques,
-        supportValue, numOfDiversifiedCritiques);
-
-    end = new Date().getTime();
-    console.log("------------------------------------------------");
-    console.log('-----Execution time: ' + (end - start) + 'ms.');
-    console.log("------------------------------------------------");
-
-    console.log("diversify critique: ");
-    console.log(systemCritiquing.diversifyCritique);
-
-
-    return systemCritiquing;
-}
-
-router.post("/generateCritiquing", function(req, res) {
-
-    if (req.query.id) {
-        // User.findOne({'id': req.query.id}, function (err, user) {
-        //     if (err)
-        //         res.json(err);
-
-        //     user.attributeWeight.artistWeight = req.body.user.attributeWeight.artistWeight
-        //     user.attributeWeight.genreWeight = req.body.user.attributeWeight.genreWeight
-        //     user.attributeWeight.languageWeight = req.body.user.attributeWeight.languageWeight
-        //     user.attributeWeight.popularityWeight = req.body.user.attributeWeight.popularityWeight
-        //     user.attributeWeight.danceabilityWeight = req.body.user.attributeWeight.danceabilityWeight
-        //     user.attributeWeight.energyWeight = req.body.user.attributeWeight.energyWeight
-        //     user.attributeWeight.speechinessWeight = req.body.user.attributeWeight.speechinessWeight
-        //     user.attributeWeight.valenceWeight = req.body.user.attributeWeight.valenceWeight
-        //     user.attributeWeight.tempoWeight = req.body.user.attributeWeight.tempoWeight
-
-        //     user.save(function (err) {
-        //         if (err)
-        //             res.send(err);
-        //         console.log(user.id + "'s profile is updated")
-        //     })
-        // });
-        var critique = generateCritiquing(req.body)
-        res.json(critique)
-    }
-});
 
 module.exports = router;

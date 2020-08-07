@@ -60,7 +60,7 @@ html
             form .likert:before {
                 content: '';
                 position: relative;
-                top: 30px;
+                top: 22px;
                 display: block;
                 background-color: #efefef;
                 height: 4px;
@@ -1218,12 +1218,11 @@ html
                 } else {
 
 
-                    var log = {}
-                    log.que3 = formList
-                    log.bonustimestamp = new Date()
-                    log.id = JSON.parse(window.localStorage.getItem("log")).id
-
-                    console.log(log)
+                    var log = {
+                        id: window.localStorage.getItem("userid"),
+                        que3:formList,
+                        bonusTimestamp: new Date()
+                    }
 
                     $.ajax({
                         url: '/updateRecord',
@@ -1231,7 +1230,8 @@ html
                         contentType: 'application/json',
                         data: JSON.stringify(log),
                         dataType: 'json',
-                        success: function () {
+                        success: function (data) {
+                            console.log(data)
                             window.location.href = "/success2"
                         },
                         error: function (err) {
