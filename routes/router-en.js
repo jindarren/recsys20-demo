@@ -37,8 +37,8 @@ passport.deserializeUser(function(obj, done) {
 passport.use(new SpotifyStrategy({
         clientID: appKey,
         clientSecret: appSecret,
-        callbackURL: 'http://music-bot.top:3000/callback'
-        // callbackURL: 'http://localhost:3000/callback'
+        //callbackURL: 'http://music-bot.top:3000/callback'
+        callbackURL: 'http://localhost:3000/callback'
     },
     function(accessToken, refreshToken, profile, done) {
         // asynchronous verification, for effect...
@@ -71,16 +71,37 @@ router.post("/addRecord", function(req, res) {
 });
 
 router.get("/findRecord", function(req, res) {
-
-    
     var id = req.query.id
-
     User.find({id: id},function (err, data) {
         res.json(data)
     })
-    
-
 });
+
+router.get("/removeRecord", function(req, res) {
+    var id = req.query.id
+    User.remove({id: id},function (e) {
+        if (e) {
+            res.send(e)
+        } else {
+            res.json({status:"removed"})
+        }
+    })
+});
+
+router.post("/addError", function(req, res){
+  var date = new Date();
+  var fs = require('fs');
+  var stream = fs.createWriteStream('error.txt', {
+  	  flags: 'a',
+	  encoding: 'utf8',
+  });
+  stream.once('open', function(fd) {
+    stream.write(JSON.stringify(req.body)+",");
+    stream.end();
+  });
+  res.json(204);
+});
+
 
 router.post("/updateRecord", function(req, res) {
     var updatedData = {}
