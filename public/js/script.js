@@ -1460,6 +1460,8 @@ $(document).ready(function () {
                         if (!playSuccess)
                         {
                             playSuccess = true
+                            $("input#message").attr("disabled", false)
+                            $("input#message").attr("placeholder", "")
                             speakandsing(robot, "Em..., I have no more songs for you, but you can try this song :)", "Coherence")
                         }
 
