@@ -101,10 +101,10 @@ html
         p It seems that you have participated our study.
         p According to our experimental design, you are only allowed to test our system for one time.
         p Sorry~ Thank you for your understanding.
-        p But if you did not finish your previous study and want to start over. You can click the button below to log into the system again.
+        p But if you have a technical problem in finishing your study and want to start over. You can click the button below to log into the system again.
+        p(style="color:red") Note please do not log into the system if you successfully finished the study. The repeated work will NOT be paid!
         .row.justify-content-center
             button.btn-primary Login
-
 
         div(style='width:20%;height:auto')
             img(src="img/thanks.gif")
@@ -135,9 +135,13 @@ html
 
             $(".btn-primary").on("click", function () {
                 var userid = window.localStorage.getItem("userid")
-                $.get("/removeRecord?id="+userid,function () {
-                    window.location.href="/consent?prolific"
-                })
+                if(!window.localStorage.getItem("log")&&!window.localStorage.getItem("que2")){
+                    $.get("/removeRecord?id=" + userid, function () {
+                        window.location.href = "/consent?prolific"
+                    })
+                }else{
+                    alert("Sorry, you are not allowed to log into the system again, because we have find your record in our database.")
+                }
             })
 
 

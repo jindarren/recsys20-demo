@@ -62,10 +62,18 @@ router.post("/addRecord", function(req, res) {
 
     //save a new user
     user.save(function(err) {
-        if (err)
+        if (err){
+            console.log({
+                action:"addRecord",
+                userid: user.id,
+                err: err
+            })
             res.send(err)
-        else
+        }
+        else{
             res.json({status:"success"})
+        }
+
     })
 
 });
@@ -79,9 +87,14 @@ router.get("/findRecord", function(req, res) {
 
 router.get("/removeRecord", function(req, res) {
     var id = req.query.id
-    User.remove({id: id},function (e) {
-        if (e) {
-            res.send(e)
+    User.remove({id: id},function (err) {
+        if (err) {
+            console.log({
+                action:"removeRecord",
+                userid: id,
+                err: err
+            })
+            res.send(err)
         } else {
             res.json({status:"removed"})
         }
@@ -154,8 +167,15 @@ router.post("/updateRecord", function(req, res) {
         updatedData.completionCode = completionCode
 
     User.updateOne({id:updatedID},{$set:updatedData},function(err){
-        if (err)
+        if (err){
+            console.log({
+                action:"updateRecord",
+                userid: updatedID,
+                data: updatedData,
+                err: err
+            })
             res.send(err)
+        }
         else
             res.json({status:"success"})
     })
