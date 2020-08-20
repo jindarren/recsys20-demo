@@ -312,8 +312,48 @@ $("#next4").on("click", function(){
 		if(storage.selectedGenres.split(",").length==0)
 			alert("Please select at least one music genre you like.")
 		else{
-			$("#part4").hide()
-			$("#part5").show()
+			var profile = {};
+			profile.selectedGenres = storage.selectedGenres
+			profile.selectedTracks = storage.selectedTracks
+			profile.selectedTrackNames = storage.selectedTrackNames
+			profile.selectedArtists = storage.selectedArtists
+			profile.selectedArtistNames = storage.selectedArtistNames
+
+			var log = {
+				id: window.localStorage.getItem("userid"),
+				platform: window.localStorage.getItem("platform"),
+				setting: window.localStorage.getItem("setting"),
+				startTimestamp: new Date()
+				// logger: {},
+				// pool: [],
+				// que1: [],
+				// que2: [],
+				// que3: [],
+				// topRecommendedSong: {},
+				// user: {},
+				// completionCode: "",
+				// que1Timestamp: null,
+				// taskStartTimestamp:null,
+				// taskEndTimestamp:null,
+				// endTimestamp: null,
+				// codeTimestamp: null,
+				// bonusTimestamp: null,
+			}
+
+			$.ajax({
+				url: '/addRecord',
+				type: 'POST',
+				contentType: 'application/json',
+				data: JSON.stringify(log),
+				dataType: 'json',
+				success: function (data) {
+					console.log(data)
+					window.location.href = '/que1';
+				},
+				error: function (err) {
+					console.log(err)
+				}
+			});
 		}
 	}
 })
@@ -324,112 +364,3 @@ $("#next4-back").on("click", function(){
 })
 
 
-$("#next5").on("click", function(){
-
-	var dance = $("input[name=danceOption]:checked").val();
-	var speech = $("input[name=speechOption]:checked").val();
-	var tempo = $("input[name=tempoOption]:checked").val();
-	var energy = $("input[name=energyOption]:checked").val();
-	var valence = $("input[name=valenceOption]:checked").val();
-
-	var danceRange, tempoRange, valenceRange, energyRange, speechRange;
-
-	if(dance=="low")
-		danceRange = [0,0.4,"low"]
-	else if(dance=="medium")
-		danceRange = [0.4,0.8,"middle"]
-	else if(dance=="high")
-		danceRange = [0.8,1,"high"]
-
-	if(tempo=="low")
-		tempoRange = [0,70,"low"]
-	else if(tempo=="medium")
-		tempoRange = [70,140,"middle"]
-	else if(tempo=="high")
-		tempoRange = [140,250,"high"]
-
-	if(valence=="low")
-		valenceRange = [0,0.3,"low"]
-	else if(valence=="medium")
-		valenceRange = [0.3,0.7,"middle"]
-	else if(valence=="high")
-		valenceRange = [0.7,1,"high"]
-
-	if(energy=="low")
-		energyRange = [0,0.4,"low"]
-	else if(energy=="medium")
-		energyRange = [0.4,0.8,"middle"]
-	else if(energy=="high")
-		energyRange = [0.8,1,"high"]
-
-	if(speech=="low")
-		speechRange = [0,0.02,"low"]
-	else if(speech=="medium")
-		speechRange = [0.02,0.1,"middle"]
-	else if(speech=="high")
-		speechRange = [0.1,1,"high"]
-
-	selectedFeatures.dance = danceRange
-	selectedFeatures.speech = speechRange
-	selectedFeatures.tempo = tempoRange
-	selectedFeatures.energy = energyRange
-	selectedFeatures.valence = valenceRange
-	storage.selectedFeatures = JSON.stringify(selectedFeatures)
-
-	if(selectedFeatures.dance==undefined||selectedFeatures.speech==undefined||selectedFeatures.tempo==undefined||selectedFeatures.energy==undefined||selectedFeatures.valence==undefined)
-		alert("Please indicate your preference to musical audio features.")
-	else{
-		var profile = {};
-		profile.selectedGenres = storage.selectedGenres
-		profile.selectedTracks = storage.selectedTracks
-		profile.selectedTrackNames = storage.selectedTrackNames
-		profile.selectedArtists = storage.selectedArtists
-		profile.selectedArtistNames = storage.selectedArtistNames
-
-		profile.selectedFeatures = storage.selectedFeatures
-
-		storage.profile = JSON.stringify(profile)
-
-		var log = {
-			id: window.localStorage.getItem("userid"),
-			platform: window.localStorage.getItem("platform"),
-			setting: window.localStorage.getItem("setting"),
-			startTimestamp: new Date()
-			// logger: {},
-			// pool: [],
-			// que1: [],
-			// que2: [],
-			// que3: [],
-			// topRecommendedSong: {},
-			// user: {},
-			// completionCode: "",
-			// que1Timestamp: null,
-			// taskStartTimestamp:null,
-			// taskEndTimestamp:null,
-			// endTimestamp: null,
-			// codeTimestamp: null,
-			// bonusTimestamp: null,
-		}
-
-		$.ajax({
-			url: '/addRecord',
-			type: 'POST',
-			contentType: 'application/json',
-			data: JSON.stringify(log),
-			dataType: 'json',
-			success: function (data) {
-				console.log(data)
-				window.location.href = '/que1';
-			},
-			error: function (err) {
-				console.log(err)
-			}
-		});
-
-	}
-})
-
-$("#next5-back").on("click", function(){
-	$("#part5").hide()
-	$("#part4").show()
-})

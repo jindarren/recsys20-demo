@@ -67,88 +67,8 @@ html
       hr
       .row.justify-content-center
         button#next4-back.btn.btn-primary Back
-        button#next4.btn.btn-primary Next
+        button#next4.btn.btn-primary Submit
 
-    #part5.container-fluid
-      .row.justify-content-around
-        .genre
-          h5(style="text-align:center") Indicate your music preference by audio features
-          .row.justify-content-around
-            .col-md-10.push-col-md-1
-              p
-                b Danceability:
-                | It describes how suitable a track is for dancing based on a combination of musical elements including tempo, rhythm stability, beat strength, and overall regularity.
-              #danceability.row.justify-content-around.features
-                span.form-check.form-check-inline
-                  input#inlineRadio1.form-check-input.feature-selection(type='radio', name='danceOption', value='low')
-                  label.form-check-label(for='inlineRadio1') Low
-                span.form-check.form-check-inline
-                  input#inlineRadio2.form-check-input.feature-selection(type='radio', name='danceOption', value='medium')
-                  label.form-check-label(for='inlineRadio2') Medium
-                span.form-check.form-check-inline
-                  input#inlineRadio3.form-check-input.feature-selection(type='radio', name='danceOption', value='high')
-                  label.form-check-label(for='inlineRadio3') High
-              .row.justify-content-center.danceability-example.example
-              p
-                b Speechiness:
-                | It detects the presence of spoken words in a track.
-              #speechiness.row.justify-content-around.features
-                span.form-check.form-check-inline
-                  input#inlineRadio4.form-check-input.feature-selection(type='radio', name='speechOption', value='low')
-                  label.form-check-label(for='inlineRadio4') Low
-                span.form-check.form-check-inline
-                  input#inlineRadio5.form-check-input.feature-selection(type='radio', name='speechOption', value='medium')
-                  label.form-check-label(for='inlineRadio5') Medium
-                span.form-check.form-check-inline
-                  input#inlineRadio6.form-check-input.feature-selection(type='radio', name='speechOption', value='high')
-                  label.form-check-label(for='inlineRadio6') High
-              .row.justify-content-center.speechiness-example.example
-              p
-                b Energy:
-                | It represents a perceptual measure of intensity and activity. Typically, energetic tracks feel fast, loud, and noisy. For example, death metal has high energy, while a Bach prelude scores low on the scale.
-              #energy.row.justify-content-around.features
-                span.form-check.form-check-inline
-                  input#inlineRadio7.form-check-input.feature-selection(type='radio', name='energyOption', value='low')
-                  label.form-check-label(for='inlineRadio7') Low
-                span.form-check.form-check-inline
-                  input#inlineRadio8.form-check-input.feature-selection(type='radio', name='energyOption', value='medium')
-                  label.form-check-label(for='inlineRadio8') Medium
-                span.form-check.form-check-inline
-                  input#inlineRadio9.form-check-input.feature-selection(type='radio', name='energyOption', value='high')
-                  label.form-check-label(for='inlineRadio9') High
-              .row.justify-content-center.energy-example.example
-              p
-                b Valence:
-                | It describes the musical positiveness conveyed by a track. Tracks with high valence sound more positive (e.g. happy, cheerful, euphoric), while tracks with low valence sound more negative (e.g. sad, depressed, angry).
-              #valence.row.justify-content-around.features
-                span.form-check.form-check-inline
-                  input#inlineRadio10.form-check-input.feature-selection(type='radio', name='valenceOption', value='low')
-                  label.form-check-label(for='inlineRadio10') Low
-                span.form-check.form-check-inline
-                  input#inlineRadio11.form-check-input.feature-selection(type='radio', name='valenceOption', value='medium')
-                  label.form-check-label(for='inlineRadio11') Medium
-                span.form-check.form-check-inline
-                  input#inlineRadio12.form-check-input.feature-selection(type='radio', name='valenceOption', value='high')
-                  label.form-check-label(for='inlineRadio12') High
-              .row.justify-content-center.valence-example.example
-              p
-                b Tempo:
-                | It is the speed or pace of a given piece and derives directly from the average beat duration.
-              #tempo.row.justify-content-around.features
-                span.form-check.form-check-inline
-                  input#inlineRadio13.form-check-input.feature-selection(type='radio', name='tempoOption', value='low')
-                  label.form-check-label(for='inlineRadio1') Low
-                span.form-check.form-check-inline
-                  input#inlineRadio14.form-check-input.feature-selection(type='radio', name='tempoOption', value='medium')
-                  label.form-check-label(for='inlineRadio2') Medium
-                span.form-check.form-check-inline
-                  input#inlineRadio15.form-check-input.feature-selection(type='radio', name='tempoOption', value='high')
-                  label.form-check-label(for='inlineRadio3') High
-              .row.justify-content-center.tempo-example.example
-      hr
-      .row.justify-content-center
-        button#next5-back.btn.btn-primary(type='button') Back
-        button#next5.btn.btn-primary(type='button') Submit
     link(href='../bootstrap/dist/css/bootstrap.min.css', rel='stylesheet')
     link(href='../jquery-ui/themes/base/jquery-ui.min.css', rel='stylesheet')
     script(src = "../jquery/dist/jquery.min.js", charset = 'utf-8')
