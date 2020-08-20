@@ -31,10 +31,11 @@ class InitializeUserModel(Resource):
         json_data = request.get_json(force=True)
         user_profile = json_data['user_profile']
         user_historical_record = user_profile['user']['preferenceData']['track']
-
+        user_selected_artists = user_profile['user']['preferenceData']['artist']
+        user_selected_genres = user_profile['user']['preferenceData']['genre']
         # initialize the user preference model ** using users' listened history **
         # preference model consists of two parts: attribute frequency and preference value for each attribute
-        user_preference_model = user_modeling.initialize_user_preference_model(user_historical_record, categorical_attributes, numerical_attributes)
+        user_preference_model = user_modeling.initialize_user_preference_model(user_historical_record, user_selected_artists, user_selected_genres, categorical_attributes, numerical_attributes)
         user_profile['user']['user_preference_model'] = user_preference_model
 
         time_helper.print_current_time()

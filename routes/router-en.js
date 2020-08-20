@@ -38,7 +38,7 @@ passport.use(new SpotifyStrategy({
         clientID: appKey,
         clientSecret: appSecret,
         callbackURL: 'http://music-bot.top:3000/callback'
-        //callbackURL: 'http://localhost:3000/callback'
+        // callbackURL: 'http://localhost:3000/callback'
     },
     function(accessToken, refreshToken, profile, done) {
         // asynchronous verification, for effect...
@@ -134,6 +134,7 @@ router.post("/updateRecord", function(req, res) {
     var topRecommendedSong = req.body.topRecommendedSong
     var user = req.body.user
     var completionCode = req.body.completionCode
+    var buildProfile = req.body.buildProfile
 
     if(que1List)
         updatedData.que1 = que1List
@@ -165,7 +166,9 @@ router.post("/updateRecord", function(req, res) {
         updatedData.user = user
     if(completionCode)
         updatedData.completionCode = completionCode
-
+    if(buildProfile)
+        updatedData.buildProfile = buildProfile
+        
     User.updateOne({id:updatedID},{$set:updatedData},function(err){
         if (err){
             console.log({
@@ -735,7 +738,8 @@ router.post('/initiatewithprofile', function(req, res) {
     var artistNames = [];
     var artists = req.body.artists;
     var genres = req.body.genres;
-    var tracks = req.body.tracks.tracks;
+    var tracks = req.body.tracks;
+    var selectedTrackData = req.body.selectedTrackData
     var trackNames = [];
 
     var artistReq = new Promise((resolve, reject) => {
@@ -776,8 +780,13 @@ router.post('/initiatewithprofile', function(req, res) {
 
         var requestedTracks = []
         for (var i = 0; i<5; i++){
-            trackNames.push(tracks[i].name)
+            // trackNames.push(tracks[i].name)
             requestedTracks.push(tracks[i].id)
+        }
+
+        for (var i = 0; i<selectedTrackData.length; i++){
+            // trackNames.push(tracks[i].name)
+            trackNames.push(selectedTrackData[i].name)
         }
 
         recom(token).getRecommendationByTrack(requestedTracks.toString()).then(function(data) {

@@ -16,7 +16,7 @@ var genreMapList = {
     "chill": "chillout music",
     "classical": "classical music",
     "club": "club music",
-    "comedy": "comedy music",
+    "comedy": "comedy",
     "country": "country music",
     "dance": "dance music",
     "dancehall": "dancehall",

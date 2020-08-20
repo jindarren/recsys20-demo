@@ -175,7 +175,7 @@ var recommender = function (token) {
 
         getRecommendationByTrack: function (seeds) {
             return spotifyApi.getRecommendations({
-                limit: 20,
+                limit: 50,
                 seed_tracks: seeds,
             }).then(function (data) {
                 return data.body.tracks

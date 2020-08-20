@@ -156,10 +156,13 @@ var searchTracks = function(){
 var initialRecommendedSongs = function(songids){
 	$.get("/getRecomByTracks?token="+spotifyToken+"&trackSeeds="+songids.toString(),function(data){
 		//combine selected and generated top 20 songs
-		for(var item in selectedTrackData){
-			data.tracks[19-item]=selectedTrackData[item]
-		}
-		var initialRecom = JSON.stringify(data)
+		initialRecomData = selectedTrackData.concat(data.tracks)
+		initialRecomData = initialRecomData.slice(0, 20)
+
+		// for(var item in selectedTrackData){
+		// 	data.tracks[19-item]=selectedTrackData[item]
+		// }
+		var initialRecom = JSON.stringify(initialRecomData)
 		storage.setItem("initialRecom",initialRecom)
 	})
 }
@@ -343,7 +346,7 @@ $("#next4").on("click", function(){
 				dataType: 'json',
 				success: function (data) {
 					console.log(data)
-					window.location.href = '/que1';
+					window.location.href = '/intro-en';
 				},
 				error: function (err) {
 					console.log(err)

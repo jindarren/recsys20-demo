@@ -51,7 +51,7 @@ html
 
             h5 Tasks:
             p Please use our MusicBot to discover songs in different music types as much as possible and&nbsp;
-                b find 5 songs that are novel and pleasant surprise to you.&nbsp;
+                b find 5 songs that are novel and pleasantly surprising to you.&nbsp;
                 | The initial recommendations may not fit your taste, you need to tune recommendations by chatting with the bot. All music information used in this experiment was from Spotify.
 
             h5 Duration:
@@ -67,8 +67,9 @@ html
                         | to tell bot what kind of music you are looking for (Some examples of tuning recommendations are shown on the right side panel).
                     li#sc_des Try to consider bot’s suggestions for searching for music, which aims to help you find good music.
             p Step 3: After clicking on the button “Start study”, you will be asked to try to find&nbsp
-                b 5 good songs&nbsp
-                | that fit your taste using the music bot, and rate the liked songs. You can give feedback on recommended music by clicking “(like, next)” when you like or skip the current song.
+                //- b 5 good songs that fit your taste &nbsp
+                b find 5 songs that are novel and pleasantly surprising to you &nbsp
+                | using the music bot, and rate the liked songs. You can give feedback on recommended music by clicking “(like, next)” when you like or skip the current song.
 
             p Step 4: You will give us your overall preference over the used music chatbot. (Lastly, you can also try bonus questionnaire to get 25% more pay!)
 
@@ -90,7 +91,8 @@ html
             hr
             p#success(style="display:none")
                 i.fas.fa-check-circle
-                |  Great! You are a regular Spotify user. Please click the below button to start user study :)
+                //- |  Great! You are a regular Spotify user. Please click the below button to start user study :)
+                |  Great! Please click the below button to start user study :)
             .row.justify-content-center
                 button#next1.btn.disabled Start study
 
@@ -101,13 +103,14 @@ html
         script(src = "js/popper.min.js", charset = 'utf-8')
         script(src = "../bootstrap/dist/js/bootstrap.min.js")
         script.
-            var spotifyToken = "#{token}"
-            var refreshToken = "#{refreshToken}"
-            var userid = "#{userID}"
-            window.localStorage.setItem("spotifyToken", spotifyToken)
-            window.localStorage.setItem("refreshToken", refreshToken)
-            window.localStorage.setItem("userid", userid)
-
+            if (window.localStorage.getItem("buildProfile")!='true'){
+                var spotifyToken = "#{token}"
+                var refreshToken = "#{refreshToken}"
+                var userid = "#{userID}"
+                window.localStorage.setItem("spotifyToken", spotifyToken)
+                window.localStorage.setItem("refreshToken", refreshToken)
+                window.localStorage.setItem("userid", userid)
+            }
             //if the user has sufficient artists and tracks
             var randomSetting = Math.floor(Math.random() * 3)
             //- var randomSetting = 2 // diveristy
@@ -163,8 +166,10 @@ html
             var test_id_list = ["zogxvf222xk1geyxpl21b3a1f", "zcm6se5ml2rhoi6oun8qmj1od"]
 
             $.get("/findRecord?id="+userid,function (data) {
-
-                if(data.length==0 ||  test_id_list.indexOf(userid)>=0){
+                if (test_id_list.indexOf(userid)>=0 && window.localStorage.getItem("buildProfile")!='true'){
+                    window.location.href = "/failure2"
+                }
+                else if(data.length==0 || window.localStorage.getItem("buildProfile")=='true'){
 
                     //check if the user is qualified in terms of his/er profile
 
@@ -191,8 +196,15 @@ html
                                         break;
                                         
                                 }
+                                var spotify_data_sufficiency = false;
+                                if (genres_exist && d.items.length >= 5 && data2.items.length >= 20){
+                                    spotify_data_sufficiency = true
+                                    if (window.localStorage.getItem("buildProfile")!='true'){
+                                        window.localStorage.setItem("buildProfile", 'false')
+                                    }
+                                }
 
-                                if (genres_exist && d.items.length >= 5 && data2.items.length >= 20) {
+                                if (spotify_data_sufficiency || window.localStorage.getItem("buildProfile")=='true') {
                                     $("#success").show()
                                     $("#next1").removeClass("disabled")
                                     $("#next1").addClass("btn-primary")

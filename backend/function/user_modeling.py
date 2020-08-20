@@ -21,7 +21,7 @@ def numerical_attribute_preference(user_historical_attr_df,attribute):
     return user_historical_attr_bins.value_counts().to_dict()
 
 
-def initialize_user_preference_value(user_historical_record, categorical_attributes, numerical_attributes):
+def initialize_user_preference_value(user_historical_record, user_selected_artists, user_selected_genres, categorical_attributes, numerical_attributes):
     # print(user_historical_record)
     user_historical_record_dict = {}
     user_preference_value_dict = {}
@@ -37,6 +37,26 @@ def initialize_user_preference_value(user_historical_record, categorical_attribu
         user_historical_attr_df = user_historical_record_df[attr]
         user_preference_value_dict[attr] = numerical_attribute_preference(user_historical_attr_df, attr)
     
+    for each in user_selected_artists:
+        attr = 'artist'
+        item_v = each['name']
+        if item_v in user_preference_value_dict[attr].keys():
+            user_preference_value_dict[attr][item_v] = user_preference_value_dict[attr][item_v] + 1
+        else:
+            user_preference_value_attr_dict = user_preference_value_dict[attr]
+            user_preference_value_attr_dict[item_v] = 1 
+            user_preference_value_dict[attr] = copy.deepcopy(user_preference_value_attr_dict)
+            
+    for each in user_selected_genres:    
+        attr = 'genre'
+        item_v = each
+        if item_v in user_preference_value_dict[attr].keys():
+            user_preference_value_dict[attr][item_v] = user_preference_value_dict[attr][item_v] + 1
+        else:
+            user_preference_value_attr_dict = user_preference_value_dict[attr]
+            user_preference_value_attr_dict[item_v] = 1 
+            user_preference_value_dict[attr] = copy.deepcopy(user_preference_value_attr_dict)
+
     # pp.pprint(user_preference_value_dict)
     time_helper.print_current_time()
     print("Initialize User Model ---- Estimate users' preference value for each attribute from users' interaction history.")
@@ -56,9 +76,10 @@ def initialize_user_preference_attribute_frequency(categorical_attributes, numer
 
     return user_preference_attribute_frequency_dict 
 
-def initialize_user_preference_model(user_historical_record, categorical_attributes, numerical_attributes):
+def initialize_user_preference_model(user_historical_record, user_selected_artists, user_selected_genres, categorical_attributes, numerical_attributes):
 
-    user_initial_preference_value =  initialize_user_preference_value(user_historical_record, categorical_attributes, numerical_attributes)
+    user_initial_preference_value =  initialize_user_preference_value(user_historical_record,user_selected_artists, user_selected_genres, categorical_attributes, numerical_attributes)
+
     user_preference_attribute_frequency = initialize_user_preference_attribute_frequency( categorical_attributes, numerical_attributes)
     user_preference_model = {'preference_value':user_initial_preference_value, 'attribute_frequency':user_preference_attribute_frequency}
 

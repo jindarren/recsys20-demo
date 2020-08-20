@@ -33,6 +33,7 @@ if(window.localStorage.getItem("buildProfile")=="true"){
         artists : JSON.parse(window.localStorage.getItem("selectedArtistData")),
         genres : window.localStorage.getItem("selectedGenres").split(","),
         tracks : JSON.parse(window.localStorage.getItem("initialRecom")),
+        selectedTrackData : JSON.parse(window.localStorage.getItem("selectedTrackData")),
     }
     console.log(initiateData)
 
@@ -464,7 +465,8 @@ $(document).ready(function () {
                 $("input#message").attr("disabled", true)
                 $("input#message").attr("placeholder", "Please wait for a moment :)")
 
-                $("#task-description").text("Task: create a playlist that contains 5 good songs.")
+                // $("#task-description").text("Task: create a playlist that contains 5 good songs.")
+                $("#task-description").text("Task: create a playlist that contains 5 songs that are novel and pleasantly surprising to you.")
 
                 clearTimeout(showTry)
                 clearTimeout(showFeedback)
@@ -1132,13 +1134,11 @@ $(document).ready(function () {
                                                     data.user = usermodel.user
                                                     data.topRecommendedSong = topRecommendedSong
 
-                                                    //console.log("上传日志: ", data)
-                                                    window.localStorage.setItem("log",JSON.stringify(data))
 
 
                                                     var log = {
                                                         id: window.localStorage.getItem("userid"),
-                                                        buildProfile:"true",
+                                                        buildProfile: window.localStorage.getItem("buildProfile"),
                                                         logger : logger,
                                                         pool : playlist,
                                                         user : usermodel.user,
@@ -1146,6 +1146,9 @@ $(document).ready(function () {
                                                         taskStartTimestamp : taskStartTimestamp,
                                                         taskEndTimestamp : new Date()
                                                     }
+                                                    //console.log("上传日志: ", data)
+                                                    window.localStorage.setItem("log",JSON.stringify(log))
+
 
                                                     $.ajax({
                                                         url: '/updateRecord',
@@ -1237,6 +1240,8 @@ $(document).ready(function () {
 
                                             })
                                         });
+                                        
+
 
                                         // remove a liked song
                                         $("#" + logger.listenedSongs.slice(-1)[0].id + "> .fa-close").click(function () {
@@ -2043,12 +2048,11 @@ $(document).ready(function () {
                                                     data.user = usermodel.user
                                                     data.topRecommendedSong = topRecommendedSong
 
-                                                    //console.log("上传日志: ", data)
-                                                    window.localStorage.setItem("log",JSON.stringify(data))
+
 
                                                     var log = {
                                                         id: window.localStorage.getItem("userid"),
-                                                        buildProfile:"true",
+                                                        buildProfile: window.localStorage.getItem("buildProfile"),
                                                         logger : logger,
                                                         pool : playlist,
                                                         user : usermodel.user,
@@ -2056,6 +2060,8 @@ $(document).ready(function () {
                                                         taskStartTimestamp : taskStartTimestamp,
                                                         taskEndTimestamp : new Date()
                                                     }
+                                                    //console.log("上传日志: ", data)
+                                                    window.localStorage.setItem("log",JSON.stringify(log))
 
                                                     $.ajax({
                                                         url: '/updateRecord',
