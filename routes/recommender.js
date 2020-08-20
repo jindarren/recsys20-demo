@@ -173,11 +173,10 @@ var recommender = function (token) {
             })
         },
 
-        getRecommendationByTrack: function (seeds,scenario) {
+        getRecommendationByTrack: function (seeds) {
             return spotifyApi.getRecommendations({
-                limit: 50,
+                limit: 20,
                 seed_tracks: seeds,
-                seed_genres: scenario
             }).then(function (data) {
                 return data.body.tracks
             }, function (err) {

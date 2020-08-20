@@ -197,6 +197,10 @@ router.get('/index', function(req, res) {
     res.render('index')
 })
 
+router.get('/profile', function(req, res) {
+    res.render('profile')
+})
+
 router.get('/preference-1', function(req, res) {
     res.render("preference-1")
 });
@@ -435,6 +439,17 @@ router.get('/getRecom', function(req, res) {
         req.query.min_danceability, req.query.max_danceability,
         req.query.min_speechiness, req.query.max_speechiness,
         req.query.min_popularity, req.query.max_popularity).then(function(data) {
+        getAudioFeatures(token, data).then(function(data2) {
+            result.tracks = data2;
+            res.json(result)
+        })
+    })
+})
+
+router.get('/getRecomByTracks', function(req, res) {
+    var result = {}
+    var token = req.query.token
+    recom(token).getRecommendationByTrack(req.query.trackSeeds).then(function(data) {
         getAudioFeatures(token, data).then(function(data2) {
             result.tracks = data2;
             res.json(result)

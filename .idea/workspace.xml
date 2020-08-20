@@ -33,8 +33,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e570dfdc-3b19-4d1b-90a6-cefe1fb88223" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/views/failure.jade" beforeDir="false" afterPath="$PROJECT_DIR$/views/failure.jade" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/failure3.jade" beforeDir="false" afterPath="$PROJECT_DIR$/views/failure3.jade" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/js/profile.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/views/profile.jade" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/error.txt" beforeDir="false" afterPath="$PROJECT_DIR$/error.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/recommender.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/recommender.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/router-en.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/router-en.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/failure2.jade" beforeDir="false" afterPath="$PROJECT_DIR$/views/failure2.jade" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/intro-en.jade" beforeDir="false" afterPath="$PROJECT_DIR$/views/intro-en.jade" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -82,20 +88,20 @@
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
     <property name="js-jscs-nodeInterpreter" value="/usr/local/bin/node" />
     <property name="js.eslint.eslintPackage" value="" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/views" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/public/js" />
     <property name="nodejs.mocha.mocha_node_package_dir" value="$PROJECT_DIR$/node_modules/mocha" />
     <property name="nodejs_interpreter_path" value="/usr/local/bin/node" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Font" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/views" />
-      <recent name="$PROJECT_DIR$/public/js" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/public/img" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/public/js" />
+      <recent name="$PROJECT_DIR$/views" />
     </key>
   </component>
   <component name="RunManager">
@@ -173,7 +179,8 @@
       <workItem from="1596703253804" duration="16450000" />
       <workItem from="1597049942089" duration="21000" />
       <workItem from="1597050977170" duration="171000" />
-      <workItem from="1597054505608" duration="2851000" />
+      <workItem from="1597054505608" duration="3190000" />
+      <workItem from="1597809919765" duration="6098000" />
     </task>
     <task id="LOCAL-00001" summary="test for python API">
       <created>1587472273064</created>
