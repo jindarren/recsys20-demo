@@ -25,20 +25,19 @@ var usermodel = {}
 var initiateLink, initiateData;
 var taskStartTimestamp;
 
-if(window.localStorage.setItem("buildProfile")=="true"){
-    initiateLink = "/initiatewithprofile"
+if(window.localStorage.getItem("buildProfile")=="true"){
+    initiateLink = "/initiatewithprofile";
     initiateData = {
         token:spotifyToken,
         id:userid,
-        artistNames: window.localStorage.getItem("selectedArtistNames").split(","),
-        artists : window.localStorage.getItem("selectedArtists").split(","),
+        artists : JSON.parse(window.localStorage.getItem("selectedArtistData")),
         genres : window.localStorage.getItem("selectedGenres").split(","),
         tracks : JSON.parse(window.localStorage.getItem("initialRecom")),
-        trackNames : window.localStorage.getItem("selectedTrackNames").split(",")
     }
+    console.log(initiateData)
 
 }else{
-    initiateLink = "/initiate"
+    initiateLink = "/initiate";
     initiateData = {
         token:spotifyToken,
         id:userid
@@ -307,7 +306,7 @@ $(document).ready(function () {
         type: "POST",
         contentType: "application/json;charset=utf-8",
         dataType: "json",
-        body:initiateData,
+        data:JSON.stringify(initiateData),
         success: function (data) {
 
             usermodel = data
@@ -529,7 +528,7 @@ $(document).ready(function () {
                     type: "POST",
                     contentType: "application/json;charset=utf-8",
                     dataType: "json",
-                    body: initiateData,
+                    data: JSON.stringify(initiateData),
                     success: function (data2) {
 
                         usermodel = data2

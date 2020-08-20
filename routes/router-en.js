@@ -309,9 +309,13 @@ router.get('/searchTrack', function(req, res) {
 })
 
 router.get('/searchOnlyTrack', function(req, res) {
+    var result = {}
     var token = req.query.token
     recom(token).searchTrack(req.query.q).then(function(data) {
-        res.json(data)
+        getAudioFeatures(token, data.tracks.items).then(function(data2) {
+            result.tracks = data2;
+            res.json(result)
+        })
     })
 })
 
@@ -722,18 +726,25 @@ router.post('/trigger_sys_cri',function (req,res) {
 
 router.post('/initiatewithprofile', function(req, res) {
     //pass token to the webAPI used by recommender
+
     var token = req.body.token;
     var userid = req.body.id;
 
     var recResult = [];
 
-    var artistNames = req.body.artistNames;
-    var requestedArtists = req.body.artists;
+    var artistNames = [];
+    var artists = req.body.artists;
     var genres = req.body.genres;
-    var requestedTracks = req.body.tracks;
-    var trackNames = req.body.trackNames;
+    var tracks = req.body.tracks.tracks;
+    var trackNames = [];
 
     var artistReq = new Promise((resolve, reject) => {
+
+        var requestedArtists = []
+        for (var i in artists){
+            artistNames.push(artists[i].name)
+            requestedArtists.push(artists[i].id)
+        }
 
         recom(token).getRecommendationByArtist(requestedArtists.toString()).then(function(data3) {
             var artistText = ""
@@ -762,6 +773,12 @@ router.post('/initiatewithprofile', function(req, res) {
     })
 
     var trackReq = new Promise((resolve, reject) => {
+
+        var requestedTracks = []
+        for (var i = 0; i<5; i++){
+            trackNames.push(tracks[i].name)
+            requestedTracks.push(tracks[i].id)
+        }
 
         recom(token).getRecommendationByTrack(requestedTracks.toString()).then(function(data) {
             var trackText = ""

@@ -1,7 +1,7 @@
 var selectedArtists = [],
 	selectedTracks = [],
-	selectedArtistNames = [],
-	selectedTrackNames = [],
+	selectedArtistData = [],
+	selectedTrackData = [],
 	selectedGenres = []
 
 var storage=window.localStorage;
@@ -33,20 +33,19 @@ var searchArtists = function (){
 									$(".selected-artists").append('<div class="card" style="width: 18rem;"><img class="card-img-top" src="'+artists[artistIndex].images[0].url+'" alt="" /><div class="card-body" id="'+artists[artistIndex].id+'"><h5 class="card-title">'+artists[artistIndex].name+'</h5><p class="card-text">Genres: '+artists[artistIndex].genres.toString()+'</p><p class="card-text">Popularity: '+artists[artistIndex].popularity+'/100</p><button class="btn btn-danger" type="button">Remove</button></div></div>')
 								else
 									$(".selected-artists").append('<div class="card" style="width: 18rem;"><img class="card-img-top" src="/img/singer.jpeg" alt="" /><div class="card-body" id="'+artists[artistIndex].id+'"><h5 class="card-title">'+artists[artistIndex].name+'</h5><p class="card-text">Genres: '+artists[artistIndex].genres.toString()+'</p><p class="card-text">Popularity: '+artists[artistIndex].popularity+'/100</p><button class="btn btn-danger" type="button">Remove</button></div></div>')
-
+								selectedArtistData.push(artists[artistIndex])
 								selectedArtists.push(artists[artistIndex].id)
-								selectedArtistNames.push(artists[artistIndex].name)
 							}
 
 							$(".selected-artists button").click(function(){
 								$(this).parent().parent().remove()
 								var index = selectedArtists.indexOf($(this).parent().attr("id"))
+								selectedArtistData.splice(index,1)
 								selectedArtists.splice(index,1)
-								selectedArtistNames.splice(index,1)
 							})
 
-							storage.selectedArtists = selectedArtists
-							storage.selectedArtistNames = selectedArtistNames
+							storage.selectedArtistData = JSON.stringify(selectedArtistData)
+							storage.selectedArtists = selectedArtists.toString()
 						}else{
 							alert("You have added the artist "+artists[artistIndex].name+" to the list of your favorite artists.")
 						}
@@ -62,19 +61,18 @@ var searchArtists = function (){
 						alert("Sorry, you are only allowed to add at most three artists.")
 					else{
 						$(".selected-artists").append('<div class="card" style="width: 18rem;"><img class="card-img-top" src="'+artist.images[1].url+'" alt="" /><div class="card-body" id="'+artist.id+'"><h5 class="card-title">'+artist.name+'</h5><p class="card-text">Genres: '+artist.genres.toString()+'</p><p class="card-text">Popularity: '+artist.popularity+'/100</p><button class="btn btn-danger" type="button">Remove</button></div></div>')
+						selectedArtistData.push(artist)
 						selectedArtists.push(artist.id)
-						selectedArtistNames.push(artist.name)
 					}
 
 					$(".selected-artists button").click(function(){
 						$(this).parent().parent().remove()
 						var index = selectedArtists.indexOf($(this).parent().attr("id"))
+						selectedArtistData.splice(index,1)
 						selectedArtists.splice(index,1)
-						selectedArtistNames.splice(index,1)
 					})
-
-					storage.selectedArtists = selectedArtists
-					storage.selectedArtistNames = selectedArtistNames
+					storage.selectedArtistData = JSON.stringify(selectedArtistData)
+					storage.selectedArtists = selectedArtists.toString()
 				}else{
 					alert("You have added the artist "+artist.name+" to the list of your favorite artists.")
 				}
@@ -89,14 +87,14 @@ var searchArtists = function (){
 var searchTracks = function(){
 	var name = $("#track-form").val()
 	$.get("/searchOnlyTrack?token="+spotifyToken+"&q="+name,function(data){
-
-		if(data.tracks.items.length>0){
+		console.log(data)
+		if(data.tracks.length>0){
 			$(".candidate-tracks").empty()
-			var tracks = data.tracks.items.slice(0,10)
+			var tracks = data.tracks.slice(0,10)
 			if(tracks.length>1){
 				$(".candidate-tracks").append("<div class='list-group'></div>")
 				for (var i = 0; i < tracks.length; i++) {
-					$(".list-group").append("<button id='track-"+i+"' type='button' class='list-group-item list-group-item-action'>"+tracks[i].name+" - "+tracks[i].artists[0].name+"</button>")
+					$(".list-group").append("<button id='track-"+i+"' type='button' class='list-group-item list-group-item-action'>"+tracks[i].name+" - "+tracks[i].artist+"</button>")
 					console.log(tracks[i])
 					$("#track-"+i).click(function(){
 						$(".candidate-tracks").empty()
@@ -105,19 +103,19 @@ var searchTracks = function(){
 							if(selectedTracks.length==3)
 								alert("Sorry, you are only allowed to add at most three songs.")
 							else{
-								$(".selected-tracks").append('<div class="card" style="width: 18rem;"><iframe src="https://open.spotify.com/embed/track/' + tracks[trackIndex].id + '" width="100%" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe><div class="card-body"><h5 class="card-title">'+tracks[trackIndex].name+'</h5><p class="card-text">'+tracks[trackIndex].artists[0].name+'</p><p class="card-text">Popularity: '+tracks[trackIndex].popularity+'/100</p><button class="btn btn-danger" type="button">Remove</button></div></div>')
+								$(".selected-tracks").append('<div class="card" style="width: 18rem;"><iframe src="https://open.spotify.com/embed/track/' + tracks[trackIndex].id + '" width="100%" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe><div class="card-body"><h5 class="card-title">'+tracks[trackIndex].name+'</h5><p class="card-text">'+tracks[trackIndex].artist+'</p><p class="card-text">Popularity: '+tracks[trackIndex].popularity+'/100</p><button class="btn btn-danger" type="button">Remove</button></div></div>')
+								selectedTrackData.push(tracks[trackIndex])
 								selectedTracks.push(tracks[trackIndex].id)
-								selectedTrackNames.push(tracks[trackIndex].name)
 							}
 
 							$(".selected-tracks button").click(function(){
 								$(this).parent().parent().remove()
 								var index = selectedTracks.indexOf($(this).parent().attr("id"))
+								selectedTrackData.splice(index,1)
 								selectedTracks.splice(index,1)
-								selectedTrackNames.splice(index,1)
 							})
+							storage.selectedTrackData = JSON.stringify(selectedTrackData)
 							storage.selectedTracks = selectedTracks.toString()
-							storage.selectedTrackNames = selectedTrackNames.toString()
 						}else{
 							alert("You have added the song "+tracks[trackIndex].name+" to the list of your favorite songs.")
 						}
@@ -130,19 +128,19 @@ var searchTracks = function(){
 					if(selectedTracks.length==3)
 						alert("Sorry, you are only allowed to add at most three songs.")
 					else{
-						$(".selected-tracks").append('<div class="card" style="width: 18rem;"><iframe src="https://open.spotify.com/embed/track/' + track.id + '" width="100%" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe><div class="card-body"><h5 class="card-title">'+track.name+'</h5><p class="card-text">'+track.artists[0].name+'</p><p class="card-text">Popularity: '+track.popularity+'/100</p><button class="btn btn-danger" type="button">Remove</button></div></div>')
+						$(".selected-tracks").append('<div class="card" style="width: 18rem;"><iframe src="https://open.spotify.com/embed/track/' + track.id + '" width="100%" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe><div class="card-body"><h5 class="card-title">'+track.name+'</h5><p class="card-text">'+track.artist+'</p><p class="card-text">Popularity: '+track.popularity+'/100</p><button class="btn btn-danger" type="button">Remove</button></div></div>')
+						selectedTrackData.push(track)
 						selectedTracks.push(track.id)
-						selectedTrackNames.push(track.name)
 					}
 
 					$(".selected-tracks button").click(function(){
 						$(this).parent().parent().remove()
 						var index = selectedTracks.indexOf($(this).parent().attr("id"))
+						selectedTrackData.splice(index,1)
 						selectedTracks.splice(index,1)
-						selectedTrackNames.splice(index,1)
 					})
+					storage.selectedTrackData = JSON.stringify(selectedTrackData)
 					storage.selectedTracks = selectedTracks.toString()
-					storage.selectedTrackNames = selectedTrackNames.toString()
 				}else{
 					alert("You have added the song "+track.name+" to the list of your favorite songs.")
 				}
@@ -155,9 +153,12 @@ var searchTracks = function(){
 
 }
 
-
 var initialRecommendedSongs = function(songids){
 	$.get("/getRecomByTracks?token="+spotifyToken+"&trackSeeds="+songids.toString(),function(data){
+		//combine selected and generated top 20 songs
+		for(var item in selectedTrackData){
+			data.tracks[19-item]=selectedTrackData[item]
+		}
 		var initialRecom = JSON.stringify(data)
 		storage.setItem("initialRecom",initialRecom)
 	})
@@ -313,13 +314,6 @@ $("#next4").on("click", function(){
 		if(storage.selectedGenres.split(",").length==0)
 			alert("Please select at least one music genre you like.")
 		else{
-			var profile = {};
-			profile.selectedGenres = storage.selectedGenres
-			profile.selectedTracks = storage.selectedTracks
-			profile.selectedTrackNames = storage.selectedTrackNames
-			profile.selectedArtists = storage.selectedArtists
-			profile.selectedArtistNames = storage.selectedArtistNames
-
 			var log = {
 				id: window.localStorage.getItem("userid"),
 				platform: window.localStorage.getItem("platform"),
