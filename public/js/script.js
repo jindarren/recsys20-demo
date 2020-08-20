@@ -1139,6 +1139,7 @@ $(document).ready(function () {
 
                                                     var log = {
                                                         id: window.localStorage.getItem("userid"),
+                                                        buildProfile:"true",
                                                         logger : logger,
                                                         pool : playlist,
                                                         user : usermodel.user,
@@ -2048,6 +2049,7 @@ $(document).ready(function () {
 
                                                     var log = {
                                                         id: window.localStorage.getItem("userid"),
+                                                        buildProfile:"true",
                                                         logger : logger,
                                                         pool : playlist,
                                                         user : usermodel.user,
