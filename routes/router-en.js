@@ -720,11 +720,151 @@ router.post('/trigger_sys_cri',function (req,res) {
 })
 
 
-
-router.get('/initiate', function(req, res) {
+router.post('/initiatewithprofile', function(req, res) {
     //pass token to the webAPI used by recommender
-    var token = req.query.token;
-    var userid = req.query.id;
+    var token = req.body.token;
+    var userid = req.body.id;
+
+    var recResult = [];
+
+    var artistNames = req.body.artistNames;
+    var requestedArtists = req.body.artists;
+    var genres = req.body.genres;
+    var requestedTracks = req.body.tracks;
+    var trackNames = req.body.trackNames;
+
+    var artistReq = new Promise((resolve, reject) => {
+
+        recom(token).getRecommendationByArtist(requestedArtists.toString()).then(function(data3) {
+            var artistText = ""
+
+            for(var item in artistNames){
+                artistText += artistNames[item]+", "
+            }
+            artistText = artistText.substr(0,artistText.length-2)
+
+            getAudioFeatures(token, data3).then(function(data4) {
+                for (var i = data4.length - 1; i >= 0; i--) {
+                    if (recResult.indexOf(data4[i])<0){
+                        data4[i].seed = artistText
+                        data4[i].seedType = "artist"
+                        recResult.push(data4[i])
+                    }
+                }
+                resolve(data4)
+            }).catch(function (error) {//加上catch
+                console.log(error);
+            })
+        }).catch(function (error) {//加上catch
+            console.log(error);
+        })
+
+    })
+
+    var trackReq = new Promise((resolve, reject) => {
+
+        recom(token).getRecommendationByTrack(requestedTracks.toString()).then(function(data) {
+            var trackText = ""
+
+            for(var item in trackNames){
+                trackText += trackNames[item]+", "
+            }
+            trackText = trackText.substr(0,trackText.length-2)
+
+            getAudioFeatures(token, data).then(function(data2) {
+                for (var i = data2.length - 1; i >= 0; i--) {
+                    if (recResult.indexOf(data2[i])<0){
+                        data2[i].seed = trackText
+                        data2[i].seedType = "track"
+                        recResult.push(data2[i])
+                    }
+                }
+                resolve(data2)
+            }).catch(function (error) {//加上catch
+                console.log(error);
+            })
+        }).catch(function (error) {//加上catch
+            console.log(error);
+        })
+
+    })
+
+    var genreReq = new Promise((resolve, reject) => {
+
+        recom(token).getRecommendationByGenre(genres.toString()).then(function(data){
+            var genreText = ""
+
+            for(var item in genres){
+                genreText += genres[item]+", "
+            }
+            genreText = genreText.substr(0,genreText.length-2)
+
+            getAudioFeatures(token, data).then(function(data2) {
+                for (var i = data2.length - 1; i >= 0; i--){
+                    if (recResult.indexOf(data2[i])<0){
+                        data2[i].seed = genreText
+                        data2[i].seedType = "genre"
+                        recResult.push(data2[i])
+                    }
+                }
+                resolve(data2)
+            }).catch(function (error) {//加上catch
+                console.log(error);
+            })
+        }).catch(function (error) {//加上catch
+            console.log(error);
+        })
+
+    })
+
+    Promise.all([artistReq, trackReq,genreReq]).then(function(dataList) {
+        // console.log(dataList)
+        for(var data in dataList ){
+            for( var item in dataList[data]){
+                if(recResult.indexOf(dataList[data][item])<0)
+                    recResult.push(dataList[data][item])
+            }
+        }
+
+        var user = new User({
+            id: userid,
+            pool:recResult,
+            new_pool:[],
+            user: {
+                id:userid,
+                preferenceData: {
+                    artist: artists,
+                    track: tracks,
+                    genre: genres,
+                    language: "English",
+                    timestamp: new Date()
+                },
+                user_preference_model:{},
+                user_constraints:{},
+                user_critique_preference:{}
+            },
+            topRecommendedSong:{},
+            logger:{},
+        });
+
+        res.json(user)
+
+        //save a new user
+        // user.save(function(err) {
+        //     if (err)
+        //         console.log(err)
+        //     console.log("user profile is added")
+        // })
+    }).catch(function (error) {//加上catch
+        console.log(error);
+    })
+})
+
+
+router.post('/initiate', function(req, res) {
+    //pass token to the webAPI used by recommender
+    var token = req.body.token;
+    var userid = req.body.id;
 
     var recResult = [];
 

@@ -19,12 +19,31 @@ var isFinished = false
 var topRecommendedSong;
 var nextTimes = 0;
 var showNextSong, showCurrentSong, showNextSong2, showNextSong3, showCurrentSong2, showFeedback, showTry;
-
 var logger = {};
-
 var usermodel = {}
 
+var initiateLink, initiateData;
 var taskStartTimestamp;
+
+if(window.localStorage.setItem("buildProfile")=="true"){
+    initiateLink = "/initiatewithprofile"
+    initiateData = {
+        token:spotifyToken,
+        id:userid,
+        artistNames: window.localStorage.getItem("selectedArtistNames").split(","),
+        artists : window.localStorage.getItem("selectedArtists").split(","),
+        genres : window.localStorage.getItem("selectedGenres").split(","),
+        tracks : JSON.parse(window.localStorage.getItem("initialRecom")),
+        trackNames : window.localStorage.getItem("selectedTrackNames").split(",")
+    }
+
+}else{
+    initiateLink = "/initiate"
+    initiateData = {
+        token:spotifyToken,
+        id:userid
+    }
+}
 
 
 //preference_oriented
@@ -284,10 +303,11 @@ $(document).ready(function () {
 
     //console.log(spotifyToken)
     $.ajax({
-        url: "/initiate?token=" + spotifyToken+ "&id=" + userid,
-        type: "GET",
+        url: initiateLink,
+        type: "POST",
         contentType: "application/json;charset=utf-8",
         dataType: "json",
+        body:initiateData,
         success: function (data) {
 
             usermodel = data
@@ -505,10 +525,11 @@ $(document).ready(function () {
                 }, 2000)
 
                 $.ajax({
-                    url: "/initiate?token=" + spotifyToken+ "&id=" + userid,
-                    type: "GET",
+                    url: initiateLink,
+                    type: "POST",
                     contentType: "application/json;charset=utf-8",
                     dataType: "json",
+                    body: initiateData,
                     success: function (data2) {
 
                         usermodel = data2

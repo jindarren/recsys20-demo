@@ -8,6 +8,7 @@ var mongoose = require('mongoose');
 
 var userSchema = new mongoose.Schema({
 	id: String,
+    buildProfile: String,
     platform: String,
     setting:String,
     logger:{},

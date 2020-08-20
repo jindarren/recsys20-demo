@@ -2,10 +2,11 @@ var selectedArtists = [],
 	selectedTracks = [],
 	selectedArtistNames = [],
 	selectedTrackNames = [],
-	selectedGenres = [],
-	selectedFeatures = {};
+	selectedGenres = []
 
 var storage=window.localStorage;
+
+storage.buildProfile = "true";
 
 var spotifyToken = storage.getItem("spotifyToken")
 
