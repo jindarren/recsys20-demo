@@ -50,8 +50,8 @@ html
             p Thank you very much for taking part in this experiment, which aims at studying how users communicate with a music chatbot for exploring diverse songs.
 
             h5 Tasks:
-            p Please use our MusicBot to discover songs in different music types as much as possible and&nbsp;
-                b find 5 songs that are novel and pleasantly surprising to you.&nbsp;
+            p Please use our MusicBot to discover songs in different music types as much as possible, and&nbsp;
+                b create a playlist which contains 20 pieces of music that fit your taste, and then select top-5 most liked songs from the created playlist. &nbsp;
                 | The initial recommendations may not fit your taste, you need to tune recommendations by chatting with the bot. All music information used in this experiment was from Spotify.
 
             h5 Duration:
@@ -60,22 +60,22 @@ html
             h5 Task steps:
             p Four steps:
             p Step 1: You will fill out your personal background (including a personality test);
-            p Step 2: You can get familiar with the music bot by trying two ways of tuning recommendations before starting the study;
+            p Step 2: You will read a tutorial about our music bot and get familiar with the music bot by trying the ways of tuning recommendations before starting the study;
                 ul
                     li Try&nbsp
                         b textual input&nbsp
                         | to tell bot what kind of music you are looking for (Some examples of tuning recommendations are shown on the right side panel).
                     li#sc_des Try to consider bot’s suggestions for searching for music, which aims to help you find good music.
-            p Step 3: After clicking on the button “Start study”, you will be asked to try to find&nbsp
+            p Step 3: After clicking on the button “Start study”, you will be asked to &nbsp
                 //- b 5 good songs that fit your taste &nbsp
-                b find 5 songs that are novel and pleasantly surprising to you &nbsp
+                b create a playlist which contains 20 pieces of music that fit your taste &nbsp
                 | using the music bot, and rate the liked songs. You can give feedback on recommended music by clicking “(like, next)” when you like or skip the current song.
+            p Step 4: You will select top-5 most liked songs from the created playlist. 
+            p Step 5: You will give us your overall preference over the used music chatbot. (Lastly, you can also try bonus questionnaire to get 25% more pay!)
 
-            p Step 4: You will give us your overall preference over the used music chatbot. (Lastly, you can also try bonus questionnaire to get 25% more pay!)
-
-            h5 Video tutorial:
-            p Please carefully watch the following tutorial before the task.
-            div#player
+            //- h5 Video tutorial:
+            //- p Please carefully watch the following tutorial before the task.
+            //- div#player
 
             h5 Tips:
             ul
@@ -103,13 +103,18 @@ html
         script(src = "js/popper.min.js", charset = 'utf-8')
         script(src = "../bootstrap/dist/js/bootstrap.min.js")
         script.
+            var userid;
             if (window.localStorage.getItem("buildProfile")!='true'){
                 var spotifyToken = "#{token}"
                 var refreshToken = "#{refreshToken}"
-                var userid = "#{userID}"
+                userid = "#{userID}"
                 window.localStorage.setItem("spotifyToken", spotifyToken)
                 window.localStorage.setItem("refreshToken", refreshToken)
                 window.localStorage.setItem("userid", userid)
+            }
+            else
+            {
+                userid = window.localStorage.getItem("userid")
             }
             //if the user has sufficient artists and tracks
             var randomSetting = Math.floor(Math.random() * 3)
@@ -135,15 +140,16 @@ html
             var firstScriptTag = document.getElementsByTagName('script')[0];
             firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-            var player;
+            //- var player;
 
-            function onYouTubeIframeAPIReady() {
-                player = new YT.Player('player', {
-                    height: '270',
-                    width: '480',
-                    videoId: videoUrl,
-                });
-            }
+            //- function onYouTubeIframeAPIReady() {
+            //-     player = new YT.Player('player', {
+            //-         height: '270',
+            //-         width: '480',
+            //-         videoId: videoUrl,
+            //-     });
+            //- }
+            
             var genre_processing = function(genre){
                 if(genre.indexOf("pop")>=0)
                     genre = "pop"

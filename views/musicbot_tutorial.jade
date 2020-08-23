@@ -1,0 +1,121 @@
+doctype html
+html
+    head
+        title MusicBot Tutorial
+        meta(http-equiv='Content-Type', content='text/html; charset=utf-8')
+        link(href='../fontawesome/css/fontawesome.css', rel='stylesheet')
+        link(href='../fontawesome/css/brands.css', rel='stylesheet')
+        link(href='../fontawesome/css/solid.css', rel='stylesheet')
+
+        style.
+            body {
+                padding: 20px;
+                font-family: Lato;
+                font-weight: lighter;
+            }
+
+            .btn-primary {
+                margin-left: 10px;
+                margin-right: 10px;
+            }
+
+            p {
+                text-align: left;
+            }
+
+            .features {
+                width: 90%;
+                margin-bottom: 20px;
+            }
+
+            .container-fluid {
+                display: none;
+            }
+
+            .card {
+                margin: 20px;
+            }
+
+            .fa-check-circle {
+                color: green;
+            }
+
+            .fa-exclamation-circle {
+                color: red;
+            }
+    body
+        #part1.container
+            h4(style="text-align:center") MusicBot Tutorial
+            p In this tutorial, we will briefly introduce our interface and how you can interact with our music bot, especially the ways of tuning recommendations for exploring diverse songs. 
+
+            p Our interface consists of the following components:
+                ul
+                    li The MusicBot (see Figures below, B): The dialogue window shows all happened conversations between you and the bot. The bot shows a song in a card, which allows the user to control music. Note that in Mac OS systems or old Windows systems, you may need to manually pause the current played song before playing a new song. For each song, we show a set of feedback buttons under the card. 
+                    li The rating widget (see Figures below, A): when you click the “Like” button, the current played song will be added to the list of liked songs for you to give a rating.
+                    li The instruction panel (see Figures below, C): It explains the supported features with some examples that you can communicate with our music bot to tune recommendations.
+
+            h5 How to Tune Recommendations
+
+            p Try textual input to tell the bot what kind of music you are looking for. You may consider to tune recommendations by audio features, music categories or artists (see Figure 1). 
+                    
+            p Some examples of tuning recommendations are shown on the right side panel and you may pause the mouse over the name of a specific feature to see the associated explanation.
+
+            div(style='width:80%;height:auto')
+            img(src="img/musicbot_tutorial_uc.jpeg")
+
+            //- diversity/preference_oriented version
+
+            p#sc_des Try to consider the bot’s suggestions for exploring music, which aims to help you find good music. You can ask the bot to suggest the way of tuning recommendations by clicking the "let bot suggest" button (see Figure 2).
+
+            
+            div(style='width:80%;height:auto')#sc_des_fig
+            img(src="img/musicbot_tutorial_sc.jpeg")
+
+            h5 How to Give Feedback on Recommended Songs
+            p You can give feedback on recommended music by clicking “(like, next)” when you like or skip the current song. 
+
+            p When you find a song that suits your tastes, you may click the “like” button to add it to the list of liked songs (see Figure 3). After liking it, please rate the like songs in terms of its pleasant surprise (on the left side). 
+
+            //- base version
+            div(style='width:80%;height:auto')#uc_like_fig
+            img(src="img/musicbot_tutorial_like_uc.jpeg")
+
+            //- diversity/preference_oriented version
+            div(style='width:80%;height:auto')#sc_like_fig
+            img(src="img/musicbot_tutorial_like_sc.jpeg")
+
+
+            p Next, you can get familiar with the music bot by trying the ways of tuning recommendations before starting the study.
+
+            p After clicking on the button “Start study”, you will be asked to use the music bot to discover songs in different music types as much as possible, and create a playlist which contains 20 pieces of music that fit your taste, and rate the liked songs.
+
+            
+            hr
+            .row.justify-content-center
+                button#next.btn.btn-success Next
+
+        link(href='../bootstrap/dist/css/bootstrap.min.css', rel='stylesheet')
+        link(href='../jquery-ui/themes/base/jquery-ui.min.css', rel='stylesheet')
+        script(src = "../jquery/dist/jquery.min.js", charset = 'utf-8')
+        //script(type = "text/javascript", src = "../jquery.cookie/jquery.cookie.js", charset = 'utf-8')
+        script(src = "js/popper.min.js", charset = 'utf-8')
+        script(src = "../bootstrap/dist/js/bootstrap.min.js")
+        script.
+            var platform = window.location.search.substring(1)
+
+            var redirectedLink = window.localStorage.getItem("setting")
+
+            if (redirectedLink == '/index?base'){
+                $("#sc_des").hide()
+                $("#sc_des_fig").hide()
+                $("#sc_like_fig").hide()
+            }
+            else{
+                $("#uc_like_fig").hide()
+
+            }
+
+            $("#next").click(function () {
+                window.location.href = redirectedLink
+            })
+

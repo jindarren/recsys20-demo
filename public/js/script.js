@@ -466,7 +466,8 @@ $(document).ready(function () {
                 $("input#message").attr("placeholder", "Please wait for a moment :)")
 
                 // $("#task-description").text("Task: create a playlist that contains 5 good songs.")
-                $("#task-description").text("Task: create a playlist that contains 5 songs that are novel and pleasantly surprising to you.")
+                // $("#task-description").text("Task: create a playlist that contains 5 songs that are novel and pleasantly surprising to you.")
+                $("#task-description").text("Task: create a playlist that contains 20 songs that fit your taste.")
 
                 clearTimeout(showTry)
                 clearTimeout(showFeedback)
