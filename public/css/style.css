@@ -21,7 +21,6 @@ body{
     -o-background-size: cover;
     background-position: center 0;
     font-size: 14px;
-    font-family: Lato;
 }
 
 .pop-up{
@@ -452,6 +451,9 @@ button.active.focus {
   color: #FFFF0A;
 }
 
+#listlength{
+    font-size: large;
+}
 
 .start-animation {
     border: none;

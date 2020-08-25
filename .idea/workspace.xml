@@ -34,13 +34,8 @@
   <component name="ChangeListManager">
     <list default="true" id="e570dfdc-3b19-4d1b-90a6-cefe1fb88223" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/error.txt" beforeDir="false" afterPath="$PROJECT_DIR$/error.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/style.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/script.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/router-en.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/router-en.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/index.jade" beforeDir="false" afterPath="$PROJECT_DIR$/views/index.jade" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/musicbot_tutorial.jade" beforeDir="false" afterPath="$PROJECT_DIR$/views/musicbot_tutorial.jade" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/que1.jade" beforeDir="false" afterPath="$PROJECT_DIR$/views/que1.jade" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

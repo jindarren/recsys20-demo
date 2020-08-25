@@ -8,8 +8,6 @@ var spotifyToken = window.localStorage.getItem("spotifyToken")
 var refreshToken = window.localStorage.getItem("refreshToken")
 var userid = window.localStorage.getItem("userid")
 
-var skipTimes = 0;
-
 var playlist = [];
 var numberOfLikedSongs = 0;
 var isPreStudy = true
@@ -18,7 +16,7 @@ var listenedSongs = []
 var isFinished = false
 var topRecommendedSong;
 var nextTimes = 0;
-var showNextSong, showCurrentSong, showNextSong2, showNextSong3, showCurrentSong2, showFeedback, showTry;
+var showNextSong, showCurrentSong, showNextSong2, showNextSong3, showCurrentSong2, showFeedback, showTry, showStartTask;
 var logger = {};
 var usermodel = {}
 
@@ -479,6 +477,7 @@ $(document).ready(function () {
                 clearTimeout(showCurrentSong2)
                 clearTimeout(showNextSong2)
                 clearTimeout(showNextSong3)
+                clearTimeout(showStartTask)
                 logger = {}
                 logger.rating = []
                 logger.task1 = new Date().getTime()
@@ -1031,14 +1030,14 @@ $(document).ready(function () {
             }
 
             //超时开始
-            setTimeout(
+            showStartTask = setTimeout(
                 function () {
                     updateChat(robot, "I think you can click the 'start study' button on the left to start.", "Initialize")
                     $("input#message").attr("disabled", true)
                     $("input#message").attr("placeholder", "Please click the 'start study' button to start!")
                     $(".feedback-box").hide()
                     $("#start-task").addClass("start-animation")
-                },1000*120
+                },1000*20
             )
 
             var countGenreItems = function (genreName){
@@ -1053,6 +1052,7 @@ $(document).ready(function () {
             //ask user to select top5 from the playlist
             function selecttop(){
                 $(".pop-up").show()
+                $(".chat").empty()
                 var log = {
                     id: window.localStorage.getItem("userid"),
                     buildProfile: window.localStorage.getItem("buildProfile"),
@@ -1111,20 +1111,25 @@ $(document).ready(function () {
                 })
 
                 $("#submit").click(function () {
-                    $.ajax({
-                        url: '/updateRecord',
-                        type: 'POST',
-                        contentType: 'application/json',
-                        data: JSON.stringify(log),
-                        dataType: 'json',
-                        success: function (data) {
-                            console.log(data)
-                            window.location.href = "/que2"
-                        },
-                        error: function (err) {
-                            console.log(err)
-                        }
-                    });
+                    if($("#submit").hasClass("disabled")){
+                        alert("Please select 5 songs you think they are most diverse in your playlist.")
+                    }else{
+                        $.ajax({
+                            url: '/updateRecord',
+                            type: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify(log),
+                            dataType: 'json',
+                            success: function (data) {
+                                console.log(data)
+                                window.location.href = "/que2"
+                            },
+                            error: function (err) {
+                                console.log(err)
+                            }
+                        });
+                    }
+
                 })
             }
 
@@ -1207,6 +1212,7 @@ $(document).ready(function () {
                                             //console.log(updateData)
                                             updateUserModel(updateData).done(function (){
                                                 if (numberOfLikedSongs == 2 && isPreStudy) {
+                                                    clearTimeout(showStartTask)
                                                     updateChat(robot, "Now, you should be familiar with the system. You can click the 'start study' button on the left to start.", "Initialize")
                                                     $("input#message").attr("disabled", true)
                                                     $("input#message").attr("placeholder", "Please click the 'start study' button to start!")
@@ -2127,6 +2133,7 @@ $(document).ready(function () {
                                             //console.log(updateData)
                                             updateUserModel(updateData).done(function (){
                                                 if (numberOfLikedSongs == 2 && isPreStudy) {
+                                                    clearTimeout(showStartTask)
                                                     updateChat(robot, "Now, you should be familiar with the system. You can click the 'start study' button to start.", "Initialize")
                                                     $("input#message").attr("disabled", true)
                                                     $("input#message").attr("placeholder", "Please click the 'start study' button to start!")
