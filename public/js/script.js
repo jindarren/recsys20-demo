@@ -301,7 +301,7 @@ $(document).ready(function () {
         });
     }
 
-    //console.log(spotifyToken)
+
     $.ajax({
         url: initiateLink,
         type: "POST",
@@ -461,6 +461,7 @@ $(document).ready(function () {
 
             $("#start-task").on("click", function () {
                 // synth.cancel()
+                $("#task-description2").show()
                 taskStartTimestamp = new Date()
                 $("input#message").attr("disabled", true)
                 $("input#message").attr("placeholder", "Please wait for a moment :)")
@@ -468,6 +469,8 @@ $(document).ready(function () {
                 // $("#task-description").text("Task: create a playlist that contains 5 good songs.")
                 // $("#task-description").text("Task: create a playlist that contains 5 songs that are novel and pleasantly surprising to you.")
                 $("#task-description").text("Task: create a playlist that contains 20 songs that fit your taste.")
+                $("#listlength").text("No ")
+                $("#listlength2").text("song has")
 
                 clearTimeout(showTry)
                 clearTimeout(showFeedback)
@@ -519,7 +522,7 @@ $(document).ready(function () {
                 $(".list-group-item").hide()
 
                 // initial chat state
-                updateChat(robot, 'Hi there. Now you need to create a playlist that contains 5 good songs.', "Initialize");
+                updateChat(robot, 'Hi there. Now you need to create a playlist that contains 20 good songs.', "Initialize");
                 setTimeout(function () {
                     updateChat(robot, "I have found some songs for you based on your preference, but you can also search for other songs by using the tips shown on the right side.", "Initialize")
                     var line = $('<div class="speak"><div class="spinner"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div></div>');
@@ -648,7 +651,7 @@ $(document).ready(function () {
                             var genreName = returnedCritiques[index].split("|")[1]
                             if (genreName in genreData)
                                 actionItem.val = genreData[genreName]
-                            else 
+                            else
                                 actionItem.val = genreName
                             actionItem.type = "equal"
                             action.push(actionItem)
@@ -760,7 +763,7 @@ $(document).ready(function () {
                         var genreName = sc_result.result
                         var genreNane_hphen = genreName.replace(" ", "-")
                         var genreNane_none = genreName.replace(" ", "")
-                  
+
                         var requestedLink = ""
                         if (genreName in genreData)
                             requestedLink = "/getRecom?token="+spotifyToken+"&genreSeeds="+genreName
@@ -775,7 +778,7 @@ $(document).ready(function () {
 
                             updateData.new_pool = res.tracks
                             //console.log(updateData.new_pool)
-                       
+
                             //再次请求systemCritiques
 
                             systemCritiques(updateData).then(function (rawCrits) {
@@ -793,13 +796,13 @@ $(document).ready(function () {
                                     firstThreeCrits = sc_result.result.slice(0, 3)
                                     playlist = sc_result.user_profile.pool
 
-                                    
+
                                 }
                                 critiques = constructCritiques(firstThreeCrits)
                                 //console.log(critiques)
                                 // $('.spinner').remove();
                                 updateChat(crit, critiques[critiquesIndex].speech, "System_Suggest", "text", true);
-            
+
 
                             })
 
@@ -810,7 +813,7 @@ $(document).ready(function () {
                     else if (state=="Random_Genres"){
                         var genreNameList = sc_result.result
                         firstThreeCrits = []
-                      
+
                         for(var index in genreNameList){
                             firstThreeCrits[index] = {}
                             firstThreeCrits[index].critique = ["genre|"+genreNameList[index]]
@@ -852,7 +855,7 @@ $(document).ready(function () {
                     dialog.critique = critiqueList
                     dialog.critiqued_song = topRecommendedSong.id
                 }
-                
+
 
 
                 dialog.timestamp = new Date().getTime()
@@ -944,7 +947,7 @@ $(document).ready(function () {
                     // console.log(critiques[critiquesIndex].critiques)
                     // console.log(critiques[critiquesIndex].recommendation)
 
-                    
+
                     //如果包含推荐结果
                     if(critiques[critiquesIndex].recommendation.length>0)
                     {
@@ -953,12 +956,12 @@ $(document).ready(function () {
                         // console.log(playlist)
                         showMusic(playlist[songIndex].id)
 
-                    }    
+                    }
 
                     //如果是random genres 没有推荐结果 -
                     else{
                         // console.log(critiques[critiquesIndex].critiques)
-                        
+
                         $.get("/getRecom?token="+spotifyToken+"&genreSeeds="+critiques[critiquesIndex].critiques[0].split("|")[1], function (res) {
                             //remove loading animation
                             $('.spinner').remove();
@@ -1027,6 +1030,17 @@ $(document).ready(function () {
                 })
             }
 
+            //超时开始
+            setTimeout(
+                function () {
+                    updateChat(robot, "I think you can click the 'start study' button on the left to start.", "Initialize")
+                    $("input#message").attr("disabled", true)
+                    $("input#message").attr("placeholder", "Please click the 'start study' button to start!")
+                    $(".feedback-box").hide()
+                    $("#start-task").addClass("start-animation")
+                },1000*120
+            )
+
             var countGenreItems = function (genreName){
                 var countNum = 0
                 for (var index in playlist){
@@ -1034,6 +1048,84 @@ $(document).ready(function () {
                         countNum++
                 }
                 return countNum
+            }
+
+            //ask user to select top5 from the playlist
+            function selecttop(){
+                $(".pop-up").show()
+                var log = {
+                    id: window.localStorage.getItem("userid"),
+                    buildProfile: window.localStorage.getItem("buildProfile"),
+                    logger : logger,
+                    pool : playlist,
+                    user : usermodel.user,
+                    topRecommendedSong : topRecommendedSong,
+                    taskStartTimestamp : taskStartTimestamp,
+                    taskEndTimestamp : new Date()
+                }
+
+                var list = logger.likedSongs
+                var rating = logger.rating
+                $(".pop-up iframe").attr("src","https://open.spotify.com/embed/track/"+list[0].id)
+                var topfive = []
+                for(var item in list){
+                    var listSongName = list[item].name
+                    var listSongArtist = list[item].artist
+                    var listSongID = list[item].id
+                    var listIndex = parseInt(item)+1
+                    var ratingValue = rating[item].value
+                    if (item<10)
+                        $("#toplist1>ul").append("<li><input id="+"li"+listSongID+ " name="+listSongID+' type="checkbox" value='+listSongID+'><a class="songinfo" data='+listSongID+">&nbsp;&nbsp;("+listIndex+") "+listSongName+" - "+listSongArtist+"</a><span>&nbsp;["+ratingValue+"]</span></li>")
+                    else if(item>=10)
+                        $("#toplist2>ul").append("<li><input id="+"li"+listSongID+ " name="+listSongID+' type="checkbox" value='+listSongID+'><a class="songinfo" data='+listSongID+">&nbsp;&nbsp;("+listIndex+") "+listSongName+" - "+listSongArtist+"</a><span>&nbsp;["+ratingValue+"]</span></li>")
+                }
+
+                $("#toplist input").on("click", function(){
+                    var value = $(this).attr("value")
+                    if ($(this).prop("checked")) {
+                        topfive.push(value)
+                    } else {
+                        var index = topfive.indexOf(value)
+                        topfive.splice(index,1)
+                    }
+
+                    var numberOfTop = topfive.length
+
+                    if(numberOfTop==5){
+                        $("#toplist input:not(:checked)").attr("disabled", true)
+                        $("#submit").removeClass("disabled")
+                        log.logger.topfive = topfive.toString()
+                        window.localStorage.setItem("log",JSON.stringify(log))
+
+
+                    }else if(numberOfTop<5){
+                        $("#toplist input:not(:checked)").attr("disabled", false)
+                        $("#submit").addClass("disabled")
+                    }
+                })
+
+
+                $("a.songinfo").click(function () {
+                    var songData = $(this).attr("data")
+                    $(".pop-up iframe").attr("src","https://open.spotify.com/embed/track/"+songData)
+                })
+
+                $("#submit").click(function () {
+                    $.ajax({
+                        url: '/updateRecord',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(log),
+                        dataType: 'json',
+                        success: function (data) {
+                            console.log(data)
+                            window.location.href = "/que2"
+                        },
+                        error: function (err) {
+                            console.log(err)
+                        }
+                    });
+                })
             }
 
             var showMusic = function (id) {
@@ -1049,8 +1141,6 @@ $(document).ready(function () {
                 showCurrentSong = setTimeout(function () {
 
                     // console.log(numberOfLikedSongs)
-
-
                     // if (isSystemCrit == 1) {
                         var line = $('<div id="speak' + id + '" class="speak"><iframe src="https://open.spotify.com/embed/track/' + id + '" width="100%" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe></div>')
                         showFeedback = setTimeout(function () {
@@ -1075,7 +1165,7 @@ $(document).ready(function () {
                                 if (!isFinished) {
                                     $("#speak" + id + " .feedback-box").fadeOut()
 
-                                    if (numberOfLikedSongs <= 5) {
+                                    if (numberOfLikedSongs <= 20) {
                                         if (data.user.preferenceData.track.length < 5)
                                             data.user.preferenceData.track.push(logger.listenedSongs.slice(-1)[0].id)
                                         else
@@ -1086,7 +1176,12 @@ $(document).ready(function () {
                                         $("#" + logger.listenedSongs.slice(-1)[0].id + " .rating").on('rating:change', function (event, value, caption) {
 
                                             numberOfLikedSongs++
-                                            logger.likedSongs.push(logger.listenedSongs.slice(-1)[0].id)
+                                            logger.likedSongs.push(logger.listenedSongs.slice(-1)[0])
+
+                                            $("#listlength").text(numberOfLikedSongs+" ")
+                                            if(numberOfLikedSongs>1)
+                                                $("#listlength2").text("songs have")
+
                                             $("#" + logger.listenedSongs.slice(-1)[0].id + " .rating").rating('refresh', {
                                                 disabled: true,
                                                 showClear: false,
@@ -1111,13 +1206,15 @@ $(document).ready(function () {
 
                                             //console.log(updateData)
                                             updateUserModel(updateData).done(function (){
-                                                if (numberOfLikedSongs == 5 && isPreStudy) {
-                                                    updateChat(robot, "Now, you should be familiar with the system. You can click the 'start study' button to start.", "Initialize")
+                                                if (numberOfLikedSongs == 2 && isPreStudy) {
+                                                    updateChat(robot, "Now, you should be familiar with the system. You can click the 'start study' button on the left to start.", "Initialize")
                                                     $("input#message").attr("disabled", true)
                                                     $("input#message").attr("placeholder", "Please click the 'start study' button to start!")
-                                                }   
+                                                    $(".feedback-box").hide()
+                                                    $("#start-task").addClass("start-animation")
+                                                }
 
-                                                if (numberOfLikedSongs == 5 && !isPreStudy) {
+                                                else if (numberOfLikedSongs == 20 && !isPreStudy) {
                                                     isFinished = true
 
                                                     logger.duration = new Date().getTime() - logger.task1
@@ -1135,44 +1232,43 @@ $(document).ready(function () {
                                                     data.user = usermodel.user
                                                     data.topRecommendedSong = topRecommendedSong
 
+                                                    selecttop()
 
+                                                    // var log = {
+                                                    //     id: window.localStorage.getItem("userid"),
+                                                    //     buildProfile: window.localStorage.getItem("buildProfile"),
+                                                    //     logger : logger,
+                                                    //     pool : playlist,
+                                                    //     user : usermodel.user,
+                                                    //     topRecommendedSong : topRecommendedSong,
+                                                    //     taskStartTimestamp : taskStartTimestamp,
+                                                    //     taskEndTimestamp : new Date()
+                                                    // }
+                                                    // //console.log("上传日志: ", data)
+                                                    // window.localStorage.setItem("log",JSON.stringify(log))
+                                                    //
+                                                    //
+                                                    // $.ajax({
+                                                    //     url: '/updateRecord',
+                                                    //     type: 'POST',
+                                                    //     contentType: 'application/json',
+                                                    //     data: JSON.stringify(log),
+                                                    //     dataType: 'json',
+                                                    //     success: function (data) {
+                                                    //         console.log(data)
+                                                    //         window.location.href = "/que2"
+                                                    //     },
+                                                    //     error: function (err) {
+                                                    //         console.log(err)
+                                                    //     }
+                                                    // });
 
-                                                    var log = {
-                                                        id: window.localStorage.getItem("userid"),
-                                                        buildProfile: window.localStorage.getItem("buildProfile"),
-                                                        logger : logger,
-                                                        pool : playlist,
-                                                        user : usermodel.user,
-                                                        topRecommendedSong : topRecommendedSong,
-                                                        taskStartTimestamp : taskStartTimestamp,
-                                                        taskEndTimestamp : new Date()
-                                                    }
-                                                    //console.log("上传日志: ", data)
-                                                    window.localStorage.setItem("log",JSON.stringify(log))
+                                                }
 
-
-                                                    $.ajax({
-                                                        url: '/updateRecord',
-                                                        type: 'POST',
-                                                        contentType: 'application/json',
-                                                        data: JSON.stringify(log),
-                                                        dataType: 'json',
-                                                        success: function (data) {
-                                                            console.log(data)
-                                                            window.location.href = "/que2"
-                                                        },
-                                                        error: function (err) {
-                                                            console.log(err)
-                                                        }
-                                                    });
-
-                                                }  
-
-
-                                                if (numberOfLikedSongs < 5) {
+                                                else if (numberOfLikedSongs < 20) {
                                                     $("input#message").attr("disabled", false)
                                                     $("input#message").attr("placeholder", "")
-                                                   
+
 
                                                     //Exploration for niche genre music
                                                     var likedSongGenre = topRecommendedSong.genre
@@ -1237,12 +1333,11 @@ $(document).ready(function () {
                                                     }
                                                 }
 
- 
-
                                             })
                                         });
-                                        
 
+
+                                        document.getElementById(logger.listenedSongs.slice(-1)[0].id).scrollIntoView();
 
                                         // remove a liked song
                                         $("#" + logger.listenedSongs.slice(-1)[0].id + "> .fa-close").click(function () {
@@ -1324,7 +1419,7 @@ $(document).ready(function () {
                                 scrollTop: chat.prop("scrollHeight")
                             });
 
-                        }, 3000)
+                        }, 1000)
 
                     line.addClass("other")
                     chat.append(line);
@@ -1439,19 +1534,19 @@ $(document).ready(function () {
                             {
                                 if (logger.listenedSongs.length >0){
                                     for (var item in logger.listenedSongs) {
-                                        
+
                                         var songID = logger.listenedSongs[item].id
-    
+
                                         var filtered = filtered_tracks.filter(function (el) {
                                             // console.log(el.id == songID)
                                             return el.id == songID;
                                         });
                                         if (filtered.length>0)
                                             filtered_tracks.splice(filtered_tracks.indexOf(filtered[0]), 1)
-                                        
+
                                     }
                                 }
-                            }                            
+                            }
 
                             // console.log('After filtering: ')
                             // console.log(filtered_tracks)
@@ -1467,7 +1562,7 @@ $(document).ready(function () {
                             {
                                 response = "It seems no more suitable songs. But you can try this song :)";
                             }
-                                
+
 
                             getRecommendation(updateData).then(function (data) {
                                 var returnData = JSON.parse(data)
@@ -1495,7 +1590,7 @@ $(document).ready(function () {
                     },6000)
 
 
-                    
+
                 } else if (!requestLink && isMissed) {
                     if (numberOfMiss < 1) {
                         numberOfMiss++;
@@ -1505,7 +1600,7 @@ $(document).ready(function () {
                         numberOfMiss++;
                         speakandsing(robot, "Em..., it seems that you like this type of song.", "Respond_Unknown")
                     }
-                    
+
                     else {
                         numberOfMiss = 0
                         var random = Math.random()
@@ -1553,7 +1648,7 @@ $(document).ready(function () {
                         showMusic(playlist[songIndex].id)
                     }, 3000)
 
-                } 
+                }
                 else {
                     showMusic(playlist[songIndex].id)
                 }
@@ -1678,7 +1773,7 @@ $(document).ready(function () {
                                         requestLink = encodeURI(requestLink)
 
                                         playRequestLink(requestLink,explaination,false)
-                                    } 
+                                    }
                                     else {
                                         songIndex = 0
                                         speakandsing(robot, response_speech, "Coherence")
@@ -1718,7 +1813,7 @@ $(document).ready(function () {
 
                                 if (feature == 'speech')
                                     feature = "speechiness"
-                                
+
                                 item[feature] = action
                                 critique.push(item)
                             }
@@ -1736,7 +1831,7 @@ $(document).ready(function () {
                                         if (seed_genre in genreData)
                                             seed_description = seed_description + '&genreSeeds=' + seed_genre
                                         //console.log(seed_description)
-                                        
+
                                         requestLink = '/getRecom?token=' + spotifyToken + seed_description;
 
 
@@ -1747,7 +1842,7 @@ $(document).ready(function () {
                                             }
                                             else if (valence == "neutral") {
                                                 requestLink = requestLink + '&target_valence=' + topRecommendedSong["valence"];
-                                            
+
                                             }
                                             else if (valence == "sad") {
                                                 var tartget_value = 0.95 * topRecommendedSong["valence"]
@@ -1758,15 +1853,15 @@ $(document).ready(function () {
                                             if (tempo == "fast") {
                                                 var tartget_value = 1.05 * topRecommendedSong["tempo"]
                                                 requestLink = requestLink + '&target_tempo=' + tartget_value;
-                                                
+
                                             }
                                             else if (tempo == "normal") {
                                                 requestLink = requestLink + '&target_tempo=' + topRecommendedSong["tempo"];
-                                                
+
                                             } else if (tempo == "slow") {
                                                 var tartget_value = 0.95 * topRecommendedSong["tempo"]
                                                 requestLink = requestLink + '&target_tempo=' + tartget_value;
-                                            
+
                                             }
                                             explaination = "OK, I recommend this song to you, because you like the songs having " +tempo+ " tempo."
                                         } else if (feature) {
@@ -1776,20 +1871,20 @@ $(document).ready(function () {
                                                 var tartget_value = 1.05 * topRecommendedSong[feature]
 
                                                 requestLink = requestLink + '&target_'+feature+'=' + tartget_value;
-                                                
+
                                                 explaination = "OK, I recommend this song to you, because you like the songs of higher "+ feature+"."
                                             }
                                             else if (action == "lower") {
                                                 var tartget_value = 0.95 * topRecommendedSong[feature]
 
                                                 requestLink = requestLink + '&target_'+feature+'=' + tartget_value;
-                                                
+
                                                 explaination = "OK, I recommend this song to you, because you like the songs of lower "+ feature+"."
                                             }
                                             else if (action == "") {
-                                                
+
                                                 requestLink = requestLink + '&target_'+feature+'=' + topRecommendedSong[feature];
-                                                
+
                                                 explaination = "OK, I recommend this song to you, because you like the last played songs in terms of its "+ feature+"."
                                             }
 
@@ -1797,7 +1892,7 @@ $(document).ready(function () {
                                         //console.log(requestLink)
                                         requestLink = encodeURI(requestLink)
                                         playRequestLink(requestLink,explaination,false)
-                                    } 
+                                    }
                                     else {
                                         songIndex = 0
                                         speakandsing(robot, response_speech, "Coherence")
@@ -1837,12 +1932,12 @@ $(document).ready(function () {
                             {
                                 response = 'continue'
                             }
-                            
+
                             if (response == "yes") {
-                                
+
                                 // add critique when the user accepts a suggestion
                                 // dialog.critique = critiques[critiquesIndex].critique
-            
+
                                 //perform update model request
 
                                 var dialogNum = logger.dialog.length
@@ -1853,7 +1948,7 @@ $(document).ready(function () {
                                 // add critique info
                                 var critList = critiques[critiquesIndex].critiques
                                 var critiqueList = []
-            
+
                                 for (var index in critList) {
                                     var critiqueContent = {}
                                     critiqueContent[critList[index].split("|")[0]] = critList[index].split("|")[1]
@@ -1867,18 +1962,18 @@ $(document).ready(function () {
                                 updateData.logger = {}
                                 updateData.logger.latest_dialog = [dialog]
                                 updateData.logger.listenedSongs = logger.listenedSongs
-            
+
                                 var listenedSongsLength = logger.listenedSongs.length
                                 updateData.topRecommendedSong = logger.listenedSongs[listenedSongsLength - 1]
-            
+
                                 //console.log(updateData)
                                 updateUserModel(updateData)
-            
+
                                 // debug!
                                 //console.log(critiques[critiquesIndex].critiques)
                                 // console.log(critiques[critiquesIndex].recommendation)
-            
-                                
+
+
                                 //如果包含推荐结果
                                 if(critiques[critiquesIndex].recommendation.length>0)
                                 {
@@ -1887,31 +1982,31 @@ $(document).ready(function () {
                                     //console.log(songIndex)
                                     //console.log(playlist)
                                     showMusic(playlist[songIndex].id)
-            
-                                }    
-            
+
+                                }
+
                                 //如果是random genres 没有推荐结果 -
                                 else{
                                     // console.log(critiques[critiquesIndex].critiques)
-                                    
+
                                     $.get("/getRecom?token="+spotifyToken+"&genreSeeds="+critiques[critiquesIndex].critiques[0].split("|")[1], function (res) {
                                         //remove loading animation
                                         $('.spinner').remove();
                                         //console.log(res)
-            
+
                                         var updateData = {}
                                         updateData.user = usermodel.user
                                         updateData.pool = playlist
                                         updateData.new_pool = res.tracks
-            
+
                                         //console.log(updateData)
-            
+
                                         getRecommendation(updateData).then(function (data) {
                                             var returnData = JSON.parse(data)
                                             //console.log(returnData)
                                             songIndex = 0
                                             showMusic(playlist[songIndex].id)
-            
+
                                         })
 
                                     })
@@ -1928,7 +2023,7 @@ $(document).ready(function () {
                                 // add critique info
                                 var critList = critiques[critiquesIndex].critiques
                                 var critiqueList = []
-            
+
                                 for (var index in critList) {
                                     var critiqueContent = {}
                                     critiqueContent[critList[index].split("|")[0]] = critList[index].split("|")[1]
@@ -1943,27 +2038,27 @@ $(document).ready(function () {
                                 updateData.logger = {}
                                 updateData.logger.latest_dialog = [dialog]
                                 updateData.logger.listenedSongs = logger.listenedSongs
-            
+
                                 var listenedSongsLength = logger.listenedSongs.length
                                 updateData.topRecommendedSong = logger.listenedSongs[listenedSongsLength - 1]
-            
+
                                 //console.log(updateData)
                                 updateUserModel(updateData)
-            
-            
+
+
                                 if (critiquesIndex < critiques.length - 1) {
                                     needReply = true;
                                     critiquesIndex++;
                                     //console.log(critiques[critiquesIndex].critiques)
-                                    
+
                                     updateChat(crit, critiques[critiquesIndex].speech, "System_Suggest","text", true);
-            
-            
+
+
                                 } else if (critiquesIndex == critiques.length - 1) {
                                     critiquesIndex = 0
                                     speakandsing(robot, "OK, I have no more suggestions, but maybe you want to try this song.", "Respond_NoSuggestion")
                                 }
-                            
+
 
                             }
                             else if (response == "like")
@@ -1971,7 +2066,7 @@ $(document).ready(function () {
 
                                 var dialogNum = logger.dialog.length
                                 var dialog = logger.dialog[dialogNum - 1]
-                                
+
                                 dialog.action = "Accept_Song"
 
 
@@ -1989,7 +2084,7 @@ $(document).ready(function () {
                                     var songID = topRecommendedSong.id
                                     $("#speak" + songID + " .feedback-box").fadeOut()
 
-                                    if (numberOfLikedSongs <= 5) {
+                                    if (numberOfLikedSongs <= 20) {
                                         if (data.user.preferenceData.track.length < 5)
                                             data.user.preferenceData.track.push(logger.listenedSongs.slice(-1)[0].id)
                                         else
@@ -2000,8 +2095,13 @@ $(document).ready(function () {
                                         $("#" + logger.listenedSongs.slice(-1)[0].id + " .rating").on('rating:change', function (event, value, caption) {
 
 
-                                            logger.likedSongs.push(logger.listenedSongs.slice(-1)[0].id)
+                                            logger.likedSongs.push(logger.listenedSongs.slice(-1)[0])
                                             numberOfLikedSongs++
+
+                                            $("#listlength").text(numberOfLikedSongs+" ")
+                                            if(numberOfLikedSongs>1)
+                                                $("#listlength2").text("songs have")
+
                                             $("#" + logger.listenedSongs.slice(-1)[0].id + " .rating").rating('refresh', {
                                                 disabled: true,
                                                 showClear: false,
@@ -2013,7 +2113,7 @@ $(document).ready(function () {
 
                                             var dialogNum = logger.dialog.length
                                             var dialog = logger.dialog[dialogNum - 1]
-                                            
+
 
                                             var updateData = {}
                                             updateData.user = usermodel.user
@@ -2026,13 +2126,16 @@ $(document).ready(function () {
 
                                             //console.log(updateData)
                                             updateUserModel(updateData).done(function (){
-                                                if (numberOfLikedSongs == 5 && isPreStudy) {
+                                                if (numberOfLikedSongs == 2 && isPreStudy) {
                                                     updateChat(robot, "Now, you should be familiar with the system. You can click the 'start study' button to start.", "Initialize")
                                                     $("input#message").attr("disabled", true)
                                                     $("input#message").attr("placeholder", "Please click the 'start study' button to start!")
+                                                    $(".feedback-box").hide()
+                                                    $("#start-task").addClass("start-animation")
                                                 }
-                                                if (numberOfLikedSongs == 5 && !isPreStudy) {
+                                                else if (numberOfLikedSongs == 20 && !isPreStudy) {
                                                     isFinished = true
+
 
                                                     logger.duration = new Date().getTime() - logger.task1
                                                     // logger.listenedSongs = listenedSongs.concat()
@@ -2049,39 +2152,39 @@ $(document).ready(function () {
                                                     data.user = usermodel.user
                                                     data.topRecommendedSong = topRecommendedSong
 
+                                                    selecttop()
 
-
-                                                    var log = {
-                                                        id: window.localStorage.getItem("userid"),
-                                                        buildProfile: window.localStorage.getItem("buildProfile"),
-                                                        logger : logger,
-                                                        pool : playlist,
-                                                        user : usermodel.user,
-                                                        topRecommendedSong : topRecommendedSong,
-                                                        taskStartTimestamp : taskStartTimestamp,
-                                                        taskEndTimestamp : new Date()
-                                                    }
-                                                    //console.log("上传日志: ", data)
-                                                    window.localStorage.setItem("log",JSON.stringify(log))
-
-                                                    $.ajax({
-                                                        url: '/updateRecord',
-                                                        type: 'POST',
-                                                        contentType: 'application/json',
-                                                        data: JSON.stringify(log),
-                                                        dataType: 'json',
-                                                        success: function (data) {
-                                                            console.log(data)
-                                                            window.location.href = "/que2"
-                                                        },
-                                                        error: function (err) {
-                                                            console.log(err)
-                                                        }
-                                                    });
+                                                    // var log = {
+                                                    //     id: window.localStorage.getItem("userid"),
+                                                    //     buildProfile: window.localStorage.getItem("buildProfile"),
+                                                    //     logger : logger,
+                                                    //     pool : playlist,
+                                                    //     user : usermodel.user,
+                                                    //     topRecommendedSong : topRecommendedSong,
+                                                    //     taskStartTimestamp : taskStartTimestamp,
+                                                    //     taskEndTimestamp : new Date()
+                                                    // }
+                                                    // //console.log("上传日志: ", data)
+                                                    // window.localStorage.setItem("log",JSON.stringify(log))
+                                                    //
+                                                    // $.ajax({
+                                                    //     url: '/updateRecord',
+                                                    //     type: 'POST',
+                                                    //     contentType: 'application/json',
+                                                    //     data: JSON.stringify(log),
+                                                    //     dataType: 'json',
+                                                    //     success: function (data) {
+                                                    //         console.log(data)
+                                                    //         window.location.href = "/que2"
+                                                    //     },
+                                                    //     error: function (err) {
+                                                    //         console.log(err)
+                                                    //     }
+                                                    // });
 
 
                                                 }
-                                                if (numberOfLikedSongs < 5) {
+                                                else if (numberOfLikedSongs < 20) {
                                                     $("input#message").attr("disabled", false)
                                                     $("input#message").attr("placeholder", "")
 
@@ -2151,6 +2254,8 @@ $(document).ready(function () {
                                             })
                                         });
 
+                                        document.getElementById(logger.listenedSongs.slice(-1)[0].id).scrollIntoView();
+
                                         // remove a liked song
                                         $("#" + logger.listenedSongs.slice(-1)[0].id + "> .fa-close").click(function () {
                                             $(this).parent().remove()
@@ -2201,7 +2306,7 @@ $(document).ready(function () {
                                                     showMusic(playlist[songIndex].id)
                                                 }, 1000)
 
-                                            } 
+                                            }
                                             else {
                                                 showMusic(playlist[songIndex].id)
                                             }

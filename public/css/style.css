@@ -24,6 +24,56 @@ body{
     font-family: Lato;
 }
 
+.pop-up{
+    display: none;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+}
+
+#toplist{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 90%;
+}
+
+#toplist1,#toplist2{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 50%;
+}
+
+ul{
+    list-style: none;
+}
+
+li{
+    margin-bottom: 6px;
+}
+
+.songinfo{
+    margin-top: 5px;
+}
+
+#song-rank{
+    width: 90%;
+    height: 90%;
+    background-color: white;
+    position: fixed;
+    top: 5%;
+    left: 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 #container{
   width: 100%;
   height: 100%;
@@ -257,7 +307,9 @@ input{border:0;outline:none;}
 
 .context{
   margin: 20px;
-  width: 25%;
+  width: 26%;
+  background-color: #e2e2e2;
+  padding: 10px;
 }
 
 .task{
@@ -293,7 +345,7 @@ input{border:0;outline:none;}
   margin-top: 20px;
   background: whitesmoke;
   opacity: 0.9;
-  max-height: 90%;
+  height: 75%;
   overflow-y: scroll;
 }
 
@@ -398,4 +450,82 @@ button.active.focus {
 
 #user-id span{
   color: #FFFF0A;
+}
+
+
+.start-animation {
+    border: none;
+    width: 100%;
+    font-weight: bold;
+    color: #ffffff;
+    animation: changesize 1s ease-in infinite;
+    /* 其它浏览器兼容性前缀 */
+    -webkit-animation: changesize 1s linear infinite;
+    -moz-animation: changesize 1s linear infinite;
+    -ms-animation: changesize 1s linear infinite;
+    -o-animation: changesize 1s linear infinite;
+}
+
+@keyframes changesize {
+    0% {
+        transform: scale(1,1);
+        background: #ffe6e6;
+    }
+    50% {
+        transform: scale(1.1,1.1);
+        background: #c60000;
+    }
+    100% {
+        transform: scale(1,1);
+        background: #f8c6c6;
+    }
+}
+
+/* 添加兼容性前缀 */
+@-webkit-keyframes changeshadow {
+    0% {
+        text-shadow: 0 0 4px #fc2f46
+    }
+    50% {
+        text-shadow: 0 0 40px #e03f4f
+    }
+    100% {
+        text-shadow: 0 0 4px #fd7988
+    }
+}
+
+@-moz-keyframes changeshadow {
+    0% {
+        text-shadow: 0 0 4px #fc2f46
+    }
+    50% {
+        text-shadow: 0 0 40px #e03f4f
+    }
+    100% {
+        text-shadow: 0 0 4px #fd7988
+    }
+}
+
+@-ms-keyframes changeshadow {
+    0% {
+        text-shadow: 0 0 4px #fc2f46
+    }
+    50% {
+        text-shadow: 0 0 40px #e03f4f
+    }
+    100% {
+        text-shadow: 0 0 4px #fd7988
+    }
+}
+
+@-o-keyframes changeshadow {
+    0% {
+        text-shadow: 0 0 4px #fc2f46
+    }
+    50% {
+        text-shadow: 0 0 40px #e03f4f
+    }
+    100% {
+        text-shadow: 0 0 4px #fd7988
+    }
 }
