@@ -43,57 +43,103 @@ html
             .fa-exclamation-circle {
                 color: red;
             }
+            
 
             img{
                 max-width: 100%;
+            }
+            figcaption
+            {
+                text-align:center;
             }
     body
         #part1.container
             h4(style="text-align:center") MusicBot Tutorial
             p In this tutorial, we will briefly introduce our interface and how you can interact with our music bot, especially the ways of tuning recommendations for exploring diverse songs. 
 
-            p Our interface consists of the following components:
-                ul
-                    li The MusicBot (see Figures below, B): The dialogue window shows all happened conversations between you and the bot. The bot shows a song in a card, which allows the user to control music. Note that in Mac OS systems or old Windows systems, you may need to manually pause the current played song before playing a new song. For each song, we show a set of feedback buttons under the card. 
-                    li The rating widget (see Figures below, A): when you click the “Like” button, the current played song will be added to the list of liked songs for you to give a rating.
-                    li The instruction panel (see Figures below, C): It explains the supported features with some examples that you can communicate with our music bot to tune recommendations.
+            h5(style="color:red") Our interface consists of the following THREE components: 
+            
+            div(style='width:90%;height:auto')#interface_uc
+                img(src="img/interface_uc.jpg")
+                figcaption Figure 1: Our Experimental Interface
 
-            h5 How to Tune Recommendations
+            div(style='width:90%;height:auto')#interface_sc
+                img(src="img/interface_sc.jpg")
+                figcaption Figure 1: Our Experimental Interface
+                
+            ul
+                li The MusicBot (see (B)): The dialogue window shows all happened conversations between you and the bot. The bot shows a song in a card, which allows the user to control the music. 
+                    b Note that in Mac OS systems or old Windows systems, 
+                    | you may need to manually pause the currently played song before playing a new song. For each song, we show a set of feedback buttons 
+                    sapn#feedback_des (i.e.., “Like”, “Next”) 
+                    | under the card. 
+                li The rating widget (see (A)): When you click the “Like” button, the currently played song will be added to the list of liked songs for you to give a rating in terms of its pleasant surprise.
+                li The instruction panel (see (C)): It explains the supported features with some examples that you can communicate with our music bot for tuning recommendations.
 
-            p Try textual input to tell the bot what kind of music you are looking for. You may consider to tune recommendations by audio features, music categories or artists (see Figure 1). 
-                    
-            p Some examples of tuning recommendations are shown on the right side panel and you may pause the mouse over the name of a specific feature to see the associated explanation.
+            h5(style="color:red")#way_tune_recom How to Tune Recommendations 
+
+            h6(style='font-weight: bold')  1. Try textual input to tell the bot what kind of music you are looking for.
 
             div(style='width:90%;height:auto')
-                img(src="img/music_tutorial_sc.jpg")
+                img(src="img/function_uc.jpg")
+                figcaption Figure 2: Tune recommendation by telling the bot what kind of music you are looking for.
+            p 
+            p You may consider to tune recommendations by audio features, music categories or artists. 
+            ul  
+                li <b><u> Audio Features include: </u></b>
+                ul
+                    li  <b> Energy: </b> Energy represents a perceptual measure of intensity and activity. Typically, energetic tracks feel fast, loud, and noisy. For example, death metal has high energy, while a Bach prelude scores low on the scale.
+                    li  <b> Danceability: </b> Danceability describes how suitable a track is for dancing based on a combination of musical elements including tempo, rhythm stability, beat strength, and overall regularity.
+                    li  <b> Speechiness: </b> Speechiness detects the presence of spoken words in a track.
+                    li  <b> Tempo: </b> Tempo is the speed or pace of a given piece and derives directly from the average beat duration.
+                    li  <b> Valence: </b> Tracks with high valence sound more positive (e.g. happy, cheerful, euphoric), while tracks with low valence sound more negative (e.g. sad, depressed, angry).
+                li <b><u>Music Categories</u></b> contain genres/types of music such as  pop, rock, jazz, R&B and classic.
+                li <b><u>Artists</u></b> include singers, producers and musicians.
 
+            p Some examples of tuning recommendations are shown on the right side panel and you may pause the mouse over the name of a specific feature to see its associated explanation (see Figure 2).
             //- diversity/preference_oriented version
 
-            p#sc_des Try to consider the bot’s suggestions for exploring music, which aims to help you find good music. You can ask the bot to suggest the way of tuning recommendations by clicking the "let bot suggest" button (see Figure 2).
+            p 
+
+            h6(style='font-weight: bold')#sc_des 2. Try to consider the bot’s suggestion for exploring music. 
+            p#sc_des2  The bot's suggestion aims to help you find good music. You can ask the bot to suggest the way of tuning recommendations by clicking the "Let bot suggest" button (see Figure 3).
+
 
             
             div(style='width:90%;height:auto')#sc_des_fig
-                img(src="img/music_tutorial_sc.jpg")
+                img(src="img/function_sc.jpg")
+                figcaption Figure 3: Ask the bot to suggest the way of tuning recommendations
 
-            h5 How to Give Feedback on Recommended Songs
-            p You can give feedback on recommended music by clicking “(like, next)” when you like or skip the current song. 
 
-            p When you find a song that suits your tastes, you may click the “like” button to add it to the list of liked songs (see Figure 3). After liking it, please rate the like songs in terms of its pleasant surprise (on the left side). 
+            p 
 
+            h6(style='font-weight: bold')#des_like_sc_4   2. “Like“ or “Next” 
+            p When you find a song that suits your tastes, you can click the “Like” button to add it to the list of liked songs 
+                span#figure_like_sc_4 (see Figure 3). 
+                | After liking it, please rate the liked song in terms of its pleasant surprise (on the left side). 
+            p You can also click the “Next” button if you would like to skip the current song and listen to the next one. 
             //- base version
             div(style='width:90%;height:auto')#uc_like_fig
-                img(src="img/music_tutorial_like_uc.jpg")
+                img(src="img/like_uc.jpg")
+                figcaption Figure 3: Rate the liked song
+
 
             //- diversity/preference_oriented version
             div(style='width:90%;height:auto')#sc_like_fig
-                img(src="img/music_tutorial_like_sc.jpg")
+                img(src="img/like_sc.jpg")
+                figcaption Figure 4: Rate the liked song
+
+            h5 Study Task: 
+            p Please use our MusicBot to discover songs in different music types as much as possible,
+                b and create a playlist that contains 20 pieces of music that fit your taste, 
+                | and then rate the liked songs. Then, please 
+                b select the top-5 most preferred songs 
+                | from your created playlist. 
+
+            h6 Warm up before starting the study: 
+            p Now, please click on the button “Next” to get familiar with the music bot by trying the ways of tuning recommendations before starting the study.
 
 
-            p Next, you can get familiar with the music bot by trying the ways of tuning recommendations before starting the study.
-
-            p After clicking on the button “Start study”, you will be asked to use the music bot to discover songs in different music types as much as possible, and create a playlist which contains 20 pieces of music that fit your taste, and rate the liked songs.
-
-            
             hr
             .row.justify-content-center
                 button#next.btn.btn-success Next
@@ -111,12 +157,18 @@ html
 
             if (redirectedLink == '/index?base'){
                 $("#sc_des").hide()
+                $("#sc_des2").hide()
+                $("#interface_sc").hide()
                 $("#sc_des_fig").hide()
                 $("#sc_like_fig").hide()
             }
             else{
+                $("#interface_uc").hide()
                 $("#uc_like_fig").hide()
-
+                $("#feedback_des").text("(i.e.., “Like”, “Next”, “Let bot suggest”) ")
+                $("#way_tune_recom").text("How to Tune Recommendations (there are THREE ways)")
+                $("#des_like_sc_4").text("3. “Like“ or “Next” ")
+                $("#figure_like_sc_4").text("(see Figure 4). ")
             }
 
             $("#next").click(function () {
