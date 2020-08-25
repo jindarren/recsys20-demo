@@ -810,6 +810,7 @@ $(document).ready(function () {
 
                     }
                     else if (state=="Random_Genres"){
+                        console.log(sc_result.result)
                         var genreNameList = sc_result.result
                         firstThreeCrits = []
 
@@ -1037,7 +1038,7 @@ $(document).ready(function () {
                     $("input#message").attr("placeholder", "Please click the 'start study' button to start!")
                     $(".feedback-box").hide()
                     $("#start-task").addClass("start-animation")
-                },1000*20
+                },1000*60
             )
 
             var countGenreItems = function (genreName){
@@ -1075,9 +1076,11 @@ $(document).ready(function () {
                     var listIndex = parseInt(item)+1
                     var ratingValue = rating[item].value
                     if (item<10)
-                        $("#toplist1>ul").append("<li><input id="+"li"+listSongID+ " name="+listSongID+' type="checkbox" value='+listSongID+'><a class="songinfo" data='+listSongID+">&nbsp;&nbsp;("+listIndex+") "+listSongName+" - "+listSongArtist+"</a><span>&nbsp;["+ratingValue+"]</span></li>")
+                        // $("#toplist1>ul").append("<li><input id="+"li"+listSongID+ " name="+listSongID+' type="checkbox" value='+listSongID+'><a class="songinfo" data='+listSongID+">&nbsp;&nbsp;("+listIndex+") "+listSongName+" - "+listSongArtist+"</a><span>&nbsp;["+ratingValue+"]</span></li>")
+                        $("#toplist1>ul").append("<li><input id="+"li"+listSongID+ " name="+listSongID+' type="checkbox" value='+listSongID+'><a class="songinfo" data='+listSongID+">&nbsp;&nbsp;("+listIndex+") "+listSongName+" - "+listSongArtist+"</a></li>")
                     else if(item>=10)
-                        $("#toplist2>ul").append("<li><input id="+"li"+listSongID+ " name="+listSongID+' type="checkbox" value='+listSongID+'><a class="songinfo" data='+listSongID+">&nbsp;&nbsp;("+listIndex+") "+listSongName+" - "+listSongArtist+"</a><span>&nbsp;["+ratingValue+"]</span></li>")
+                        // $("#toplist2>ul").append("<li><input id="+"li"+listSongID+ " name="+listSongID+' type="checkbox" value='+listSongID+'><a class="songinfo" data='+listSongID+">&nbsp;&nbsp;("+listIndex+") "+listSongName+" - "+listSongArtist+"</a><span>&nbsp;["+ratingValue+"]</span></li>")
+                        $("#toplist2>ul").append("<li><input id="+"li"+listSongID+ " name="+listSongID+' type="checkbox" value='+listSongID+'><a class="songinfo" data='+listSongID+">&nbsp;&nbsp;("+listIndex+") "+listSongName+" - "+listSongArtist+"</a></li>")
                 }
 
                 $("#toplist input").on("click", function(){
@@ -1094,7 +1097,7 @@ $(document).ready(function () {
                     if(numberOfTop==5){
                         $("#toplist input:not(:checked)").attr("disabled", true)
                         $("#submit").removeClass("disabled")
-                        log.logger.topfive = topfive.toString()
+                        log.logger.topfive = topfive
                         window.localStorage.setItem("log",JSON.stringify(log))
 
 
@@ -1112,8 +1115,9 @@ $(document).ready(function () {
 
                 $("#submit").click(function () {
                     if($("#submit").hasClass("disabled")){
-                        alert("Please select 5 songs you think they are most diverse in your playlist.")
+                        alert("Please select the top-5 most preferred songs from your created playlist.")
                     }else{
+                        console.log(log)
                         $.ajax({
                             url: '/updateRecord',
                             type: 'POST',

@@ -314,26 +314,29 @@ def switch_critique_level(interaction_log, cur_rec, categorical_attributes, nume
 
     if num_rejected_sc >= switch_condition['num_rejected_sc_condition']:
         rejected_sc_condition = True
+        categorical_attributes = ['genre']
+        numerical_attributes = []
 
-
-    if recommendation_cycle_condition:
+    elif recommendation_cycle_condition:
         num_satisfied_listend_songs = 0
         num_satisfied_liked_songs = 0
         num_satisfied_disliked_songs = 0
         
+        liked_songs_id_list = []
+        for each in interaction_log['likedSongs']:
+            liked_songs_id_list.append(each['id'])
+
         for song_info in interaction_log['listenedSongs']:
             if song_info['genre'] == cur_rec_genre:
                 num_satisfied_listend_songs += 1
-                if song_info['id'] in interaction_log['likedSongs']:
+                if song_info['id'] in liked_songs_id_list:
                     num_satisfied_liked_songs += 1
                 if song_info['id'] in interaction_log['dislikedSongs']:
                     num_satisfied_disliked_songs += 1  
 
-        if rejected_sc_condition:
-            numerical_attributes = []
 
-        elif num_satisfied_listend_songs >= switch_condition['num_listened_songs_condition'] or \
-            num_satisfied_liked_songs >= switch_condition['num_liked_songs_condition'] or \
+        # num_satisfied_listend_songs >= switch_condition['num_listened_songs_condition'] - - remove
+        if num_satisfied_liked_songs >= switch_condition['num_liked_songs_condition'] or \
                 num_satisfied_disliked_songs >= switch_condition['num_disliked_songs_condition']:
                 categorical_attributes = ['genre']
                 numerical_attributes = []
@@ -344,6 +347,12 @@ def switch_critique_level(interaction_log, cur_rec, categorical_attributes, nume
     else: 
         categorical_attributes = []
     
+
+    print('num_recommendation_cycle:', num_recommendation_cycle)
+    print('num_rejected_sc:', num_rejected_sc)
+    # print('num_satisfied_listend_songs:', num_satisfied_listend_songs)
+    # print('num_satisfied_liked_songs:', num_satisfied_liked_songs)
+    # print('num_satisfied_disliked_songs:', num_satisfied_disliked_songs)
 
     return categorical_attributes, numerical_attributes
 
@@ -495,11 +504,11 @@ def generate_system_critiques_diversity_oriented(user_info, user_critique_prefer
     # Switch Mechanism: Determine Categorical (Level 1 - Genre) or Numerical Feature (Level 2) to critique based on the tracked dialogue state
     switch_condition = {}
     # switch_condition['num_interaction_turn_condition'] = 3
-    switch_condition['num_recommendation_cycle_condition'] = 2
+    switch_condition['num_recommendation_cycle_condition'] = 3
     switch_condition['num_rejected_sc_condition'] = 3
-    switch_condition['num_listened_songs_condition'] = 3
-    switch_condition['num_liked_songs_condition'] = 3
-    switch_condition['num_disliked_songs_condition'] = 2
+    switch_condition['num_listened_songs_condition'] = 5 #useless
+    switch_condition['num_liked_songs_condition'] = 4
+    switch_condition['num_disliked_songs_condition'] = 3
 
 
     categorical_attributes_for_critiquing, numerical_attributes_for_critiquing = switch_critique_level(interaction_log, cur_rec, categorical_attributes, numerical_attributes, switch_condition)
@@ -573,7 +582,7 @@ def generate_system_critiques_diversity_oriented(user_info, user_critique_prefer
         if 'pos' in categorical_critique_dict['genre'].keys() and 'niche' in categorical_critique_dict['genre']['pos']:
             niche_genre_list = [] # find all the niche genres in the recommendation pool
             for item in processed_item_pool:
-                if item['genre'] == 'niche' and item['realgenre'] not in niche_genre_list:
+                if item['genre'] == 'niche' and 'realgenre' in item.keys() and item['realgenre'] not in niche_genre_list:
                     if item['realgenre'] not in previous_occured_genres and item['realgenre'] in whole_genre_list:
                         niche_genre_list.append(item['realgenre'])
             if len(niche_genre_list) >= 5:
