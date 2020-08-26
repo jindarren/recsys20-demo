@@ -666,7 +666,7 @@ html
                         label Strongly agree
                 label.statement
                     span.required *
-                    | 23. I feel confident that I would like the songs in the created playlist (20 songs). 
+                    | 23. I feel confident that I like the songs in the created playlist (20 songs). 
                 ul#post-23.likert
                     li
                         input(type='radio', name='group23', value='1')
@@ -716,7 +716,7 @@ html
                         label Strongly agree
                 label.statement
                     span.required *
-                    | 25. The songs in the created playlist (20 songs) are novel and pleasantly surprising to me.
+                    | 25. The songs in the created playlist (20 songs) are overall pleasantly surprising to me.
                 ul#post-25.likert
                     li
                         input(type='radio', name='group25', value='1')
@@ -829,7 +829,7 @@ html
                     var que2List = formList.concat(openQuestionList)
 
                     window.localStorage.setItem("que2",que2List)
-                    
+
                     var log = {
                         id: window.localStorage.getItem("userid"),
                         que2: que2List,
