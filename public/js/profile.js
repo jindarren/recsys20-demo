@@ -289,7 +289,7 @@ $("#next2").on("click", function(){
 	storage.selectedTrackData = JSON.stringify(selectedTrackData)
 	storage.selectedTracks = selectedTracks.toString()
 
-	if(storage.selectedTracks ==undefined){
+	if(storage.selectedTracks ==undefined || storage.selectedTracks.length == 0){
 		alert("Please select at least one song your like.")
 	}else{
 		if(storage.selectedTracks.split(',').length==0)
@@ -311,7 +311,7 @@ $("#next2-back").on("click", function(){
 $("#next3").on("click", function(){
 	storage.selectedArtistData = JSON.stringify(selectedArtistData)
 	storage.selectedArtists = selectedArtists.toString()
-	if(storage.selectedArtists ==undefined){
+	if(storage.selectedArtists ==undefined || storage.selectedArtists.length == 0){
 		alert("Please select at least one artist your like.")
 	}else{
 		if(storage.selectedArtists.split(",").length==0)
@@ -329,7 +329,7 @@ $("#next3-back").on("click", function(){
 })
 
 $("#next4").on("click", function(){
-	if(storage.selectedGenres ==undefined){
+	if(storage.selectedGenres ==undefined || storage.selectedGenres.length == 0){
 		alert("Please select at least one music genre you like.")
 	}else{
 		if(storage.selectedGenres.split(",").length==0)
