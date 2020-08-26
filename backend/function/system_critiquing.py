@@ -303,17 +303,22 @@ def switch_critique_level(interaction_log, cur_rec, categorical_attributes, nume
     # if the total number of the liked songs in the current genre is larger than 3
     # if the total number of the disliked songs in the current genre is larger than 3
     # (2) Critiques
-    # if there are three consectutive rejected critiques
-    rejected_sc_condition = False
+    # if there are three consectutive rejected critiques (not genres)
+    # rejected_sc_condition = False
     num_rejected_sc = 0
     for utterance_info in previous_dialogue[pos_genre_criti:]:
         if utterance_info['action'].lower() == 'reject_suggestion':
-            num_rejected_sc += 1 
+            if 'critique' in utterance_info.keys():
+                critique_list = utterance_info['critique']
+            if len(critique_list) > 0:
+                for each_crit in critique_list:
+                    if 'genre' not in each_crit.keys():
+                        num_rejected_sc += 1 
         if utterance_info['action'].lower() == 'accept_suggestion':
             num_rejected_sc = 0 
 
     if num_rejected_sc >= switch_condition['num_rejected_sc_condition']:
-        rejected_sc_condition = True
+        # rejected_sc_condition = True
         categorical_attributes = ['genre']
         numerical_attributes = []
 
@@ -590,14 +595,15 @@ def generate_system_critiques_diversity_oriented(user_info, user_critique_prefer
             else:
                 genre_list_for_explore = niche_genre_list
                 other_genre_options = list(set(whole_genre_list)-set(previous_occured_genres)-set(genre_list_for_explore))
-                genre_list_for_explore.append(random.sample(other_genre_options, num_genre_list_for_explore-len(genre_list_for_explore)))
-
+                random_select_others = random.sample(other_genre_options, num_genre_list_for_explore-len(genre_list_for_explore))
+                for g in random_select_others:
+                    genre_list_for_explore.append(g)
         # if user reject "niche" -
         # elif 'neg' in categorical_critique_dict.keys() and 'niche' in categorical_critique_dict['neg']:
         else:
             other_genre_options = list(set(whole_genre_list)-set(previous_occured_genres))
             genre_list_for_explore = random.sample(other_genre_options, num_genre_list_for_explore)
-            
+        print(genre_list_for_explore)    
         return 'Random_Genres', genre_list_for_explore 
 
 

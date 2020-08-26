@@ -20,8 +20,8 @@ def determine_trigger_sc_or_not(interaction_log, cur_rec, categorical_attributes
 
     # Conditions
     num_disliked_songs_condition = 3 # If the user clicks the “Next” button for n consecutive times.
-    num_listened_songs_condition = 3 # If the total number of liked songs in the current genre >= n
-    num_liked_songs_condition = 3 # If the total number of liked songs in the current genre >= n
+    num_listened_songs_condition = 5 # If the number of listened songs (from last SC) (== num_recommendation_cycle) >= n
+    # num_liked_songs_condition = 3 # If the total number of liked songs in the current genre >= n
 
     cur_rec_genre = cur_rec['genre']
     if 'latest_dialog' in interaction_log.keys():
@@ -87,11 +87,11 @@ def determine_trigger_sc_or_not(interaction_log, cur_rec, categorical_attributes
         print("num_consectively_disliked_songs:", num_consectively_disliked_songs)
         print("num_satisfied_listend_songs:", num_satisfied_listend_songs)
         print("num_satisfied_liked_songs:", num_satisfied_liked_songs)
-        if num_satisfied_liked_songs >= num_liked_songs_condition :
-            time_helper.print_current_time()
-            print("num_satisfied_liked_songs: %d." % num_satisfied_liked_songs)
-            results_trigger_sc = True
-        elif num_satisfied_listend_songs >= num_listened_songs_condition :
+        # if num_satisfied_liked_songs >= num_liked_songs_condition :
+        #     time_helper.print_current_time()
+        #     print("num_satisfied_liked_songs: %d." % num_satisfied_liked_songs)
+        #     results_trigger_sc = True
+        if num_recommendation_cycle >= num_listened_songs_condition :
             time_helper.print_current_time()
             print("num_satisfied_listend_songs: %d." % num_satisfied_listend_songs)
             results_trigger_sc = True
