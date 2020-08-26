@@ -20,7 +20,7 @@ def determine_trigger_sc_or_not(interaction_log, cur_rec, categorical_attributes
 
     # Conditions
     num_disliked_songs_condition = 3 # If the user clicks the “Next” button for n consecutive times.
-    num_listened_songs_condition = 5 # If the number of listened songs (from last SC) (== num_recommendation_cycle) >= n
+    num_listened_songs_condition = 4 # If the number of listened songs (from last SC) (== num_recommendation_cycle) >= n
     # num_liked_songs_condition = 3 # If the total number of liked songs in the current genre >= n
 
     cur_rec_genre = cur_rec['genre']
@@ -39,7 +39,7 @@ def determine_trigger_sc_or_not(interaction_log, cur_rec, categorical_attributes
     pos_sys_crit = 0
     for utterance_info in previous_dialogue:
         action = utterance_info['action'].lower()
-        if action == "system_suggest":
+        if action == "system_suggest" or action == "user_critique" :
             if 'critique' in utterance_info.keys():
                 pos_sys_crit = number_utterance
         number_utterance += 1
