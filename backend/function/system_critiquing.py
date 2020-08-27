@@ -590,12 +590,22 @@ def generate_system_critiques_diversity_oriented(user_info, user_critique_prefer
                 if item['genre'] == 'niche' and 'realgenre' in item.keys() and item['realgenre'] not in niche_genre_list:
                     if item['realgenre'] not in previous_occured_genres and item['realgenre'] in whole_genre_list:
                         niche_genre_list.append(item['realgenre'])
-            if len(niche_genre_list) >= 5:
+            print(niche_genre_list)
+            if len(niche_genre_list) >= 3:
                 genre_list_for_explore = random.sample(niche_genre_list, num_genre_list_for_explore)
             else:
+                
                 genre_list_for_explore = niche_genre_list
                 other_genre_options = list(set(whole_genre_list)-set(previous_occured_genres)-set(genre_list_for_explore))
-                random_select_others = random.sample(other_genre_options, num_genre_list_for_explore-len(genre_list_for_explore))
+                random_select_others = []
+                if len(other_genre_options) < num_genre_list_for_explore-len(genre_list_for_explore):
+                    num_random_choice_num = len(other_genre_options) 
+                    random_select_others = random.sample(other_genre_options, num_random_choice_num)
+                    print(num_random_choice_num)
+                    print(random_select_others)
+
+                else:
+                    random_select_others = random.sample(other_genre_options, num_genre_list_for_explore-len(genre_list_for_explore))
                 for g in random_select_others:
                     genre_list_for_explore.append(g)
         # if user reject "niche" -
