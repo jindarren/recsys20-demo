@@ -91,9 +91,9 @@ def determine_trigger_sc_or_not(interaction_log, cur_rec, categorical_attributes
         #     time_helper.print_current_time()
         #     print("num_satisfied_liked_songs: %d." % num_satisfied_liked_songs)
         #     results_trigger_sc = True
-        if num_recommendation_cycle >= num_listened_songs_condition :
+        if num_recommendation_cycle >= num_listened_songs_condition:
             time_helper.print_current_time()
-            print("num_satisfied_listend_songs: %d." % num_satisfied_listend_songs)
+            print("num_recommendation_cycle: %d." % num_recommendation_cycle)
             results_trigger_sc = True
 
         elif num_consectively_disliked_songs >= num_disliked_songs_condition :

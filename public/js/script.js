@@ -1065,16 +1065,37 @@ $(document).ready(function () {
                     taskEndTimestamp : new Date()
                 }
 
-                var list = logger.likedSongs
+                var likedSongsList = logger.likedSongs
                 var rating = logger.rating
-                $(".pop-up iframe").attr("src","https://open.spotify.com/embed/track/"+list[0].id)
+                
+                var list = []
                 var topfive = []
+
+                function shuffle(array) {
+                    array.sort(() => Math.random() - 0.5);
+                    return array
+                }
+
+                // shuffle the order of the liked songs 
+                var liked_songs_number_list = []
+                for(var i=0; i<likedSongsList.length; i++){
+                    liked_songs_number_list.push(i)
+                }
+                var random_number_list = shuffle(liked_songs_number_list)
+                console.log("All liked songs: ",random_number_list.length)
+
+                for (var i in random_number_list){
+                    list.push(likedSongsList[random_number_list[i]])
+                }
+
+
+                $(".pop-up iframe").attr("src","https://open.spotify.com/embed/track/"+list[0].id)
                 for(var item in list){
                     var listSongName = list[item].name
                     var listSongArtist = list[item].artist
                     var listSongID = list[item].id
                     var listIndex = parseInt(item)+1
-                    var ratingValue = rating[item].value
+                    // var ratingValue = rating[item].value
                     if (item<10)
                         // $("#toplist1>ul").append("<li><input id="+"li"+listSongID+ " name="+listSongID+' type="checkbox" value='+listSongID+'><a class="songinfo" data='+listSongID+">&nbsp;&nbsp;("+listIndex+") "+listSongName+" - "+listSongArtist+"</a><span>&nbsp;["+ratingValue+"]</span></li>")
                         $("#toplist1>ul").append("<li><input id="+"li"+listSongID+ " name="+listSongID+' type="checkbox" value='+listSongID+'><a class="songinfo" data='+listSongID+">&nbsp;&nbsp;("+listIndex+") "+listSongName+" - "+listSongArtist+"</a></li>")
@@ -1215,7 +1236,7 @@ $(document).ready(function () {
 
                                             //console.log(updateData)
                                             updateUserModel(updateData).done(function (){
-                                                if (numberOfLikedSongs == 2 && isPreStudy) {
+                                                if (numberOfLikedSongs == 20 && isPreStudy) {
                                                     clearTimeout(showStartTask)
                                                     updateChat(robot, "Now, you should be familiar with the system. You can click the 'start study' button on the left to start.", "Initialize")
                                                     $("input#message").attr("disabled", true)
@@ -2136,7 +2157,7 @@ $(document).ready(function () {
 
                                             //console.log(updateData)
                                             updateUserModel(updateData).done(function (){
-                                                if (numberOfLikedSongs == 2 && isPreStudy) {
+                                                if (numberOfLikedSongs == 20 && isPreStudy) {
                                                     clearTimeout(showStartTask)
                                                     updateChat(robot, "Now, you should be familiar with the system. You can click the 'start study' button to start.", "Initialize")
                                                     $("input#message").attr("disabled", true)

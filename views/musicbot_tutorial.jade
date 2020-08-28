@@ -53,96 +53,126 @@ html
                 text-align:center;
             }
     body
+        h4(style="text-align:center") MusicBot Tutorial
         #part1.container
-            h4(style="text-align:center") MusicBot Tutorial
+            
             p In this tutorial, we will briefly introduce our interface and how you can interact with our music bot, especially the ways of tuning recommendations for exploring diverse songs. 
 
             h5(style="color:red") Our interface consists of the following THREE components: 
             
-            div(style='width:90%;height:auto')#interface_uc
+            div(style='width:100%;height:auto')#interface_uc
                 img(src="img/interface_uc.jpg")
-                figcaption Figure 1: Our Experimental Interface
+                //- figcaption Figure 1: Our Experimental Interface
 
-            div(style='width:90%;height:auto')#interface_sc
+            div(style='width:100%;height:auto')#interface_sc
                 img(src="img/interface_sc.jpg")
-                figcaption Figure 1: Our Experimental Interface
+                //- figcaption Figure 1: Our Experimental Interface
                 
             ul
-                li The MusicBot (see (B)): The dialogue window shows all happened conversations between you and the bot. The bot shows a song in a card, which allows the user to control the music. 
+                li The <b>MusicBot</b> (see (B)): The dialogue window shows all happened conversations between you and the bot. The bot shows a song in a card, which allows the user to control the music. 
                     b Note that in Mac OS systems or old Windows systems, 
                     | you may need to manually pause the currently played song before playing a new song. For each song, we show a set of feedback buttons 
-                    sapn#feedback_des (i.e.., “Like”, “Next”) 
+                    sapn#feedback_des (i.e.., "Like", "Next") 
                     | under the card. 
-                li The rating widget (see (A)): When you click the “Like” button, the currently played song will be added to the list of liked songs for you to give a rating in terms of its pleasant surprise.
-                li The instruction panel (see (C)): It explains the supported features with some examples that you can communicate with our music bot for tuning recommendations.
+                li The <b>rating widget</b> (see (A)): When you click the “Like” button, the currently played song will be added to the list of liked songs for you to give a rating in terms of its pleasant surprise.
+                li The <b>instruction panel</b> (see (C)): It explains the supported features with some examples that you can communicate with our music bot for tuning recommendations.
+            hr
+            .row.justify-content-center
+                button#next1.btn.btn-success Next, I confirm that I have read and understood the content.
 
-            h5(style="color:red")#way_tune_recom How to Tune Recommendations 
+        #part2.container
+            h5 Explanation of Music Features
+            
+            p You can tune recommendations by audio features, music categories or artists when communicating with the music chatbot.
+            
+            div(style='width:100%;height:auto')
+                img(src="img/feature_explanation.jpg")
+           
+            hr
+            .row.justify-content-center
+                button#next2-back.btn.btn-primary Back
+                button#next2.btn.btn-success Next, I confirm that I have read and understood the content.
 
-            h6(style='font-weight: bold')  1. Try textual input to tell the bot what kind of music you are looking for.
+        #part3.container
 
-            div(style='width:90%;height:auto')
+            h5 Tune Recommendations: 
+                b(style='color:red') Tell the bot what kind of music you are looking for
+            
+            //- h6(style='font-weight: bold') Try textual input to tell the bot what kind of music you are looking for (see figure below).
+
+            div(style='width:100%;height:auto')
                 img(src="img/function_uc.jpg")
-                figcaption Figure 2: Tune recommendation by telling the bot what kind of music you are looking for.
-            p 
-            p You may consider to tune recommendations by audio features, music categories or artists. 
-            ul  
-                li <b><u> Audio Features include: </u></b>
-                ul
-                    li  <b> Energy: </b> Energy represents a perceptual measure of intensity and activity. Typically, energetic tracks feel fast, loud, and noisy. For example, death metal has high energy, while a Bach prelude scores low on the scale.
-                    li  <b> Danceability: </b> Danceability describes how suitable a track is for dancing based on a combination of musical elements including tempo, rhythm stability, beat strength, and overall regularity.
-                    li  <b> Speechiness: </b> Speechiness detects the presence of spoken words in a track.
-                    li  <b> Tempo: </b> Tempo is the speed or pace of a given piece and derives directly from the average beat duration.
-                    li  <b> Valence: </b> Tracks with high valence sound more positive (e.g. happy, cheerful, euphoric), while tracks with low valence sound more negative (e.g. sad, depressed, angry).
-                li <b><u>Music Categories</u></b> contain genres/types of music such as  pop, rock, jazz, R&B and classic.
-                li <b><u>Artists</u></b> include singers, producers and musicians.
+                //- figcaption Figure 2: Tune recommendation by telling the bot what kind of music you are looking for.
+            
+            p Some examples of tuning recommendations are shown on the right side panel and you may pause the mouse over the name of a specific feature to see its associated explanation.
+            
 
-            p Some examples of tuning recommendations are shown on the right side panel and you may pause the mouse over the name of a specific feature to see its associated explanation (see Figure 2).
+            hr
+            .row.justify-content-center
+                button#next3-back.btn.btn-primary Back
+                button#next3.btn.btn-success Next, I confirm that I have read and understood the content.
+
+        #part4.container
+            h5 Tune Recommendations: 
+                b(style='color:red') Consider the bot's suggestion for exploring music
+            br
+            p  The bot's suggestion aims to help you find good music. You can ask the bot to suggest the way of tuning recommendations by clicking the "Let bot suggest" button (see figure below).
+            
+            div(style='width:100%;height:auto')
+                img(src="img/function_sc.jpg")
+                //- figcaption Figure 3: Ask the bot to suggest the way of tuning recommendations
+            hr
+            .row.justify-content-center
+                button#next4-back.btn.btn-primary Back
+                button#next4.btn.btn-success Next, I confirm that I have read and understood the content.
+        
+        #part5.container
+
+            h5 "Like" or "Next" 
+            
+            p When you find a song that suits your tastes, you can click the "Like" button to add it to the list of liked songs (see figure below). 
+                | After liking it, please rate the liked song in terms of its pleasant surprise (on the left side). 
+            p You can also click the "Next" button if you would like to skip the current song and listen to the next one. 
+            //- base version
+            div(style='width:100%;height:auto')#uc_like_fig
+                img(src="img/like_uc.jpg")
+                //- figcaption Figure 2: Rate the liked song
             //- diversity/preference_oriented version
-
-            p 
-
-            h6(style='font-weight: bold')#sc_des 2. Try to consider the bot’s suggestion for exploring music. 
-            p#sc_des2  The bot's suggestion aims to help you find good music. You can ask the bot to suggest the way of tuning recommendations by clicking the "Let bot suggest" button (see Figure 3).
-
+            div(style='width:100%;height:auto')#sc_like_fig
+                img(src="img/like_sc.jpg")
+                //- figcaption Figure 2: Rate the liked song
 
             
-            div(style='width:90%;height:auto')#sc_des_fig
-                img(src="img/function_sc.jpg")
-                figcaption Figure 3: Ask the bot to suggest the way of tuning recommendations
-
-
-            p 
-
-            h6(style='font-weight: bold')#des_like_sc_4   2. “Like“ or “Next” 
-            p When you find a song that suits your tastes, you can click the “Like” button to add it to the list of liked songs 
-                span#figure_like_sc_4 (see Figure 3). 
-                | After liking it, please rate the liked song in terms of its pleasant surprise (on the left side). 
-            p You can also click the “Next” button if you would like to skip the current song and listen to the next one. 
-            //- base version
-            div(style='width:90%;height:auto')#uc_like_fig
-                img(src="img/like_uc.jpg")
-                figcaption Figure 3: Rate the liked song
-
-
-            //- diversity/preference_oriented version
-            div(style='width:90%;height:auto')#sc_like_fig
-                img(src="img/like_sc.jpg")
-                figcaption Figure 4: Rate the liked song
-
+            hr
+            .row.justify-content-center
+                button#next5-back.btn.btn-primary Back
+                button#next5.btn.btn-success Next, I confirm that I have read and understood the content.
+        
+            
+        #part6.container
+            
             h5 Study Task: 
-            p Please use our MusicBot to discover songs in different music types as much as possible,
-                b and create a playlist that contains 20 pieces of music that fit your taste, 
-                | and then rate the liked songs. Then, please 
-                b select the top-5 most preferred songs 
-                | from your created playlist. 
+            br
+            p Please use our MusicBot to discover songs in different music types as much as possible, and 
+                ol
+                    li Create a playlist that contains 20 pieces of music that fit your taste, and then rate the liked songs in terms of its <b>pleasant surprise</b>.
+                    li Select the top-5 most preferred songs from your created playlist. 
 
-            h6 Warm up before starting the study: 
-            p Now, please click on the button “Next” to get familiar with the music bot by trying the ways of tuning recommendations before starting the study.
+            br 
+            h5(style="color:red") Before starting the study: 
+            p You have <b>1 minute</b> to get familiar with our interface and test the music bot. 
+            p You can also click the button <b>"Start Study"</b> whenever you are ready to start the task.
+            div(style='width:100%;height:auto')
+                img(src="img/warm_up.png")
+
+            br 
+            p Now, you can click the button <b>"OK"</b> to test the music bot. 
 
 
             hr
             .row.justify-content-center
-                button#next.btn.btn-success Next
+                button#next6-back.btn.btn-primary Back
+                button#next.btn.btn-success OK
 
         link(href='../bootstrap/dist/css/bootstrap.min.css', rel='stylesheet')
         link(href='../jquery-ui/themes/base/jquery-ui.min.css', rel='stylesheet')
@@ -151,27 +181,92 @@ html
         script(src = "js/popper.min.js", charset = 'utf-8')
         script(src = "../bootstrap/dist/js/bootstrap.min.js")
         script.
+            $("#part1").show()
+            $("#part2").hide()
+            $("#part3").hide()
+            $("#part4").hide()
+            $("#part5").hide()
+            $("#part6").hide()
+
             var platform = window.location.search.substring(1)
 
             var redirectedLink = window.localStorage.getItem("setting")
 
             if (redirectedLink == '/index?base'){
-                $("#sc_des").hide()
-                $("#sc_des2").hide()
                 $("#interface_sc").hide()
-                $("#sc_des_fig").hide()
                 $("#sc_like_fig").hide()
             }
             else{
                 $("#interface_uc").hide()
                 $("#uc_like_fig").hide()
-                $("#feedback_des").text("(i.e.., “Like”, “Next”, “Let bot suggest”) ")
-                $("#way_tune_recom").text("How to Tune Recommendations (there are THREE ways)")
-                $("#des_like_sc_4").text("3. “Like“ or “Next” ")
-                $("#figure_like_sc_4").text("(see Figure 4). ")
+                $("#feedback_des").text("(i.e.., \"Like\", \"Next\”, \"Let bot suggest\") ")
             }
 
-            $("#next").click(function () {
+            $("#next1").on("click", function(){
+                $("#part1").hide();
+                $("#part2").show();
+            })
+
+            $("#next2-back").on("click", function(){
+                $("#part2").hide()
+                $("#part1").show()
+            })
+
+            $("#next2").on("click", function(){
+                $("#part2").hide();
+                $("#part3").show();
+            })
+
+            $("#next3-back").on("click", function(){
+                $("#part3").hide()
+                $("#part2").show()
+            })
+            
+            $("#next3").on("click", function(){
+                $("#part3").hide();
+                if (redirectedLink == '/index?base'){
+                    $("#part5").show();
+                }
+                else{
+                    $("#part4").show();
+                }
+            })
+
+            $("#next4-back").on("click", function(){
+                $("#part4").hide()
+                $("#part3").show()
+            })
+            $("#next4").on("click", function(){
+                $("#part4").hide();
+                $("#part5").show();
+            })
+
+
+            $("#next5-back").on("click", function(){
+                $("#part5").hide()
+                if (redirectedLink == '/index?base'){
+                    $("#part3").show();
+                }
+                else{
+                    $("#part4").show();
+                }
+            })
+
+            $("#next5").on("click", function(){
+                $("#part5").hide();
+                $("#part6").show();
+            })
+            
+            $("#next6-back").on("click", function(){
+                $("#part6").hide()
+                $("#part5").show()
+            })
+
+
+            $("#next").on("click", function(){
                 window.location.href = redirectedLink
             })
+
+
+        
 

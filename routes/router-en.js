@@ -607,7 +607,7 @@ var getAudioFeatures = function(token, data) {
             })
         })
     }else{
-        console.log(data)
+        console.log("No track data:",data)
     }
 
 }
@@ -761,19 +761,26 @@ router.post('/initiatewithprofile', function(req, res) {
                 artistText += artistNames[item]+", "
             }
             artistText = artistText.substr(0,artistText.length-2)
-
-            getAudioFeatures(token, data3).then(function(data4) {
-                for (var i = data4.length - 1; i >= 0; i--) {
-                    if (recResult.indexOf(data4[i])<0){
-                        data4[i].seed = artistText
-                        data4[i].seedType = "artist"
-                        recResult.push(data4[i])
+            console.log(artistText)
+            if (data3.length>0){
+                getAudioFeatures(token, data3).then(function(data4) {
+                    for (var i = data4.length - 1; i >= 0; i--) {
+                        if (recResult.indexOf(data4[i])<0){
+                            data4[i].seed = artistText
+                            data4[i].seedType = "artist"
+                            recResult.push(data4[i])
+                        }
                     }
-                }
-                resolve(data4)
-            }).catch(function (error) {//加上catch
-                console.log(error);
-            })
+                    resolve(data4)
+                }).catch(function (error) {//加上catch
+                    console.log(error);
+                })
+            }
+            else{
+                console.log("Initial Recommendations based on Artists:", data3)
+                resolve([])
+            }
+
         }).catch(function (error) {//加上catch
             console.log(error);
         })
