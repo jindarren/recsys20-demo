@@ -97,16 +97,27 @@ html
                 }
             }
     body
+        h3(style="text-align:center") Build Your Listening Profile
+        br 
         p It seems that you are not a regular Spotify user. Our system cannot generate recommendations based on your profile.
-        p(style="background-color: aqua") But if you wish you can click&nbsp;
-            a(href="/profile" style="font-weight:bold") here&nbsp;
-            | to build your listening profile and continue to do the study.
-        p Thank you for your understanding.
+        p(style="background-color: aqua") Please click the button <b>"Build My Listening Profile"</b> to build your listening profile and continue to do the study.
+    
+        p Thank you for your understanding :)
 
-        div(style='width:20%;height:auto')
-            img(src="img/thanks.gif")
-        script(type = "text/javascript", src = "../jquery/dist/jquery.min.js", charset = 'utf-8')
-        script(type='text/javascript').
+        hr
+        .row.justify-content-center
+            button#buildProfile.btn.btn-primary Build My Listening Profile
+
+        //- div(style='width:20%;height:auto')
+        //-     img(src="img/thanks.gif")
+
+        link(href='../bootstrap/dist/css/bootstrap.min.css', rel='stylesheet')
+        link(href='../jquery-ui/themes/base/jquery-ui.min.css', rel='stylesheet')
+        script(src = "../jquery/dist/jquery.min.js", charset = 'utf-8')
+        //script(type = "text/javascript", src = "../jquery.cookie/jquery.cookie.js", charset = 'utf-8')
+        script(src = "js/popper.min.js", charset = 'utf-8')
+        script(src = "../bootstrap/dist/js/bootstrap.min.js")
+        script.
             var log = {
                 id: window.localStorage.getItem("userid"),
                 reason: "failure2",
@@ -127,4 +138,6 @@ html
                 }
             });
 
-
+            $("#buildProfile").on("click", function(){
+                window.location.href = '/profile'
+            })
