@@ -50,31 +50,32 @@ html
             p Thank you very much for taking part in this experiment, which aims at studying how users communicate with a music chatbot for exploring diverse songs.
 
             h5 Tasks:
-            p Please use our MusicBot to discover songs in different music types as much as possible, and&nbsp;
+            p(style="color:red") Please use our MusicBot to discover songs in different music types as much as possible, and&nbsp;
                 b create a playlist which contains 20 pieces of music that fit your taste,&nbsp;
                 | and then&nbsp;
-                b select the top-5 most preferred songs from the created playlist. &nbsp;
-                | The initial recommendations may not fit your taste, you need to tune recommendations by chatting with the bot. All music information used in this experiment was from Spotify.
+                b select the top-5 most preferred songs from your created playlist. &nbsp;
+            p The initial recommendations may not fit your taste, so you need to tune recommendations by chatting with the bot. All music information used in this experiment was from Spotify.
 
             h5 Duration:
             p Approximately 20 minutes (including time for filling out two questionnaires).
 
             h5 Task steps:
             p Four steps:
-            p Step 1: You will fill out your personal background (including a personality test);
-            p Step 2: You will read a tutorial about our music bot and get familiar with the music bot by trying the ways of tuning recommendations before starting the study;
-                ul
-                    li Try&nbsp
-                        b textual input&nbsp
-                        | to tell bot what kind of music you are looking for (Some examples of tuning recommendations are shown on the right side panel).
-                    li#sc_des Try to consider bot’s suggestions for searching for music, which aims to help you find good music.
-            p Step 3: After clicking on the button “Start study”, you will be asked to &nbsp
+            p Step 1: You will fill in a pre-study questionnaire (including personal background and a personality test).
+            p Step 2: You will read a tutorial about our MusicBot's functions and get familiar with the bot before starting the study.
+                //- ul
+                //-     li Try&nbsp
+                //-         b textual input&nbsp
+                //-         | to tell bot what kind of music you are looking for (Some examples of tuning recommendations are shown on the right side panel).
+                //-     li#sc_des Try to consider bot’s suggestions for searching for music, which aims to help you find good music.
+            p Step 3: After clicking on the button "Start study”, you will be asked to &nbsp
                 //- b 5 good songs that fit your taste &nbsp
                 b create a playlist which contains 20 pieces of music that fit your taste &nbsp
-                | using the music bot, and rate the liked songs. You can give feedback on recommended music by clicking “(like, next)” when you like or skip the current song.
+                | using the music bot, and rate the liked songs. You can give feedback on recommended music by clicking “like" or "next” when you like or skip the current song.
             p Step 4: You will&nbsp;
-                b select the top-5 most preferred songs from the created playlist. 
-            p Step 5: You will give us your overall preference over the used music chatbot. (Lastly, you can also try bonus questionnaire to get 25% more pay!)
+                b select the top-5 most preferred songs from your created playlist. 
+            p Step 5: You will give us your overall preference over the used music chatbot. 
+            p Step 6(optional): Yu can try bonus questionnaire to get 25% more pay.
 
             //- h5 Video tutorial:
             //- p Please carefully watch the following tutorial before the task.
@@ -92,12 +93,19 @@ html
             p We greatly appreciate your efforts and time in advance.
 
             hr
+            input#confirm_read(type='checkbox', checked=false)
+            span &nbsp; I have read the instructions carefully and I am ready to move on to the next step.
+
+            p
+            
             p#success(style="display:none")
                 i.fas.fa-check-circle
                 //- |  Great! You are a regular Spotify user. Please click the below button to start user study :)
                 |  Great! Please click the below button to start user study :)
+
+            
             .row.justify-content-center
-                button#next1.btn.disabled Start study
+                button#next1.btn.disabled Next: Fill in the pre-study questionnaire
 
         link(href='../bootstrap/dist/css/bootstrap.min.css', rel='stylesheet')
         link(href='../jquery-ui/themes/base/jquery-ui.min.css', rel='stylesheet')
@@ -106,6 +114,10 @@ html
         script(src = "js/popper.min.js", charset = 'utf-8')
         script(src = "../bootstrap/dist/js/bootstrap.min.js")
         script.
+            var check_status = false
+            $("#confirm_read").click(function () {
+                check_status = $(this).prop("checked")
+            })
             var userid;
             if (window.localStorage.getItem("buildProfile")!='true'){
                 var spotifyToken = "#{token}"
@@ -128,7 +140,7 @@ html
                 //UC video url
                 videoUrl = "xrMTv7uaDFI"
                 window.localStorage.setItem("setting", "/index?base")
-                $("#sc_des").hide()
+                //- $("#sc_des").hide()
             } else if (randomSetting == 1) {
                 //SC video url
                 videoUrl = "JIuYoyyrknE"
@@ -214,49 +226,57 @@ html
                                 }
 
                                 if (spotify_data_sufficiency || window.localStorage.getItem("buildProfile")=='true') {
-                                    $("#success").show()
+                                    //- $("#success").show()
                                     $("#next1").removeClass("disabled")
                                     $("#next1").addClass("btn-primary")
+                                    
                                     $(".btn-primary").on("click", function () {
+                                        
+                                        if (check_status== false)
+                                        {
+                                            alert("Please read the instructions carefully and check the box below.")
+                                        }
                                         // var start_timestamp = new Date()
                                         // window.localStorage.setItem("start_timestamp",start_timestamp.toString())
+                                        else{
 
-                                        var log = {
-                                            id: userid,
-                                            platform: window.localStorage.getItem("platform"),
-                                            setting: window.localStorage.getItem("setting"),
-                                            startTimestamp: new Date()
-                                            // logger: {},
-                                            // pool: [],
-                                            // que1: [],
-                                            // que2: [],
-                                            // que3: [],
-                                            // topRecommendedSong: {},
-                                            // user: {},
-                                            // completionCode: "",
-                                            // que1Timestamp: null,
-                                            // taskStartTimestamp:null,
-                                            // taskEndTimestamp:null,
-                                            // endTimestamp: null,
-                                            // codeTimestamp: null,
-                                            // bonusTimestamp: null,
-                                        }
-
-                                        $.ajax({
-                                            url: '/addRecord',
-                                            type: 'POST',
-                                            contentType: 'application/json',
-                                            data: JSON.stringify(log),
-                                            dataType: 'json',
-                                            success: function (data) {
-                                                console.log(data)
-                                                window.location.href = '/que1';
-                                            },
-                                            error: function (err) {
-                                                console.log(err)
+                                        
+                                            var log = {
+                                                id: userid,
+                                                platform: window.localStorage.getItem("platform"),
+                                                setting: window.localStorage.getItem("setting"),
+                                                startTimestamp: new Date()
+                                                // logger: {},
+                                                // pool: [],
+                                                // que1: [],
+                                                // que2: [],
+                                                // que3: [],
+                                                // topRecommendedSong: {},
+                                                // user: {},
+                                                // completionCode: "",
+                                                // que1Timestamp: null,
+                                                // taskStartTimestamp:null,
+                                                // taskEndTimestamp:null,
+                                                // endTimestamp: null,
+                                                // codeTimestamp: null,
+                                                // bonusTimestamp: null,
                                             }
-                                        });
 
+                                            $.ajax({
+                                                url: '/addRecord',
+                                                type: 'POST',
+                                                contentType: 'application/json',
+                                                data: JSON.stringify(log),
+                                                dataType: 'json',
+                                                success: function (data) {
+                                                    console.log(data)
+                                                    window.location.href = '/que1';
+                                                },
+                                                error: function (err) {
+                                                    console.log(err)
+                                                }
+                                            });
+                                        }
                                     })
                                 } 
                                 else {

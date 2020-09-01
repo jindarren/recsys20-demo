@@ -53,12 +53,12 @@ html
                 text-align:center;
             }
     body
-        h4(style="text-align:center") MusicBot Tutorial
+        p(style="color:red")#intro-tutorial Before you use our MusicBot, please first follow the tutorial to be familiar with our musicbot's functions and how you can interact with the bot, especially the ways of tuning recommendations for exploring diverse songs. 
+
+        h4(style="text-align:center")#tutorial_title MusicBot Tutorial (1/4)
         #part1.container
             
-            p In this tutorial, we will briefly introduce our interface and how you can interact with our music bot, especially the ways of tuning recommendations for exploring diverse songs. 
-
-            h5(style="color:red") Our interface consists of the following THREE components: 
+            h5 Our interface consists of the following THREE components: 
             
             div(style='width:100%;height:auto')#interface_uc
                 img(src="img/interface_uc.jpg")
@@ -68,17 +68,19 @@ html
                 img(src="img/interface_sc.jpg")
                 //- figcaption Figure 1: Our Experimental Interface
                 
-            ul
-                li The <b>MusicBot</b> (see (B)): The dialogue window shows all happened conversations between you and the bot. The bot shows a song in a card, which allows the user to control the music. 
-                    b Note that in Mac OS systems or old Windows systems, 
-                    | you may need to manually pause the currently played song before playing a new song. For each song, we show a set of feedback buttons 
-                    sapn#feedback_des (i.e.., "Like", "Next") 
-                    | under the card. 
-                li The <b>rating widget</b> (see (A)): When you click the “Like” button, the currently played song will be added to the list of liked songs for you to give a rating in terms of its pleasant surprise.
-                li The <b>instruction panel</b> (see (C)): It explains the supported features with some examples that you can communicate with our music bot for tuning recommendations.
+            //- ul
+            //-     li The <b>MusicBot</b> (see (B)): The dialogue window shows all happened conversations between you and the bot. The bot shows a song in a card, which allows the user to control the music. 
+            //-         b Note that in Mac OS systems or old Windows systems, 
+            //-         | you may need to manually pause the currently played song before playing a new song. For each song, we show a set of feedback buttons 
+            //-         sapn#feedback_des (i.e.., "Like", "Next") 
+            //-         | under the card. 
+            //-     li The <b>rating widget</b> (see (A)): When you click the “Like” button, the currently played song will be added to the list of liked songs for you to give a rating in terms of its pleasant surprise.
+            //-     li The <b>instruction panel</b> (see (C)): It explains the supported features with some examples that you can communicate with our music bot for tuning recommendations.
+           
+            
             hr
             .row.justify-content-center
-                button#next1.btn.btn-success Next, I confirm that I have read and understood the content.
+                button#next1.btn.btn-success I confirm that I have read and understood the content. Next &rarr;
 
         #part2.container
             h5 Explanation of Music Features
@@ -91,7 +93,7 @@ html
             hr
             .row.justify-content-center
                 button#next2-back.btn.btn-primary Back
-                button#next2.btn.btn-success Next, I confirm that I have read and understood the content.
+                button#next2.btn.btn-success I confirm that I have read and understood the content. Next &rarr;
 
         #part3.container
 
@@ -104,19 +106,21 @@ html
                 img(src="img/function_uc.jpg")
                 //- figcaption Figure 2: Tune recommendation by telling the bot what kind of music you are looking for.
             
-            p Some examples of tuning recommendations are shown on the right side panel and you may pause the mouse over the name of a specific feature to see its associated explanation.
+            //- p Some examples of tuning recommendations are shown on the right side panel and you may pause the mouse over the name of a specific feature to see its associated explanation.
             
 
             hr
             .row.justify-content-center
                 button#next3-back.btn.btn-primary Back
-                button#next3.btn.btn-success Next, I confirm that I have read and understood the content.
+                button#next3.btn.btn-success I confirm that I have read and understood the content. Next &rarr;
 
         #part4.container
             h5 Tune Recommendations: 
                 b(style='color:red') Consider the bot's suggestion for exploring music
             br
-            p  The bot's suggestion aims to help you find good music. You can ask the bot to suggest the way of tuning recommendations by clicking the "Let bot suggest" button (see figure below).
+            p  The bot's suggestion aims to help you find good music. You can ask the bot to suggest the way of tuning recommendations by clicking the 
+                b "Let bot suggest" 
+                | button (see figure below).
             
             div(style='width:100%;height:auto')
                 img(src="img/function_sc.jpg")
@@ -124,15 +128,15 @@ html
             hr
             .row.justify-content-center
                 button#next4-back.btn.btn-primary Back
-                button#next4.btn.btn-success Next, I confirm that I have read and understood the content.
+                button#next4.btn.btn-success I confirm that I have read and understood the content. Next &rarr;
         
         #part5.container
 
             h5 "Like" or "Next" 
             
-            p When you find a song that suits your tastes, you can click the "Like" button to add it to the list of liked songs (see figure below). 
-                | After liking it, please rate the liked song in terms of its pleasant surprise (on the left side). 
-            p You can also click the "Next" button if you would like to skip the current song and listen to the next one. 
+            //- p When you find a song that suits your tastes, you can click the "Like" button to add it to the list of liked songs (see figure below). 
+            //-     | After liking it, please rate the liked song in terms of its pleasant surprise (on the left side). 
+            //- p You can also click the "Next" button if you would like to skip the current song and listen to the next one. 
             //- base version
             div(style='width:100%;height:auto')#uc_like_fig
                 img(src="img/like_uc.jpg")
@@ -146,33 +150,34 @@ html
             hr
             .row.justify-content-center
                 button#next5-back.btn.btn-primary Back
-                button#next5.btn.btn-success Next, I confirm that I have read and understood the content.
+                button#next5.btn.btn-success I confirm that I have read and understood the content. Next &rarr;
         
             
         #part6.container
             
-            h5 Study Task: 
+            h5 Please read the study task again:  
             br
             p Please use our MusicBot to discover songs in different music types as much as possible, and 
                 ol
-                    li Create a playlist that contains 20 pieces of music that fit your taste, and then rate the liked songs in terms of its <b>pleasant surprise</b>.
-                    li Select the top-5 most preferred songs from your created playlist. 
+                    li Create a playlist that 
+                        b contains 20 pieces of music that fit your taste, 
+                        | and then rate the liked songs in terms of its <b>pleasant surprise</b>.
+                    li Select the 
+                        b top-5 most preferred songs from your created playlist. 
 
             br 
-            h5(style="color:red") Before starting the study: 
-            p You have <b>1 minute</b> to get familiar with our interface and test the music bot. 
-            p You can also click the button <b>"Start Study"</b> whenever you are ready to start the task.
+            h5(style="color:red") Warm-up period (1 minute to get familiar with our interface)
+            p You can click the button <b>"Start Study"</b> whenever you are ready to start the task.
             div(style='width:100%;height:auto')
-                img(src="img/warm_up.png")
+                img(src="img/warm_up.jpg")
 
-            br 
-            p Now, you can click the button <b>"OK"</b> to test the music bot. 
+           
 
 
             hr
             .row.justify-content-center
                 button#next6-back.btn.btn-primary Back
-                button#next.btn.btn-success OK
+                button#next.btn.btn-success OK, I am ready to enter the warm-up period.
 
         link(href='../bootstrap/dist/css/bootstrap.min.css', rel='stylesheet')
         link(href='../jquery-ui/themes/base/jquery-ui.min.css', rel='stylesheet')
@@ -181,63 +186,88 @@ html
         script(src = "js/popper.min.js", charset = 'utf-8')
         script(src = "../bootstrap/dist/js/bootstrap.min.js")
         script.
+
+            $("#intro-tutorial").show()
+
             $("#part1").show()
             $("#part2").hide()
             $("#part3").hide()
             $("#part4").hide()
             $("#part5").hide()
             $("#part6").hide()
-
             var platform = window.location.search.substring(1)
 
             var redirectedLink = window.localStorage.getItem("setting")
 
+            var num_tutorial_page;
             if (redirectedLink == '/index?base'){
                 $("#interface_sc").hide()
                 $("#sc_like_fig").hide()
+                num_tutorial_page = 4
+                $("#tutorial_title").text("MusicBot Tutorial (1/" + num_tutorial_page +")")
             }
             else{
                 $("#interface_uc").hide()
                 $("#uc_like_fig").hide()
-                $("#feedback_des").text("(i.e.., \"Like\", \"Next\”, \"Let bot suggest\") ")
+                num_tutorial_page = 5
+                $("#tutorial_title").text("MusicBot Tutorial (1/" + num_tutorial_page +")")
+                
             }
+            
 
+            
+            
             $("#next1").on("click", function(){
+                $("#intro-tutorial").hide();
                 $("#part1").hide();
+                $("#tutorial_title").text("MusicBot Tutorial (2/" + num_tutorial_page +")")
                 $("#part2").show();
+                
             })
 
             $("#next2-back").on("click", function(){
                 $("#part2").hide()
+                $("#intro-tutorial").show()
+                $("#tutorial_title").text("MusicBot Tutorial (1/" + num_tutorial_page +")")
                 $("#part1").show()
+                
             })
 
             $("#next2").on("click", function(){
                 $("#part2").hide();
+                $("#tutorial_title").text("MusicBot Tutorial (3/" + num_tutorial_page +")")
                 $("#part3").show();
             })
 
             $("#next3-back").on("click", function(){
                 $("#part3").hide()
+                $("#tutorial_title").text("MusicBot Tutorial (2/" + num_tutorial_page +")")
                 $("#part2").show()
+                
             })
             
             $("#next3").on("click", function(){
                 $("#part3").hide();
+                $("#tutorial_title").text("MusicBot Tutorial (4/" + num_tutorial_page +")")
                 if (redirectedLink == '/index?base'){
                     $("#part5").show();
+                    
                 }
                 else{
                     $("#part4").show();
                 }
+                
             })
 
             $("#next4-back").on("click", function(){
                 $("#part4").hide()
+                $("#tutorial_title").text("MusicBot Tutorial (3/" + num_tutorial_page +")")
                 $("#part3").show()
             })
+
             $("#next4").on("click", function(){
                 $("#part4").hide();
+                $("#tutorial_title").text("MusicBot Tutorial (5/" + num_tutorial_page +")")
                 $("#part5").show();
             })
 
@@ -245,20 +275,32 @@ html
             $("#next5-back").on("click", function(){
                 $("#part5").hide()
                 if (redirectedLink == '/index?base'){
+                    $("#tutorial_title").text("MusicBot Tutorial (3/" + num_tutorial_page +")")
                     $("#part3").show();
                 }
                 else{
+                    $("#tutorial_title").text("MusicBot Tutorial (4/" + num_tutorial_page +")")
                     $("#part4").show();
                 }
             })
 
             $("#next5").on("click", function(){
                 $("#part5").hide();
+                $("#tutorial_title").hide()
                 $("#part6").show();
+
             })
             
             $("#next6-back").on("click", function(){
+                $("#tutorial_title").show()
                 $("#part6").hide()
+                if (redirectedLink == '/index?base'){
+                    $("#tutorial_title").text("MusicBot Tutorial (4/" + num_tutorial_page +")")
+                }
+                else{
+                    $("#tutorial_title").text("MusicBot Tutorial (5/" + num_tutorial_page +")")
+                }
+                
                 $("#part5").show()
             })
 

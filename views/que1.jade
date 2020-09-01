@@ -108,7 +108,7 @@ html
             }
     body
         .wrap
-            h5.likert-header This is a pre-study survey
+            h5.likert-header This is a pre-study questionnaire (31 question items)
             p#description Please carefully respond to the following question items. Questions marked with
                 span.required &nbsp*&nbsp;
                 | are required fields.
@@ -600,7 +600,7 @@ html
 
                 label.statement
                     span.required *
-                    | 9. Efficient customer service is important to me.
+                    | 9. I tend to trust the recommender, even though having little knowledge of it.
                 ul#post-9.likert
                     li
                         input(type='radio', value='1', name='group9')
@@ -626,7 +626,7 @@ html
 
                 label.statement
                     span.required *
-                    | 10. I found it frustrating when a customer service representative could not immediately give me the information I need.
+                    | 10. Trusting someone or something is difficult.
                 ul#post-10.likert
                     li
                         input(type='radio', value='1', name='group10')
@@ -1171,80 +1171,28 @@ html
 
                 label.statement
                     span.required *
-                    | 31. I tend to trust the recommender, even though having little knowledge of it.
+                    | 31. How long have you been listening to music with Spotify?
                 ul#post-31.likert
                     li
                         input(type='radio', name='group31', value='1')
-                        label Strongly disagree
-                    li
-                        input(type='radio', name='group31', value='2')
-                        label Disgree
-                    li
-                        input(type='radio', name='group31', value='3')
-                        label Somewhat disagree
-                    li
-                        input(type='radio', name='group31', value='4')
-                        label Neutral
-                    li
-                        input(type='radio', name='group31', value='5')
-                        label Somewhat agree
-                    li
-                        input(type='radio', name='group31', value='6')
-                        label Agree
-                    li
-                        input(type='radio', name='group31', value='7')
-                        label Strongly agree
-
-                label.statement
-                    span.required *
-                    | 32. Trusting someone or something is difficult.
-                ul#post-32.likert
-                    li
-                        input(type='radio', name='group32', value='1')
-                        label Strongly disagree
-                    li
-                        input(type='radio', name='group32', value='2')
-                        label Disgree
-                    li
-                        input(type='radio', name='group32', value='3')
-                        label Somewhat disagree
-                    li
-                        input(type='radio', name='group32', value='4')
-                        label Neutral
-                    li
-                        input(type='radio', name='group32', value='5')
-                        label Somewhat agree
-                    li
-                        input(type='radio', name='group32', value='6')
-                        label Agree
-                    li
-                        input(type='radio', name='group32', value='7')
-                        label Strongly agree
-
-                label.statement
-                    span.required *
-                    | 33. How long have you been listening to music with Spotify?
-                ul#post-33.likert
-                    li
-                        input(type='radio', name='group33', value='1')
                         label Never 
                     li
-                        input(type='radio', name='group33', value='2')
+                        input(type='radio', name='group31', value='2')
                         label Less than 1 month
                     li
-                        input(type='radio', name='group33', value='3')
+                        input(type='radio', name='group31', value='3')
                         label 1-3 months
                     li
-                        input(type='radio', name='group33', value='4')
+                        input(type='radio', name='group31', value='4')
                         label 3-6 months
                     li
-                        input(type='radio', name='group33', value='5')
+                        input(type='radio', name='group31', value='5')
                         label half a year to 1 year
                     li
-                        input(type='radio', name='group33', value='6')
+                        input(type='radio', name='group31', value='6')
                         label 1-3 years
                     li
-                        input(type='radio', name='group33', value='7')
+                        input(type='radio', name='group31', value='7')
                         label More than 3 years
 
 
@@ -1263,7 +1211,7 @@ html
                 $("#user-id").text("Prolific ID:")
             }
 
-            var formList = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null] //33
+            var formList = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null] //35
             $("li > input").click(function () {
                 var statement = parseInt($(this).parent().parent().attr("id").replace(/[^0-9]/ig, ""))
                 var option = parseInt($(this).attr("value"))
@@ -1273,7 +1221,7 @@ html
             })
             $(".clear").click(function (event) {
                 $("input").checked = false;
-                formList = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null] //33
+                formList = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null] //35
             })
             $(".submit").click(function (event) {
                 event.preventDefault()

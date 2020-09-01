@@ -200,13 +200,13 @@ $("#search-track").click(function(){
 })
 
 
-var genres_text = ["afrobeat-非洲打击乐风格","electro-电气音乐","blues-蓝调布鲁斯","ska","comedy-喜剧","country-乡村音乐","piano-钢琴","electronic-电子音乐","folk-民谣","hip-hop-嘻哈","jazz-爵士乐","latin-拉丁音乐","pop-流行","r-n-b-节奏蓝调","rock-摇滚音乐"]
+var genres_text = ["afrobeat-非洲打击乐风格","electro-电气音乐","blues-蓝调布鲁斯","acoustic","comedy-喜剧","country-乡村音乐","piano-钢琴","electronic-电子音乐","folk-民谣","hip-hop-嘻哈","jazz-爵士乐","latin-拉丁音乐","pop-流行","r-n-b-节奏蓝调","rock-摇滚音乐"]
 
-var genres = ["afrobeat","electro","blues","ska","comedy","country","piano","electronic","folk","hip-hop","jazz","latin","pop","r-n-b","rock"]
+var genres = ["afrobeat","electro","blues","acoustic","comedy","country","piano","electronic","folk","hip-hop","jazz","latin","pop","r-n-b","rock"]
 
 
 for(var i in genres){
-	$(".genres").append('<div class="form-check"  id="'+genres[i]+'"><input class="form-check-input" type="checkbox" value='+genres[i]+'><label class="form-check-label">'+genres_text[i]+'</label></div>')
+	$(".genres").append('<div class="form-check"  id="'+genres[i]+'"><input class="form-check-input" type="checkbox" value='+genres[i]+'><label class="form-check-label">'+genres[i]+'</label></div>')
 }
 
 for(var i in genres){

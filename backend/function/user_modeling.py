@@ -25,17 +25,19 @@ def initialize_user_preference_value(user_historical_record, user_selected_artis
     # print(user_historical_record)
     user_historical_record_dict = {}
     user_preference_value_dict = {}
-    for each_record in user_historical_record:
-        user_historical_record_dict[len(user_historical_record_dict)+1] = each_record
-    
-    user_historical_record_df = pd.DataFrame.from_dict(user_historical_record_dict, orient='index')
-    # print(user_historical_record_df.head())
-    for attr in categorical_attributes:
-        user_historical_attr_df = user_historical_record_df[attr]
-        user_preference_value_dict[attr] = categorical_attribute_preference(user_historical_attr_df)
-    for attr in numerical_attributes:
-        user_historical_attr_df = user_historical_record_df[attr]
-        user_preference_value_dict[attr] = numerical_attribute_preference(user_historical_attr_df, attr)
+
+    if len(user_historical_record) > 0:
+        for each_record in user_historical_record:
+            user_historical_record_dict[len(user_historical_record_dict)+1] = each_record
+        
+        user_historical_record_df = pd.DataFrame.from_dict(user_historical_record_dict, orient='index')
+        
+        for attr in categorical_attributes:
+            user_historical_attr_df = user_historical_record_df[attr]
+            user_preference_value_dict[attr] = categorical_attribute_preference(user_historical_attr_df)
+        for attr in numerical_attributes:
+            user_historical_attr_df = user_historical_record_df[attr]
+            user_preference_value_dict[attr] = numerical_attribute_preference(user_historical_attr_df, attr)
     
     for each in user_selected_artists:
         attr = 'artist'
@@ -50,6 +52,7 @@ def initialize_user_preference_value(user_historical_record, user_selected_artis
     for each in user_selected_genres:    
         attr = 'genre'
         item_v = each
+
         if item_v in user_preference_value_dict[attr].keys():
             user_preference_value_dict[attr][item_v] = user_preference_value_dict[attr][item_v] + 1
         else:
@@ -60,7 +63,7 @@ def initialize_user_preference_value(user_historical_record, user_selected_artis
     # pp.pprint(user_preference_value_dict)
     time_helper.print_current_time()
     print("Initialize User Model ---- Estimate users' preference value for each attribute from users' interaction history.")
-   
+    
     return user_preference_value_dict 
 
 def initialize_user_preference_attribute_frequency(categorical_attributes, numerical_attributes):
@@ -83,6 +86,7 @@ def initialize_user_preference_model(user_historical_record, user_selected_artis
     user_preference_attribute_frequency = initialize_user_preference_attribute_frequency( categorical_attributes, numerical_attributes)
     user_preference_model = {'preference_value':user_initial_preference_value, 'attribute_frequency':user_preference_attribute_frequency}
 
+    # print(user_preference_model)
     time_helper.print_current_time()
     print("Initialize User Model ---- Preference Model about %d categorical attributes." % len(categorical_attributes))
     time_helper.print_current_time()

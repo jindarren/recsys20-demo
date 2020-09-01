@@ -731,6 +731,105 @@ router.post('/trigger_sys_cri',function (req,res) {
 })
 
 
+router.post('/initiateforWarmup', function(req, res) {
+    //pass token to the webAPI used by recommender
+
+    var token = req.body.token;
+    var userid = req.body.id;
+
+    var recResult = [];
+
+    var genres = req.body.genres;
+    var tracks = [
+        {
+        "id": "07nH4ifBxUB4lZcsf44Brn",
+        "name": "Blame",
+        "language": "English",
+        "popularity": 74,
+        "artist": "Calvin Harris",
+        "link": "https://p.scdn.co/mp3-preview/4967e634c9aeca0e19fc7ef58fa89d393ab44b29?cid=a1d9f15f6ba54ef5aea0c5c4e19c0d2c",
+        "danceability": 0.413,
+        "energy": 0.856,
+        "speechiness": 0.0808,
+        "tempo": 128.017,
+        "valence": 0.35,
+        "genre": "pop",
+        "seed": "Owl City,Imagine Dragons,Armin van Buuren,Capital Cities, and Calvin Harris",
+        "seedType": "artist"
+        }
+    ];
+   
+    var genreReq = new Promise((resolve, reject) => {
+
+        recom(token).getRecommendationByGenre(genres.toString()).then(function(data){
+            var genreText = ""
+
+            for(var item in genres){
+                genreText += genres[item]+", "
+            }
+            genreText = genreText.substr(0,genreText.length-2)
+
+            getAudioFeatures(token, data).then(function(data2) {
+                for (var i = data2.length - 1; i >= 0; i--){
+                    if (recResult.indexOf(data2[i])<0){
+                        data2[i].seed = genreText
+                        data2[i].seedType = "genre"
+                        recResult.push(data2[i])
+                    }
+                }
+                resolve(data2)
+            }).catch(function (error) {//加上catch
+                console.log(error);
+            })
+        }).catch(function (error) {//加上catch
+            console.log(error);
+        })
+
+    })
+
+    Promise.all([genreReq]).then(function(dataList) {
+        // console.log(dataList)
+        for(var data in dataList ){
+            for( var item in dataList[data]){
+                if(recResult.indexOf(dataList[data][item])<0)
+                    recResult.push(dataList[data][item])
+            }
+        }
+
+        var user = new User({
+            id: userid,
+            pool:recResult,
+            new_pool:[],
+            user: {
+                id:userid,
+                preferenceData: {
+                    artist: [],
+                    track: tracks,
+                    genre: genres,
+                    language: "English",
+                    timestamp: new Date()
+                },
+                user_preference_model:{},
+                user_constraints:{},
+                user_critique_preference:{}
+            },
+            topRecommendedSong:{},
+            logger:{},
+        });
+
+        res.json(user)
+
+        //save a new user
+        // user.save(function(err) {
+        //     if (err)
+        //         console.log(err)
+        //     console.log("user profile is added")
+        // })
+    }).catch(function (error) {//加上catch
+        console.log(error);
+    })
+})
+
 router.post('/initiatewithprofile', function(req, res) {
     //pass token to the webAPI used by recommender
 

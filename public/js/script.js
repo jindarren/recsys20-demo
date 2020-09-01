@@ -23,6 +23,12 @@ var usermodel = {}
 var initiateLink, initiateData;
 var taskStartTimestamp;
 
+var initateWarmUpData = {
+    token:spotifyToken,
+    id:userid,
+    genres : ['pop'],
+}
+
 if(window.localStorage.getItem("buildProfile")=="true"){
     initiateLink = "/initiatewithprofile";
     initiateData = {
@@ -93,8 +99,7 @@ $(document).ready(function () {
         })
     }, expire * 1000)
 
-    // By Wanling
-    // Right Panel 
+
     // Log users' browse behavior on explanation on audio features 
     $(".exp").on("mouseenter", function () {
         var feature = $(this).text()
@@ -109,7 +114,6 @@ $(document).ready(function () {
         else if (feature == "Valence:")
             logger.exp_valence.push(new Date().getTime())
     })
-    // By Wanling
     // Log users' click behavior on explanation on three categories: features; categories; artists   
     $("h3").on("click", function () {
         var title = $(this).text()
@@ -301,11 +305,11 @@ $(document).ready(function () {
 
 
     $.ajax({
-        url: initiateLink,
+        url: "/initiateforWarmup",
         type: "POST",
         contentType: "application/json;charset=utf-8",
         dataType: "json",
-        data:JSON.stringify(initiateData),
+        data:JSON.stringify(initateWarmUpData),
         success: function (data) {
 
             usermodel = data
@@ -537,7 +541,7 @@ $(document).ready(function () {
                     success: function (data2) {
 
                         usermodel = data2
-                        //console.log(usermodel)
+                        console.log(usermodel)
                         topRecommendedSong = usermodel.pool[0];
                         usermodel.topRecommendedSong = topRecommendedSong
 
@@ -716,7 +720,7 @@ $(document).ready(function () {
             }
 
             function getSysCrit() {
-                $("input#message").attr("disabled", true)
+                // $("input#message").attr("disabled", true)
                 $("input#message").attr("placeholder", "Please wait for a moment :)")
 
                 var dialogNum = logger.dialog.length
@@ -1033,11 +1037,19 @@ $(document).ready(function () {
             //超时开始
             showStartTask = setTimeout(
                 function () {
+                    $("#round" + round + " button").fadeOut()
                     updateChat(robot, "I think you can click the 'start study' button on the left to start.", "Initialize")
                     $("input#message").attr("disabled", true)
                     $("input#message").attr("placeholder", "Please click the 'start study' button to start!")
                     $(".feedback-box").hide()
+                    $("#" + logger.listenedSongs.slice(-1)[0].id + " .rating").rating('refresh', {
+                        disabled: true,
+                        showClear: false,
+                        showCaption: true
+                    });
                     $("#start-task").addClass("start-animation")
+
+
                 },1000*60
             )
 
@@ -1098,10 +1110,10 @@ $(document).ready(function () {
                     // var ratingValue = rating[item].value
                     if (item<10)
                         // $("#toplist1>ul").append("<li><input id="+"li"+listSongID+ " name="+listSongID+' type="checkbox" value='+listSongID+'><a class="songinfo" data='+listSongID+">&nbsp;&nbsp;("+listIndex+") "+listSongName+" - "+listSongArtist+"</a><span>&nbsp;["+ratingValue+"]</span></li>")
-                        $("#toplist1>ul").append("<li><input id="+"li"+listSongID+ " name="+listSongID+' type="checkbox" value='+listSongID+'><a class="songinfo" data='+listSongID+">&nbsp;&nbsp;("+listIndex+") "+listSongName+" - "+listSongArtist+"</a></li>")
+                        $("#toplist1>ul").append("<li><input id="+"li"+listSongID+ " name="+listSongID+' type="checkbox" value='+listSongID+'><a class="songinfo" data='+listSongID+">&nbsp;&nbsp;"+listSongName+" - "+listSongArtist+"</a></li>")
                     else if(item>=10)
                         // $("#toplist2>ul").append("<li><input id="+"li"+listSongID+ " name="+listSongID+' type="checkbox" value='+listSongID+'><a class="songinfo" data='+listSongID+">&nbsp;&nbsp;("+listIndex+") "+listSongName+" - "+listSongArtist+"</a><span>&nbsp;["+ratingValue+"]</span></li>")
-                        $("#toplist2>ul").append("<li><input id="+"li"+listSongID+ " name="+listSongID+' type="checkbox" value='+listSongID+'><a class="songinfo" data='+listSongID+">&nbsp;&nbsp;("+listIndex+") "+listSongName+" - "+listSongArtist+"</a></li>")
+                        $("#toplist2>ul").append("<li><input id="+"li"+listSongID+ " name="+listSongID+' type="checkbox" value='+listSongID+'><a class="songinfo" data='+listSongID+">&nbsp;&nbsp;"+listSongName+" - "+listSongArtist+"</a></li>")
                 }
 
                 $("#toplist input").on("click", function(){
