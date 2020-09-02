@@ -1,13 +1,14 @@
 doctype html
 html
     head
-        title Spotify Visualization
+        title Listening Profile
+        meta(http-equiv='Content-Type', content='text/html; charset=utf-8')
+        link(href='../fontawesome/css/fontawesome.css', rel='stylesheet')
+        link(href='../fontawesome/css/brands.css', rel='stylesheet')
+        link(href='../fontawesome/css/solid.css', rel='stylesheet')
         style.
             body{
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
+                padding: 20px;
                 font-family: Lato;
                 font-weight: lighter;
             }
@@ -21,92 +22,22 @@ html
             }
 
             img{
-                width:100%;
-            }
-
-            .box {
-                font-size: 20px;
-                color: #ff000a;
-                margin: 10px;
-                animation: changeshadow 1s ease-in infinite;
-                /* 其它浏览器兼容性前缀 */
-                -webkit-animation: changeshadow 1s linear infinite;
-                -moz-animation: changeshadow 1s linear infinite;
-                -ms-animation: changeshadow 1s linear infinite;
-                -o-animation: changeshadow 1s linear infinite;
-            }
-
-            @keyframes changeshadow {
-                0% {
-                    text-shadow: 0 0 4px #ff000a
-                }
-                50% {
-                    text-shadow: 0 0 40px #ff000a
-                }
-                100% {
-                    text-shadow: 0 0 4px #ff000a
-                }
-            }
-
-            /* 添加兼容性前缀 */
-            @-webkit-keyframes changeshadow {
-                0% {
-                    text-shadow: 0 0 4px #ff000a
-                }
-                50% {
-                    text-shadow: 0 0 40px #ff000a
-                }
-                100% {
-                    text-shadow: 0 0 4px #ff000a
-                }
-            }
-
-            @-moz-keyframes changeshadow {
-                0% {
-                    text-shadow: 0 0 4px #ff000a
-                }
-                50% {
-                    text-shadow: 0 0 40px #ff000a
-                }
-                100% {
-                    text-shadow: 0 0 4px #ff000a
-                }
-            }
-
-            @-ms-keyframes changeshadow {
-                0% {
-                    text-shadow: 0 0 4px #ff000a
-                }
-                50% {
-                    text-shadow: 0 0 40px #ff000a
-                }
-                100% {
-                    text-shadow: 0 0 4px #ff000a
-                }
-            }
-
-            @-o-keyframes changeshadow {
-                0% {
-                    text-shadow: 0 0 4px #ff000a
-                }
-                50% {
-                    text-shadow: 0 0 40px #ff000a
-                }
-                100% {
-                    text-shadow: 0 0 4px #ff000a
-                }
+                width:0%;
             }
     body
-        h3(style="text-align:center") Build Your Listening Profile
-        br 
-        p It seems that you are not a regular Spotify user. Our system cannot generate recommendations based on your profile.
-        p(style="background-color: aqua") Please click the button <b>"Build My Listening Profile"</b> to build your listening profile and continue to do the study.
-    
-        p Thank you for your understanding! :)
+        #part1.container
+            h4(style="text-align:center") Welcome to Evaluate Our Music Bot
+            h5(style="text-align:center") Build Your Listening Profile
+            br 
+            p Dear participants,
+            p Thank you very much for taking part in this experiment!
+            p It seems that you are not a regular Spotify user. Our system needs your listening profile to generate recommendations.
+            p(style="background-color: aqua") Please click the button <b>"Build My Listening Profile"</b> to build your listening profile and continue to do the study.
+            p Thank you for your understanding! :)
 
-        hr
-        .row.justify-content-center
-            button#buildProfile.btn.btn-primary Build My Listening Profile
+            hr
+            .row.justify-content-center
+                button#buildProfile.btn.btn-primary Build My Listening Profile
 
         //- div(style='width:20%;height:auto')
         //-     img(src="img/thanks.gif")

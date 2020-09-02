@@ -1131,6 +1131,7 @@ $(document).ready(function () {
                         $("#toplist input:not(:checked)").attr("disabled", true)
                         $("#submit").removeClass("disabled")
                         log.logger.topfive = topfive
+                        log.logger.topfiveTimestamp = new Date()
                         window.localStorage.setItem("log",JSON.stringify(log))
 
 
