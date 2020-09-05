@@ -123,6 +123,7 @@ router.post("/updateRecord", function(req, res) {
     var que2List = req.body.que2
     var que3List = req.body.que3
     var que1Timestamp = req.body.que1Timestamp
+    var warmupStartTimestamp = req.body.warmupStartTimestamp
     var taskStartTimestamp = req.body.taskStartTimestamp
     var taskEndTimestamp = req.body.taskEndTimestamp
     var endTimestamp = req.body.endTimestamp
@@ -144,6 +145,8 @@ router.post("/updateRecord", function(req, res) {
         updatedData.que3 = que3List
     if(que1Timestamp)
         updatedData.que1Timestamp = que1Timestamp
+    if(warmupStartTimestamp)
+        updatedData.warmupStartTimestamp = warmupStartTimestamp
     if(taskStartTimestamp)
         updatedData.taskStartTimestamp = taskStartTimestamp
     if(taskEndTimestamp)

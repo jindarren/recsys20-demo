@@ -306,7 +306,27 @@ html
 
 
             $("#next").on("click", function(){
-                window.location.href = redirectedLink
+                //- window.location.href = redirectedLink
+                var log = {
+                        id: window.localStorage.getItem("userid"),
+                        warmupStartTimestamp: new Date()
+                    }
+
+                $.ajax({
+                    url: '/updateRecord',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(log),
+                    dataType: 'json',
+                    success: function (data) {
+                        console.log(data)
+                        //var redirectedLink = window.localStorage.getItem("setting")
+                        window.location.href = redirectedLink
+                    },
+                    error: function (err) {
+                        console.log(err)
+                    }
+                });
             })
 
 

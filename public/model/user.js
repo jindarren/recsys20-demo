@@ -21,6 +21,7 @@ var userSchema = new mongoose.Schema({
     completionCode:String,
     startTimestamp: Date,
     que1Timestamp: Date,
+    warmupStartTimestamp: Date,
     taskStartTimestamp: Date,
     taskEndTimestamp: Date,
     endTimestamp: Date,
