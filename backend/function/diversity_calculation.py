@@ -51,6 +51,7 @@ def calculate_entropy_for_set(combined_songs_info_df, categorical_attributes, nu
     entropy_set = sum(entropy_dict.values())
 
     return entropy_set
+    
 def calculate_unexpectedness_based_on_user_listened_songs(user_listened_songs_vectors, crit_item_vectors):
 
     all_pairs_dissimilarity_list = cosine_distances(crit_item_vectors, user_listened_songs_vectors)

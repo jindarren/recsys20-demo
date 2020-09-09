@@ -975,6 +975,7 @@ router.post('/initiatewithprofile', function(req, res) {
                     artist: artists,
                     track: tracks,
                     genre: genres,
+                    selectedTrack: selectedTrackData,
                     language: "English",
                     timestamp: new Date()
                 },

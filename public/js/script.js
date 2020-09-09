@@ -1037,16 +1037,24 @@ $(document).ready(function () {
             //超时开始
             showStartTask = setTimeout(
                 function () {
+                    clearTimeout(showFeedback)
+                    clearTimeout(showNextSong)
+                    clearTimeout(showCurrentSong)
+                    clearTimeout(showCurrentSong2)
+                    clearTimeout(showNextSong2)
+                    clearTimeout(showNextSong3)
                     $("#round" + round + " button").fadeOut()
-                    updateChat(robot, "I think you can click the 'start study' button on the left to start.", "Initialize")
-                    $("input#message").attr("disabled", true)
-                    $("input#message").attr("placeholder", "Please click the 'start study' button to start!")
                     $(".feedback-box").hide()
                     $("#" + logger.listenedSongs.slice(-1)[0].id + " .rating").rating('refresh', {
                         disabled: true,
                         showClear: false,
                         showCaption: true
                     });
+                    updateChat(robot, "I think you can click the 'start study' button on the left to start.", "Initialize")
+                    $("input#message").attr("disabled", true)
+                    $("input#message").attr("placeholder", "Please click the 'start study' button to start!")
+
+
                     $("#start-task").addClass("start-animation")
 
 

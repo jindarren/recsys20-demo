@@ -339,6 +339,10 @@ def compute_recommendation_compatibility_score(user_critique_preference, item_po
 
 def compute_recommendation(user_preference_model, user_critique_preference, item_pool, top_K, categorical_attributes, numerical_attributes, method, alpha=0.5, sort=True):
 
+    if len(item_pool) < top_K:
+        top_K = len(item_pool)
+        # print(top_K)
+
     if method == 'MAUT':
         top_K_recommmendation_list = compute_recommendation_by_MAUT(user_preference_model, item_pool, top_K, categorical_attributes, numerical_attributes,sort)
         return top_K_recommmendation_list
