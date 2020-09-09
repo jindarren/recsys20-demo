@@ -235,7 +235,7 @@ def update_user_model(user_model, user_interaction_dialog, user_listened_longs, 
                             time_helper.print_current_time()
                             print("update attribute frequence: attribute (%s) - %f. "% (attr, updated_user_attribute_frequency[attr]))
                     
-                    if check_consective_reject_SC == False:
+                    if attr in numerical_attributes and check_consective_reject_SC == False:
                         updated_user_attribute_frequency[attr] = updated_user_attribute_frequency[attr] * 0.75
                         time_helper.print_current_time()
                         print("update attribute frequence: attribute (%s) - %f. "% (attr, updated_user_attribute_frequency[attr]))
