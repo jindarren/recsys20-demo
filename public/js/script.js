@@ -11,6 +11,7 @@ var userid = window.localStorage.getItem("userid")
 var playlist = [];
 var numberOfLikedSongs = 0;
 var isPreStudy = true
+var isWarmUpTimeOut = false
 var isSystemCrit = 1;
 var listenedSongs = []
 var isFinished = false
@@ -506,6 +507,7 @@ $(document).ready(function () {
 
                 isFinished = false
                 isPreStudy = false
+                isWarmUpTimeOut = false
 
                 //clear the chat content for new scenario
                 $(".chat").empty()
@@ -918,6 +920,13 @@ $(document).ready(function () {
                     })
                 }
 
+
+                if (isPreStudy && isWarmUpTimeOut){
+                    $("input#message").attr("disabled", true)
+                    $("input#message").attr("placeholder", "Please click the 'start study' button to start!")
+                    line.find('.dialog').text("I think you can click the 'start study' button on the left to start.");
+                }
+
                 chat.append(line);
                 chat.stop().animate({
                     scrollTop: chat.prop("scrollHeight")
@@ -1037,6 +1046,7 @@ $(document).ready(function () {
             //超时开始
             showStartTask = setTimeout(
                 function () {
+                    isWarmUpTimeOut = true
                     clearTimeout(showFeedback)
                     clearTimeout(showNextSong)
                     clearTimeout(showCurrentSong)
