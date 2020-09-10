@@ -173,13 +173,15 @@ router.post("/updateRecord", function(req, res) {
         updatedData.buildProfile = buildProfile
         
     User.updateOne({id:updatedID},{$set:updatedData},function(err){
+        
         if (err){
-            console.log({
+            var error_data = {
                 action:"updateRecord",
                 userid: updatedID,
                 data: updatedData,
                 err: err
-            })
+            }
+            console.log(JSON.stringify(error_data))
             res.send(err)
         }
         else

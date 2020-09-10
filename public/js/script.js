@@ -937,6 +937,9 @@ $(document).ready(function () {
                     });
                     $("input#message").attr("disabled", true)
                     $("input#message").attr("placeholder", "Please click the 'start study' button to start!")
+                    style = 'robot';
+                    line = $('<div class="speak"><p class="dialog"></p></div>');
+                    line.addClass(style)
                     line.find('.dialog').text("I think you can click the 'start study' button on the left to start.");
                 }
 
