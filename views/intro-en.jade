@@ -132,7 +132,8 @@ html
                 userid = window.localStorage.getItem("userid")
             }
             //if the user has sufficient artists and tracks
-            var randomSetting = Math.floor(Math.random() * 3)
+            var randomSetting = Math.floor(Math.random() * 2)
+            console.log(randomSetting)
             //- var randomSetting = 2 // diveristy
             var videoUrl
             //if it is baseline setting
@@ -141,11 +142,13 @@ html
                 videoUrl = "xrMTv7uaDFI"
                 window.localStorage.setItem("setting", "/index?base")
                 //- $("#sc_des").hide()
-            } else if (randomSetting == 1) {
-                //SC video url
-                videoUrl = "JIuYoyyrknE"
-                window.localStorage.setItem("setting", "/index?preference_oriented")
-            } else if (randomSetting == 2) {
+            } 
+            //- else if (randomSetting == 1) {
+            //-     //SC video url
+            //-     videoUrl = "JIuYoyyrknE"
+            //-     window.localStorage.setItem("setting", "/index?preference_oriented")
+            //- } 
+            else if (randomSetting == 1) {
                 //SC video url
                 videoUrl = "JIuYoyyrknE"
                 window.localStorage.setItem("setting", "/index?diversity_oriented")
