@@ -922,6 +922,19 @@ $(document).ready(function () {
 
 
                 if (isPreStudy && isWarmUpTimeOut){
+                    clearTimeout(showFeedback)
+                    clearTimeout(showNextSong)
+                    clearTimeout(showCurrentSong)
+                    clearTimeout(showCurrentSong2)
+                    clearTimeout(showNextSong2)
+                    clearTimeout(showNextSong3)
+                    $("#round" + round + " button").fadeOut()
+                    $(".feedback-box").hide()
+                    $("#" + logger.listenedSongs.slice(-1)[0].id + " .rating").rating('refresh', {
+                        disabled: true,
+                        showClear: false,
+                        showCaption: true
+                    });
                     $("input#message").attr("disabled", true)
                     $("input#message").attr("placeholder", "Please click the 'start study' button to start!")
                     line.find('.dialog').text("I think you can click the 'start study' button on the left to start.");
