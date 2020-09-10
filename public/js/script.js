@@ -1687,7 +1687,7 @@ $(document).ready(function () {
                         else if (random >= 0.3 && random < 0.6)
                             updateChat(robot, "You can try to say 'Play a song for dancing' or 'I feel happy'", "Respond_Unknown")
                         else if (random >= 0.6 && random < 1)
-                            updateChat(robot, "You can try to say 'I need more energy' or 'I like Chinese songs'", "Respond_Unknown")
+                            updateChat(robot, "You can try to say 'I need more energy' or 'I like rock music'", "Respond_Unknown")
                     }
                 } else {
                     if (!needReply)
