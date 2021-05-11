@@ -27,7 +27,7 @@
     "franc-min": "^4.0.0",
     "frequent-itemset": "^1.0.5",
     "jade": "^1.11.0",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.21",
     "method-override": "^3.0.0",
     "mongoose": "^5.3.14",
     "morgan": "^1.9.1",
